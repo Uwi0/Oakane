@@ -24,7 +24,7 @@ import com.kakapo.oakane.presentation.feature.home.component.TransactionItemView
 
 @Composable
 internal fun HomeRoute() {
-
+    HomeScreen()
 }
 
 @Composable

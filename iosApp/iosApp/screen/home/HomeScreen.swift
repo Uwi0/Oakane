@@ -2,18 +2,25 @@ import SwiftUI
 
 struct HomeScreen: View {
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                Text("TotalBalanceView")
-                Text("MonthlyBudgetView")
-                Text("RecentTransaction")
-                Text("TransactionItemView")
-                Text("ShowMoreItemView")
-                Text("GoalHeaderView")
-                Text("GoalItemView")
-                Text("ShowMoreButtonView")
+        ZStack {
+            Oakane.background
+            .ignoresSafeArea(.all)
+            ScrollView {
+                VStack(spacing: 16) {
+                    TotalBalanceView()
+                    Text("MonthlyBudgetView")
+                    Text("RecentTransaction")
+                    Text("TransactionItemView")
+                    Text("ShowMoreItemView")
+                    Text("GoalHeaderView")
+                    Text("GoalItemView")
+                    Text("ShowMoreButtonView")
+                }
+                .padding(.vertical, 24)
+                .padding(.horizontal, 16)
             }
         }
+        
     }
 }
 
