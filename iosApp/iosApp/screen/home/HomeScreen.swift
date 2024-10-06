@@ -8,7 +8,7 @@ struct HomeScreen: View {
             ScrollView {
                 VStack(spacing: 16) {
                     TotalBalanceView()
-                    Text("MonthlyBudgetView")
+                    MonthlyBudgetView()
                     Text("RecentTransaction")
                     Text("TransactionItemView")
                     Text("ShowMoreItemView")

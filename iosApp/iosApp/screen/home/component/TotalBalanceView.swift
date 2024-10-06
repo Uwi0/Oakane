@@ -9,12 +9,7 @@ struct TotalBalanceView: View {
                     .font(.title2)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-            .padding(12)
-            .background(
-                RoundedRectangle(cornerRadius: ShapeStyles.large)
-                    .fill(surface)
-                    .shadow(radius: 4)
-            )
+            .customBackground(backgroundColor: surface)
         }
 }
 
