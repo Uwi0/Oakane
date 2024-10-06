@@ -35,6 +35,11 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(projects.shared)
+
+            //COIL image
+            implementation(libs.coil.kt)
+            implementation(libs.coil.kt.compose)
+            implementation(libs.coil.kt.svg)
         }
     }
 }
