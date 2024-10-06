@@ -4,9 +4,10 @@ struct TotalBalanceView: View {
     var body: some View {
             VStack(alignment: .center, spacing: 12) {
                 Text("Your Balance")
+                    .font(TypoGraphy.bodyMedium)
                     .frame(maxWidth: .infinity, alignment: .center)
                 Text("Rp. 0")
-                    .font(.title2)
+                    .font(TypoGraphy.titleMedium)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
             .customBackground(backgroundColor: surface)
@@ -14,5 +15,5 @@ struct TotalBalanceView: View {
 }
 
 #Preview {
-    TotalBalanceView()
+    TotalBalanceView().padding()
 }
