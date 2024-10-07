@@ -3,6 +3,7 @@ import Shared
 
 struct HomeScreen: View {
     let transactions = TransactionModelKt.dummyValues()
+    let goals = GoalModelKt.dummyGoals()
     var body: some View {
         ZStack {
             ColorTheme.background
@@ -16,7 +17,7 @@ struct HomeScreen: View {
                     TransactionsView(transactions: transactions)
                     ShowMoreItemView(onClick: {})
                     GoalHeaderView(isVisible: true)
-                    Text("GoalItemView")
+                    GoalsView(goals: goals)
                     ShowMoreItemView(onClick: {})
                 }
                 .padding(.vertical, 24)

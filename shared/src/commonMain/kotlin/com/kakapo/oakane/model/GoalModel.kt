@@ -57,3 +57,15 @@ fun dummyGoals(): List<GoalModel> {
         )
     )
 }
+
+fun dummyGoal(): GoalModel {
+    return GoalModel(
+        id = "4",
+        amount = 10000.0,
+        goalName = "Emergency Fund",
+        deadline = "05-01-2025",
+        fileName = "emergency_fund.png",
+        savedMoney = 3000.0,
+        note = "Emergency savings"
+    )
+}

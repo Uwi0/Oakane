@@ -20,7 +20,7 @@ struct TransactionItemView: View {
             }.minimumScaleFactor(1)
             Spacer()
             VStack(alignment: .trailing, spacing: 8) {
-                Text("Rp. \(transaction.amount)")
+                Text("Rp. \(transaction.amount.formatted())")
                     .foregroundStyle(ColorTheme.error)
                     .font(Typography.titleSmall)
                 Text(transaction.date)
