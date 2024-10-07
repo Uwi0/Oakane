@@ -5,7 +5,7 @@ struct HomeScreen: View {
     let transactions = TransactionModelKt.dummyValues()
     var body: some View {
         ZStack {
-            Oakane.background
+            ColorTheme.background
             .ignoresSafeArea(.all)
             ScrollView {
                 VStack(alignment: .leading,spacing: 16) {
@@ -22,6 +22,7 @@ struct HomeScreen: View {
                 .padding(.vertical, 24)
                 .padding(.horizontal, 16)
             }
+            .scrollIndicators(.hidden)
         }
         
     }

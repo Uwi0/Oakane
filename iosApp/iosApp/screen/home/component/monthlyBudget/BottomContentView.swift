@@ -29,7 +29,7 @@ fileprivate struct BalanceItemView: View {
                 Image(systemName: imageName)
             }
             Text(text)
-                .foregroundStyle(Oakane.outline)
+                .foregroundStyle(ColorTheme.outline)
                 .font(Typography.bodyMedium)
             Text("Rp. 0")
                 .font(Typography.titleMedium)

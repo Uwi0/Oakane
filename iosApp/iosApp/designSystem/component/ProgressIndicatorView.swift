@@ -10,7 +10,7 @@ struct ProgressIndicatorView: View {
         ProgressView(value: animatedProgress, total: 1.0)
             .progressViewStyle(LinearProgressViewStyle())
             .controlSize(.large)
-            .tint(Oakane.primary)
+            .tint(ColorTheme.primary)
             .cornerRadius(radius)
             .onAppear {
                 withAnimation(.easeInOut(duration: 0.5)) {

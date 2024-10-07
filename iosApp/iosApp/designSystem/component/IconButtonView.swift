@@ -14,7 +14,7 @@ struct IconButtonView: View {
                     .resizable()
                     .frame(width: size, height: size)
                     .fontWeight(.bold)
-                    .foregroundStyle(Oakane.outline)
+                    .foregroundStyle(ColorTheme.outline)
             }
         )
     }

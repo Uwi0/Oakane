@@ -10,7 +10,7 @@ struct TotalBalanceView: View {
                     .font(Typography.titleMedium)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-            .customBackground(backgroundColor: surface)
+            .customBackground(backgroundColor: ColorTheme.surface)
         }
 }
 

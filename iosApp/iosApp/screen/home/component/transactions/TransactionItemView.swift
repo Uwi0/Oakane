@@ -21,12 +21,12 @@ struct TransactionItemView: View {
             Spacer()
             VStack(alignment: .trailing, spacing: 8) {
                 Text("Rp. \(transaction.amount)")
-                    .foregroundStyle(Oakane.error)
+                    .foregroundStyle(ColorTheme.error)
                     .font(Typography.titleSmall)
                 Text(transaction.date)
             }.minimumScaleFactor(1)
         }
-        .customBackground(backgroundColor: Oakane.surface)
+        .customBackground(backgroundColor: ColorTheme.surface)
     }
 }
 

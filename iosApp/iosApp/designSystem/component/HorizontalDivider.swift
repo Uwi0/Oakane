@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HorizontalDivider: View {
-    var color: Color = Oakane.outline
+    var color: Color = ColorTheme.outline
     var width: CGFloat = 2
     var body: some View {
         Rectangle()

@@ -9,7 +9,7 @@ struct OutlinedCircleIcon: View {
             .scaledToFit()
             .frame(width: size, height: size)
             .padding()
-            .background(Circle().stroke(primary, lineWidth: 3))
+            .background(Circle().stroke(ColorTheme.primary, lineWidth: 3))
     }
 }
 

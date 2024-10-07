@@ -7,7 +7,7 @@ struct MonthlyBudgetView: View {
             HorizontalDivider()
             BottomContentView()
         }
-        .customBackground(backgroundColor: surface)
+        .customBackground(backgroundColor: ColorTheme.surface)
     }
 }
 
