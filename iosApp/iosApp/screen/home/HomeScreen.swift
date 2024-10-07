@@ -14,10 +14,10 @@ struct HomeScreen: View {
                     Text("RecentTransaction")
                         .font(Typography.titleMedium)
                     TransactionsView(transactions: transactions)
-                    Text("ShowMoreItemView")
+                    ShowMoreItemView(onClick: {})
                     Text("GoalHeaderView")
                     Text("GoalItemView")
-                    Text("ShowMoreButtonView")
+                    ShowMoreItemView(onClick: {})
                 }
                 .padding(.vertical, 24)
                 .padding(.horizontal, 16)
