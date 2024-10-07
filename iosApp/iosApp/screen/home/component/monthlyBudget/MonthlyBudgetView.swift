@@ -2,10 +2,10 @@ import SwiftUI
 
 struct MonthlyBudgetView: View {
     var body: some View {
-        VStack {
-            MonthlyBudgetTopContent()
-            Divider()
-            Text("income and expense content")
+        VStack(spacing: 16) {
+            TopContentView()
+            HorizontalDivider()
+            BottomContentView()
         }
         .customBackground(backgroundColor: surface)
     }

@@ -6,10 +6,11 @@ struct HomeScreen: View {
             Oakane.background
             .ignoresSafeArea(.all)
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(alignment: .leading,spacing: 16) {
                     TotalBalanceView()
                     MonthlyBudgetView()
                     Text("RecentTransaction")
+                        .font(TypoGraphy.titleMedium)
                     Text("TransactionItemView")
                     Text("ShowMoreItemView")
                     Text("GoalHeaderView")

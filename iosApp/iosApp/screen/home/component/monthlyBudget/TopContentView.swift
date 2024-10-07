@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MonthlyBudgetTopContent: View {
+internal struct TopContentView: View {
     
     private let imageSize: CGFloat = 24
     
@@ -12,15 +12,10 @@ struct MonthlyBudgetTopContent: View {
                     Text("Montly budget")
                         .font(.title2)
                     Spacer()
-                    Button(
-                        action: {},
-                        label: {
-                            Image(systemName: "pencil")
-                                .resizable()
-                                .frame(width: imageSize, height: imageSize)
-                                .fontWeight(.bold)
-                                .foregroundStyle(Oakane.outline)
-                        }
+                    IconButtonView(
+                        name: "pencil",
+                        size: imageSize,
+                        onClick: {}
                     )
                 }
                 Text("Rp. 0")
@@ -40,5 +35,5 @@ struct MonthlyBudgetTopContent: View {
 }
 
 #Preview {
-    MonthlyBudgetTopContent().padding()
+    TopContentView().padding()
 }
