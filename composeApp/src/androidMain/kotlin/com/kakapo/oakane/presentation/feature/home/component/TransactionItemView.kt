@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
 import com.kakapo.oakane.common.asTextEllipsis
 import com.kakapo.oakane.model.TransactionModel
-import com.kakapo.oakane.model.dummyTransaction
+import com.kakapo.oakane.model.dummyValue
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.transactionColor
 
@@ -62,6 +62,6 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
 @Preview
 private fun TransactionItemViewPrev() {
     Surface {
-        TransactionItemView(transaction = dummyTransaction().first()) { }
+        TransactionItemView(transaction = dummyValue()) { }
     }
 }

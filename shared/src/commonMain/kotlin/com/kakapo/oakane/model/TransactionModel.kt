@@ -10,7 +10,7 @@ data class TransactionModel(
     val note: String = ""
 )
 
-fun dummyTransaction(): List<TransactionModel> {
+fun dummyValues(): List<TransactionModel> {
     val transaction1 = TransactionModel(
         id = "1",
         title = "Groceries",
@@ -53,4 +53,16 @@ fun dummyTransaction(): List<TransactionModel> {
 
     return listOf(transaction1, transaction2, transaction3, transaction4)
 }
+
+fun dummyValue() = TransactionModel(
+    id = "4",
+    title = "Dining Out",
+    category = 2, // Same category as groceries for "Food"
+    tag = "Restaurant",
+    date = "2024-10-04",
+    amount = 75.00,
+    note = "Dinner with friends"
+)
+
+
 

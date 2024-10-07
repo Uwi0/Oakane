@@ -10,7 +10,7 @@ internal struct TopContentView: View {
             VStack(alignment: .leading,spacing: 8) {
                 HStack(alignment: .center) {
                     Text("Montly budget")
-                        .font(.title2)
+                        .font(Typography.titleMedium)
                     Spacer()
                     IconButtonView(
                         name: "pencil",
@@ -24,10 +24,10 @@ internal struct TopContentView: View {
                 ProgressIndicatorView(value: 0.5)
                 HStack{
                     Text("Spent Rp. 0")
-                        .font(TypoGraphy.bodyMedium)
+                        .font(Typography.bodyMedium)
                     Spacer()
                     Text("Left Rp. 0")
-                        .font(TypoGraphy.bodyMedium)
+                        .font(Typography.bodyMedium)
                 }
             }
         }

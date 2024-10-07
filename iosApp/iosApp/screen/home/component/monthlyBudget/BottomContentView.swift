@@ -30,9 +30,9 @@ fileprivate struct BalanceItemView: View {
             }
             Text(text)
                 .foregroundStyle(Oakane.outline)
-                .font(TypoGraphy.bodyMedium)
+                .font(Typography.bodyMedium)
             Text("Rp. 0")
-                .font(TypoGraphy.titleMedium)
+                .font(Typography.titleMedium)
         }
     }
 }

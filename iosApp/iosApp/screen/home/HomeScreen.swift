@@ -1,6 +1,8 @@
 import SwiftUI
+import Shared
 
 struct HomeScreen: View {
+    let transactions = TransactionModelKt.dummyValues()
     var body: some View {
         ZStack {
             Oakane.background
@@ -10,8 +12,8 @@ struct HomeScreen: View {
                     TotalBalanceView()
                     MonthlyBudgetView()
                     Text("RecentTransaction")
-                        .font(TypoGraphy.titleMedium)
-                    Text("TransactionItemView")
+                        .font(Typography.titleMedium)
+                    TransactionsView(transactions: transactions)
                     Text("ShowMoreItemView")
                     Text("GoalHeaderView")
                     Text("GoalItemView")

@@ -1,19 +1,21 @@
-//
-//  TransactionsView.swift
-//  iosApp
-//
-//  Created by dwi prasetyo on 07/10/24.
-//  Copyright © 2024 orgName. All rights reserved.
-//
-
 import SwiftUI
+import Shared
 
 struct TransactionsView: View {
+    let transactions: [TransactionModel]
+    private var transactionItem: [TransactionModel] {
+        TransactionModelKt.swiftTake(transactions, n: 3)
+    }
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 8) {
+            ForEach(transactionItem, id: \.id) { transaction in
+                TransactionItemView(transaction: transaction)
+            }
+        }
     }
 }
 
 #Preview {
-    TransactionsView()
+    let dummyValues = TransactionModelKt.dummyValues()
+    TransactionsView(transactions: dummyValues)
 }

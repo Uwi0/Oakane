@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.model.dummyGoals
-import com.kakapo.oakane.model.dummyTransaction
+import com.kakapo.oakane.model.dummyValues
 import com.kakapo.oakane.presentation.feature.home.component.GoalHeaderView
 import com.kakapo.oakane.presentation.feature.home.component.GoalItemView
 import com.kakapo.oakane.presentation.feature.home.component.MonthlyBudgetView
@@ -59,7 +59,7 @@ private fun HomeContentView(modifier: Modifier) {
                 style = MaterialTheme.typography.titleMedium
             )
         }
-        items(dummyTransaction().take(3)) { item ->
+        items(dummyValues().take(3)) { item ->
             TransactionItemView(item, onClick = {})
         }
         item {
