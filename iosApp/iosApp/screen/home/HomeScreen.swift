@@ -15,7 +15,7 @@ struct HomeScreen: View {
                         .font(Typography.titleMedium)
                     TransactionsView(transactions: transactions)
                     ShowMoreItemView(onClick: {})
-                    Text("GoalHeaderView")
+                    AddGoalView()
                     Text("GoalItemView")
                     ShowMoreItemView(onClick: {})
                 }

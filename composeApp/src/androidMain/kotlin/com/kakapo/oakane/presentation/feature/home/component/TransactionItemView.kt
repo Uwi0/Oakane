@@ -49,7 +49,7 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
             horizontalAlignment = Alignment.End
         ) {
             Text(
-                text = "Rp. 0",
+                text = "Rp. ${transaction.amount}",
                 color = transactionColor(transaction.category).second,
                 style = MaterialTheme.typography.titleMedium
             )
