@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.feature.addTransaction
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,6 +27,9 @@ class AddTransactionState(val categories: List<String>) {
 
     var isCategoryExpanded by mutableStateOf(false)
     var selectedCategory by mutableStateOf(categories.first())
+
+    var isDatePickerDialogShown by mutableStateOf(false)
+    var selectedDate by mutableLongStateOf(System.currentTimeMillis())
 
     fun onTitleChanged(title: String) {
         this.title = title
@@ -57,6 +61,15 @@ class AddTransactionState(val categories: List<String>) {
     fun onCategoryChanged(category: String) {
         this.isCategoryExpanded = false
         selectedCategory = category
+    }
+
+    fun onSelectedDate(date: Long) {
+        this.selectedDate = date
+        this.isDatePickerDialogShown = false
+    }
+
+    fun toggleDatePickerDialog(isShown: Boolean) {
+        this.isDatePickerDialogShown = isShown
     }
 
     private fun TransactionType.asString(): String {

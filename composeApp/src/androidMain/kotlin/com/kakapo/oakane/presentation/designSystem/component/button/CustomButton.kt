@@ -5,12 +5,61 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+
+@Composable
+fun CustomButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    containerColor: Color = MaterialTheme.colorScheme.primary,
+    content: @Composable RowScope.() -> Unit,
+) {
+    Button(
+        shape = MaterialTheme.shapes.medium,
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(containerColor = containerColor,),
+        contentPadding = contentPadding,
+        content = content,
+    )
+}
+
+@Composable
+fun CustomButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    text: @Composable () -> Unit,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+) {
+    CustomButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        contentPadding = if (leadingIcon != null) {
+            ButtonDefaults.ButtonWithIconContentPadding
+        } else {
+            ButtonDefaults.ContentPadding
+        },
+    ) {
+        CustomButtonContent(
+            text = text,
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon
+        )
+    }
+}
 
 @Composable
 fun CustomTextButton(
