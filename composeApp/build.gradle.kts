@@ -82,5 +82,6 @@ android {
 }
 dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.navigation.compose)
 }
 

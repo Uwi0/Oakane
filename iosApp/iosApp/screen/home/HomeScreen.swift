@@ -25,7 +25,7 @@ struct HomeScreen: View {
             }
             .scrollIndicators(.hidden)
         }
-        
+
     }
 }
 

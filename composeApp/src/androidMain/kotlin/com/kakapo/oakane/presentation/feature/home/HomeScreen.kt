@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,12 +27,19 @@ import com.kakapo.oakane.presentation.feature.home.component.TotalBalanceView
 import com.kakapo.oakane.presentation.feature.home.component.TransactionItemView
 
 @Composable
-internal fun HomeRoute() {
-    HomeScreen()
+internal fun HomeRoute(navigateToAddTransaction: () -> Unit) {
+
+    val onEvent: (HomeUiEvent) -> Unit = {
+        when(it) {
+            OnNavigateToAddTransaction -> navigateToAddTransaction.invoke()
+        }
+    }
+
+    HomeScreen(onEvent = onEvent)
 }
 
 @Composable
-private fun HomeScreen() {
+private fun HomeScreen(onEvent: (HomeUiEvent) -> Unit) {
     Scaffold(
         content = { paddingValues ->
             HomeContentView(
@@ -36,6 +47,11 @@ private fun HomeScreen() {
                     .fillMaxSize()
                     .padding(paddingValues)
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { onEvent.invoke(OnNavigateToAddTransaction) }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+            }
         }
     )
 }
@@ -81,5 +97,7 @@ private fun HomeContentView(modifier: Modifier) {
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(){
+
+    }
 }
