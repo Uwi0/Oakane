@@ -11,7 +11,7 @@ import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
 
 @Composable
 internal fun OakaneNavHost(
-    startDestination: String = ADD_TRANSACTION_ROUTE
+    startDestination: String = HOME_ROUTE
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = startDestination) {

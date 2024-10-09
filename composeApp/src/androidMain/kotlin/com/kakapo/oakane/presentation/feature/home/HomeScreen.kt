@@ -49,7 +49,10 @@ private fun HomeScreen(onEvent: (HomeUiEvent) -> Unit) {
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onEvent.invoke(OnNavigateToAddTransaction) }) {
+            FloatingActionButton(
+                shape = MaterialTheme.shapes.medium,
+                onClick = { onEvent.invoke(OnNavigateToAddTransaction) }
+            ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
         }

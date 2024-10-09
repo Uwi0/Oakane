@@ -2,10 +2,13 @@ import SwiftUI
 import Shared
 
 struct ContentView: View {
-    @State private var showContent = false
+    @State private var isShowingAddTransaction = false
     var body: some View {
-        VStack {
-            HomeScreen()
+        NavigationStack {
+            HomeScreen(isShowingAddTransaction: $isShowingAddTransaction)
+                .navigationDestination(isPresented: $isShowingAddTransaction){
+                    AddTransactionScreen()
+                }
         }
     }
 }

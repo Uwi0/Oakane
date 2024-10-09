@@ -4,31 +4,32 @@ import Shared
 struct HomeScreen: View {
     let transactions = TransactionModelKt.dummyValues()
     let goals = GoalModelKt.dummyGoals()
+    
+    @Binding var isShowingAddTransaction: Bool
+    
     var body: some View {
-        ZStack {
-            ColorTheme.background
-            .ignoresSafeArea(.all)
-            ScrollView {
-                VStack(alignment: .leading,spacing: 16) {
-                    TotalBalanceView()
-                    MonthlyBudgetView()
-                    Text("RecentTransaction")
-                        .font(Typography.titleMedium)
-                    TransactionsView(transactions: transactions)
-                    ShowMoreItemView(onClick: {})
-                    GoalHeaderView(isVisible: true)
-                    GoalsView(goals: goals)
-                    ShowMoreItemView(onClick: {})
-                }
-                .padding(.vertical, 24)
-                .padding(.horizontal, 16)
+        GeometryReader { geometryReader in
+            ZStack {
+                ColorTheme.surface
+                .ignoresSafeArea(.all)
+                
+                HomeContentView(transactions: transactions, goals: goals)
+                
+                FabButtonView(
+                    size: 56,
+                    xPos: geometryReader.size.width - 50,
+                    yPos: geometryReader.size.height - 50,
+                    onClick: {
+                        isShowingAddTransaction.toggle()
+                    }
+                )
             }
-            .scrollIndicators(.hidden)
         }
+        
 
     }
 }
 
 #Preview {
-    HomeScreen()
+    HomeScreen(isShowingAddTransaction: .constant(false))
 }
