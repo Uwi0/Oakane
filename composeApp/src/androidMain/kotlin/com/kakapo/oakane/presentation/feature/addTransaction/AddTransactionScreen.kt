@@ -8,15 +8,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 
 @Composable
-internal fun AddTransactionRoute() {
-    AddTransactionScreen()
+internal fun AddTransactionRoute(navigateBack: () -> Unit) {
+
+    val onEvent: (AddTransactionUiEvent) -> Unit = {
+        when (it) {
+            OnNavigateBack -> navigateBack.invoke()
+        }
+    }
+
+    AddTransactionScreen(onEvent = onEvent)
 }
 
 @Composable
-private fun AddTransactionScreen() {
+private fun AddTransactionScreen(onEvent: (AddTransactionUiEvent) -> Unit) {
     Scaffold(
+        topBar = {
+            CustomNavigationTopAppBarView(
+                title = "Add Transaction",
+                onNavigateBack = { onEvent.invoke(OnNavigateBack) }
+            )
+        },
         content = { paddingValues ->
             Column(
                 modifier = Modifier

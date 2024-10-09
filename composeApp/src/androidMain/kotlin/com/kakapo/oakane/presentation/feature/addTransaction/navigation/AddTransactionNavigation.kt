@@ -12,8 +12,8 @@ fun NavController.navigateToAddTransaction(navOptions: NavOptions? = null) {
     this.navigate(ADD_TRANSACTION_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.addTransactionScreen() {
+fun NavGraphBuilder.addTransactionScreen(navigateBack: () -> Unit) {
     composable(route = ADD_TRANSACTION_ROUTE) {
-        AddTransactionRoute()
+        AddTransactionRoute(navigateBack = navigateBack)
     }
 }

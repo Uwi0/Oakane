@@ -15,7 +15,7 @@ internal fun OakaneNavHost(
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = startDestination) {
         homeScreen(navigateToAddTransaction = navController::navigateToAddTransaction)
-        addTransactionScreen()
+        addTransactionScreen(navigateBack = navController::popBackStack)
     }
 
 }
