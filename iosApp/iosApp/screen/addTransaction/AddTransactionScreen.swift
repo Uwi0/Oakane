@@ -1,16 +1,28 @@
-//
-//  AddTransactionScreen.swift
-//  iosApp
-//
-//  Created by dwi prasetyo on 10/10/24.
-//  Copyright © 2024 orgName. All rights reserved.
-//
-
 import SwiftUI
 
 struct AddTransactionScreen: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            ColorTheme.surface.ignoresSafeArea()
+            VStack {
+                Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            }
+            
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                IconButtonView(name: "arrow.left", size: 16, onClick: { dismiss() })
+            }
+            ToolbarItem(placement: .topBarLeading) {
+                Text("Add Transaction")
+                    .font(Typography.titleSmall)
+            }
+        }
+        
     }
 }
 

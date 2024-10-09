@@ -8,7 +8,7 @@ struct IconButtonView: View {
     
     var body: some View {
         Button(
-            action: {},
+            action: onClick,
             label: {
                 Image(systemName: name)
                     .resizable()
