@@ -3,13 +3,21 @@ import SwiftUI
 struct AddTransactionScreen: View {
     
     @Environment(\.dismiss) private var dismiss
+    @State private var state = AddTransactionState()
     
     var body: some View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
-            VStack {
-                Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            VStack(spacing: 16) {
+                OutlinedTextFieldView(value: $state.title, placeHolder: "Title")
+                OutlinedNumericTextFieldView(value: $state.amount, placeHolder: "Amount")
+                OutlinedTextFieldView(value: $state.note, placeHolder: "Note")
+                Spacer()
+                FilledButtonView(text: "Save Transaction", onClick: { dismiss() })
+                    .frame(height: 48)
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 24)
             
         }
         .navigationBarBackButtonHidden(true)
