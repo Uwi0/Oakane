@@ -8,6 +8,7 @@ struct AddTransactionScreen: View {
     var body: some View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
+            
             VStack(spacing: 16) {
                 OutlinedTextFieldView(value: $state.title, placeHolder: "Title")
                 OutlinedNumericTextFieldView(value: $state.amount, placeHolder: "Amount")
@@ -21,6 +22,7 @@ struct AddTransactionScreen: View {
                     options: state.categoryOptions,
                     selectedOpion: $state.selectedCategoryOption
                 )
+                DateButtonView(date: $state.selectedDate.animation(),title: "Today", onClick: { state.showDatePicker.toggle()})
                 OutlinedTextFieldView(value: $state.note, placeHolder: "Note")
                 Spacer()
                 FilledButtonView(text: "Save Transaction", onClick: { dismiss() })
@@ -28,7 +30,6 @@ struct AddTransactionScreen: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 24)
-            
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

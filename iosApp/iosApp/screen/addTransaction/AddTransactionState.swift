@@ -15,6 +15,8 @@ struct AddTransactionState {
         "Health & Fitness"
     ]
     var selectedCategoryOption: String = "Food & Dining"
+    var showDatePicker: Bool = false
+    var selectedDate: Date = Date()
 }
 
 extension TransactionType {
