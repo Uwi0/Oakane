@@ -11,6 +11,16 @@ struct AddTransactionScreen: View {
             VStack(spacing: 16) {
                 OutlinedTextFieldView(value: $state.title, placeHolder: "Title")
                 OutlinedNumericTextFieldView(value: $state.amount, placeHolder: "Amount")
+                SelectionPickerView(
+                    title: "Transaction Type",
+                    options: state.transactionOptions,
+                    selectedOpion: $state.selectedTransactionOption
+                )
+                SelectionPickerView(
+                    title: "Category",
+                    options: state.categoryOptions,
+                    selectedOpion: $state.selectedCategoryOption
+                )
                 OutlinedTextFieldView(value: $state.note, placeHolder: "Note")
                 Spacer()
                 FilledButtonView(text: "Save Transaction", onClick: { dismiss() })
