@@ -41,7 +41,6 @@ struct AddTransactionScreen: View {
                     .font(Typography.titleSmall)
             }
         }
-        
     }
 }
 

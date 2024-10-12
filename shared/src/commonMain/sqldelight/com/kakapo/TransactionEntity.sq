@@ -1,0 +1,35 @@
+CREATE TABLE TransactionTable (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    amount REAL NOT NULL,
+    type INTEGER NOT NULL,
+    category TEXT NOT NULL,
+    dateCreated INTEGER NOT NULL,
+    note Text
+);
+
+insert:
+INSERT OR REPLACE INTO TransactionTable (
+    id,
+    title,
+    amount,
+    type,
+    category,
+    dateCreated,
+    note
+)
+VALUES (
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);
+
+getLastedt3Items:
+SELECT *
+FROM TransactionTable
+ORDER BY dateCreated DESC
+LIMIT 3;

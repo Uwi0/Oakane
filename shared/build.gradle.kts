@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.appCash.sqlDelight)
 }
 
 kotlin {
@@ -28,6 +29,13 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.datetime)
+            implementation(libs.sqldelight.coroutines)
+        }
+        sourceSets.androidMain.dependencies {
+            implementation(libs.sqldelight.android.driver)
+        }
+        sourceSets.iosMain.dependencies {
+            implementation(libs.sqldelight.navtive.driver)
         }
     }
 }
@@ -41,5 +49,13 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.kakapo")
+        }
     }
 }

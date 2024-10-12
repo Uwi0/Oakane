@@ -87,7 +87,7 @@ private fun HomeContentView(modifier: Modifier) {
         item {
             GoalHeaderView(isVisible = true, onAddItem = {})
         }
-        items(dummyGoals()){ goal ->
+        items(dummyGoals().take(3)){ goal ->
             GoalItemView(goal, onClicked = {})
         }
         item {
