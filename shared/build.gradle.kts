@@ -22,7 +22,6 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
-            isStatic = true
         }
     }
     
@@ -30,9 +29,12 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.kotlinx.datetime)
             implementation(libs.sqldelight.coroutines)
+            api(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
         }
         sourceSets.androidMain.dependencies {
             implementation(libs.sqldelight.android.driver)
+            implementation(libs.koin.android)
         }
         sourceSets.iosMain.dependencies {
             implementation(libs.sqldelight.navtive.driver)

@@ -40,6 +40,10 @@ kotlin {
             implementation(libs.coil.kt)
             implementation(libs.coil.kt.compose)
             implementation(libs.coil.kt.svg)
+
+            //koin
+            implementation(libs.koin.android)
+            implementation(libs.koin.compose)
         }
     }
 }
