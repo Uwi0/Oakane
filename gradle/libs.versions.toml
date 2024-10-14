@@ -15,6 +15,7 @@ androidx-test-junit = "1.2.1"
 coil = "2.6.0"
 compose-plugin = "1.6.11"
 junit = "4.13.2"
+kermit = "2.0.4"
 kotlin = "2.0.21"
 kotlinx-datetime = "0.6.1"
 koin-bom= "4.0.0"
@@ -40,6 +41,7 @@ androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 koin-android = { module = "io.insert-koin:koin-android" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }

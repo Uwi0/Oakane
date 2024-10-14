@@ -5,7 +5,7 @@ data class TransactionModel(
     val title: String = "",
     val type: TransactionType = TransactionType.Expense,
     val category: String = "",
-    val dateCreated: Long = 0L,
+    val dateCreated: String = "04-12-2024",
     val amount: Double = 0.0,
     val note: String = ""
 )
