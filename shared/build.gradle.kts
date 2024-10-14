@@ -35,12 +35,12 @@ kotlin {
 
             api(project.dependencies.platform(libs.koin.bom))
             api(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
         }
         sourceSets.androidMain.dependencies {
             implementation(libs.sqldelight.android.driver)
             implementation(libs.koin.android)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
         }
         sourceSets.iosMain.dependencies {
             implementation(libs.sqldelight.navtive.driver)
