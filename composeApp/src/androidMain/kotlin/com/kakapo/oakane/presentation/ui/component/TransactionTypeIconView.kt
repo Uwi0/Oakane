@@ -15,9 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.model.transaction.TransactionType
 
 @Composable
-fun TransactionTypeIcon(modifier: Modifier = Modifier, iconSize: Dp = 48.dp, type: Int) {
+fun TransactionTypeIcon(modifier: Modifier = Modifier, iconSize: Dp = 48.dp, type: TransactionType) {
     val (icon, backgroundColor) = transactionColor(type)
     Surface(modifier = modifier, shape = CircleShape, color = backgroundColor) {
         Box(modifier = Modifier.size(iconSize)) {
@@ -30,8 +31,8 @@ fun TransactionTypeIcon(modifier: Modifier = Modifier, iconSize: Dp = 48.dp, typ
     }
 }
 
-fun transactionColor(type: Int): Pair<ImageVector, Color> {
-    val icon = if (type == 1) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward
-    val color = if (type == 1) Color.Green else Color.Red
+fun transactionColor(type: TransactionType): Pair<ImageVector, Color> {
+    val icon = if (type == TransactionType.Income) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward
+    val color = if (type == TransactionType.Income) Color.Green else Color.Red
     return Pair(icon, color)
 }

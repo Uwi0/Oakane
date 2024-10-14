@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.model.dummyGoals
-import com.kakapo.oakane.model.dummyValues
+import com.kakapo.oakane.model.transaction.dummyValues
 import com.kakapo.oakane.presentation.feature.home.component.GoalHeaderView
 import com.kakapo.oakane.presentation.feature.home.component.GoalItemView
 import com.kakapo.oakane.presentation.feature.home.component.MonthlyBudgetView

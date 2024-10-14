@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
 import com.kakapo.oakane.common.asTextEllipsis
-import com.kakapo.oakane.model.TransactionModel
-import com.kakapo.oakane.model.dummyValue
+import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.model.transaction.dummyValue
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.transactionColor
 
@@ -33,7 +33,9 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
         Image(
             painter = painterResource(R.drawable.fubuki_stare),
             contentDescription = null,
-            modifier = Modifier.size(48.dp).clip(CircleShape),
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape),
             contentScale = ContentScale.Crop
         )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -41,7 +43,7 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
                 text = transaction.title.asTextEllipsis(15),
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(text = transaction.tag)
+            Text(text = transaction.category)
         }
         Spacer(modifier = Modifier.weight(1f))
         Column(
@@ -50,10 +52,10 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
         ) {
             Text(
                 text = "Rp. ${transaction.amount}",
-                color = transactionColor(transaction.category).second,
+                color = transactionColor(transaction.type).second,
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(text = transaction.date)
+            Text(text = "${transaction.dateCreated}")
         }
     }
 }

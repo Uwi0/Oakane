@@ -1,52 +1,48 @@
-package com.kakapo.oakane.model
+package com.kakapo.oakane.model.transaction
 
 data class TransactionModel(
-    val id: String = "",
+    val id: Long = 0,
     val title: String = "",
-    val category: Int = 0,
-    val tag: String = "",
-    val date: String = "",
+    val type: TransactionType = TransactionType.Expense,
+    val category: String = "",
+    val dateCreated: Long = 0L,
     val amount: Double = 0.0,
     val note: String = ""
 )
 
 fun dummyValues(): List<TransactionModel> {
     val transaction1 = TransactionModel(
-        id = "1",
+        id = 1,
         title = "Groceries",
-        category = 2, // Let's say 1 represents "Food"
-        tag = "Supermarket",
-        date = "2024-10-01",
+        type = TransactionType.Expense, // Let's say 1 represents "Food"
+        category = "Supermarket",
         amount = 150.50,
         note = "Weekly grocery shopping"
     )
 
     val transaction2 = TransactionModel(
-        id = "2",
+        id = 2,
         title = "Rent",
-        category = 2, // Let's say 2 represents "Housing"
-        tag = "Apartment",
-        date = "2024-10-02",
+        type = TransactionType.Expense, // Let's say 2 represents "Housing"
+        category = "Apartment",
         amount = 1000.00,
         note = "October rent"
     )
 
     val transaction3 = TransactionModel(
-        id = "3",
+        id = 3,
         title = "Gym Membership",
-        category = 2, // Let's say 3 represents "Health & Fitness"
-        tag = "Fitness",
-        date = "2024-10-03",
+        type = TransactionType.Expense, // Let's say 3 represents "Health & Fitness"
+        category = "Fitness",
         amount = 50.00,
         note = "Monthly membership fee"
     )
 
     val transaction4 = TransactionModel(
-        id = "4",
+        id = 4,
         title = "Dining Out",
-        category = 2, // Same category as groceries for "Food"
-        tag = "Restaurant",
-        date = "2024-10-04",
+        type = TransactionType.Expense, // Same category as groceries for "Food"
+        category = "Restaurant",
         amount = 75.00,
         note = "Dinner with friends"
     )
@@ -55,11 +51,10 @@ fun dummyValues(): List<TransactionModel> {
 }
 
 fun dummyValue() = TransactionModel(
-    id = "4",
+    id = 4,
     title = "Dining Out",
-    category = 2, // Same category as groceries for "Food"
-    tag = "Restaurant",
-    date = "2024-10-04",
+    type = TransactionType.Expense, // Same category as groceries for "Food"
+    category = "Restaurant",
     amount = 75.00,
     note = "Dinner with friends"
 )

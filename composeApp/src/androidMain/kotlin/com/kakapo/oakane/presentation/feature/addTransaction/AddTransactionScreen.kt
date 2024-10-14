@@ -21,15 +21,24 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.CustomNum
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
+import com.kakapo.oakane.presentation.viewModel.transaction.AddTransactionViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun AddTransactionRoute(navigateBack: () -> Unit) {
 
     val state = rememberAddTransactionState(categories = dummyCategories)
 
+    val viewmodel = koinViewModel<AddTransactionViewModel>()
+
     val onEvent: (AddTransactionUiEvent) -> Unit = {
         when (it) {
             OnNavigateBack -> navigateBack.invoke()
+            OnSaveTransaction -> {
+                val transaction = state.getTransaction()
+                viewmodel.save(transaction)
+                navigateBack.invoke()
+            }
         }
     }
 
@@ -110,7 +119,7 @@ private fun AddTransactionScreen(
                 CustomButton(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(vertical = 16.dp),
-                    onClick = { /*TODO*/ },
+                    onClick = { onEvent.invoke(OnSaveTransaction)},
                     content = {
                         Text(text = "Add Transaction")
                     }

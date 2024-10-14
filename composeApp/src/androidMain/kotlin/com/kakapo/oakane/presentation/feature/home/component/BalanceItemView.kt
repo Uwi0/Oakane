@@ -8,10 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
 
 @Composable
-internal fun BalanceItemView(modifier: Modifier = Modifier, balance: Double, type: Int) {
+internal fun BalanceItemView(modifier: Modifier = Modifier, balance: Double, type: TransactionType) {
     ConstraintLayout(modifier = modifier) {
         val (icon, detail) = createRefs()
         TransactionTypeIcon(
@@ -31,7 +32,7 @@ internal fun BalanceItemView(modifier: Modifier = Modifier, balance: Double, typ
             },
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            val title = if (type == 1) "Total Income" else "Total Expense"
+            val title = if (type == TransactionType.Income) "Total Income" else "Total Expense"
             Text(text = title, color = MaterialTheme.colorScheme.outline)
             Text(
                 text = "Rp. 0",

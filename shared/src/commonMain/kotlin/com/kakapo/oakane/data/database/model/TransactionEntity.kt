@@ -3,7 +3,7 @@ package com.kakapo.oakane.data.database.model
 import com.kakapo.TransactionTable
 
 data class TransactionEntity(
-    val id: Long,
+    val id: Long? = null,
     val title: String,
     val amount: Double,
     val type: Long,

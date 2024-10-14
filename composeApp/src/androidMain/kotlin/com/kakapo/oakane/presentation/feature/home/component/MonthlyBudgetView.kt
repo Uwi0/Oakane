@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedIconCircleButton
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
@@ -86,7 +87,7 @@ private fun IncomeAndExpenseContent() {
                 .weight(1f)
                 .fillMaxHeight(),
             balance = 0.0,
-            type = 1
+            type = TransactionType.Income
         )
         HorizontalDivider(
             color = MaterialTheme.colorScheme.outline,
@@ -99,7 +100,7 @@ private fun IncomeAndExpenseContent() {
                 .weight(1f)
                 .fillMaxHeight(),
             balance = 0.0,
-            type = 0
+            type = TransactionType.Expense
         )
     }
 }
