@@ -1,4 +1,4 @@
-package com.kakapo.oakane.database
+package com.kakapo.oakane.data.database
 
 import android.content.Context
 import app.cash.sqldelight.db.SqlDriver

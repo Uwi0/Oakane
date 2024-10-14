@@ -1,12 +1,12 @@
-package com.kakapo.oakane.database.datasource.impl
+package com.kakapo.oakane.data.database.datasource.impl
 
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.TransactionTable
 import com.kakapo.oakane.common.proceed
-import com.kakapo.oakane.database.datasource.base.TransactionLocalDatasource
-import com.kakapo.oakane.database.model.TransactionEntity
-import com.kakapo.oakane.database.model.toEntity
+import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
+import com.kakapo.oakane.data.database.model.TransactionEntity
+import com.kakapo.oakane.data.database.model.toEntity
 
 class TransactionLocalDatasourceImpl(
     private val driver: SqlDriver

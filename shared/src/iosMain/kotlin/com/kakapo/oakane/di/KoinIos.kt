@@ -1,6 +1,6 @@
 package com.kakapo.oakane.di
 
-import com.kakapo.oakane.database.MySqlDriverFactory
+import com.kakapo.oakane.data.database.MySqlDriverFactory
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
 import org.koin.core.Koin

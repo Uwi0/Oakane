@@ -1,6 +1,6 @@
-package com.kakapo.oakane.database.datasource.base
+package com.kakapo.oakane.data.database.datasource.base
 
-import com.kakapo.oakane.database.model.TransactionEntity
+import com.kakapo.oakane.data.database.model.TransactionEntity
 
 interface TransactionLocalDatasource {
     suspend fun insertTransaction(entity: TransactionEntity): Result<Unit>

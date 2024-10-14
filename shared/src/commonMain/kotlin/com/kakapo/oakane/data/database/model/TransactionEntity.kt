@@ -1,4 +1,4 @@
-package com.kakapo.oakane.database.model
+package com.kakapo.oakane.data.database.model
 
 import com.kakapo.TransactionTable
 
