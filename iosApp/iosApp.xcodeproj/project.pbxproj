@@ -29,6 +29,7 @@
 		FB4A15702CB234E70079FAE0 /* designSystem */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = designSystem; sourceTree = "<group>"; };
 		FB4A15742CB247220079FAE0 /* screen */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = screen; sourceTree = "<group>"; };
 		FB4A15802CB2514E0079FAE0 /* modifier */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = modifier; sourceTree = "<group>"; };
+		FB8B8DFA2CBDBAA00014D610 /* viewModel */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = viewModel; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,9 +79,10 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				FB4A15702CB234E70079FAE0 /* designSystem */,
+				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
 				FB4A15802CB2514E0079FAE0 /* modifier */,
 				FB4A15742CB247220079FAE0 /* screen */,
-				FB4A15702CB234E70079FAE0 /* designSystem */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
@@ -119,6 +121,7 @@
 				FB4A15702CB234E70079FAE0 /* designSystem */,
 				FB4A15742CB247220079FAE0 /* screen */,
 				FB4A15802CB2514E0079FAE0 /* modifier */,
+				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
 			);
 			name = iosApp;
 			packageProductDependencies = (

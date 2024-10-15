@@ -5,8 +5,8 @@ struct AddTransactionState {
     var title: String = ""
     var amount: String = ""
     var note: String = ""
-    var transactionOptions: [String] = TransactionType.entries.map { $0.asString() }
-    var selectedTransactionOption: String = TransactionType.income.asString()
+    var transactionOptions: [String] = TransactionType.entries.map { $0.name }
+    var selectedTransactionOption: String = TransactionType.income.name
     var categoryOptions = [
         "Food & Dining",
         "Transportation",
@@ -17,17 +17,15 @@ struct AddTransactionState {
     var selectedCategoryOption: String = "Food & Dining"
     var showDatePicker: Bool = false
     var selectedDate: Date = Date()
-}
-
-extension TransactionType {
-    func asString() -> String {
-        switch self {
-        case .income:
-            return "Income"
-        case .expense:
-            return "Expense"
-        default:
-            return ""
-        }
+    
+    func getTransaction() -> TransactionParam {
+        return TransactionParam(
+            title: title,
+            amount: Double(amount) ?? 0.0,
+            type: TransactionTypeKt.asLong(selectedTransactionOption),
+            category: selectedCategoryOption,
+            dateCreated: Int64(selectedDate.timeIntervalSince1970),
+            note: note
+        )
     }
 }

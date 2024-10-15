@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import kotlinx.coroutines.launch
@@ -12,6 +13,7 @@ class AddTransactionViewModel(
 ): ViewModel(), KoinComponent {
 
     fun save(transaction: TransactionParam) = viewModelScope.launch {
+        Logger.d{ "saved transaction $transaction"}
         repository.save(transaction)
     }
 }

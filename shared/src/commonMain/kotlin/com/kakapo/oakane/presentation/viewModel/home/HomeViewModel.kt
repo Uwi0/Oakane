@@ -26,6 +26,7 @@ class HomeViewModel(
             result.fold(
                 onSuccess = { transactionsResult ->
                     _transactions.update { transactionsResult }
+                    Logger.d { "success load transaction $transactionsResult" }
                 },
                 onFailure = { e ->
                     Logger.e(messageString = "error load recent transaction ${e.message}")

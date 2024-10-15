@@ -13,7 +13,7 @@ struct HomeScreen: View {
                 ColorTheme.surface
                 .ignoresSafeArea(.all)
                 
-                HomeContentView(transactions: transactions, goals: goals)
+                HomeContentView(goals: goals)
                 
                 FabButtonView(
                     size: 56,

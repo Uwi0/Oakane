@@ -3,7 +3,7 @@ import Shared
 
 struct HomeContentView: View {
     
-    let transactions: [TransactionModel]
+    @StateObject private var viewModel: HomeViewModelWrapper = HomeViewModelWrapper()
     let goals: [GoalModel]
     
     var body: some View {
@@ -13,7 +13,7 @@ struct HomeContentView: View {
                 MonthlyBudgetView()
                 Text("RecentTransaction")
                     .font(Typography.titleMedium)
-                TransactionsView(transactions: transactions)
+                TransactionsView(transactions: viewModel.transactions)
                 ShowMoreItemView(onClick: {})
                 GoalHeaderView(isVisible: true)
                 GoalsView(goals: goals)
@@ -29,5 +29,5 @@ struct HomeContentView: View {
 #Preview {
     let transactions = TransactionModelKt.dummyValues()
     let goals = GoalModelKt.dummyGoals()
-    HomeContentView(transactions: transactions, goals: goals)
+    HomeContentView(goals: goals)
 }

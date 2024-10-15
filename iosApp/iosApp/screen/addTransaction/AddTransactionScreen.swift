@@ -4,6 +4,7 @@ struct AddTransactionScreen: View {
     
     @Environment(\.dismiss) private var dismiss
     @State private var state = AddTransactionState()
+    @StateObject private var addTransactionVM = AddTRansactionViewModelWrapper()
     
     var body: some View {
         ZStack {
@@ -25,8 +26,14 @@ struct AddTransactionScreen: View {
                 DateButtonView(date: $state.selectedDate.animation(),title: "Today", onClick: { state.showDatePicker.toggle()})
                 OutlinedTextFieldView(value: $state.note, placeHolder: "Note")
                 Spacer()
-                FilledButtonView(text: "Save Transaction", onClick: { dismiss() })
-                    .frame(height: 48)
+                FilledButtonView(
+                    text: "Save Transaction",
+                    onClick: {
+                        addTransactionVM.save(transaction: state.getTransaction())
+                        dismiss()
+                    }
+                )
+                .frame(height: 48)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 24)
@@ -34,7 +41,15 @@ struct AddTransactionScreen: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                IconButtonView(name: "arrow.left", size: 16, onClick: { dismiss() })
+                IconButtonView(
+                    name: "arrow.left",
+                    size: 16,
+                    onClick: {
+                        let transaction = state.getTransaction()
+                        addTransactionVM.save(transaction: transaction)
+                        dismiss()
+                    }
+                )
             }
             ToolbarItem(placement: .topBarLeading) {
                 Text("Add Transaction")
