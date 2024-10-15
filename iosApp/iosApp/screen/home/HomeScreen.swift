@@ -2,10 +2,11 @@ import SwiftUI
 import Shared
 
 struct HomeScreen: View {
-    let transactions = TransactionModelKt.dummyValues()
     let goals = GoalModelKt.dummyGoals()
     
     @Binding var isShowingAddTransaction: Bool
+    
+    @StateObject private var viewModel: HomeViewModelWrapper = HomeViewModelWrapper()
     
     var body: some View {
         GeometryReader { geometryReader in
@@ -13,7 +14,7 @@ struct HomeScreen: View {
                 ColorTheme.surface
                 .ignoresSafeArea(.all)
                 
-                HomeContentView(goals: goals)
+                HomeContentView(transactions: viewModel.transactions,goals: goals)
                 
                 FabButtonView(
                     size: 56,

@@ -3,8 +3,9 @@ import Shared
 
 struct HomeContentView: View {
     
-    @StateObject private var viewModel: HomeViewModelWrapper = HomeViewModelWrapper()
+    let transactions: [TransactionModel]
     let goals: [GoalModel]
+
     
     var body: some View {
         ScrollView {
@@ -13,8 +14,10 @@ struct HomeContentView: View {
                 MonthlyBudgetView()
                 Text("RecentTransaction")
                     .font(Typography.titleMedium)
-                TransactionsView(transactions: viewModel.transactions)
-                ShowMoreItemView(onClick: {})
+                TransactionsView(transactions: transactions)
+                if transactions.count == 3 {
+                    ShowMoreItemView(onClick: {})
+                }
                 GoalHeaderView(isVisible: true)
                 GoalsView(goals: goals)
                 ShowMoreItemView(onClick: {})
@@ -29,5 +32,5 @@ struct HomeContentView: View {
 #Preview {
     let transactions = TransactionModelKt.dummyValues()
     let goals = GoalModelKt.dummyGoals()
-    HomeContentView(goals: goals)
+    HomeContentView(transactions: transactions, goals: goals)
 }

@@ -3,11 +3,12 @@ package com.kakapo.oakane
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.kakapo.oakane.presentation.feature.addTransaction.navigation.ADD_TRANSACTION_ROUTE
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTransactionScreen
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.navigateToAddTransaction
 import com.kakapo.oakane.presentation.feature.home.navigation.HOME_ROUTE
 import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
+import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
+import com.kakapo.oakane.presentation.feature.transactions.navigation.transactionsScreen
 
 @Composable
 internal fun OakaneNavHost(
@@ -15,8 +16,12 @@ internal fun OakaneNavHost(
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = startDestination) {
-        homeScreen(navigateToAddTransaction = navController::navigateToAddTransaction)
+        homeScreen(
+            navigateToAddTransaction = navController::navigateToAddTransaction,
+            navigateToTransactions = navController::navigateToTransactions
+        )
         addTransactionScreen(navigateBack = navController::popBackStack)
+        transactionsScreen(navigateBack = navController::popBackStack)
     }
 
 }

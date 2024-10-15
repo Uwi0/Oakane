@@ -32,12 +32,13 @@ import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun HomeRoute(navigateToAddTransaction: () -> Unit) {
+internal fun HomeRoute(navigateToAddTransaction: () -> Unit, navigateToTransactions: () -> Unit) {
     val viewModel = koinViewModel<HomeViewModel>()
 
     val onEvent: (HomeUiEvent) -> Unit = {
-        when(it) {
+        when (it) {
             OnNavigateToAddTransaction -> navigateToAddTransaction.invoke()
+            OnNavigateToTransactions -> navigateToTransactions.invoke()
         }
     }
 
@@ -46,7 +47,7 @@ internal fun HomeRoute(navigateToAddTransaction: () -> Unit) {
     }
 
     val transactions by viewModel.transactions.collectAsStateWithLifecycle()
-    HomeScreen(transactions = transactions,onEvent = onEvent)
+    HomeScreen(transactions = transactions, onEvent = onEvent)
 }
 
 @Composable
@@ -57,7 +58,8 @@ private fun HomeScreen(transactions: List<TransactionModel>, onEvent: (HomeUiEve
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-                transactions = transactions
+                transactions = transactions,
+                onEvent = onEvent
             )
         },
         floatingActionButton = {
@@ -72,7 +74,11 @@ private fun HomeScreen(transactions: List<TransactionModel>, onEvent: (HomeUiEve
 }
 
 @Composable
-private fun HomeContentView(modifier: Modifier, transactions: List<TransactionModel>) {
+private fun HomeContentView(
+    modifier: Modifier,
+    transactions: List<TransactionModel>,
+    onEvent: (HomeUiEvent) -> Unit
+) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
@@ -94,12 +100,15 @@ private fun HomeContentView(modifier: Modifier, transactions: List<TransactionMo
             TransactionItemView(item, onClick = {})
         }
         item {
-            ShowMoreButtonView(isVisible = transactions.size == 3, onClick = {})
+            ShowMoreButtonView(
+                isVisible = transactions.size == 3,
+                onClick = { onEvent.invoke(OnNavigateToTransactions) }
+            )
         }
         item {
             GoalHeaderView(isVisible = true, onAddItem = {})
         }
-        items(dummyGoals().take(3)){ goal ->
+        items(dummyGoals().take(3)) { goal ->
             GoalItemView(goal, onClicked = {})
         }
         item {
@@ -112,7 +121,7 @@ private fun HomeContentView(modifier: Modifier, transactions: List<TransactionMo
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen(transactions = emptyList()){
+    HomeScreen(transactions = emptyList()) {
 
     }
 }

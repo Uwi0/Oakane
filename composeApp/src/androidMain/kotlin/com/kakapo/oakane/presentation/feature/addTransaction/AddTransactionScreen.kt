@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.common.toDateWith
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.menu.CustomDropdownMenu
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
@@ -106,7 +107,7 @@ private fun AddTransactionScreen(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Date",
                     trailingIcon = Icons.Default.Today,
-                    value = state.selectedDate.toString(),
+                    value = state.selectedDate.toDateWith(format = "dd MMM yyyy"),
                     onClick = { state.toggleDatePickerDialog(true) }
                 )
                 CustomOutlinedTextField(

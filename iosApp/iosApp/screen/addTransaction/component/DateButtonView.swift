@@ -8,7 +8,7 @@ struct DateButtonView: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-            Text(date.formatted())
+            Text(date.formmatTo("dd MMM yyyy"))
                 .font(Typography.bodyLarge)
                 .foregroundStyle(ColorTheme.outline)
             Spacer()

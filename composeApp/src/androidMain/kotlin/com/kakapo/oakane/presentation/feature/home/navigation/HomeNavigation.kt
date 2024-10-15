@@ -6,15 +6,20 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.kakapo.oakane.presentation.feature.home.HomeRoute
 
-const val HOME_ROUTE  = "home"
-
+const val HOME_ROUTE = "home"
 
 fun NavController.navigateToHome(navOptions: NavOptions? = null) {
     this.navigate(HOME_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.homeScreen(navigateToAddTransaction: () -> Unit) {
+fun NavGraphBuilder.homeScreen(
+    navigateToAddTransaction: () -> Unit,
+    navigateToTransactions: () -> Unit
+) {
     composable(HOME_ROUTE) {
-        HomeRoute(navigateToAddTransaction = navigateToAddTransaction)
+        HomeRoute(
+            navigateToAddTransaction = navigateToAddTransaction,
+            navigateToTransactions = navigateToTransactions
+        )
     }
 }
