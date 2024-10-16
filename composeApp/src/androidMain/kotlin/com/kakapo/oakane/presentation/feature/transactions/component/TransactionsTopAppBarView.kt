@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.Text
@@ -59,10 +60,11 @@ internal fun TransactionTopAppBarView(
 
 @Composable
 private fun ChipSelector(title: String, isSelected: Boolean, onClick: () -> Unit) {
+    val icon = if(isSelected) Icons.Default.Close else Icons.Default.ArrowDropDown
     InputChip(
         selected = isSelected,
         onClick = onClick,
         label = { Text(text = title) },
-        trailingIcon = { Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "") }
+        trailingIcon = { Icon(imageVector = icon, contentDescription = "") }
     )
 }

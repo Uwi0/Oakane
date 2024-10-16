@@ -33,6 +33,10 @@ internal fun TransactionsRoute(navigateBack: () -> Unit) {
         viewModel.initializeData()
     }
 
+    LaunchedEffect(state.searchQuery) {
+        viewModel.searchValue(state.searchQuery)
+    }
+
     TransactionsScreen(state = state, transactions = transactions, onEvent = onEvent)
 }
 

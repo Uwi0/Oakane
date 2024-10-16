@@ -14,11 +14,17 @@ class TransactionsViewModel(
     private val transactionRepository: TransactionRepository
 ) : ViewModel() {
 
-    val transactions get() = _transactions.asStateFlow()
+    val transactions get() = _filteredTransactions.asStateFlow()
+    private val _filteredTransactions = MutableStateFlow<List<TransactionModel>>(emptyList())
     private val _transactions = MutableStateFlow<List<TransactionModel>>(emptyList())
 
     fun initializeData() {
         loadTransactions()
+    }
+
+    fun searchValue(value: String){
+        val transactions = _transactions.value.filter { it.title.contains(value, true) }
+        _filteredTransactions.update { transactions }
     }
 
     private fun loadTransactions() = viewModelScope.launch {
@@ -26,6 +32,7 @@ class TransactionsViewModel(
             result.fold(
                 onSuccess = { transactionsResult ->
                     _transactions.update { transactionsResult }
+                    _filteredTransactions.update { transactionsResult }
                 },
                 onFailure = { e ->
                     Logger.e(throwable = e, messageString = "error load transactions ${e.message}")

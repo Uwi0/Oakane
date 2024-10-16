@@ -21,7 +21,7 @@ fun SearchTextFieldView(
     placeHolder: String = "",
     value: String,
     onValueChange: (String) -> Unit,
-    debounceTime: Long = 250L
+    debounceTime: Long = 500L
 ) {
     var text by remember { mutableStateOf(value) }
 
