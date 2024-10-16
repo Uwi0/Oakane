@@ -6,7 +6,7 @@ struct HomeScreen: View {
     
     @Binding var isShowingAddTransaction: Bool
     
-    @StateObject private var viewModel: HomeViewModelWrapper = HomeViewModelWrapper()
+    @StateObject private var viewModel: HomeViewModel = HomeViewModel()
     
     var body: some View {
         GeometryReader { geometryReader in

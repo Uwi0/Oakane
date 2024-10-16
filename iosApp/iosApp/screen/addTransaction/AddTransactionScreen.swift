@@ -4,7 +4,7 @@ struct AddTransactionScreen: View {
     
     @Environment(\.dismiss) private var dismiss
     @State private var state = AddTransactionState()
-    @StateObject private var addTransactionVM = AddTRansactionViewModelWrapper()
+    @StateObject private var addTransactionVM = AddTRansactionViewModel()
     
     var body: some View {
         ZStack {

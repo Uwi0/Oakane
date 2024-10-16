@@ -1,14 +1,14 @@
 import Foundation
 import Shared
 
-final class HomeViewModelWrapper: ObservableObject {
+final class HomeViewModel: ObservableObject {
     
     @Published var transactions: [TransactionModel] = []
     
-    private var viewModel: IOSHomeViewModel
+    private var viewModel: HomeViewModelAdapter
     
     init(){
-        self.viewModel = IOSHomeViewModel()
+        self.viewModel = HomeViewModelAdapter()
         viewModel.doInitViewModel()
         self.viewModel.observeState { [weak self] state in
             DispatchQueue.main.async {
@@ -16,6 +16,10 @@ final class HomeViewModelWrapper: ObservableObject {
                 print(state.count)
             }
         }
+    }
+    
+    deinit {
+        viewModel.clearAdapter()
     }
     
 }
