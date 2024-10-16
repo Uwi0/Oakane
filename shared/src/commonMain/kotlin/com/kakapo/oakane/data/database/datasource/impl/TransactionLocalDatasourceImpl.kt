@@ -9,7 +9,7 @@ import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.data.database.model.toEntity
 
 class TransactionLocalDatasourceImpl(
-    private val driver: SqlDriver
+    driver: SqlDriver
 ) : TransactionLocalDatasource {
 
     private val transactionDb = Database.invoke(driver).transactionEntityQueries
@@ -31,6 +31,12 @@ class TransactionLocalDatasourceImpl(
     override suspend fun getRecentTransactions(): Result<List<TransactionEntity>> {
         return proceed{
             transactionDb.getLastedt3Items().executeAsList().map(TransactionTable::toEntity)
+        }
+    }
+
+    override suspend fun getTransactions(): Result<List<TransactionEntity>> {
+        return proceed {
+            transactionDb.getTransactions().executeAsList().map(TransactionTable::toEntity)
         }
     }
 

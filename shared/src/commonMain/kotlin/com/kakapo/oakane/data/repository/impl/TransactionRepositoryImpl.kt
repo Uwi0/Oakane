@@ -27,4 +27,14 @@ class TransactionRepositoryImpl(
         }
         emit(result)
     }
+
+    override fun loadTransactions(): Flow<Result<List<TransactionModel>>> = flow {
+        val result = proceed {
+            localDatasource.getTransactions()
+                .getOrThrow()
+                .map(TransactionEntity::toModel)
+        }
+
+        emit(result)
+    }
 }

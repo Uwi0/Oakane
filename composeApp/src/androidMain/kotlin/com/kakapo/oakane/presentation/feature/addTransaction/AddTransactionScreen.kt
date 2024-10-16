@@ -22,7 +22,7 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.CustomNum
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
-import com.kakapo.oakane.presentation.viewModel.transaction.AddTransactionViewModel
+import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

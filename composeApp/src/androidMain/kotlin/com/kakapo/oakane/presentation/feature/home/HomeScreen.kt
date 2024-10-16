@@ -27,7 +27,7 @@ import com.kakapo.oakane.presentation.feature.home.component.GoalItemView
 import com.kakapo.oakane.presentation.feature.home.component.MonthlyBudgetView
 import com.kakapo.oakane.presentation.feature.home.component.ShowMoreButtonView
 import com.kakapo.oakane.presentation.feature.home.component.TotalBalanceView
-import com.kakapo.oakane.presentation.feature.home.component.TransactionItemView
+import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 

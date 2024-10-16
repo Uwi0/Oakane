@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.home.component
+package com.kakapo.oakane.presentation.ui.component.item
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

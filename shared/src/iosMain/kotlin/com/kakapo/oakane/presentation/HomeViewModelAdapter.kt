@@ -11,11 +11,10 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class HomeViewModelAdapter : KoinComponent {
+
     private val transactionRepository: TransactionRepository by inject()
     private val viewModel: HomeViewModel = HomeViewModel(transactionRepository)
     private val scope: CoroutineScope = MainScope()
-
-    val state: List<TransactionModel> = viewModel.transactions.value
 
     fun initViewModel() = viewModel.initializeData()
 

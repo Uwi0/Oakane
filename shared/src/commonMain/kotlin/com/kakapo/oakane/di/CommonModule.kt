@@ -5,7 +5,8 @@ import com.kakapo.oakane.data.database.datasource.impl.TransactionLocalDatasourc
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
-import com.kakapo.oakane.presentation.viewModel.transaction.AddTransactionViewModel
+import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -24,6 +25,7 @@ object CommonModule {
     val viewModel: Module = module {
         viewModel { AddTransactionViewModel(get()) }
         viewModel { HomeViewModel(get()) }
+        viewModel { TransactionsViewModel(get()) }
     }
 }
 

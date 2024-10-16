@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.viewModel.transaction
+package com.kakapo.oakane.presentation.viewModel.addTransaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
