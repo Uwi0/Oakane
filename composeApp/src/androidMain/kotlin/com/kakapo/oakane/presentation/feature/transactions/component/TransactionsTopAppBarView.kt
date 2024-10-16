@@ -1,7 +1,16 @@
 package com.kakapo.oakane.presentation.feature.transactions.component
 
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.Icon
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -14,8 +23,11 @@ import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiState
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 
 @Composable
-internal fun TransactionTopAppBarView(state: TransactionsUiState, onEvent: (TransactionsUiEvent) -> Unit) {
-    ColumnWrapper(modifier = Modifier.padding(bottom = 8.dp),shapes = RectangleShape) {
+internal fun TransactionTopAppBarView(
+    state: TransactionsUiState,
+    onEvent: (TransactionsUiEvent) -> Unit
+) {
+    ColumnWrapper(modifier = Modifier.padding(bottom = 8.dp), shapes = RectangleShape) {
         CustomNavigationTopAppBarView(
             title = "Transactions",
             shadowElevation = 0.dp,
@@ -25,9 +37,31 @@ internal fun TransactionTopAppBarView(state: TransactionsUiState, onEvent: (Tran
             }
         )
         SearchTextFieldView(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 4.dp),
             value = state.searchQuery,
             onValueChange = state::onChangedQuery
         )
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ChipSelector(title = "By Type", isSelected = true, onClick = {})
+            ChipSelector(title = "By Date", isSelected = false, onClick = {})
+            ChipSelector(title = "By Category", isSelected = false, onClick = {})
+        }
     }
+}
+
+@Composable
+private fun ChipSelector(title: String, isSelected: Boolean, onClick: () -> Unit) {
+    InputChip(
+        selected = isSelected,
+        onClick = onClick,
+        label = { Text(text = title) },
+        trailingIcon = { Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "") }
+    )
 }
