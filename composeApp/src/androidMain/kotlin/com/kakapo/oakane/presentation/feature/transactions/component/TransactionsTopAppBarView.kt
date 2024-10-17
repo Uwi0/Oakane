@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.transactions.OnNavigateBack
+import com.kakapo.oakane.presentation.feature.transactions.TransactionBottomSheet
 import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiEvent
 import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiState
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
@@ -51,16 +52,28 @@ internal fun TransactionTopAppBarView(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            ChipSelector(title = "By Type", isSelected = true, onClick = {})
-            ChipSelector(title = "By Date", isSelected = false, onClick = {})
-            ChipSelector(title = "By Category", isSelected = false, onClick = {})
+            ChipSelector(
+                title = "By Type",
+                isSelected = true,
+                onClick = { state.showBottomSheet(TransactionBottomSheet.Type) }
+            )
+            ChipSelector(
+                title = "By Date",
+                isSelected = false,
+                onClick = { state.showBottomSheet(TransactionBottomSheet.Date) }
+            )
+            ChipSelector(
+                title = "By Category",
+                isSelected = false,
+                onClick = { state.showBottomSheet(TransactionBottomSheet.Category) }
+            )
         }
     }
 }
 
 @Composable
 private fun ChipSelector(title: String, isSelected: Boolean, onClick: () -> Unit) {
-    val icon = if(isSelected) Icons.Default.Close else Icons.Default.ArrowDropDown
+    val icon = if (isSelected) Icons.Default.Close else Icons.Default.ArrowDropDown
     InputChip(
         selected = isSelected,
         onClick = onClick,

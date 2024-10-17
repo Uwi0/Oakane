@@ -13,8 +13,24 @@ internal fun rememberTransactionUiState() = remember {
 
 class TransactionsUiState {
     var searchQuery by mutableStateOf("")
+    var bottomSheetShown by mutableStateOf(false)
+    var bottomSheetContent: TransactionBottomSheet by mutableStateOf(TransactionBottomSheet.Date)
 
     fun onChangedQuery(query: String){
         searchQuery = query
     }
+
+    fun showBottomSheet(content: TransactionBottomSheet) {
+        bottomSheetContent = content
+        bottomSheetShown = true
+    }
+
+    fun hideBottomSheet(){
+        bottomSheetShown = false
+    }
+
+}
+
+enum class TransactionBottomSheet {
+    Type, Date, Category
 }
