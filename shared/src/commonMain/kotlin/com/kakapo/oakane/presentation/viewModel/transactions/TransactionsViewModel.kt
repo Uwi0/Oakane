@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -22,8 +23,10 @@ class TransactionsViewModel(
         loadTransactions()
     }
 
-    fun searchValue(value: String){
-        val transactions = _transactions.value.filter { it.title.contains(value, true) }
+    fun filterTransactions(value: String, type: TransactionType?){
+        val transactions = _transactions.value
+            .filter { it.title.contains(value, true) }
+            .filter { if (type == null) true else it.type == type }
         _filteredTransactions.update { transactions }
     }
 

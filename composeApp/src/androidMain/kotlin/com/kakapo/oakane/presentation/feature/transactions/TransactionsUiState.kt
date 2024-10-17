@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.kakapo.oakane.model.transaction.TransactionType
 
 @Composable
 internal fun rememberTransactionUiState() = remember {
@@ -15,6 +16,11 @@ class TransactionsUiState {
     var searchQuery by mutableStateOf("")
     var bottomSheetShown by mutableStateOf(false)
     var bottomSheetContent: TransactionBottomSheet by mutableStateOf(TransactionBottomSheet.Date)
+    var selectedType: TransactionType? by mutableStateOf(null)
+
+    val typeTile: String get() {
+        return selectedType?.name ?: "By Type"
+    }
 
     fun onChangedQuery(query: String){
         searchQuery = query
@@ -27,6 +33,18 @@ class TransactionsUiState {
 
     fun hideBottomSheet(){
         bottomSheetShown = false
+    }
+
+    fun changeFilterType(selectedType: TransactionType?){
+        this.selectedType = selectedType
+    }
+
+    fun onFilterTypeClicked(){
+        if (selectedType == null){
+            showBottomSheet(TransactionBottomSheet.Type)
+        } else {
+            changeFilterType(null)
+        }
     }
 
 }

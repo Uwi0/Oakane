@@ -22,7 +22,7 @@ internal fun TransactionBottomSheetView(
         onDismissRequest = { onEvent.invoke(OnDismissBottomSheet) },
         content = {
             when(state.bottomSheetContent){
-                TransactionBottomSheet.Type -> Text("Type")
+                TransactionBottomSheet.Type -> FilterTypeView(state = state)
                 TransactionBottomSheet.Date -> Text("Date")
                 TransactionBottomSheet.Category -> Text("Category")
             }

@@ -48,8 +48,8 @@ internal fun TransactionsRoute(navigateBack: () -> Unit) {
         viewModel.initializeData()
     }
 
-    LaunchedEffect(state.searchQuery) {
-        viewModel.searchValue(state.searchQuery)
+    LaunchedEffect(state.searchQuery, state.selectedType) {
+        viewModel.filterTransactions(state.searchQuery, state.selectedType)
     }
 
     TransactionsScreen(state = state, transactions = transactions, onEvent = onEvent)

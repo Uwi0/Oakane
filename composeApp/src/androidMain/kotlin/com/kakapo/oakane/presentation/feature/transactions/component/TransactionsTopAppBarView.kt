@@ -53,9 +53,9 @@ internal fun TransactionTopAppBarView(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ChipSelector(
-                title = "By Type",
-                isSelected = true,
-                onClick = { state.showBottomSheet(TransactionBottomSheet.Type) }
+                title = state.typeTile,
+                isSelected = state.selectedType != null,
+                onClick = state::onFilterTypeClicked
             )
             ChipSelector(
                 title = "By Date",
