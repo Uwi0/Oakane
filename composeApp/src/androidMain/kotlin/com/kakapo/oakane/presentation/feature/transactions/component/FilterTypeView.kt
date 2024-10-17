@@ -44,7 +44,7 @@ internal fun FilterTypeView(state: TransactionsUiState) {
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
             onClick = state::hideBottomSheet,
-            content = { Text("Apply Filter") }
+            content = { Text("Apply Filter Type") }
         )
     }
 }

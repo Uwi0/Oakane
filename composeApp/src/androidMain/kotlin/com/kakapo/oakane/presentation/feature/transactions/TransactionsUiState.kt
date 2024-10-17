@@ -19,6 +19,7 @@ class TransactionsUiState {
     var bottomSheetContent: TransactionBottomSheet by mutableStateOf(TransactionBottomSheet.Date)
     var selectedType: TransactionType? by mutableStateOf(null)
     var selectedDate: Long by mutableLongStateOf(0)
+    var selectedCategory: String by mutableStateOf("")
 
     val typeTile: String
         get() {
@@ -47,6 +48,11 @@ class TransactionsUiState {
         bottomSheetShown = false
     }
 
+    fun changeFilterCategory(selectedCategory: String){
+        this.selectedCategory = selectedCategory
+        bottomSheetShown = false
+    }
+
     fun onFilterByType() {
         if (selectedType == null) {
             showBottomSheet(TransactionBottomSheet.Type)
@@ -63,6 +69,13 @@ class TransactionsUiState {
         }
     }
 
+    fun onFilterByCategory(){
+        if (selectedCategory == ""){
+            showBottomSheet(TransactionBottomSheet.Category)
+        } else {
+            changeFilterCategory(selectedCategory = "")
+        }
+    }
 }
 
 enum class TransactionBottomSheet {

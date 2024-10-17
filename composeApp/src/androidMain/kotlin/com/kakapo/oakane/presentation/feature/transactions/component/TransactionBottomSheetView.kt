@@ -24,7 +24,7 @@ internal fun TransactionBottomSheetView(
             when(state.bottomSheetContent){
                 TransactionBottomSheet.Type -> FilterTypeView(state = state)
                 TransactionBottomSheet.Date -> FilterDateView(state = state)
-                TransactionBottomSheet.Category -> Text("Category")
+                TransactionBottomSheet.Category -> FilterCategoryView(state = state)
             }
         }
     )

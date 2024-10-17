@@ -48,6 +48,7 @@ internal fun TransactionsRoute(navigateBack: () -> Unit) {
         viewModel.initializeData()
     }
 
+    //TODO: add filter by category
     LaunchedEffect(
         state.searchQuery,
         state.selectedType,

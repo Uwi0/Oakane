@@ -64,8 +64,8 @@ internal fun TransactionTopAppBarView(
             )
             ChipSelector(
                 title = "By Category",
-                isSelected = false,
-                onClick = { state.showBottomSheet(TransactionBottomSheet.Category) }
+                isSelected = state.selectedCategory.isNotEmpty(),
+                onClick = state::onFilterByCategory
             )
         }
     }

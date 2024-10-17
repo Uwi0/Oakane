@@ -29,7 +29,7 @@ internal fun FilterDateView(state: TransactionsUiState) {
                 state.changeFilterDate(selectedDate = selectedDate)
             },
             content = {
-                Text("Apply Filter")
+                Text("Apply Filter Date")
             }
         )
     }
