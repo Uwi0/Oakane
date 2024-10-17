@@ -1,8 +1,10 @@
 package com.kakapo.oakane.presentation.designSystem.component.textField
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -40,6 +42,16 @@ fun SearchTextFieldView(
         placeholder = { Text(text = placeHolder) },
         leadingIcon = {
             Icon(imageVector = Icons.Default.Search, contentDescription = null)
+        },
+        trailingIcon = {
+            if (text.isNotEmpty()) {
+                IconButton(onClick = { text = "" }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Search Text Field"
+                    )
+                }
+            }
         }
     )
 }
