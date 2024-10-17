@@ -48,12 +48,20 @@ internal fun TransactionsRoute(navigateBack: () -> Unit) {
         viewModel.initializeData()
     }
 
-    LaunchedEffect(state.searchQuery, state.selectedType) {
-        viewModel.filterTransactions(state.searchQuery, state.selectedType)
+    LaunchedEffect(
+        state.searchQuery,
+        state.selectedType,
+        state.selectedDate
+    ) {
+        viewModel.filterTransactionsBy(
+            state.searchQuery,
+            state.selectedType,
+            state.selectedDate
+        )
     }
 
     TransactionsScreen(state = state, transactions = transactions, onEvent = onEvent)
-    if(state.bottomSheetShown){
+    if (state.bottomSheetShown) {
         TransactionBottomSheetView(state = state, sheetState = sheetState, onEvent = onEvent)
     }
 }

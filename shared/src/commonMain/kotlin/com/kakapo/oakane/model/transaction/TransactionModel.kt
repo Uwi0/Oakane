@@ -8,7 +8,11 @@ data class TransactionModel(
     val dateCreated: String = "04-12-2024",
     val amount: Double = 0.0,
     val note: String = ""
-)
+) {
+    companion object {
+        const val DATE_FORMAT = "dd MMM yyyy"
+    }
+}
 
 fun dummyValues(): List<TransactionModel> {
     val transaction1 = TransactionModel(

@@ -29,7 +29,7 @@ fun TransactionEntity.toModel() = TransactionModel(
     title = title,
     type = type.asTransactionType(),
     category = category,
-    dateCreated = dateCreated.toDateWith(format = "dd MMM yyyy"),
+    dateCreated = dateCreated.toDateWith(format = TransactionModel.DATE_FORMAT),
     amount = amount,
     note = note ?: ""
 )

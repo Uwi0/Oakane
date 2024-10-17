@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.transactions
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.oakane.common.toDateWith
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
@@ -23,10 +24,12 @@ class TransactionsViewModel(
         loadTransactions()
     }
 
-    fun filterTransactions(value: String, type: TransactionType?){
+    fun filterTransactionsBy(value: String, type: TransactionType?, selectedDate: Long) {
+        val formattedDate = selectedDate.toDateWith(format = TransactionModel.DATE_FORMAT)
         val transactions = _transactions.value
             .filter { it.title.contains(value, true) }
             .filter { if (type == null) true else it.type == type }
+            .filter { if (selectedDate == 0L) true else it.dateCreated == formattedDate }
         _filteredTransactions.update { transactions }
     }
 

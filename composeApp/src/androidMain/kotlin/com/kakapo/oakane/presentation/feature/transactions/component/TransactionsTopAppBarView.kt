@@ -55,12 +55,12 @@ internal fun TransactionTopAppBarView(
             ChipSelector(
                 title = state.typeTile,
                 isSelected = state.selectedType != null,
-                onClick = state::onFilterTypeClicked
+                onClick = state::onFilterByType
             )
             ChipSelector(
                 title = "By Date",
-                isSelected = false,
-                onClick = { state.showBottomSheet(TransactionBottomSheet.Date) }
+                isSelected = state.selectedDate != 0L,
+                onClick = state::onFilterByDate
             )
             ChipSelector(
                 title = "By Category",
