@@ -5,6 +5,7 @@ struct HomeContentView: View {
     
     let transactions: [TransactionModel]
     let goals: [GoalModel]
+    let onShowTransactionClick: () -> Void
 
     
     var body: some View {
@@ -16,7 +17,7 @@ struct HomeContentView: View {
                     .font(Typography.titleMedium)
                 TransactionsView(transactions: transactions)
                 if transactions.count == 3 {
-                    ShowMoreItemView(onClick: {})
+                    ShowMoreItemView(onClick: { onShowTransactionClick()})
                 }
                 GoalHeaderView(isVisible: true)
                 GoalsView(goals: goals)
@@ -32,5 +33,9 @@ struct HomeContentView: View {
 #Preview {
     let transactions = TransactionModelKt.dummyValues()
     let goals = GoalModelKt.dummyGoals()
-    HomeContentView(transactions: transactions, goals: goals)
+    HomeContentView(
+        transactions: transactions,
+        goals: goals,
+        onShowTransactionClick: {}
+    )
 }

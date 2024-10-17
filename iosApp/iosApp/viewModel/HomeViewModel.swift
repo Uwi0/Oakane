@@ -18,6 +18,10 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    func initViewModel(){
+        viewModel.doInitViewModel()
+    }
+    
     deinit {
         viewModel.clearAdapter()
     }

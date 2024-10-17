@@ -5,6 +5,7 @@ struct HomeScreen: View {
     let goals = GoalModelKt.dummyGoals()
     
     @Binding var isShowingAddTransaction: Bool
+    @Binding var isShowingTransactions: Bool
     
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
     
@@ -14,7 +15,13 @@ struct HomeScreen: View {
                 ColorTheme.surface
                 .ignoresSafeArea(.all)
                 
-                HomeContentView(transactions: viewModel.transactions,goals: goals)
+                HomeContentView(
+                    transactions: viewModel.transactions,
+                    goals: goals,
+                    onShowTransactionClick: {
+                        isShowingTransactions.toggle()
+                    }
+                )
                 
                 FabButtonView(
                     size: 56,
@@ -26,11 +33,16 @@ struct HomeScreen: View {
                 )
             }
         }
-        
+        .onAppear {
+            viewModel.initViewModel()
+        }
 
     }
 }
 
 #Preview {
-    HomeScreen(isShowingAddTransaction: .constant(false))
+    HomeScreen(
+        isShowingAddTransaction: .constant(false),
+        isShowingTransactions: .constant(false)
+    )
 }
