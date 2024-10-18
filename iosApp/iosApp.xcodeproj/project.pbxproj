@@ -63,9 +63,9 @@
 			isa = PBXGroup;
 			children = (
 				AB1DB47929225F7C00F7AF9C /* Configuration */,
+				42799AB246E5F90AF97AA0EF /* Frameworks */,
 				7555FF7D242A565900829871 /* iosApp */,
 				7555FF7C242A565900829871 /* Products */,
-				42799AB246E5F90AF97AA0EF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,17 +80,17 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				FBE01C142CBEFD9600AD082F /* extensions */,
 				FB4A15702CB234E70079FAE0 /* designSystem */,
-				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
+				FBE01C142CBEFD9600AD082F /* extensions */,
 				FB4A15802CB2514E0079FAE0 /* modifier */,
 				FB4A15742CB247220079FAE0 /* screen */,
-				058557BA273AAA24004C7B11 /* Assets.xcassets */,
+				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
 				7555FF82242A565900829871 /* ContentView.swift */,
-				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
-				058557D7273AAEEB004C7B11 /* Preview Content */,
 				FB26300E2CBBAE4900EB7270 /* Koin.swift */,
+				7555FF8C242A565B00829871 /* Info.plist */,
+				058557BA273AAA24004C7B11 /* Assets.xcassets */,
+				058557D7273AAEEB004C7B11 /* Preview Content */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";

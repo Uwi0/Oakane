@@ -1,15 +1,21 @@
 import SwiftUI
 
 struct TransactionTopAppBarView: View {
+    @Binding var query: String
     let onNavigateBack: () -> Void
     var body: some View {
-        VStack(spacing: 8) {
-            TransactionNavBarView(onClick: onNavigateBack)
+        VStack {
+            VStack(spacing: 16) {
+                TransactionNavBarView(onClick: onNavigateBack)
+                OutlinedSearchTextFieldView(query: $query, placeHolder: "Search Transactions...")
+            }
+            .padding(16)
+            .background(ColorTheme.surface)
+            HorizontalDivider()
         }
-        .padding(16)
     }
 }
 
 #Preview {
-    TransactionTopAppBarView(onNavigateBack: {})
+    TransactionTopAppBarView(query: .constant(""),onNavigateBack: {})
 }
