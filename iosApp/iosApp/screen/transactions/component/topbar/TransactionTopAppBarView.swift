@@ -8,10 +8,11 @@ struct TransactionTopAppBarView: View {
             VStack(spacing: 16) {
                 TransactionNavBarView(onClick: onNavigateBack)
                 OutlinedSearchTextFieldView(query: $query, placeHolder: "Search Transactions...")
+                FilterSelectorView()
             }
             .padding(16)
             .background(ColorTheme.surface)
-            HorizontalDivider()
+            Divider()
         }
     }
 }
