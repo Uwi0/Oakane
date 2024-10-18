@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation.feature.transactions
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -7,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -67,6 +69,7 @@ internal fun TransactionsRoute(navigateBack: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TransactionsScreen(
     state: TransactionsUiState,
@@ -84,9 +87,16 @@ private fun TransactionsScreen(
                 contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(transactions) { transaction ->
-                    TransactionItemView(transaction = transaction, onClick = {})
+                val groupedItems = transactions.groupBy { it.formattedDate }
+                groupedItems.entries.forEach { (date, transactions) ->
+                    stickyHeader {
+                        Text(date)
+                    }
+                    items(transactions) { transaction ->
+                        TransactionItemView(transaction = transaction, onClick = {})
+                    }
                 }
+
             }
         }
     )
