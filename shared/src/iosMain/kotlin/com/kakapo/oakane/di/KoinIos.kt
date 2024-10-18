@@ -14,11 +14,13 @@ object KoinIos {
     fun initialize(): KoinApplication = initKoin()
 }
 
+@OptIn(kotlinx.cinterop.BetaInteropApi::class)
 fun Koin.get(objCClass: ObjCClass): Any {
     val kClass = getOriginalKotlinClass(objCClass)!!
     return get(kClass)
 }
 
+@OptIn(kotlinx.cinterop.BetaInteropApi::class)
 fun Koin.get(objCClass: ObjCClass, qualifier: Qualifier?, parameter: Any): Any {
     val kClazz = getOriginalKotlinClass(objCClass)!!
     return get(kClazz, qualifier) { parametersOf(parameter) }
