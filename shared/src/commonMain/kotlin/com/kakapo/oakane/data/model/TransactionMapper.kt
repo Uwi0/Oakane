@@ -1,7 +1,5 @@
 package com.kakapo.oakane.data.model
 
-import com.kakapo.TransactionTable
-import com.kakapo.oakane.common.toDateWith
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.asTransactionType
@@ -29,7 +27,7 @@ fun TransactionEntity.toModel() = TransactionModel(
     title = title,
     type = type.asTransactionType(),
     category = category,
-    dateCreated = dateCreated.toDateWith(format = TransactionModel.DATE_FORMAT),
+    dateCreated = dateCreated,
     amount = amount,
     note = note ?: ""
 )

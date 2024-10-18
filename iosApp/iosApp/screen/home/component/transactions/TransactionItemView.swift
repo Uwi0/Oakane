@@ -23,7 +23,7 @@ struct TransactionItemView: View {
                 Text("Rp. \(transaction.amount.formatted())")
                     .foregroundStyle(ColorTheme.error)
                     .font(Typography.titleSmall)
-                Text(transaction.dateCreated)
+                Text("\(transaction.dateCreated.toDateWith(format: "dd MMM yyyy"))")
             }.minimumScaleFactor(1)
         }
         .customBackground(backgroundColor: ColorTheme.surface)

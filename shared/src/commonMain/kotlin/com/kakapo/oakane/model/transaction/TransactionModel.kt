@@ -1,14 +1,19 @@
 package com.kakapo.oakane.model.transaction
 
+import com.kakapo.oakane.common.formatDateWith
+
 data class TransactionModel(
     val id: Long = 0,
     val title: String = "",
     val type: TransactionType = TransactionType.Expense,
     val category: String = "",
-    val dateCreated: String = "04-12-2024",
+    val dateCreated: Long = 1729214280000,
     val amount: Double = 0.0,
     val note: String = ""
 ) {
+    val formattedDate: String get() {
+        return dateCreated.formatDateWith(pattern = TransactionModel.DATE_FORMAT)
+    }
     companion object {
         const val DATE_FORMAT = "dd MMM yyyy"
     }

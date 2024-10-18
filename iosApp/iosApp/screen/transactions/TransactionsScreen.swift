@@ -2,7 +2,14 @@ import SwiftUI
 
 struct TransactionsScreen: View {
     var body: some View {
-        Text("Transaction Screen")
+        ZStack{
+            ColorTheme.surface.ignoresSafeArea()
+            VStack{
+                Text("Transaction Screen")
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        
     }
 }
 

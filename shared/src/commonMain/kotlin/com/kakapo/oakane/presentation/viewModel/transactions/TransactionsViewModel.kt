@@ -25,11 +25,10 @@ class TransactionsViewModel(
     }
 
     fun filterTransactionsBy(value: String, type: TransactionType?, selectedDate: Long) {
-        val formattedDate = selectedDate.toDateWith(format = TransactionModel.DATE_FORMAT)
         val transactions = _transactions.value
             .filter { it.title.contains(value, true) }
             .filter { if (type == null) true else it.type == type }
-            .filter { if (selectedDate == 0L) true else it.dateCreated == formattedDate }
+            .filter { if (selectedDate == 0L) true else it.dateCreated == selectedDate }
         _filteredTransactions.update { transactions }
     }
 

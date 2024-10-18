@@ -13,7 +13,6 @@ final class HomeViewModel: ObservableObject {
         self.viewModel.observeState { [weak self] state in
             DispatchQueue.main.async {
                 self?.transactions = state
-                print(state.count)
             }
         }
     }

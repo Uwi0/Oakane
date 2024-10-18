@@ -24,7 +24,7 @@ struct AddTransactionState {
             amount: Double(amount) ?? 0.0,
             type: TransactionTypeKt.asLong(selectedTransactionOption),
             category: selectedCategoryOption,
-            dateCreated: Int64(selectedDate.timeIntervalSince1970),
+            dateCreated: Int64(selectedDate.timeIntervalSince1970 * 1000),
             note: note
         )
     }

@@ -11,4 +11,6 @@ fun Long.toDateWith(format: String): String {
     return localDateTime.toFormatedString(format)
 }
 
+expect fun Long.formatDateWith(pattern: String): String
+
 expect fun LocalDateTime.toFormatedString(pattern: String): String

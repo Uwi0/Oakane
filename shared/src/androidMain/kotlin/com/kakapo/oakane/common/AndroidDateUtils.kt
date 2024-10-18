@@ -12,3 +12,8 @@ actual fun LocalDateTime.toFormatedString(pattern: String): String {
     val date = Date(this.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds())
     return formatter.format(date)
 }
+
+actual fun Long.formatDateWith(pattern: String): String {
+    val sdf = SimpleDateFormat(pattern, Locale.getDefault())
+    return sdf.format(Date(this))
+}
