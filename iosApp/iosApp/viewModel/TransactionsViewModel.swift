@@ -5,8 +5,10 @@ import Shared
 final class TransactionsViewModel: ObservableObject {
     
     @Published var searchQuery: String = ""
-    @Published var transactionType: TransactionType? = nil
+    @Published var transactionType: String = ""
     @Published var dateCreated: Int64 = 0
+    @Published var bottomSheetContent: TransactionsUiEvent = .TransactionType
+    @Published var showBottomSheet: Bool = false
     
     @Published var transactions: [TransactionModel] = []
     
@@ -24,12 +26,17 @@ final class TransactionsViewModel: ObservableObject {
         viewModel.filterTransactionsBy(query: query, type: transactionType, selectedDate: dateCreated)
     }
     
-    func filterBy(type: TransactionType){
+    func filterBy(type: String){
         viewModel.filterTransactionsBy(query: searchQuery, type: type, selectedDate: dateCreated)
     }
     
     func filterBy(date: Int64){
         viewModel.filterTransactionsBy(query: searchQuery, type: transactionType, selectedDate: date)
+    }
+    
+    func onShowBottomSheet(uiEvent: TransactionsUiEvent){
+        bottomSheetContent = uiEvent
+        showBottomSheet = true
     }
     
 }

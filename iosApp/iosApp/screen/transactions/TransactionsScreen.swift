@@ -9,12 +9,30 @@ struct TransactionsScreen: View {
         ZStack{
             ColorTheme.surface.ignoresSafeArea()
             VStack {
-                TransactionTopAppBarView(query: $viewModel.searchQuery, onNavigateBack: { dismiss() })
+                TransactionTopAppBarView(
+                    query: $viewModel.searchQuery,
+                    selectedType: viewModel.transactionType,
+                    selectedDate: viewModel.dateCreated,
+                    selectedCategory: "",
+                    onClick: viewModel.onShowBottomSheet,
+                    onNavigateBack: { dismiss() }
+                )
                 TransactionsView(transactions: viewModel.transactions)
             }
             .onChange(of: viewModel.searchQuery, perform: viewModel.filterBy(query:))
+            .onChange(of: viewModel.transactionType, perform: viewModel.filterBy(type:))
         }
         .navigationBarBackButtonHidden(true)
+        .sheet(isPresented: $viewModel.showBottomSheet){
+            switch viewModel.bottomSheetContent {
+            case .TransactionType:
+                Text("TransactionType")
+            case .DateCreated:
+                Text("DateCreated")
+            case .Categroy:
+                Text("Categroy")
+            }
+        }
         
         
     }

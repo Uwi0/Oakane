@@ -17,3 +17,11 @@ fun Long.asTransactionType(): TransactionType {
         TransactionType.Income
     }
 }
+
+fun String.asTransactionType(): TransactionType {
+    return when(this){
+        TransactionType.Income.name -> TransactionType.Income
+        TransactionType.Expense.name -> TransactionType.Expense
+        else -> TransactionType.Income
+    }
+}
