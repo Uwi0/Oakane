@@ -15,7 +15,7 @@ struct HomeContentView: View {
                 MonthlyBudgetView()
                 Text("RecentTransaction")
                     .font(Typography.titleMedium)
-                TransactionsView(transactions: transactions)
+                HomeTransactionsView(transactions: transactions)
                 if transactions.count == 3 {
                     ShowMoreItemView(onClick: { onShowTransactionClick()})
                 }

@@ -1,7 +1,7 @@
 import SwiftUI
 import Shared
 
-struct TransactionsView: View {
+struct HomeTransactionsView: View {
     let transactions: [TransactionModel]
     private var transactionItem: [TransactionModel] {
         TransactionModelKt.swiftTake(transactions, n: 3)
@@ -17,5 +17,5 @@ struct TransactionsView: View {
 
 #Preview {
     let dummyValues = TransactionModelKt.dummyValues()
-    TransactionsView(transactions: dummyValues)
+    HomeTransactionsView(transactions: dummyValues)
 }

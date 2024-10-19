@@ -25,8 +25,4 @@ class HomeViewModelAdapter(
         }
     }
 
-    fun clearAdapter(){
-        scope.cancel()
-    }
-
 }

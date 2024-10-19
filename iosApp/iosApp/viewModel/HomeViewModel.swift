@@ -19,8 +19,4 @@ final class HomeViewModel: ObservableObject {
         viewModel.doInitViewModel()
     }
     
-    deinit {
-        viewModel.clearAdapter()
-    }
-    
 }

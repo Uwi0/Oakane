@@ -23,9 +23,9 @@ class TransactionsViewModel(
         loadTransactions()
     }
 
-    fun filterTransactionsBy(value: String, type: TransactionType?, selectedDate: Long) {
+    fun filterTransactionsBy(query: String, type: TransactionType?, selectedDate: Long) {
         val transactions = _transactions.value
-            .filter { it.title.contains(value, true) }
+            .filter { it.title.contains(query, true) }
             .filter { if (type == null) true else it.type == type }
             .filter { if (selectedDate == 0L) true else it.dateCreated == selectedDate }
         _filteredTransactions.update { transactions }
