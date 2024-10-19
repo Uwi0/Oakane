@@ -7,6 +7,9 @@ import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -27,19 +30,24 @@ object CommonModule {
         viewModel { HomeViewModel(get()) }
         viewModel { TransactionsViewModel(get()) }
     }
+    val coroutineScope = module {
+        single { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
+    }
 }
 
 fun initKoin(
     appModule: Module = module { },
     localDatasourceModule: Module = CommonModule.localDatasourceModule,
     repositoryModule: Module = CommonModule.repositoryModule,
-    viewModel: Module = CommonModule.viewModel
+    viewModel: Module = CommonModule.viewModel,
+    coroutineScope: Module = CommonModule.coroutineScope
 ): KoinApplication = startKoin {
     modules(
         appModule,
         localDatasourceModule,
         repositoryModule,
         viewModel,
+        coroutineScope,
         platformModule
     )
 }
