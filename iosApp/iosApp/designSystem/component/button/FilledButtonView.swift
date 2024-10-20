@@ -10,7 +10,7 @@ struct FilledButtonView: View {
             Text(text)
                 .font(.headline)
                 .foregroundColor(ColorTheme.onPrimary)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: 48)
                 .padding()
                 .background(ColorTheme.primary)
                 .cornerRadius(16)

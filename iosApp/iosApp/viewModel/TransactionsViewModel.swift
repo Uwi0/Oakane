@@ -39,4 +39,7 @@ final class TransactionsViewModel: ObservableObject {
         showBottomSheet = true
     }
     
+    func hideBottomSheet(){
+        showBottomSheet = false
+    }
 }
