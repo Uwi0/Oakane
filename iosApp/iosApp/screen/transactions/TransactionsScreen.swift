@@ -38,25 +38,17 @@ struct TransactionsScreen: View {
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $viewModel.showBottomSheet){
-            VStack(spacing: 16) {
-                Text(bottomSheetTitlte)
-                    .font(Typography.titleSmall)
-                
+            VStack {
                 switch viewModel.bottomSheetContent {
                 case .TransactionType:
-                    FilterTypeView(selectedType: $viewModel.transactionType)
+                    FilterTypeView(selectedType: $viewModel.transactionType, onClick: viewModel.hideBottomSheet)
                 case .DateCreated:
                     Text("DateCreated")
                 case .Categroy:
                     Text("This fearture is not implemented yet")
                 }
-                
-                FilledButtonView(text: "Apply filter", onClick: viewModel.hideBottomSheet)
-                    .frame(height: 48)
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 24)
-            .presentationDetents([.height(160), .height(200),.medium])
+            .presentationDetents([.height(160), .height(200), .height(240), .medium])
             .presentationDragIndicator(.visible)
         }
         
