@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.transactions
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.oakane.common.intoMidnight
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
@@ -24,10 +25,15 @@ class TransactionsViewModel(
     }
 
     fun filterTransactionsBy(query: String, type: TransactionType?, selectedDate: Long) {
+        val timePredicate: (TransactionModel) -> Boolean = {
+            if (selectedDate == 0L) true
+            else it.dateCreated.intoMidnight() == selectedDate.intoMidnight()
+        }
+
         val transactions = _transactions.value
             .filter { it.title.contains(query, true) }
             .filter { if (type == null) true else it.type == type }
-            .filter { if (selectedDate == 0L) true else it.dateCreated == selectedDate }
+            .filter(timePredicate)
         _filteredTransactions.update { transactions }
     }
 

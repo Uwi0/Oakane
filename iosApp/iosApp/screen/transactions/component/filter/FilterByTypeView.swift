@@ -1,7 +1,7 @@
 import SwiftUI
 import Shared
 
-struct FilterTypeView: View {
+struct FilterByTypeView: View {
     @Binding var selectedType: String
     let onClick: () -> Void
     var body: some View {
@@ -30,5 +30,5 @@ struct FilterTypeView: View {
 }
 
 #Preview {
-    FilterTypeView(selectedType: .constant(TransactionType.entries.first!.name), onClick: {})
+    FilterByTypeView(selectedType: .constant(TransactionType.entries.first!.name), onClick: {})
 }

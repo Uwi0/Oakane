@@ -42,4 +42,9 @@ final class TransactionsViewModel: ObservableObject {
     func hideBottomSheet(){
         showBottomSheet = false
     }
+    
+    func onSelected(date: Int64){
+        showBottomSheet = false
+        dateCreated = date
+    }
 }
