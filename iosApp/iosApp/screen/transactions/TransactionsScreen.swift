@@ -21,14 +21,16 @@ struct TransactionsScreen: View {
         ZStack{
             ColorTheme.surface.ignoresSafeArea()
             VStack {
+                
                 TransactionTopAppBarView(
                     query: $viewModel.searchQuery,
-                    selectedType: viewModel.transactionType,
-                    selectedDate: viewModel.dateCreated,
+                    selectedType: $viewModel.transactionType,
+                    selectedDate: $viewModel.dateCreated,
                     selectedCategory: "",
                     onClick: viewModel.onShowBottomSheet,
                     onNavigateBack: { dismiss() }
                 )
+                
                 TransactionsView(transactions: viewModel.transactions)
             }
             .onChange(of: viewModel.searchQuery, perform: viewModel.filterBy(query:))

@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct FilterSelectorView: View {
-    let selectedType: String
-    let selectedDate: Int64
+    @Binding var selectedType: String
+    @Binding var selectedDate: Int64
     let selectedCategory: String
     let onClick: (TransactionsUiEvent) -> Void
     var body: some View {
@@ -11,12 +11,12 @@ struct FilterSelectorView: View {
                 ChipSelectorView(
                     name: "By Type",
                     isSelected: !selectedType.isEmpty,
-                    onClick: { onClick(TransactionsUiEvent.TransactionType)}
+                    onClick: filterByType
                 )
                 ChipSelectorView(
                     name: "By Date",
                     isSelected: selectedDate != 0,
-                    onClick: {onClick(TransactionsUiEvent.DateCreated)}
+                    onClick: filterByDate
                 )
                 ChipSelectorView(
                     name: "By Category",
@@ -24,6 +24,22 @@ struct FilterSelectorView: View {
                     onClick: {onClick(TransactionsUiEvent.Categroy)}
                 )
             }
+        }
+    }
+    
+    func filterByType(){
+        if selectedType.isEmpty {
+            onClick(TransactionsUiEvent.TransactionType)
+        } else {
+            selectedType = ""
+        }
+    }
+    
+    func filterByDate(){
+        if selectedDate == 0 {
+            onClick(TransactionsUiEvent.DateCreated)
+        } else {
+            selectedDate = 0
         }
     }
 }
@@ -44,8 +60,8 @@ private struct ChipSelectorView: View {
 
 #Preview {
     FilterSelectorView(
-        selectedType: "InCome",
-        selectedDate: 0,
+        selectedType: .constant("InCome"),
+        selectedDate: .constant(0),
         selectedCategory: "",
         onClick: {_ in }
     )

@@ -2,8 +2,8 @@ import SwiftUI
 
 struct TransactionTopAppBarView: View {
     @Binding var query: String
-    let selectedType: String
-    let selectedDate: Int64
+    @Binding var selectedType: String
+    @Binding var selectedDate: Int64
     let selectedCategory: String
     let onClick: (TransactionsUiEvent) -> Void
     let onNavigateBack: () -> Void
@@ -14,8 +14,8 @@ struct TransactionTopAppBarView: View {
                 TransactionNavBarView(onClick: onNavigateBack)
                 OutlinedSearchTextFieldView(query: $query, placeHolder: "Search Transactions...")
                 FilterSelectorView(
-                    selectedType: selectedType,
-                    selectedDate: selectedDate,
+                    selectedType: $selectedType,
+                    selectedDate: $selectedDate,
                     selectedCategory: selectedCategory,
                     onClick: onClick
                 )
@@ -30,8 +30,8 @@ struct TransactionTopAppBarView: View {
 #Preview {
     TransactionTopAppBarView(
         query: .constant(""),
-        selectedType: "InCome",
-        selectedDate: 0,
+        selectedType: .constant("InCome"),
+        selectedDate: .constant(0),
         selectedCategory: "",
         onClick: {_ in },
         onNavigateBack: {}
