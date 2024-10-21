@@ -40,4 +40,30 @@ class TransactionLocalDatasourceImpl(
         }
     }
 
+    override suspend fun getTransaction(id: Long): Result<TransactionEntity> {
+        return proceed {
+            transactionDb.getTransaction(id).executeAsList().first().toEntity()
+        }
+    }
+
+    override suspend fun updateTransactions(entity: TransactionEntity): Result<Unit> {
+        return proceed {
+            transactionDb.updateTransaction(
+                title = entity.title,
+                amount = entity.amount,
+                type = entity.type,
+                category = entity.category,
+                dateCreated = entity.dateCreated,
+                note = entity.note,
+                id = entity.id ?: 0
+            )
+        }
+    }
+
+    override suspend fun deleteTransaction(id: Long): Result<Unit> {
+        return  proceed {
+            transactionDb.deleteTransaction(id)
+        }
+    }
+
 }

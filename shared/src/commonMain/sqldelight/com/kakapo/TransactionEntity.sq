@@ -38,3 +38,22 @@ getTransactions:
 SELECT *
 FROM TransactionTable
 ORDER BY dateCreated DESC;
+
+getTransaction:
+SELECT *
+FROM TransactionTable
+WHERE id = ?;
+
+updateTransaction:
+UPDATE TransactionTable
+SET title = ?,
+    amount = ?,
+    type = ?,
+    category = ?,
+    dateCreated = ?,
+    note = ?
+WHERE id = ?;
+
+deleteTransaction:
+DELETE FROM TransactionTable
+WHERE id = ?;
