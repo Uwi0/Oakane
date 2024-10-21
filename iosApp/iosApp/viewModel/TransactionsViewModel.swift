@@ -47,4 +47,8 @@ final class TransactionsViewModel: ObservableObject {
         showBottomSheet = false
         dateCreated = date
     }
+    
+    func deleteTransacion(item: IndexSet){
+        item.forEach { index in viewModel.deleteTransaction(item: transactions[index]) }
+    }
 }

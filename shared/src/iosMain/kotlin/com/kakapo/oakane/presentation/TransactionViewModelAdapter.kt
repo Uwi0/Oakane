@@ -27,4 +27,8 @@ class TransactionViewModelAdapter(
         val transactionType = if (type.isEmpty()) null else type.asTransactionType()
         viewModel.filterTransactionsBy(query, transactionType, selectedDate)
     }
+
+    fun deleteTransaction(item: TransactionModel) {
+        viewModel.deleteTransaction(item)
+    }
 }

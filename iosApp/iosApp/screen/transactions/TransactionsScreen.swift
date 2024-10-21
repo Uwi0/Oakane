@@ -31,7 +31,7 @@ struct TransactionsScreen: View {
                     onNavigateBack: { dismiss() }
                 )
                 
-                TransactionsView(transactions: viewModel.transactions)
+                TransactionsView(transactions: viewModel.transactions, deleteTransaction: viewModel.deleteTransacion)
             }
             .onChange(of: viewModel.searchQuery, perform: viewModel.filterBy(query:))
             .onChange(of: viewModel.transactionType, perform: viewModel.filterBy(type:))
