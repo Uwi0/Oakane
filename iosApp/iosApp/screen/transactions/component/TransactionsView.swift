@@ -18,7 +18,7 @@ struct TransactionsView: View {
                 .onDelete(perform: deleteTransaction)
             }
             .listStyle(PlainListStyle())
-            .padding(.vertical, 24)
+            .padding(.vertical, 8)
             .scrollIndicators(.hidden)
         }
         
