@@ -37,6 +37,17 @@ class TransactionsViewModel(
         _filteredTransactions.update { transactions }
     }
 
+    fun deleteTransaction(item: TransactionModel) = viewModelScope.launch {
+        transactionRepository.deleteTransactionBy(item.id).fold(
+            onSuccess = {
+                updateDeletedTransaction(item)
+            },
+            onFailure = { e ->
+                Logger.e(throwable = e, messageString = "error delete item ${e.message}")
+            }
+        )
+    }
+
     private fun loadTransactions() = viewModelScope.launch {
         transactionRepository.loadRecentTransactions().collect { result ->
             result.fold(
@@ -50,4 +61,12 @@ class TransactionsViewModel(
             )
         }
     }
+
+    private fun updateDeletedTransaction(item: TransactionModel){
+        val deletedTransaction = _filteredTransactions.value.toMutableList()
+        deletedTransaction.remove(item)
+        Logger.d{ "TransactionValue $deletedTransaction"}
+        _filteredTransactions.update { deletedTransaction }
+    }
+
 }

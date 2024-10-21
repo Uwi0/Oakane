@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.presentation.feature.transactions.component.SwipeToDeleteTransactionView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionBottomSheetView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionTopAppBarView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
@@ -43,6 +44,8 @@ internal fun TransactionsRoute(navigateBack: () -> Unit) {
                 sheetState.hide()
                 state.hideBottomSheet()
             }
+
+            is OnDelete -> viewModel.deleteTransaction(it.item)
         }
     }
 
@@ -92,8 +95,8 @@ private fun TransactionsScreen(
                     stickyHeader {
                         Text(date)
                     }
-                    items(transactions) { transaction ->
-                        TransactionItemView(transaction = transaction, onClick = {})
+                    items(items = transactions, key = { item -> item.id } ) { transaction ->
+                        SwipeToDeleteTransactionView(transaction, onEvent = onEvent)
                     }
                 }
 

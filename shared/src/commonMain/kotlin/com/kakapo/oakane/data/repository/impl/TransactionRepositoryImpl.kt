@@ -37,4 +37,8 @@ class TransactionRepositoryImpl(
 
         emit(result)
     }
+
+    override suspend fun deleteTransactionBy(id: Long): Result<Unit> {
+        return localDatasource.deleteTransaction(id)
+    }
 }
