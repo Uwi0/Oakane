@@ -4,13 +4,29 @@ import Shared
 @main
 struct iOSApp: App {
     
+    @ObservedObject var navigation = AppNavigation()
+    
     init () {
         Koin.start()
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $navigation.navPath) {
+                HomeScreen()
+                    .navigationDestination(for: AppNavigation.Destination.self) { destination in
+                        switch destination {
+                        case .addTransaction:
+                            AddTransactionScreen()
+                        case .transactions:
+                            TransactionsScreen()
+                        case .transaction:
+                            TransactionScreen()
+                        }
+                    }
+                
+            }
+            .environmentObject(navigation)
         }
     }
 }

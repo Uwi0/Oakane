@@ -10,8 +10,8 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
-		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		FB26300F2CBBAE4900EB7270 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB26300E2CBBAE4900EB7270 /* Koin.swift */; };
+		FB715DDC2CC8CECE00ECE511 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB715DDB2CC8CECE00ECE511 /* AppNavigation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,10 +19,10 @@
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* Oakane.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oakane.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		FB26300E2CBBAE4900EB7270 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
+		FB715DDB2CC8CECE00ECE511 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -85,12 +85,12 @@
 				FB4A15802CB2514E0079FAE0 /* modifier */,
 				FB4A15742CB247220079FAE0 /* screen */,
 				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
-				7555FF82242A565900829871 /* ContentView.swift */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				FB26300E2CBBAE4900EB7270 /* Koin.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				FB715DDB2CC8CECE00ECE511 /* AppNavigation.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -208,8 +208,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB26300F2CBBAE4900EB7270 /* Koin.swift in Sources */,
+				FB715DDC2CC8CECE00ECE511 /* AppNavigation.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
-				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

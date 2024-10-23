@@ -4,10 +4,8 @@ import Shared
 struct HomeScreen: View {
     let goals = GoalModelKt.dummyGoals()
     
-    @Binding var isShowingAddTransaction: Bool
-    @Binding var isShowingTransactions: Bool
-    
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
+    @EnvironmentObject private var navigation: AppNavigation
     
     var body: some View {
         GeometryReader { geometryReader in
@@ -19,7 +17,7 @@ struct HomeScreen: View {
                     transactions: viewModel.transactions,
                     goals: goals,
                     onShowTransactionClick: {
-                        isShowingTransactions.toggle()
+                        navigation.navigate(to: .transactions)
                     }
                 )
                 
@@ -28,7 +26,7 @@ struct HomeScreen: View {
                     xPos: geometryReader.size.width - 50,
                     yPos: geometryReader.size.height - 50,
                     onClick: {
-                        isShowingAddTransaction.toggle()
+                        navigation.navigate(to: .addTransaction)
                     }
                 )
             }
@@ -38,11 +36,4 @@ struct HomeScreen: View {
         }
 
     }
-}
-
-#Preview {
-    HomeScreen(
-        isShowingAddTransaction: .constant(false),
-        isShowingTransactions: .constant(false)
-    )
 }

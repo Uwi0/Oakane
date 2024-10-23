@@ -2,9 +2,9 @@ import SwiftUI
 
 struct AddTransactionScreen: View {
     
-    @Environment(\.dismiss) private var dismiss
     @State private var state = AddTransactionState()
     @StateObject private var addTransactionVM = AddTRansactionViewModel()
+    @EnvironmentObject private var navigation: AppNavigation
     
     var body: some View {
         ZStack {
@@ -30,7 +30,7 @@ struct AddTransactionScreen: View {
                     text: "Save Transaction",
                     onClick: {
                         addTransactionVM.save(transaction: state.getTransaction())
-                        dismiss()
+                        navigation.navigateBack()
                     }
                 )
                 .frame(height: 48)
@@ -45,20 +45,14 @@ struct AddTransactionScreen: View {
                     name: "arrow.left",
                     size: 16,
                     onClick: {
-                        let transaction = state.getTransaction()
-                        addTransactionVM.save(transaction: transaction)
-                        dismiss()
+                        navigation.navigateBack()
                     }
                 )
             }
             ToolbarItem(placement: .topBarLeading) {
                 Text("Add Transaction")
-                    .font(Typography.titleSmall)
+                    .font(Typography.titleMedium)
             }
         }
     }
-}
-
-#Preview {
-    AddTransactionScreen()
 }

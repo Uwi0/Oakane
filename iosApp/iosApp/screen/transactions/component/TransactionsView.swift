@@ -5,6 +5,7 @@ struct TransactionsView: View {
     
     let transactions: [TransactionModel]
     let deleteTransaction: (IndexSet) -> Void
+    let onItemClick: (TransactionModel) -> Void
     
     var body: some View {
         ZStack {
@@ -14,6 +15,9 @@ struct TransactionsView: View {
                         .listRowBackground(Color.clear)
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                        .onTapGesture {
+                            onItemClick(transaction)
+                        }
                 }
                 .onDelete(perform: deleteTransaction)
             }
@@ -27,5 +31,5 @@ struct TransactionsView: View {
 
 #Preview {
     let dummyValues = TransactionModelKt.dummyValues()
-    TransactionsView(transactions: dummyValues, deleteTransaction: {_ in})
+    TransactionsView(transactions: dummyValues, deleteTransaction: {_ in}, onItemClick: {_ in})
 }

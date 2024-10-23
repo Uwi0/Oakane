@@ -3,8 +3,8 @@ import Shared
 
 struct TransactionsScreen: View {
     
-    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = TransactionsViewModel()
+    @EnvironmentObject private var navigation: AppNavigation
     
     private var bottomSheetSize: CGFloat {
         switch(viewModel.bottomSheetContent){
@@ -28,10 +28,14 @@ struct TransactionsScreen: View {
                     selectedDate: $viewModel.dateCreated,
                     selectedCategory: "",
                     onClick: viewModel.onShowBottomSheet,
-                    onNavigateBack: { dismiss() }
+                    onNavigateBack: { navigation.navigateBack() }
                 )
                 
-                TransactionsView(transactions: viewModel.transactions, deleteTransaction: viewModel.deleteTransacion)
+                TransactionsView(
+                    transactions: viewModel.transactions,
+                    deleteTransaction: viewModel.deleteTransacion,
+                    onItemClick: { transaction in navigation.navigate(to: .transaction(transactionId: transaction.id)) }
+                )
             }
             .onChange(of: viewModel.searchQuery, perform: viewModel.filterBy(query:))
             .onChange(of: viewModel.transactionType, perform: viewModel.filterBy(type:))

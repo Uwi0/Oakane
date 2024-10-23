@@ -10,7 +10,7 @@ struct TransactionNavBarView: View {
                 onClick: onClick
             )
             Text("Transactions")
-                .font(Typography.titleSmall)
+                .font(Typography.titleMedium)
             Spacer()
         }
     }
