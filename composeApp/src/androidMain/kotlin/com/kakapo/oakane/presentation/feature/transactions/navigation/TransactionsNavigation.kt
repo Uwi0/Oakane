@@ -12,8 +12,14 @@ fun NavController.navigateToTransactions(navOptions: NavOptions? = null) {
     navigate(TRANSACTIONS_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.transactionsScreen(navigateBack: () -> Unit){
-    composable(TRANSACTIONS_ROUTE){
-        TransactionsRoute(navigateBack = navigateBack)
+fun NavGraphBuilder.transactionsScreen(
+    navigateBack: () -> Unit,
+    navigateToTransaction: (Long) -> Unit
+) {
+    composable(TRANSACTIONS_ROUTE) {
+        TransactionsRoute(
+            navigateBack = navigateBack,
+            navigateToTransaction = navigateToTransaction
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation.designSystem.component.topAppBar
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +18,7 @@ fun CustomNavigationTopAppBarView(
     title: String,
     shadowElevation: Dp = 2.dp,
     tonalElevation: Dp = 2.dp,
+    actions: @Composable RowScope.() -> Unit = {},
     onNavigateBack: () -> Unit
 ) {
     Surface(shadowElevation = shadowElevation, tonalElevation = tonalElevation) {
@@ -29,7 +31,8 @@ fun CustomNavigationTopAppBarView(
                     icon = Icons.AutoMirrored.Filled.ArrowBack,
                     onClick = onNavigateBack
                 )
-            }
+            },
+            actions = actions
         )
     }
 

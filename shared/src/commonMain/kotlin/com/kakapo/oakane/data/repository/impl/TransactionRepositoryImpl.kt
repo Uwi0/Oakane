@@ -41,4 +41,12 @@ class TransactionRepositoryImpl(
     override suspend fun deleteTransactionBy(id: Long): Result<Unit> {
         return localDatasource.deleteTransaction(id)
     }
+
+    override suspend fun loadTransactionBy(id: Long): Result<TransactionModel> {
+        return proceed {
+            localDatasource.getTransaction(id)
+                .getOrThrow()
+                .toModel()
+        }
+    }
 }

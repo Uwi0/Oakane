@@ -49,7 +49,7 @@ class TransactionsViewModel(
     }
 
     private fun loadTransactions() = viewModelScope.launch {
-        transactionRepository.loadRecentTransactions().collect { result ->
+        transactionRepository.loadTransactions().collect { result ->
             result.fold(
                 onSuccess = { transactionsResult ->
                     _transactions.update { transactionsResult }

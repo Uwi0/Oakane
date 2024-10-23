@@ -21,14 +21,13 @@ import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.presentation.feature.transactions.component.SwipeToDeleteTransactionView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionBottomSheetView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionTopAppBarView
-import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun TransactionsRoute(navigateBack: () -> Unit) {
+internal fun TransactionsRoute(navigateBack: () -> Unit, navigateToTransaction: (Long) -> Unit) {
     val viewModel = koinViewModel<TransactionsViewModel>()
     val transactions by viewModel.transactions.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -46,6 +45,7 @@ internal fun TransactionsRoute(navigateBack: () -> Unit) {
             }
 
             is OnDelete -> viewModel.deleteTransaction(it.item)
+            is OnNavigateToTransaction -> navigateToTransaction.invoke(it.id)
         }
     }
 
@@ -95,7 +95,7 @@ private fun TransactionsScreen(
                     stickyHeader {
                         Text(date)
                     }
-                    items(items = transactions, key = { item -> item.id } ) { transaction ->
+                    items(items = transactions, key = { item -> item.id }) { transaction ->
                         SwipeToDeleteTransactionView(transaction, onEvent = onEvent)
                     }
                 }

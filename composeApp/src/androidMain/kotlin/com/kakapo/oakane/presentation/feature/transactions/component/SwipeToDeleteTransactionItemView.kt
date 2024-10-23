@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.presentation.feature.transactions.OnDelete
+import com.kakapo.oakane.presentation.feature.transactions.OnNavigateToTransaction
 import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiEvent
 import com.kakapo.oakane.presentation.ui.component.SwipeToDeleteBackgroundView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
@@ -17,10 +18,10 @@ import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 internal fun SwipeToDeleteTransactionView(
     item: TransactionModel,
     onEvent: (TransactionsUiEvent) -> Unit
-){
+) {
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
-            when(it){
+            when (it) {
                 SwipeToDismissBoxValue.StartToEnd -> onEvent.invoke(OnDelete(item))
                 SwipeToDismissBoxValue.EndToStart -> onEvent.invoke(OnDelete(item))
                 SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
@@ -37,6 +38,11 @@ internal fun SwipeToDeleteTransactionView(
     SwipeToDismissBox(
         state = dismissState,
         backgroundContent = { SwipeToDeleteBackgroundView(dismissState) },
-        content = { TransactionItemView(transaction = item, onClick = {})}
+        content = {
+            TransactionItemView(
+                transaction = item,
+                onClick = { onEvent.invoke(OnNavigateToTransaction(item.id)) }
+            )
+        }
     )
 }

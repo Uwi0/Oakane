@@ -6,6 +6,7 @@ import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
+import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,7 @@ object CommonModule {
         viewModel { AddTransactionViewModel(get()) }
         viewModel { HomeViewModel(get()) }
         viewModel { TransactionsViewModel(get()) }
+        viewModel { TransactionViewModel(get()) }
     }
     val coroutineScope = module {
         single { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
