@@ -12,9 +12,26 @@ struct TransactionScreen: View {
     var body: some View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
-            VStack {
-                
+            VStack(spacing: 16) {
+                HStack {
+                    Image(ImageConstants.fubukiStare)
+                        .resizable()
+                        .frame(width: 48, height: 48)
+                        .clipShape(Circle())
+                        .scaledToFit()
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        Text(viewModel.transactions.title)
+                            .font(Typography.titleSmall)
+                        Text("Rp: \(viewModel.transactions.amount.formatted())")
+                            .font(Typography.titleMedium)
+                    }
+                }
+                .customBackground(backgroundColor: ColorTheme.surface)
+                Spacer()
             }
+            .padding(.vertical, 24)
+            .padding(.horizontal, 16)
         }
         .navigationBarBackButtonHidden(true)
         .customToolbar(content: toolbarContent, onEvent: onEvent)
