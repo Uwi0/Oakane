@@ -87,10 +87,10 @@
 				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				FB26300E2CBBAE4900EB7270 /* Koin.swift */,
+				FB715DDB2CC8CECE00ECE511 /* AppNavigation.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
-				FB715DDB2CC8CECE00ECE511 /* AppNavigation.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";

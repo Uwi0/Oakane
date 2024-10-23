@@ -12,7 +12,7 @@ final class TransactionsViewModel: ObservableObject {
     
     @Published var transactions: [TransactionModel] = []
     
-    private var viewModel: TransactionViewModelAdapter = Koin.instance.get()
+    private var viewModel: TransactionsViewModelAdapter = Koin.instance.get()
     
     init () {
         viewModel.observeState { [weak self] transactions in

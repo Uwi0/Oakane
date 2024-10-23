@@ -20,8 +20,8 @@ struct iOSApp: App {
                             AddTransactionScreen()
                         case .transactions:
                             TransactionsScreen()
-                        case .transaction:
-                            TransactionScreen()
+                        case .transaction(let transactionId):
+                            TransactionScreen(transactionId: transactionId)
                         }
                     }
                 
