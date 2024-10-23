@@ -1,12 +1,27 @@
 import SwiftUI
 
 struct ToolbarModifier: ViewModifier {
+    let toolbarContent: ToolBarContent
     let onAction: (ToolbarEvent) -> Void
     func body(content: Content) -> some View {
         content
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    
+                    IconButtonView(name: "arrow.left", size: 16, onClick: { onAction(.dismiss) })
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Text(toolbarContent.title)
+                        .font(Typography.titleMedium)
+                }
+                ToolbarItem(placement: .topBarTrailing){
+                    HStack(spacing: 16) {
+                        if !toolbarContent.action1.isEmpty {
+                            IconButtonView(name: toolbarContent.action1, size: 16, onClick: { onAction(.action1)})
+                        }
+                        if !toolbarContent.action2.isEmpty {
+                            IconButtonView(name: toolbarContent.action2, size: 16, onClick: { onAction(.action2)})
+                        }
+                    }
                 }
             }
     }
@@ -22,4 +37,10 @@ enum ToolbarEvent {
     case dismiss
     case action1
     case action2
+}
+
+extension View {
+    func customToolbar(content: ToolBarContent, onEvent: @escaping (ToolbarEvent) -> Void) -> some View {
+        self.modifier(ToolbarModifier(toolbarContent: content, onAction: onEvent))
+    }
 }

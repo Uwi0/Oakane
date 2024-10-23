@@ -2,13 +2,12 @@ import SwiftUI
 
 struct TransactionScreen: View {
     
+    let transactionId: Int64
+    
     @StateObject private var viewModel: TransactionViewModel = TransactionViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     
-    
-    init(transactionId: Int64){
-        viewModel.initializeData(transactionId: transactionId)
-    }
+    private let toolbarContent = ToolBarContent(title: "Transaction", action1: "square.and.pencil", action2: "trash")
     
     var body: some View {
         ZStack {
@@ -18,6 +17,14 @@ struct TransactionScreen: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .customToolbar(content: toolbarContent, onEvent: onEvent)
+        .onAppear {
+            viewModel.initializeData(transactionId: transactionId)
+        }
+    }
+    
+    private func onEvent(_ event: ToolbarEvent) {
+        navigation.navigateBack()
     }
     
 }
