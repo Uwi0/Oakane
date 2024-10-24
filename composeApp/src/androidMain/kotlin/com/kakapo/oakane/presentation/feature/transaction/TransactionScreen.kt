@@ -38,7 +38,7 @@ import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun TransactionRoute(transactionId: Long) {
+internal fun TransactionRoute(transactionId: Long, navigateToEdit: (Long) -> Unit) {
     val viewModel = koinViewModel<TransactionViewModel>()
     val transaction by viewModel.transaction.collectAsStateWithLifecycle()
 
@@ -46,17 +46,29 @@ internal fun TransactionRoute(transactionId: Long) {
         viewModel.initializeData(transactionId)
     }
 
-    TransactionScreen(transactionModel = transaction)
+    val onEvent: (TransactionUiEvent) -> Unit = { event ->
+        when (event) {
+            is OnNavigateToEdit -> navigateToEdit.invoke(event.transactionId)
+        }
+    }
+
+    TransactionScreen(transactionModel = transaction, onEvent = onEvent)
 }
 
 @Composable
-private fun TransactionScreen(transactionModel: TransactionModel) {
+private fun TransactionScreen(
+    transactionModel: TransactionModel,
+    onEvent: (TransactionUiEvent) -> Unit
+) {
     Scaffold(
         topBar = {
             CustomNavigationTopAppBarView(
                 title = "Transaction",
                 actions = {
-                    CustomIconButton(icon = Icons.Default.Edit) { }
+                    CustomIconButton(
+                        icon = Icons.Default.Edit,
+                        onClick = { onEvent.invoke(OnNavigateToEdit(transactionModel.id)) }
+                    )
                     CustomIconButton(icon = Icons.Default.DeleteOutline) { }
                 },
                 onNavigateBack = {}
@@ -81,7 +93,7 @@ private fun TransactionScreen(transactionModel: TransactionModel) {
 }
 
 @Composable
-private fun TopContentView(transactionModel: TransactionModel){
+private fun TopContentView(transactionModel: TransactionModel) {
     RowWrapper {
         Image(
             painter = painterResource(R.drawable.fubuki_stare),
@@ -106,7 +118,7 @@ private fun TopContentView(transactionModel: TransactionModel){
 }
 
 @Composable
-private fun DetailContentView(transactionModel: TransactionModel){
+private fun DetailContentView(transactionModel: TransactionModel) {
     ColumnWrapper(modifier = Modifier.padding(16.dp)) {
         ColumnText(title = "Date", value = transactionModel.formattedDate)
         ColumnText(title = "Category", value = transactionModel.category)
@@ -115,7 +127,7 @@ private fun DetailContentView(transactionModel: TransactionModel){
 }
 
 @Composable
-private fun NoteContentView(note: String){
+private fun NoteContentView(note: String) {
     ColumnWrapper(modifier = Modifier.padding(16.dp)) {
         Text(
             "Note",
@@ -162,7 +174,9 @@ private fun TransactionScreenPreview() {
         note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     )
     AppTheme {
-        TransactionScreen(transactionModel = transactionModel)
+        TransactionScreen(transactionModel = transactionModel) {
+
+        }
     }
 }
 

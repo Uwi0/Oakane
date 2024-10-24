@@ -13,7 +13,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.homeScreen(
-    navigateToAddTransaction: () -> Unit,
+    navigateToAddTransaction: (Long) -> Unit,
     navigateToTransactions: () -> Unit
 ) {
     composable(HOME_ROUTE) {

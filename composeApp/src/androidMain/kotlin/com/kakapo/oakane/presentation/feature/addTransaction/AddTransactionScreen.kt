@@ -26,9 +26,9 @@ import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionVie
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun AddTransactionRoute(navigateBack: () -> Unit) {
+internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) {
 
-    val state = rememberAddTransactionState(categories = dummyCategories)
+    val state = rememberAddTransactionState(transactionId,categories = dummyCategories)
 
     val viewmodel = koinViewModel<AddTransactionViewModel>()
 
@@ -61,7 +61,7 @@ private fun AddTransactionScreen(
     Scaffold(
         topBar = {
             CustomNavigationTopAppBarView(
-                title = "Add Transaction",
+                title = state.screenTitle,
                 onNavigateBack = { onEvent.invoke(OnNavigateBack) }
             )
         },
@@ -120,9 +120,9 @@ private fun AddTransactionScreen(
                 CustomButton(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(vertical = 16.dp),
-                    onClick = { onEvent.invoke(OnSaveTransaction)},
+                    onClick = { onEvent.invoke(OnSaveTransaction) },
                     content = {
-                        Text(text = "Add Transaction")
+                        Text(text = state.buttonTitle)
                     }
                 )
             }

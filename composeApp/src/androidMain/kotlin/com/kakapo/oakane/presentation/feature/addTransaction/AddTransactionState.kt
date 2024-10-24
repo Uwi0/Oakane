@@ -11,11 +11,11 @@ import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.model.transaction.asLong
 
 @Composable
-fun rememberAddTransactionState(categories: List<String>) = remember {
-    AddTransactionState(categories = categories)
+fun rememberAddTransactionState(transactionId: Long, categories: List<String>) = remember {
+    AddTransactionState(transactionId = transactionId, categories = categories)
 }
 
-class AddTransactionState(val categories: List<String>) {
+class AddTransactionState(val transactionId: Long, val categories: List<String>) {
 
     var title by mutableStateOf("")
 
@@ -33,6 +33,22 @@ class AddTransactionState(val categories: List<String>) {
     var isDatePickerDialogShown by mutableStateOf(false)
     var selectedDate by mutableLongStateOf(System.currentTimeMillis())
 
+    val screenTitle: String get() {
+        return if (transactionId == 0L) {
+            "Add Transaction"
+        } else {
+            "Edit Transaction"
+        }
+    }
+
+    val buttonTitle: String get() {
+        return if (transactionId == 0L) {
+            "Add Transaction"
+        } else {
+            "Save Transaction"
+        }
+    }
+
     fun onTitleChanged(title: String) {
         this.title = title
     }
@@ -42,7 +58,7 @@ class AddTransactionState(val categories: List<String>) {
     }
 
     fun onAmountChanged(amount: String) {
-        if(amount.all { it.isDigit() }) {
+        if (amount.all { it.isDigit() }) {
             this.amount = amount
         }
     }

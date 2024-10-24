@@ -1,4 +1,4 @@
-package com.kakapo.oakane
+package com.kakapo.oakane.presentation.feature.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -27,7 +27,9 @@ internal fun OakaneNavHost(
             navigateBack = navController::popBackStack,
             navigateToTransaction = navController::navigateToTransaction
         )
-        transactionScreen()
+        transactionScreen(
+            navigateToEdit = navController::navigateToAddTransaction
+        )
     }
 
 }
