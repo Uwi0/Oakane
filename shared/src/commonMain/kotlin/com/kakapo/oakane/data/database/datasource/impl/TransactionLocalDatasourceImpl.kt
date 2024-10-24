@@ -46,7 +46,7 @@ class TransactionLocalDatasourceImpl(
         }
     }
 
-    override suspend fun updateTransactions(entity: TransactionEntity): Result<Unit> {
+    override suspend fun updateTransaction(entity: TransactionEntity): Result<Unit> {
         return proceed {
             transactionDb.updateTransaction(
                 title = entity.title,

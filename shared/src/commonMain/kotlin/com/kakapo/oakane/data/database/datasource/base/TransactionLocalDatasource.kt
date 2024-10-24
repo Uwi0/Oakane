@@ -7,6 +7,6 @@ interface TransactionLocalDatasource {
     suspend fun getRecentTransactions(): Result<List<TransactionEntity>>
     suspend fun getTransactions(): Result<List<TransactionEntity>>
     suspend fun getTransaction(id: Long): Result<TransactionEntity>
-    suspend fun updateTransactions(entity: TransactionEntity): Result<Unit>
+    suspend fun updateTransaction(entity: TransactionEntity): Result<Unit>
     suspend fun deleteTransaction(id: Long): Result<Unit>
 }

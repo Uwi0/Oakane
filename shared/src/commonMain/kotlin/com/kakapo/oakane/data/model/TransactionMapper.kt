@@ -12,7 +12,8 @@ data class TransactionParam(
     val dateCreated: Long,
     val note: String?
 ) {
-    fun toEntity() = TransactionEntity(
+    fun toEntity(id: Long? = null) = TransactionEntity(
+        id = id,
         title = title,
         amount = amount,
         type = type,

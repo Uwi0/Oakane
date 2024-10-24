@@ -7,15 +7,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.kakapo.oakane.data.model.TransactionParam
+import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.model.transaction.asLong
 
 @Composable
-fun rememberAddTransactionState(transactionId: Long, categories: List<String>) = remember {
-    AddTransactionState(transactionId = transactionId, categories = categories)
+fun rememberAddTransactionState(
+    transactionId: Long,
+    categories: List<String>
+) = remember {
+    AddTransactionState(
+        transactionId = transactionId,
+        categories = categories
+    )
 }
 
-class AddTransactionState(val transactionId: Long, val categories: List<String>) {
+class AddTransactionState(
+    val transactionId: Long,
+    val categories: List<String>
+) {
 
     var title by mutableStateOf("")
 
@@ -33,20 +43,30 @@ class AddTransactionState(val transactionId: Long, val categories: List<String>)
     var isDatePickerDialogShown by mutableStateOf(false)
     var selectedDate by mutableLongStateOf(System.currentTimeMillis())
 
-    val screenTitle: String get() {
-        return if (transactionId == 0L) {
-            "Add Transaction"
-        } else {
-            "Edit Transaction"
+    val screenTitle: String
+        get() {
+            return if (transactionId == 0L) {
+                "Add Transaction"
+            } else {
+                "Edit Transaction"
+            }
         }
-    }
 
-    val buttonTitle: String get() {
-        return if (transactionId == 0L) {
-            "Add Transaction"
-        } else {
-            "Save Transaction"
+    val buttonTitle: String
+        get() {
+            return if (transactionId == 0L) {
+                "Add Transaction"
+            } else {
+                "Save Transaction"
+            }
         }
+
+    fun initializeData(transaction: TransactionModel) {
+        title = transaction.title
+        note = transaction.note
+        amount = transaction.amount.toString()
+        selectedTransactionType = transaction.type.name
+        selectedCategory = transaction.category
     }
 
     fun onTitleChanged(title: String) {

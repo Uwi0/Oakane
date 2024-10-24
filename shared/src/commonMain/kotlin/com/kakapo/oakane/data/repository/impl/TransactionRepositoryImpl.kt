@@ -1,6 +1,5 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.TransactionTable
 import com.kakapo.oakane.common.proceed
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.TransactionRepository
@@ -48,5 +47,9 @@ class TransactionRepositoryImpl(
                 .getOrThrow()
                 .toModel()
         }
+    }
+
+    override suspend fun update(transaction: TransactionParam, id: Long): Result<Unit> {
+        return proceed { localDatasource.updateTransaction(transaction.toEntity(id = id)) }
     }
 }

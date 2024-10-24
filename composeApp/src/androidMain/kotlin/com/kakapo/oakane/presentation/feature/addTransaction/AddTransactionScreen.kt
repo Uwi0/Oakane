@@ -12,8 +12,11 @@ import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.common.toDateWith
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.menu.CustomDropdownMenu
@@ -23,21 +26,33 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOut
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) {
-
-    val state = rememberAddTransactionState(transactionId,categories = dummyCategories)
-
     val viewmodel = koinViewModel<AddTransactionViewModel>()
+    val transaction by viewmodel.transaction.collectAsStateWithLifecycle()
+    val state = rememberAddTransactionState(
+        transactionId = transactionId,
+        categories = dummyCategories
+    )
 
+    LaunchedEffect(Unit) {
+        viewmodel.initializeData(transactionId)
+    }
+
+    LaunchedEffect(transaction) {
+        if (transactionId != 0L){
+            state.initializeData(transaction)
+        }
+    }
     val onEvent: (AddTransactionUiEvent) -> Unit = {
         when (it) {
             OnNavigateBack -> navigateBack.invoke()
             OnSaveTransaction -> {
-                val transaction = state.getTransaction()
-                viewmodel.save(transaction)
+                val transactionParam = state.getTransaction()
+                viewmodel.onClickButton(transactionParam, transactionId)
                 navigateBack.invoke()
             }
         }
