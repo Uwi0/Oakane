@@ -70,49 +70,64 @@ private fun TransactionScreen(transactionModel: TransactionModel) {
                     .padding(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                RowWrapper {
-                    Image(
-                        painter = painterResource(R.drawable.fubuki_stare),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
-                    Spacer(Modifier.weight(1f))
-                    Column(horizontalAlignment = AbsoluteAlignment.Right) {
-                        Text(
-                            text = transactionModel.title,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = "Rp ${transactionModel.amount}",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
-                }
-                ColumnWrapper(modifier = Modifier.padding(16.dp)) {
-                    ColumnText(title = "Date", value = transactionModel.formattedDate)
-                    ColumnText(title = "Category", value = transactionModel.category)
-                    ColumnText(title = "Type", value = transactionModel.type.name)
-                }
-                ColumnWrapper(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        "Note",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = transactionModel.note,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.outline
-                    )
-                }
+                TopContentView(transactionModel)
+                DetailContentView(transactionModel)
+                NoteContentView(transactionModel.note)
                 Text("Add Another feature in the future")
             }
 
         }
     )
+}
+
+@Composable
+private fun TopContentView(transactionModel: TransactionModel){
+    RowWrapper {
+        Image(
+            painter = painterResource(R.drawable.fubuki_stare),
+            contentDescription = null,
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop
+        )
+        Spacer(Modifier.weight(1f))
+        Column(horizontalAlignment = AbsoluteAlignment.Right) {
+            Text(
+                text = transactionModel.title,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = "Rp ${transactionModel.amount}",
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+    }
+}
+
+@Composable
+private fun DetailContentView(transactionModel: TransactionModel){
+    ColumnWrapper(modifier = Modifier.padding(16.dp)) {
+        ColumnText(title = "Date", value = transactionModel.formattedDate)
+        ColumnText(title = "Category", value = transactionModel.category)
+        ColumnText(title = "Type", value = transactionModel.type.name)
+    }
+}
+
+@Composable
+private fun NoteContentView(note: String){
+    ColumnWrapper(modifier = Modifier.padding(16.dp)) {
+        Text(
+            "Note",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            text = note,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.outline
+        )
+    }
 }
 
 @Composable
