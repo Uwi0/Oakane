@@ -15,6 +15,10 @@ class TransactionsViewModelAdapter(
         viewModel.initializeData()
     }
 
+    fun initializeData() {
+        viewModel.initializeData()
+    }
+
     fun observeState(onStateChange: (List<TransactionModel>) -> Unit) {
         scope.launch {
             viewModel.transactions.collect { transactions ->

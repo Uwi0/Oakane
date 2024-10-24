@@ -22,6 +22,10 @@ final class TransactionsViewModel: ObservableObject {
         }
     }
     
+    func initializeData() {
+        viewModel.initializeData()
+    }
+    
     func filterBy(query: String){
         viewModel.filterTransactionsBy(query: query, type: transactionType, selectedDate: dateCreated)
     }

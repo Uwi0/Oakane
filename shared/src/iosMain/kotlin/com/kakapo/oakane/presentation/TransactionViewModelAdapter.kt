@@ -14,6 +14,10 @@ class TransactionViewModelAdapter(
         viewModel.initializeData(transactionId)
     }
 
+    fun deleteTransactionBy(id: Long) {
+        viewModel.deleteTransactionBy(id)
+    }
+
     fun observeData(onStateChange: (TransactionModel) -> Unit) {
         scope.launch {
             viewModel.transaction.collect { transaction ->

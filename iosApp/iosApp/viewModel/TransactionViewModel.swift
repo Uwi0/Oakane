@@ -17,4 +17,8 @@ final class TransactionViewModel: ObservableObject {
     func initializeData(transactionId: Int64) {
         viewModel.initializeData(transactionId: transactionId)
     }
+    
+    func deletTransaction(transactionId: Int64) {
+        viewModel.deleteTransactionBy(id: transactionId)
+    }
 }

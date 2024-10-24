@@ -6,7 +6,7 @@ final class AddTRansactionViewModel: ObservableObject {
     @Published var title: String = ""
     @Published var amount: String = ""
     @Published var note: String = ""
-    @Published var selectedTransactionOption: String = TransactionType.income.name
+    @Published var selectedTransactionOption: String = TransactionType.expense.name
     @Published var selectedCategoryOption: String = "Food & Dining"
     @Published var selectedDate: Date = Date()
     
@@ -27,12 +27,14 @@ final class AddTRansactionViewModel: ObservableObject {
     init() {
         viewModel.observeState(onStateChange: { [weak self] state in
             DispatchQueue.main.async {
-                self?.title = state.title
-                self?.amount = String(state.amount)
-                self?.note = state.note
-                self?.selectedTransactionOption = state.type.name
-                self?.selectedCategoryOption = state.category
-                self?.selectedDate = Date(timeIntervalSince1970: Double(state.dateCreated) / 1000)
+                if !state.title.isEmpty {
+                    self?.title = state.title
+                    self?.amount = String(state.amount)
+                    self?.note = state.note
+                    self?.selectedTransactionOption = state.type.name
+                    self?.selectedCategoryOption = state.category
+                    self?.selectedDate = Date(timeIntervalSince1970: Double(state.dateCreated) / 1000)
+                }
             }
         })
     }

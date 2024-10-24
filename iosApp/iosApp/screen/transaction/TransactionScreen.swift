@@ -33,7 +33,10 @@ struct TransactionScreen: View {
         switch event {
         case .dismiss: navigation.navigateBack()
         case .action1: navigation.navigate(to: .addTransaction(transactionId: transactionId))
-        case .action2: navigation.navigateBack()
+        case .action2:
+            viewModel.deletTransaction(transactionId: transactionId)
+            navigation.navigateBack()
+            
         }
     }
     
