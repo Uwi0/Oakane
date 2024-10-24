@@ -21,6 +21,17 @@ class TransactionViewModel(
         loadTransactionBy(id)
     }
 
+    fun deleteTransactionBy(id: Long) = viewModelScope.launch {
+        repository.deleteTransactionBy(id).fold(
+            onSuccess = {
+                Logger.d { "success delete transaction" }
+            },
+            onFailure = {
+                Logger.e(throwable = it, messageString = "error delete transaction ${it.message}")
+            }
+        )
+    }
+
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {
         repository.loadTransactionBy(id).fold(
             onSuccess = { transaction ->

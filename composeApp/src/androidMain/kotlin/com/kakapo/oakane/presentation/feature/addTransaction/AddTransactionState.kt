@@ -65,6 +65,7 @@ class AddTransactionState(
         title = transaction.title
         note = transaction.note
         amount = transaction.amount.toString()
+        selectedDate = transaction.dateCreated
         selectedTransactionType = transaction.type.name
         selectedCategory = transaction.category
     }

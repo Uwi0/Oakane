@@ -28,7 +28,8 @@ internal fun OakaneNavHost(
             navigateToTransaction = navController::navigateToTransaction
         )
         transactionScreen(
-            navigateToEdit = navController::navigateToAddTransaction
+            navigateToEdit = navController::navigateToAddTransaction,
+            navigateBack = navController::popBackStack
         )
     }
 

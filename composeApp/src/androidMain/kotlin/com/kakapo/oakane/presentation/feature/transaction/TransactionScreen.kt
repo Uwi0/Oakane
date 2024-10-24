@@ -38,7 +38,11 @@ import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun TransactionRoute(transactionId: Long, navigateToEdit: (Long) -> Unit) {
+internal fun TransactionRoute(
+    transactionId: Long,
+    navigateToEdit: (Long) -> Unit,
+    navigateBack: () -> Unit
+) {
     val viewModel = koinViewModel<TransactionViewModel>()
     val transaction by viewModel.transaction.collectAsStateWithLifecycle()
 
@@ -49,6 +53,11 @@ internal fun TransactionRoute(transactionId: Long, navigateToEdit: (Long) -> Uni
     val onEvent: (TransactionUiEvent) -> Unit = { event ->
         when (event) {
             is OnNavigateToEdit -> navigateToEdit.invoke(event.transactionId)
+            OnNavigateBack -> navigateBack.invoke()
+            is OnDeletedTransaction -> {
+                viewModel.deleteTransactionBy(event.transactionId)
+                navigateBack.invoke()
+            }
         }
     }
 
@@ -69,9 +78,12 @@ private fun TransactionScreen(
                         icon = Icons.Default.Edit,
                         onClick = { onEvent.invoke(OnNavigateToEdit(transactionModel.id)) }
                     )
-                    CustomIconButton(icon = Icons.Default.DeleteOutline) { }
+                    CustomIconButton(
+                        icon = Icons.Default.DeleteOutline,
+                        onClick = { onEvent.invoke(OnDeletedTransaction(transactionModel.id))}
+                    )
                 },
-                onNavigateBack = {}
+                onNavigateBack = { onEvent.invoke(OnNavigateBack)}
             )
         },
         content = {

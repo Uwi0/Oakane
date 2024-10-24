@@ -14,11 +14,12 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextBu
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDatePickerDialog(
+    initialValue: Long? = null,
     defaultValue: Long = System.currentTimeMillis(),
     onDismiss: () -> Unit = {},
     onConfirm: (Long) -> Unit
 ) {
-    val state = rememberDatePickerState()
+    val state = rememberDatePickerState(initialSelectedDateMillis = initialValue)
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {

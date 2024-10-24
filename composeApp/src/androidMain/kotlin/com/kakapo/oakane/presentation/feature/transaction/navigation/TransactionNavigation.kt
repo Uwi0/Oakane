@@ -16,11 +16,15 @@ fun NavController.navigateToTransaction(id: Long, navOptions: NavOptions? = null
     navigate(route, navOptions = navOptions)
 }
 
-fun NavGraphBuilder.transactionScreen(navigateToEdit: (Long) -> Unit) {
+fun NavGraphBuilder.transactionScreen(navigateToEdit: (Long) -> Unit, navigateBack: () -> Unit) {
     val route = "$TRANSACTION_ROUTE/{${NavigationArgs.TRANSACTION_ID}}"
     val arguments = listOf(navArgument(NavigationArgs.TRANSACTION_ID) { type = NavType.LongType })
     composable(route = route, arguments = arguments) { navBackEntry ->
         val transactionId = navBackEntry.arguments?.getLong(NavigationArgs.TRANSACTION_ID) ?: 0L
-        TransactionRoute(transactionId = transactionId, navigateToEdit = navigateToEdit)
+        TransactionRoute(
+            transactionId = transactionId,
+            navigateToEdit = navigateToEdit,
+            navigateBack = navigateBack
+        )
     }
 }

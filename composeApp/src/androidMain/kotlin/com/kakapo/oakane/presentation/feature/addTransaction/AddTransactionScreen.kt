@@ -62,6 +62,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
 
     if (state.isDatePickerDialogShown) {
         CustomDatePickerDialog(
+            initialValue = state.selectedDate,
             onDismiss = { state.toggleDatePickerDialog(false) },
             onConfirm = state::onSelectedDate
         )
