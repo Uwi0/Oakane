@@ -2,14 +2,14 @@ import Foundation
 import Shared
 
 class TransactionViewModel: ObservableObject {
-    @Published var transactions: TransactionModel = TransactionModelKt.dummyValue()
+    @Published var transaction: TransactionModel = TransactionModelKt.dummyValue()
     
     private var viewModel: TransactionViewModelAdapter = Koin.instance.get()
     
     init() {
         viewModel.observeData { [weak self] transactions in
             DispatchQueue.main.async {
-                self?.transactions = transactions
+                self?.transaction = transactions
             }
         }
     }
