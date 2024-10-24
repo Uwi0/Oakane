@@ -1,7 +1,7 @@
 import Foundation
 import Shared
 
-class TransactionViewModel: ObservableObject {
+final class TransactionViewModel: ObservableObject {
     @Published var transaction: TransactionModel = TransactionModelKt.dummyValue()
     
     private var viewModel: TransactionViewModelAdapter = Koin.instance.get()

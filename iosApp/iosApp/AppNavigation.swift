@@ -4,7 +4,7 @@ import SwiftUI
 final class AppNavigation: ObservableObject {
     
     public enum Destination: Codable, Hashable {
-        case addTransaction
+        case addTransaction(transactionId: Int64)
         case transactions
         case transaction(transactionId: Int64)
     }

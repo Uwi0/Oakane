@@ -26,7 +26,7 @@ struct HomeScreen: View {
                     xPos: geometryReader.size.width - 50,
                     yPos: geometryReader.size.height - 50,
                     onClick: {
-                        navigation.navigate(to: .addTransaction)
+                        navigation.navigate(to: .addTransaction(transactionId: 0))
                     }
                 )
             }

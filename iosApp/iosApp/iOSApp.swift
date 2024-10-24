@@ -16,8 +16,8 @@ struct iOSApp: App {
                 HomeScreen()
                     .navigationDestination(for: AppNavigation.Destination.self) { destination in
                         switch destination {
-                        case .addTransaction:
-                            AddTransactionScreen()
+                        case .addTransaction(let transactionId):
+                            AddTransactionScreen(transactionId: transactionId)
                         case .transactions:
                             TransactionsScreen()
                         case .transaction(let transactionId):

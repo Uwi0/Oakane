@@ -2,8 +2,9 @@ import SwiftUI
 
 struct AddTransactionScreen: View {
     
-    @State private var state = AddTransactionState()
-    @StateObject private var addTransactionVM = AddTRansactionViewModel()
+    let transactionId: Int64
+    
+    @StateObject private var viewModel = AddTRansactionViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     
     var body: some View {
@@ -11,25 +12,25 @@ struct AddTransactionScreen: View {
             ColorTheme.surface.ignoresSafeArea()
             
             VStack(spacing: 16) {
-                OutlinedTextFieldView(value: $state.title, placeHolder: "Title")
-                OutlinedNumericTextFieldView(value: $state.amount, placeHolder: "Amount")
+                OutlinedTextFieldView(value: $viewModel.title, placeHolder: "Title")
+                OutlinedNumericTextFieldView(value: $viewModel.amount, placeHolder: "Amount")
                 SelectionPickerView(
                     title: "Transaction Type",
-                    options: state.transactionOptions,
-                    selectedOpion: $state.selectedTransactionOption
+                    options: viewModel.transactionOptions,
+                    selectedOpion: $viewModel.selectedTransactionOption
                 )
                 SelectionPickerView(
                     title: "Category",
-                    options: state.categoryOptions,
-                    selectedOpion: $state.selectedCategoryOption
+                    options: viewModel.categoryOptions,
+                    selectedOpion: $viewModel.selectedCategoryOption
                 )
-                DateButtonView(date: $state.selectedDate.animation(),title: "Today", onClick: { state.showDatePicker.toggle()})
-                OutlinedTextFieldView(value: $state.note, placeHolder: "Note")
+                DateButtonView(date: $viewModel.selectedDate.animation(),title: "Today", onClick: { viewModel.showDatePicker.toggle()})
+                OutlinedTextFieldView(value: $viewModel.note, placeHolder: "Note")
                 Spacer()
                 FilledButtonView(
                     text: "Save Transaction",
                     onClick: {
-                        addTransactionVM.save(transaction: state.getTransaction())
+                        viewModel.save()
                         navigation.navigateBack()
                     }
                 )
@@ -53,6 +54,9 @@ struct AddTransactionScreen: View {
                 Text("Add Transaction")
                     .font(Typography.titleMedium)
             }
+        }
+        .onAppear {
+            viewModel.initializeData(transactionId: transactionId)
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.kakapo.oakane.di
 
 import com.kakapo.oakane.data.database.MySqlDriverFactory
+import com.kakapo.oakane.presentation.AddTransactionViewModelAdapter
 import com.kakapo.oakane.presentation.HomeViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionsViewModelAdapter
+import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
 import org.koin.core.Koin
@@ -19,6 +21,7 @@ object KoinIos {
             factory { HomeViewModelAdapter(get(), get()) }
             factory { TransactionsViewModelAdapter(get(), get()) }
             factory { TransactionViewModelAdapter(get(), get()) }
+            factory { AddTransactionViewModelAdapter(get(), get()) }
         }
     )
 }
