@@ -2,6 +2,7 @@ package com.kakapo.oakane.di
 
 import com.kakapo.oakane.data.database.MySqlDriverFactory
 import com.kakapo.oakane.presentation.AddTransactionViewModelAdapter
+import com.kakapo.oakane.presentation.CategoriesViewModelAdapter
 import com.kakapo.oakane.presentation.HomeViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionsViewModelAdapter
@@ -22,6 +23,7 @@ object KoinIos {
             factory { TransactionsViewModelAdapter(get(), get()) }
             factory { TransactionViewModelAdapter(get(), get()) }
             factory { AddTransactionViewModelAdapter(get(), get()) }
+            factory { CategoriesViewModelAdapter(get(), get()) }
         }
     )
 }

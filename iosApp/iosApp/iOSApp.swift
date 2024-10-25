@@ -13,7 +13,7 @@ struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigation.navPath) {
-                HomeScreen()
+                CategoriesScreen()
                     .navigationDestination(for: AppNavigation.Destination.self) { destination in
                         switch destination {
                         case .addTransaction(let transactionId):
