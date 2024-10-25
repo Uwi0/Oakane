@@ -6,6 +6,9 @@ CREATE TABLE CategoryTable (
     isDefault INTEGER NOT NULL
 );
 
+getCategories:
+SELECT * FROM CategoryTable;
+
 checkIfExist:
 SELECT COUNT(*) FROM CategoryTable;
 

@@ -1,6 +1,7 @@
 package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.oakane.common.proceed
+import com.kakapo.oakane.common.proceedResult
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
@@ -12,28 +13,23 @@ import kotlinx.coroutines.flow.flow
 
 class TransactionRepositoryImpl(
     private val localDatasource: TransactionLocalDatasource
-) : TransactionRepository{
+) : TransactionRepository {
 
     override suspend fun save(transaction: TransactionParam): Result<Unit> {
         return proceed { localDatasource.insertTransaction(transaction.toEntity()) }
     }
 
     override fun loadRecentTransactions(): Flow<Result<List<TransactionModel>>> = flow {
-        val result = proceed {
-            localDatasource.getRecentTransactions()
-                .getOrThrow()
-                .map(TransactionEntity::toModel)
+        val result = proceedResult(localDatasource::getRecentTransactions) {
+            it.map(TransactionEntity::toModel)
         }
         emit(result)
     }
 
     override fun loadTransactions(): Flow<Result<List<TransactionModel>>> = flow {
-        val result = proceed {
-            localDatasource.getTransactions()
-                .getOrThrow()
-                .map(TransactionEntity::toModel)
+        val result = proceedResult(localDatasource::getTransactions) {
+            it.map(TransactionEntity::toModel)
         }
-
         emit(result)
     }
 
@@ -42,11 +38,7 @@ class TransactionRepositoryImpl(
     }
 
     override suspend fun loadTransactionBy(id: Long): Result<TransactionModel> {
-        return proceed {
-            localDatasource.getTransaction(id)
-                .getOrThrow()
-                .toModel()
-        }
+        return proceedResult({localDatasource.getTransaction(id)}, TransactionEntity::toModel)
     }
 
     override suspend fun update(transaction: TransactionParam, id: Long): Result<Unit> {

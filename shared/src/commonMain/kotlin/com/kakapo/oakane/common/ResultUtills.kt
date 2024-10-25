@@ -7,3 +7,17 @@ suspend fun <T> proceed(executed: suspend () -> T): Result<T> {
         Result.failure(e)
     }
 }
+
+suspend fun <T, R> proceedResult(
+    executed: suspend () -> Result<T>,
+    transform: (T) -> R
+): Result<R> {
+    return executed.invoke().fold(
+        onSuccess = {
+            Result.success(transform(it))
+        },
+        onFailure = {
+            Result.failure(it)
+        }
+    )
+}

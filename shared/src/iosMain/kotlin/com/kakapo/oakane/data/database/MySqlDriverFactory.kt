@@ -11,6 +11,4 @@ actual class MySqlDriverFactory {
         addDefaultCategories(driver)
         return driver
     }
-
-
 }
