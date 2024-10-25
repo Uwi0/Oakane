@@ -7,6 +7,10 @@ import com.kakapo.oakane.data.database.DATABASE_NAME
 
 actual class MySqlDriverFactory {
     actual fun createDriver(): SqlDriver {
-        return NativeSqliteDriver(Database.Schema, DATABASE_NAME)
+        val driver = NativeSqliteDriver(Database.Schema, DATABASE_NAME)
+        addDefaultCategories(driver)
+        return driver
     }
+
+
 }

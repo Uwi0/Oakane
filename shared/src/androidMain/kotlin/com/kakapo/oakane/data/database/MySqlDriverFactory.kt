@@ -7,6 +7,8 @@ import com.kakapo.Database
 
 actual class MySqlDriverFactory(private val context: Context) {
     actual fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(Database.Schema, context, DATABASE_NAME)
+        val driver = AndroidSqliteDriver(Database.Schema, context, DATABASE_NAME)
+        addDefaultCategories(driver)
+        return driver
     }
 }
