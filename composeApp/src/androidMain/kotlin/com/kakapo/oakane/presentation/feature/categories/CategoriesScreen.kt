@@ -1,17 +1,23 @@
 package com.kakapo.oakane.presentation.feature.categories
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.model.category.CategoryModel
+import com.kakapo.oakane.presentation.ui.component.asIconCategory
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -37,7 +43,14 @@ private fun CategoriesScreen(categories: List<CategoryModel>) {
                     .padding(vertical = 24.dp, horizontal = 16.dp)
             ) {
                 items(categories) { category ->
-                    Text(category.name)
+                    Row {
+                        Icon(
+                            painter = painterResource(id = category.icon.asIconCategory()),
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Text(text = category.name)
+                    }
                 }
             }
         }
