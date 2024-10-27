@@ -1,31 +1,29 @@
 package com.kakapo.oakane.presentation.feature.categories
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.model.category.CategoryModel
-import com.kakapo.oakane.presentation.ui.model.asIconCategory
+import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
+import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.feature.categories.component.CategoryItemView
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -33,41 +31,70 @@ import org.koin.androidx.compose.koinViewModel
 internal fun CategoriesRoute() {
     val viewModel = koinViewModel<CategoriesViewModel>()
     val categories by viewModel.categories.collectAsStateWithLifecycle()
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.initializeData()
     }
 
-    CategoriesScreen(categories)
+    val onEvent: (CategoriesEvent) -> Unit = { event ->
+        when (event) {
+            is OnTabChanged -> viewModel.onSelectedTab(event.tabIndex)
+        }
+    }
+
+    CategoriesScreen(
+        categories = categories,
+        selectedTab = selectedTab,
+        onEvent = onEvent
+    )
 }
 
 @Composable
-private fun CategoriesScreen(categories: List<CategoryModel>) {
+private fun CategoriesScreen(
+    categories: List<CategoryModel>,
+    selectedTab: Int,
+    onEvent: (CategoriesEvent) -> Unit
+) {
     Scaffold(
+        topBar = {
+            CustomNavigationTopAppBarView(
+                title = "Categories",
+                onNavigateBack = {}
+            )
+        },
         content = { paddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .padding(vertical = 24.dp, horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(categories) { category ->
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        val (icon, color) = category.icon.asIconCategory()
-                        val contentColor = if (color.luminance() < 0.4f) Color.White else Color.Black
-                        Surface(color = color, shape = CircleShape) {
-                            Icon(
-                                modifier = Modifier.padding(16.dp),
-                                painter = painterResource(id = icon),
-                                contentDescription = null,
-                                tint = contentColor
-                            )
+            Column(modifier = Modifier.padding(paddingValues)) {
+                CustomTabRowView(
+                    selectedTabIndex = selectedTab,
+                ) {
+                    TransactionType.entries.forEach {
+                        val selected = selectedTab == it.ordinal
+                        CustomTabView(
+                            selected = selected,
+                            onClick = { onEvent.invoke(OnTabChanged(it.ordinal)) }
+                        ) {
+                            Text(text = it.name)
                         }
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Text(text = category.name)
+                    }
+                }
+                LazyColumn(
+                    contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(categories, key = { it.id }) { category ->
+                        CategoryItemView(category)
                     }
                 }
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {},
+                content = {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                }
+            )
         }
     )
 }
