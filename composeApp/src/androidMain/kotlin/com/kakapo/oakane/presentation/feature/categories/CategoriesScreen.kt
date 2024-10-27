@@ -1,5 +1,7 @@
 package com.kakapo.oakane.presentation.feature.categories
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.oakane.presentation.designSystem.animation.slidingContentAnimation
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
@@ -65,27 +68,9 @@ private fun CategoriesScreen(
         },
         content = { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                CustomTabRowView(
-                    selectedTabIndex = selectedTab,
-                ) {
-                    TransactionType.entries.forEach {
-                        val selected = selectedTab == it.ordinal
-                        CustomTabView(
-                            selected = selected,
-                            onClick = { onEvent.invoke(OnTabChanged(it.ordinal)) }
-                        ) {
-                            Text(text = it.name)
-                        }
-                    }
-                }
-                LazyColumn(
-                    contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(categories, key = { it.id }) { category ->
-                        CategoryItemView(category)
-                    }
-                }
+                CategoriesTabView(selectedTab, onEvent)
+                CategoriesContentView(selectedTab, categories)
+
             }
         },
         floatingActionButton = {
@@ -97,4 +82,45 @@ private fun CategoriesScreen(
             )
         }
     )
+}
+
+@Composable
+private fun CategoriesContentView(
+    tab: Int,
+    categories: List<CategoryModel>
+) {
+    AnimatedContent(
+        targetState = tab,
+        transitionSpec = { slidingContentAnimation() },
+    ) { selectedTab ->
+        val selectedCategories = categories.filter { it.type.ordinal == selectedTab }
+        LazyColumn(
+            contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(selectedCategories, key = { it.id }) { category ->
+                CategoryItemView(category)
+            }
+        }
+    }
+}
+
+@Composable
+private fun CategoriesTabView(
+    selectedTab: Int,
+    onEvent: (CategoriesEvent) -> Unit
+) {
+    CustomTabRowView(
+        selectedTabIndex = selectedTab,
+    ) {
+        TransactionType.entries.forEach {
+            val selected = selectedTab == it.ordinal
+            CustomTabView(
+                selected = selected,
+                onClick = { onEvent.invoke(OnTabChanged(it.ordinal)) }
+            ) {
+                Text(text = it.name)
+            }
+        }
+    }
 }
