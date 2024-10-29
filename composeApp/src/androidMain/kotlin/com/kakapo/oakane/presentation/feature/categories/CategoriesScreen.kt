@@ -70,7 +70,6 @@ private fun CategoriesScreen(
             Column(modifier = Modifier.padding(paddingValues)) {
                 CategoriesTabView(selectedTab, onEvent)
                 CategoriesContentView(selectedTab, categories)
-
             }
         },
         floatingActionButton = {
