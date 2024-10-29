@@ -23,8 +23,8 @@ struct HomeScreen: View {
                 
                 FabButtonView(
                     size: 56,
-                    xPos: geometryReader.size.width - 50,
-                    yPos: geometryReader.size.height - 50,
+                    xPos: geometryReader.size.width - FabConstant.xOffset,
+                    yPos: geometryReader.size.height - FabConstant.yOffset,
                     onClick: {
                         navigation.navigate(to: .addTransaction(transactionId: 0))
                     }

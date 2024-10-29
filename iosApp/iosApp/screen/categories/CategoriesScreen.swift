@@ -17,8 +17,8 @@ struct CategoriesScreen: View {
                 
                 FabButtonView(
                     size: 56,
-                    xPos: geometry.size.width - 50,
-                    yPos: geometry.size.height - 50,
+                    xPos: geometry.size.width - FabConstant.xOffset,
+                    yPos: geometry.size.height - FabConstant.yOffset,
                     onClick: {}
                 )
             }

@@ -1,5 +1,11 @@
 import SwiftUI
 
+struct FabConstant {
+    static let xOffset: CGFloat = 35
+    static let yOffset: CGFloat = 35
+}
+
+
 struct FabButtonView: View {
     
     let size: CGFloat

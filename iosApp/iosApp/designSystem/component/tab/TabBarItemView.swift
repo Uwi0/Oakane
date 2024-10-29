@@ -15,7 +15,7 @@ struct TabBarItemView: View {
                 Spacer()
                 Text(tabBarItemName)
                 if currentTab == tab {
-                    Color.black
+                    ColorTheme.primary
                         .frame(height: 2)
                         .matchedGeometryEffect(id: "underline",
                                                in: namespace,

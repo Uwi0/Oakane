@@ -1,11 +1,13 @@
 package com.kakapo.oakane.presentation.feature.categories
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -25,6 +27,7 @@ import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.animation.slidingContentAnimation
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView
+import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.categories.component.CategoryItemView
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
@@ -63,11 +66,21 @@ private fun CategoriesScreen(
         topBar = {
             CustomNavigationTopAppBarView(
                 title = "Categories",
+                tonalElevation = 0.dp,
                 onNavigateBack = {}
             )
         },
         content = { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
+                Spacer(modifier = Modifier.size(16.dp))
+                SearchTextFieldView(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    value = "",
+                    placeHolder = "Search Categories...",
+                    onValueChange = {}
+                )
                 CategoriesTabView(selectedTab, onEvent)
                 CategoriesContentView(selectedTab, categories)
             }
@@ -110,6 +123,8 @@ private fun CategoriesTabView(
     onEvent: (CategoriesEvent) -> Unit
 ) {
     CustomTabRowView(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        tabWidth = 180.dp,
         selectedTabIndex = selectedTab,
     ) {
         TransactionType.entries.forEach {
