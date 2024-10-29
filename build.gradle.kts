@@ -7,4 +7,5 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.appCash.sqlDelight) apply false
+    alias(libs.plugins.touchlab.skie) apply false
 }

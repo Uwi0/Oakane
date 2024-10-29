@@ -17,7 +17,7 @@ final class AddTRansactionViewModel: ObservableObject {
         "Utilities",
         "Health & Fitness"
     ]
-    var transactionOptions: [String] = TransactionType.entries.map { $0.name }
+    var transactionOptions: [String] = TransactionType.allCases.map(\.name)
     var showDatePicker: Bool = false
     
     

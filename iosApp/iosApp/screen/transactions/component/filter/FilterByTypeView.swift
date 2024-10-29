@@ -12,7 +12,7 @@ struct FilterByTypeView: View {
             
             ScrollView(.horizontal) {
                 HStack(alignment: .firstTextBaseline, spacing: 16) {
-                    ForEach(TransactionType.entries, id: \.self){ type in
+                    ForEach(TransactionType.allCases, id: \.self){ type in
                         let isSelected = selectedType == type.name
                         InputChipView(title: type.name, isSelected: isSelected, onSelected: { selectedType = type.name})
                     }
@@ -30,5 +30,5 @@ struct FilterByTypeView: View {
 }
 
 #Preview {
-    FilterByTypeView(selectedType: .constant(TransactionType.entries.first!.name), onClick: {})
+    FilterByTypeView(selectedType: .constant(TransactionType.allCases.first!.name), onClick: {})
 }

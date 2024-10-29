@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.appCash.sqlDelight)
+    alias(libs.plugins.touchlab.skie)
 }
 
 kotlin {
