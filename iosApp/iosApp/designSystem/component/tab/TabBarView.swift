@@ -18,6 +18,6 @@ struct TabBarView: View {
             }
         }
         .padding(.horizontal)
-        .frame(height: 80)
+        .frame(height: 40)
     }
 }
