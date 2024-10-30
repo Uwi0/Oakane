@@ -10,6 +10,7 @@ struct CategoriesScreen: View {
                     .ignoresSafeArea()
                 CategoriesContentView(
                     selectedTab: $viewModel.selectedTab,
+                    searchQuery: $viewModel.searchQuery,
                     tabBars: viewModel.tabBars,
                     expenseCategories: viewModel.expenseCategories,
                     incomeCategories: viewModel.incomeCategories
@@ -23,6 +24,7 @@ struct CategoriesScreen: View {
                 )
             }
             .customToolbar(content: toolbarContent, onEvent: onToolbarEvent(toolbarEvent:))
+            .onChange(of: viewModel.searchQuery, perform: viewModel.onSearchQueryChanged(query:))
         }
         
     }

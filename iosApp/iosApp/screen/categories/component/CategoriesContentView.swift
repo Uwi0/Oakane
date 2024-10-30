@@ -3,6 +3,7 @@ import Shared
 
 struct CategoriesContentView: View {
     @Binding var selectedTab: Int
+    @Binding var searchQuery: String
     let tabBars: [String]
     let expenseCategories: [CategoryModel]
     let incomeCategories: [CategoryModel]
@@ -11,7 +12,7 @@ struct CategoriesContentView: View {
     var body: some View {
         VStack {
             Divider()
-            OutlinedSearchTextFieldView(query: .constant(""), placeHolder: "Search Categories...")
+            OutlinedSearchTextFieldView(query: $searchQuery, placeHolder: "Search Categories...")
                 .padding(.horizontal, 16)
             TabBarView(currentTab: $selectedTab, tabBarOptions: tabBars)
             TabView(selection: $selectedTab) {

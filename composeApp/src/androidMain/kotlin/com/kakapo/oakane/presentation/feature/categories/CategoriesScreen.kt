@@ -19,6 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +40,7 @@ internal fun CategoriesRoute() {
     val viewModel = koinViewModel<CategoriesViewModel>()
     val categories by viewModel.categories.collectAsStateWithLifecycle()
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
+    val searchQuery by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.initializeData()
@@ -46,12 +49,14 @@ internal fun CategoriesRoute() {
     val onEvent: (CategoriesEvent) -> Unit = { event ->
         when (event) {
             is OnTabChanged -> viewModel.onSelectedTab(event.tabIndex)
+            is OnSearchQueryChanged -> viewModel.onSearchQueryChanged(event.query)
         }
     }
 
     CategoriesScreen(
         categories = categories,
         selectedTab = selectedTab,
+        searchQuery = searchQuery,
         onEvent = onEvent
     )
 }
@@ -60,6 +65,7 @@ internal fun CategoriesRoute() {
 private fun CategoriesScreen(
     categories: List<CategoryModel>,
     selectedTab: Int,
+    searchQuery: String,
     onEvent: (CategoriesEvent) -> Unit
 ) {
     Scaffold(
@@ -77,9 +83,9 @@ private fun CategoriesScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
-                    value = "",
+                    value = searchQuery,
                     placeHolder = "Search Categories...",
-                    onValueChange = {}
+                    onValueChange = {onEvent.invoke(OnSearchQueryChanged(it))}
                 )
                 CategoriesTabView(selectedTab, onEvent)
                 CategoriesContentView(selectedTab, categories)

@@ -14,6 +14,8 @@ class CategoriesViewModelAdapter (
         viewModel.initializeData()
     }
 
+    fun onSearchQueryChanged(query: String) = viewModel.onSearchQueryChanged(query)
+
     fun observeData(onStateChange: (List<CategoryModel>) -> Unit) {
         scope.launch {
             viewModel.categories.collect { categories ->

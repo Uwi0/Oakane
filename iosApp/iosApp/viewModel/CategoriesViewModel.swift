@@ -4,6 +4,7 @@ import Shared
 final class CategoriesViewModel: ObservableObject {
     @Published var categories: [CategoryModel] = []
     @Published var selectedTab: Int = 0
+    @Published var searchQuery: String = ""
     let tabBars = TransactionType.allCases.map(\.name)
     
     var expenseCategories: [CategoryModel] {
@@ -22,5 +23,9 @@ final class CategoriesViewModel: ObservableObject {
                 self?.categories = categories
             }
         }
+    }
+    
+    func onSearchQueryChanged(query: String) {
+        viewModel.onSearchQueryChanged(query: query)
     }
 }
