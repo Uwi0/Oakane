@@ -18,14 +18,15 @@ final class CategoriesViewModel: ObservableObject {
     private var viewModel: CategoriesViewModelAdapter = Koin.instance.get()
     
     init() {
-        viewModel.observeData { [weak self] categories in
+        viewModel.observeData { [weak self] uiState in
             DispatchQueue.main.async {
-                self?.categories = categories
+                self?.categories = uiState.filteredCategories
             }
         }
     }
     
     func onSearchQueryChanged(query: String) {
-        viewModel.onSearchQueryChanged(query: query)
+        viewModel.handleEvent(event: CategoriesEvent.Search(query: query))
     }
+    
 }

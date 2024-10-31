@@ -32,40 +32,29 @@ import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.categories.component.CategoryItemView
+import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
+import com.kakapo.oakane.presentation.viewModel.categories.CategoriesUiState
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun CategoriesRoute() {
     val viewModel = koinViewModel<CategoriesViewModel>()
-    val categories by viewModel.categories.collectAsStateWithLifecycle()
-    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
-    val searchQuery by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.initializeData()
     }
 
-    val onEvent: (CategoriesEvent) -> Unit = { event ->
-        when (event) {
-            is OnTabChanged -> viewModel.onSelectedTab(event.tabIndex)
-            is OnSearchQueryChanged -> viewModel.onSearchQueryChanged(event.query)
-        }
-    }
-
     CategoriesScreen(
-        categories = categories,
-        selectedTab = selectedTab,
-        searchQuery = searchQuery,
-        onEvent = onEvent
+        uiState = uiState,
+        onEvent = viewModel::handleEvent
     )
 }
 
 @Composable
 private fun CategoriesScreen(
-    categories: List<CategoryModel>,
-    selectedTab: Int,
-    searchQuery: String,
+    uiState: CategoriesUiState,
     onEvent: (CategoriesEvent) -> Unit
 ) {
     Scaffold(
@@ -83,12 +72,12 @@ private fun CategoriesScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
-                    value = searchQuery,
+                    value = uiState.searchQuery,
                     placeHolder = "Search Categories...",
-                    onValueChange = {onEvent.invoke(OnSearchQueryChanged(it))}
+                    onValueChange = { onEvent.invoke(CategoriesEvent.Search(it)) }
                 )
-                CategoriesTabView(selectedTab, onEvent)
-                CategoriesContentView(selectedTab, categories)
+                CategoriesTabView(uiState.selectedTab, onEvent)
+                CategoriesContentView(uiState.selectedTab, uiState.filteredCategories)
             }
         },
         floatingActionButton = {
@@ -137,7 +126,7 @@ private fun CategoriesTabView(
             val selected = selectedTab == it.ordinal
             CustomTabView(
                 selected = selected,
-                onClick = { onEvent.invoke(OnTabChanged(it.ordinal)) }
+                onClick = { onEvent.invoke(CategoriesEvent.ChangeTab(it.ordinal)) }
             ) {
                 Text(text = it.name)
             }

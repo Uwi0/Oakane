@@ -1,6 +1,8 @@
 package com.kakapo.oakane.presentation
 
 import com.kakapo.oakane.model.category.CategoryModel
+import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
+import com.kakapo.oakane.presentation.viewModel.categories.CategoriesUiState
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -14,11 +16,13 @@ class CategoriesViewModelAdapter (
         viewModel.initializeData()
     }
 
-    fun onSearchQueryChanged(query: String) = viewModel.onSearchQueryChanged(query)
+    fun handleEvent(event: CategoriesEvent) {
+        viewModel.handleEvent(event)
+    }
 
-    fun observeData(onStateChange: (List<CategoryModel>) -> Unit) {
+    fun observeData(onStateChange: (CategoriesUiState) -> Unit) {
         scope.launch {
-            viewModel.categories.collect { categories ->
+            viewModel.uiState.collect { categories ->
                 onStateChange.invoke(categories)
             }
         }
