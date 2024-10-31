@@ -3,6 +3,7 @@ CREATE TABLE CategoryTable (
     name TEXT NOT NULL,
     type INTEGER NOT NULL,
     icon TEXT NOT NULL,
+    color TEXT,
     isDefault INTEGER NOT NULL
 );
 
@@ -13,50 +14,69 @@ checkIfExist:
 SELECT COUNT(*) FROM CategoryTable;
 
 insertDefaultCategories:
-INSERT INTO CategoryTable (name, type, icon, isDefault) VALUES
-    ('Salary', 1, 'Salary', 1),
-    ('Freelance', 1, 'Freelance', 1),
-    ('Business Profits', 1, 'Business Profits', 1),
-    ('Rental Income', 1, 'Rental Income', 1),
-    ('Interest', 1, 'Interest', 1),
-    ('Dividends', 1, 'Dividends', 1),
-    ('Gifts', 1, 'Gifts', 1),
-    ('Rent/Mortgage', 0, 'Rent/Mortgage', 1),
-    ('Utilities', 0, 'Utilities', 1),
-    ('Home Insurance', 0, 'Home Insurance', 1),
-    ('Property Taxes', 0, 'Property Taxes', 1),
-    ('Home Maintenance', 0, 'Home Maintenance', 1),
-    ('HOA Fees', 0, 'HOA Fees', 1),
-    ('Car Payment', 0, 'Car Payment', 1),
-    ('Gas', 0, 'Gas', 1),
-    ('Insurance', 0, 'Insurance', 1),
-    ('Parking Fees', 0, 'Parking Fees', 1),
-    ('Public Transportation', 0, 'Public Transportation', 1),
-    ('Maintenance', 0, 'Maintenance', 1),
-    ('Groceries', 0, 'Groceries', 1),
-    ('Restaurants', 0, 'Restaurants', 1),
-    ('Dining Out', 0, 'Dining Out', 1),
-    ('Movies', 0, 'Movies', 1),
-    ('Concerts', 0, 'Concerts', 1),
-    ('Subscriptions', 0, 'Subscriptions', 1),
-    ('Hobbies', 0, 'Hobbies', 1),
-    ('Travel', 0, 'Travel', 1),
-    ('Tuition', 0, 'Tuition', 1),
-    ('Books', 0, 'Books', 1),
-    ('Supplies', 0, 'Supplies', 1),
-    ('Doctors Visits', 0, 'Doctors Visits', 1),
-    ('Prescriptions', 0, 'Prescriptions', 1),
-    ('Insurance Premiums', 0, 'Insurance Premiums', 1),
-    ('Dental Care', 0, 'Dental Care', 1),
-    ('Vision Care', 0, 'Vision Care', 1),
-    ('Hair', 0, 'Hair', 1),
-    ('Nails', 0, 'Nails', 1),
-    ('Clothing', 0, 'Clothing', 1),
-    ('Toiletries', 0, 'Toiletries', 1),
-    ('Gifts', 0, 'Gifts Expense', 1),
-    ('Clothes', 0, 'Clothes', 1),
-    ('Electronics', 0, 'Electronics', 1),
-    ('Household Items', 0, 'Household Items', 1),
-    ('Credit Card Payments', 0, 'Credit Card Payments', 1),
-    ('Loan Payments', 0, 'Loan Payments', 1),
-    ('Interest', 0, 'Interest Expense', 1);
+INSERT INTO CategoryTable (name, type, icon, color, isDefault) VALUES
+    -- INCOME
+    ('Salary', 1, 'Salary', '0xFF4CAF50', 1),
+    ('Freelance', 1, 'Freelance', '0xFF66BB6A', 1),
+    ('Business Profits', 1, 'Business Profits', '0xFF81C784', 1),
+    ('Rental Income', 1, 'Rental Income', '0xFFA5D6A7', 1),
+    ('Interest', 1, 'Interest', '0xFF388E3C', 1),
+    ('Dividends', 1, 'Dividends', '0xFF43A047', 1),
+    ('Gifts', 1, 'Gifts', '0xFFFFD54F', 1),
+
+    -- HOUSING
+    ('Rent/Mortgage', 0, 'Rent/Mortgage', '0xFF795548', 1),
+    ('Utilities', 0, 'Utilities', '0xFF64B5F6', 1),
+    ('Home Insurance', 0, 'Home Insurance', '0xFF2196F3', 1),
+    ('Property Taxes', 0, 'Property Taxes', '0xFF1E88E5', 1),
+    ('Home Maintenance', 0, 'Home Maintenance', '0xFF8D6E63', 1),
+    ('HOA Fees', 0, 'HOA Fees', '0xFFA1887F', 1),
+
+    -- TRANSPORTATION
+    ('Car Payment', 0, 'Car Payment', '0xFF757575', 1),
+    ('Gas', 0, 'Gas', '0xFFFFA726', 1),
+    ('Insurance', 0, 'Insurance', '0xFFBDBDBD', 1),
+    ('Parking Fees', 0, 'Parking Fees', '0xFFFFCC80', 1),
+    ('Public Transportation', 0, 'Public Transportation', '0xFF90A4AE', 1),
+    ('Maintenance', 0, 'Maintenance', '0xFFB0BEC5', 1),
+
+    -- FOOD
+    ('Groceries', 0, 'Groceries', '0xFF8BC34A', 1),
+    ('Restaurants', 0, 'Restaurants', '0xFFFF7043', 1),
+    ('Dining Out', 0, 'Dining Out', '0xFFFFA726', 1),
+
+    -- ENTERTAINMENT
+    ('Movies', 0, 'Movies', '0xFF5C6BC0', 1),
+    ('Concerts', 0, 'Concerts', '0xFFBA68C8', 1),
+    ('Subscriptions', 0, 'Subscriptions', '0xFF7986CB', 1),
+    ('Hobbies', 0, 'Hobbies', '0xFF9575CD', 1),
+    ('Travel', 0, 'Travel', '0xFF42A5F5', 1),
+
+    -- EDUCATION
+    ('Tuition', 0, 'Tuition', '0xFF283593', 1),
+    ('Books', 0, 'Books', '0xFF673AB7', 1),
+    ('Supplies', 0, 'Supplies', '0xFF7986CB', 1),
+
+    -- HEALTHCARE
+    ('Doctors Visits', 0, 'Doctors Visits', '0xFFE57373', 1),
+    ('Prescriptions', 0, 'Prescriptions', '0xFFF06292', 1),
+    ('Insurance Premiums', 0, 'Insurance Premiums', '0xFFD32F2F', 1),
+    ('Dental Care', 0, 'Dental Care', '0xFFB39DDB', 1),
+    ('Vision Care', 0, 'Vision Care', '0xFF9575CD', 1),
+
+    -- PERSONAL CARE
+    ('Hair', 0, 'Hair', '0xFFEF9A9A', 1),
+    ('Nails', 0, 'Nails', '0xFFF48FB1', 1),
+    ('Clothing', 0, 'Clothing', '0xFFAB47BC', 1),
+    ('Toiletries', 0, 'Toiletries', '0xFFFFCDD2', 1),
+
+    -- SHOPPING
+    ('Gifts Expense', 0, 'Gifts Expense', '0xFFFFD54F', 1),
+    ('Clothes', 0, 'Clothes', '0xFFCE93D8', 1),
+    ('Electronics', 0, 'Electronics', '0xFF90CAF9', 1),
+    ('Household Items', 0, 'Household Items', '0xFFFFF176', 1),
+
+    -- DEBT
+    ('Credit Card Payments', 0, 'Credit Card Payments', '0xFF607D8B', 1),
+    ('Loan Payments', 0, 'Loan Payments', '0xFF455A64', 1),
+    ('Interest Expense', 0, 'Interest Expense', '0xFF78909C', 1);

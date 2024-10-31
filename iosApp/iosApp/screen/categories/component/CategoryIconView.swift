@@ -26,5 +26,5 @@ struct CategoryIconView: View {
 }
 
 #Preview {
-    CategoryIconView(icon: IconConstant.Airplane, color: CategoryColor.groceries)
+    CategoryIconView(icon: IconConstant.Airplane, color: ColorTheme.primary)
 }

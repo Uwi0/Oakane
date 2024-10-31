@@ -19,12 +19,12 @@ import com.kakapo.oakane.presentation.ui.model.asIconCategory
 @Composable
 internal fun CategoryItemView(category: CategoryModel) {
     RowWrapper {
-        val (icon, color) = category.icon.asIconCategory()
+        val color = Color(category.color)
         val contentColor = if (color.luminance() < 0.5f) Color.White else Color.Black
         Surface(color = color, shape = CircleShape) {
             Icon(
                 modifier = Modifier.padding(8.dp),
-                painter = painterResource(id = icon),
+                painter = painterResource(id = category.icon.asIconCategory()),
                 contentDescription = null,
                 tint = contentColor
             )

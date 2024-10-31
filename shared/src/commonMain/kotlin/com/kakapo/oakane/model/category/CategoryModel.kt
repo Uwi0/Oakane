@@ -7,5 +7,6 @@ data class CategoryModel(
     val name: String,
     val type: TransactionType,
     val icon: String,
+    val color: Int,
     val isDefault: Long
 )

@@ -7,6 +7,7 @@ data class CategoryEntity(
     val name: String,
     val type: Long,
     val icon: String,
+    val color: String,
     val isDefault: Long
 )
 
@@ -15,5 +16,6 @@ fun CategoryTable.toEntity() = CategoryEntity(
     name = name,
     type = type,
     icon = icon,
+    color = color ?: "0xFF4CAF50",
     isDefault = isDefault
 )

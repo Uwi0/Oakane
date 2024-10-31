@@ -9,5 +9,14 @@ fun CategoryEntity.toModel() = CategoryModel(
     name = name,
     type = type.asTransactionType(),
     icon = icon,
-    isDefault = isDefault
+    isDefault = isDefault,
+    color = color.toColorInt()
 )
+
+fun String.toColorInt(): Int {
+    return if (this.startsWith("0x")) {
+        this.removePrefix("0x").toLong(16).toInt()
+    } else {
+        this.toLong(16).toInt()
+    }
+}

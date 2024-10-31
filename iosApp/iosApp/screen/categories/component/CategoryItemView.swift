@@ -9,7 +9,7 @@ struct CategoryItemView: View {
     var body: some View {
         HStack(spacing: 16) {
             let iconCategory = category.name.asIconCategory()
-            CategoryIconView(icon: iconCategory.icon, color: iconCategory.color)
+            CategoryIconView(icon: iconCategory, color: Color(hex: category.color))
             Text(category.name)
             Spacer()
         }
