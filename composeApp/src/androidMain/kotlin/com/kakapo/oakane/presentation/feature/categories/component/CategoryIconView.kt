@@ -13,12 +13,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CategoryIconView(
-    modifier: Modifier = Modifier,
     icon: Int,
     color: Color,
+    onClick: () -> Unit = {}
 ) {
     val contentColor = if (color.luminance() < 0.5f) Color.White else Color.Black
-    Surface(modifier = modifier, color = color, shape = CircleShape) {
+    Surface(onClick = onClick, color = color, shape = CircleShape) {
         Icon(
             modifier = Modifier.padding(8.dp),
             painter = painterResource(id = icon),

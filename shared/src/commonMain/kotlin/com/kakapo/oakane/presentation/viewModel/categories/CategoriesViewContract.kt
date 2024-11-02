@@ -11,11 +11,16 @@ data class CategoriesState(
     val selectedTab: Int = TransactionType.Expense.ordinal,
     val selectedType: TransactionType = TransactionType.Expense,
     val sheetContent: CategoriesSheetContent = CategoriesSheetContent.Create,
+    val selectedColor: Int = 0,
     val showSheet: Boolean = false,
     val categoryName: String = "",
 ){
     val categoriesColor: List<Int> get() {
-        return categories.map { it.formattedColor }
+        return categories.map { it.formattedColor }.toSet().toList()
+    }
+
+    val defaultSelectedColor: Int get() {
+        return if(selectedColor == 0) categories[0].formattedColor else selectedColor
     }
 
     fun updateCategories(categories: List<CategoryModel>) = copy(
@@ -34,5 +39,6 @@ sealed class CategoriesEvent {
     data class ShowSheet(val visibility: Boolean) : CategoriesEvent()
     data class ChangeCategory(val name: String): CategoriesEvent()
     data class Selected(val type: TransactionType): CategoriesEvent()
+    data class ChangeColor(val hex: Int): CategoriesEvent()
     data class ChangeSheet(val content: CategoriesSheetContent): CategoriesEvent()
 }
