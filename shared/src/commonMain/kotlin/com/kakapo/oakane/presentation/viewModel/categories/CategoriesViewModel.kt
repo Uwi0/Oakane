@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.repository.base.CategoryRepository
-import com.kakapo.oakane.model.category.CategoryModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,8 +18,8 @@ class CategoriesViewModel(
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(CategoriesUiState())
 
-    val categories get() = _filteredCategories.asStateFlow()
-    private val _filteredCategories = MutableStateFlow<List<CategoryModel>>(emptyList())
+    val uiEffect get() = _uiEffect.asSharedFlow()
+    private val _uiEffect = MutableSharedFlow<CategoriesEffect>()
 
     fun initializeData() {
         loadCategories()
@@ -28,6 +29,9 @@ class CategoriesViewModel(
         when (event) {
             is CategoriesEvent.Search -> onSearchQueryChanged(event.query)
             is CategoriesEvent.ChangeTab -> onSelectedTab(event.index)
+            is CategoriesEvent.ShowSheet ->  handleSheet(event.visibility)
+            is CategoriesEvent.ChangeCategory -> _uiState.update { it.copy(categoryName = event.name) }
+            is CategoriesEvent.Selected -> _uiState.update { it.copy(selectedType = event.type) }
         }
     }
 
@@ -40,6 +44,11 @@ class CategoriesViewModel(
             it.name.contains(query, ignoreCase = true)
         }
         _uiState.update { it.copy(filteredCategories = filteredCategories) }
+    }
+
+    private fun handleSheet(visibility: Boolean) {
+        _uiState.update { it.copy(showSheet = visibility, categoryName = "") }
+        if (!visibility) emitEffect(CategoriesEffect.HideSheet)
     }
 
     private fun loadCategories() = viewModelScope.launch {
@@ -56,5 +65,9 @@ class CategoriesViewModel(
                 }
             )
         }
+    }
+
+    private fun emitEffect(effect: CategoriesEffect)  = viewModelScope.launch {
+        _uiEffect.emit(effect)
     }
 }

@@ -10,7 +10,7 @@ fun CategoryEntity.toModel() = CategoryModel(
     type = type.asTransactionType(),
     icon = icon,
     isDefault = isDefault,
-    color = color.toColorInt()
+    color = color
 )
 
 fun String.toColorInt(): Int {

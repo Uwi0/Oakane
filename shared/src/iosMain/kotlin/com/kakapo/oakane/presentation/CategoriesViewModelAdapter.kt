@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation
 
-import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesUiState
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel

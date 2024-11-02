@@ -8,10 +8,23 @@ data class CategoriesUiState(
     val categories: List<CategoryModel> = emptyList(),
     val filteredCategories: List<CategoryModel> = emptyList(),
     val selectedTab: Int = TransactionType.Expense.ordinal,
-    val isSheetShown: Boolean = false
-)
+    val selectedType: TransactionType = TransactionType.Expense,
+    val showSheet: Boolean = false,
+    val categoryName: String = "",
+){
+    val categoriesColor: List<Int> get() {
+        return categories.map { it.formattedColor }
+    }
+}
+
+sealed class CategoriesEffect {
+    data object HideSheet : CategoriesEffect()
+}
 
 sealed class CategoriesEvent {
     data class Search(val query: String) : CategoriesEvent()
     data class ChangeTab(val index: Int) : CategoriesEvent()
+    data class ShowSheet(val visibility: Boolean) : CategoriesEvent()
+    data class ChangeCategory(val name: String): CategoriesEvent()
+    data class Selected(val type: TransactionType): CategoriesEvent()
 }
