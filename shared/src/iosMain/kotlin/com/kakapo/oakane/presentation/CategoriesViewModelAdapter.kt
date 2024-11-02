@@ -1,7 +1,7 @@
 package com.kakapo.oakane.presentation
 
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
-import com.kakapo.oakane.presentation.viewModel.categories.CategoriesUiState
+import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ class CategoriesViewModelAdapter (
         viewModel.handleEvent(event)
     }
 
-    fun observeData(onStateChange: (CategoriesUiState) -> Unit) {
+    fun observeData(onStateChange: (CategoriesState) -> Unit) {
         scope.launch {
             viewModel.uiState.collect { categories ->
                 onStateChange.invoke(categories)

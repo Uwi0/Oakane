@@ -21,7 +21,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,7 +35,7 @@ import com.kakapo.oakane.presentation.feature.categories.component.CategoriesShe
 import com.kakapo.oakane.presentation.feature.categories.component.CategoryItemView
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEffect
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
-import com.kakapo.oakane.presentation.viewModel.categories.CategoriesUiState
+import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -71,7 +70,7 @@ internal fun CategoriesRoute() {
 
 @Composable
 private fun CategoriesScreen(
-    uiState: CategoriesUiState,
+    uiState: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit
 ) {
     Scaffold(

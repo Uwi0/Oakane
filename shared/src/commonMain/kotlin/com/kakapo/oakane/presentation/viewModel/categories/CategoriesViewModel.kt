@@ -16,7 +16,7 @@ class CategoriesViewModel(
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
-    private val _uiState = MutableStateFlow(CategoriesUiState())
+    private val _uiState = MutableStateFlow(CategoriesState())
 
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<CategoriesEffect>()
@@ -29,9 +29,10 @@ class CategoriesViewModel(
         when (event) {
             is CategoriesEvent.Search -> onSearchQueryChanged(event.query)
             is CategoriesEvent.ChangeTab -> onSelectedTab(event.index)
-            is CategoriesEvent.ShowSheet ->  handleSheet(event.visibility)
+            is CategoriesEvent.ShowSheet -> handleSheet(event.visibility)
             is CategoriesEvent.ChangeCategory -> _uiState.update { it.copy(categoryName = event.name) }
             is CategoriesEvent.Selected -> _uiState.update { it.copy(selectedType = event.type) }
+            is CategoriesEvent.ChangeSheet -> _uiState.update { it.copy(sheetContent = event.content) }
         }
     }
 
@@ -55,10 +56,7 @@ class CategoriesViewModel(
         repository.loadCategories().collect { result ->
             result.fold(
                 onSuccess = { categories ->
-                    _uiState.update { it.copy(
-                        categories = categories,
-                        filteredCategories = categories
-                    ) }
+                    _uiState.update { it.updateCategories(categories) }
                 },
                 onFailure = {
                     Logger.e(it) { "Failed to load categories ${it.message}" }
@@ -67,7 +65,7 @@ class CategoriesViewModel(
         }
     }
 
-    private fun emitEffect(effect: CategoriesEffect)  = viewModelScope.launch {
+    private fun emitEffect(effect: CategoriesEffect) = viewModelScope.launch {
         _uiEffect.emit(effect)
     }
 }

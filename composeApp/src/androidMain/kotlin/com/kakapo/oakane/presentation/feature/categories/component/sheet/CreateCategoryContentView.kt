@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation.feature.categories.component.sheet
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,14 +30,15 @@ import com.kakapo.oakane.R
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.feature.categories.component.CategoryIconView
+import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
-import com.kakapo.oakane.presentation.viewModel.categories.CategoriesUiState
+import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun CreateCategoryContentView(
-    uiState: CategoriesUiState,
+    uiState: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit
 ) {
     Column(
@@ -80,6 +82,15 @@ fun CreateCategoryContentView(
         }
         TitleView(text = "Category Color")
         LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            item {
+                CategoryIconView(
+                    modifier = Modifier.clickable {
+                        onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectColor))
+                    },
+                    icon = R.drawable.ic_rounded_brush,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
             items(uiState.categoriesColor) { colorHex ->
                 CategoryIconView(icon = R.drawable.ic_empty, color = Color(colorHex))
             }
