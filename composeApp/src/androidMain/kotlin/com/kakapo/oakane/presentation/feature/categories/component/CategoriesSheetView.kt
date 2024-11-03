@@ -28,6 +28,5 @@ fun CategoriesSheetView(
                 CategoriesSheetContent.SelectColor -> SelectCategoryColorView(uiState, onEvent)
             }
         }
-
     }
 }

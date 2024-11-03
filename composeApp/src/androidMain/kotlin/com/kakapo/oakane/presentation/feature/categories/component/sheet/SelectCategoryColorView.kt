@@ -24,7 +24,7 @@ import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.drawColorIndicator
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
-import com.kakapo.oakane.data.model.toColorInt
+import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState

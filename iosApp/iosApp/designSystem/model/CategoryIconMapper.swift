@@ -1,109 +1,109 @@
 import SwiftUI
 import Shared
 
-extension String {
+extension CategoryIconName {
     func asIconCategory() -> String {
         switch self {
-        case CategoryName.shared.SALARY:
+        case .salary:
             return IconConstant.BriefcaseFill
-        case CategoryName.shared.FREELANCE:
+        case .freelance:
             return IconConstant.PersonCropCircleBadgeCheckmark
-        case CategoryName.shared.BUSINESS_PROFITS:
+        case .businessProfits:
             return IconConstant.ChartBarXAxis
-        case CategoryName.shared.RENTAL_INCOME:
+        case .rentalIncome:
             return IconConstant.Building2CropCircle
-        case CategoryName.shared.INTEREST:
+        case .interest:
             return IconConstant.Percent
-        case CategoryName.shared.DIVIDENDS:
+        case .dividends:
             return IconConstant.ChartLineUptrendXYAxis
-        case CategoryName.shared.GIFTS:
+        case .gifts:
             return IconConstant.GiftFill
-
-        case CategoryName.shared.RENT_MORTGAGE:
+            
+        case .rentMortgage:
             return IconConstant.BuildingColumnsFill
-        case CategoryName.shared.UTILITIES:
+        case .utilities:
             return IconConstant.BoltFill
-        case CategoryName.shared.HOME_INSURANCE:
+        case .homeInsurance:
             return IconConstant.ShieldFill
-        case CategoryName.shared.PROPERTY_TAXES:
+        case .propertyTaxes:
             return IconConstant.BanknoteFill
-        case CategoryName.shared.HOME_MAINTENANCE:
+        case .homeMaintenance:
             return IconConstant.HammerFill
-        case CategoryName.shared.HOA_FEES:
+        case .hoaFees:
             return IconConstant.BanknoteFill
 
-        case CategoryName.shared.CAR_PAYMENT:
+        case .carPayment:
             return IconConstant.CarFill
-        case CategoryName.shared.GAS:
+        case .gas:
             return IconConstant.FuelpumpFill
-        case CategoryName.shared.INSURANCE:
+        case .insurance:
             return IconConstant.ShieldFill
-        case CategoryName.shared.PARKING_FEES:
+        case .parkingFees:
             return IconConstant.ParkingFill
-        case CategoryName.shared.PUBLIC_TRANSPORTATION:
+        case .publicTransportation:
             return IconConstant.BusFill
-        case CategoryName.shared.MAINTENANCE:
+        case .maintenance:
             return IconConstant.WrenchFill
 
-        case CategoryName.shared.GROCERIES:
+        case .groceries:
             return IconConstant.CartFill
-        case CategoryName.shared.RESTAURANTS:
+        case .restaurants:
             return IconConstant.ForkKnife
-        case CategoryName.shared.DINING_OUT:
+        case .diningOut:
             return IconConstant.ForkKnifeCircle
 
-        case CategoryName.shared.MOVIES:
+        case .movies:
             return IconConstant.FilmFill
-        case CategoryName.shared.CONCERTS:
+        case .concerts:
             return IconConstant.SpeakerFill
-        case CategoryName.shared.SUBSCRIPTIONS:
+        case .subscriptions:
             return IconConstant.Calendar
-        case CategoryName.shared.HOBBIES:
+        case .hobbies:
             return IconConstant.GamecontrollerFill
-        case CategoryName.shared.TRAVEL:
+        case .travel:
             return IconConstant.MapFill
 
-        case CategoryName.shared.TUITION:
+        case .tuition:
             return IconConstant.GraduationCapFill
-        case CategoryName.shared.BOOKS:
+        case .books:
             return IconConstant.BookFill
-        case CategoryName.shared.SUPPLIES:
+        case .supplies:
             return IconConstant.TrayFullFill
 
-        case CategoryName.shared.DOCTORS_VISITS:
+        case .doctorsVisits:
             return IconConstant.Stethoscope
-        case CategoryName.shared.PRESCRIPTIONS:
+        case .prescriptions:
             return IconConstant.PillsFill
-        case CategoryName.shared.INSURANCE_PREMIUMS:
+        case .insurancePremiums:
             return IconConstant.ShieldCheckerboard
-        case CategoryName.shared.DENTAL_CARE:
+        case .dentalCare:
             return IconConstant.FaceSmilingFill
-        case CategoryName.shared.VISION_CARE:
+        case .visionCare:
             return IconConstant.Eyeglasses
 
-        case CategoryName.shared.HAIR:
+        case .hair:
             return IconConstant.CombFill
-        case CategoryName.shared.NAILS:
+        case .nails:
             return IconConstant.HandThumbsupFill
-        case CategoryName.shared.CLOTHING:
+        case .clothing:
             return IconConstant.TShirt
-        case CategoryName.shared.TOILETRIES:
+        case .toiletries:
             return IconConstant.Shower
 
-        case CategoryName.shared.GIFTS_EXPENSE:
+        case .giftsExpense:
             return IconConstant.Gift
-        case CategoryName.shared.CLOTHES:
+        case .clothes:
             return IconConstant.BagFill
-        case CategoryName.shared.ELECTRONICS:
+        case .electronics:
             return IconConstant.DesktopComputer
-        case CategoryName.shared.HOUSEHOLD_ITEMS:
+        case .householdItems:
             return IconConstant.HouseFill
 
-        case CategoryName.shared.CREDIT_CARD_PAYMENTS:
+        case .creditCardPayments:
             return IconConstant.CreditCard
-        case CategoryName.shared.LOAN_PAYMENTS:
+        case .loanPayments:
             return IconConstant.BanknoteFill
-        case CategoryName.shared.INTEREST_EXPENSE:
+        case .interestExpense:
             return IconConstant.ArrowUpRightCircle
 
         default:
