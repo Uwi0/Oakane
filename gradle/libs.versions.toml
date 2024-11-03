@@ -13,6 +13,7 @@ androidx-material = "1.12.0"
 androidx-navigation = "2.8.3"
 androidx-test-junit = "1.2.1"
 coil = "2.6.0"
+colorpicker = "1.1.2"
 compose-plugin = "1.6.11"
 junit = "4.13.2"
 kermit = "2.0.4"
@@ -42,6 +43,7 @@ androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpicker" }
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 koin-android = { module = "io.insert-koin:koin-android" }

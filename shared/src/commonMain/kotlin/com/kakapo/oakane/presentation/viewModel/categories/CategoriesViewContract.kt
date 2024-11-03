@@ -16,7 +16,7 @@ data class CategoriesState(
     val categoryName: String = "",
 ){
     val categoriesColor: List<Int> get() {
-        return categories.map { it.formattedColor }.toSet().toList()
+        return categories.map { it.formattedColor }.distinct()
     }
 
     val defaultSelectedColor: Int get() {
@@ -26,6 +26,11 @@ data class CategoriesState(
     fun updateCategories(categories: List<CategoryModel>) = copy(
         categories = categories,
         filteredCategories = categories
+    )
+
+    fun updateColor(hex: Int) = copy(
+        selectedColor = hex,
+        sheetContent = CategoriesSheetContent.Create
     )
 }
 
@@ -41,4 +46,5 @@ sealed class CategoriesEvent {
     data class Selected(val type: TransactionType): CategoriesEvent()
     data class ChangeColor(val hex: Int): CategoriesEvent()
     data class ChangeSheet(val content: CategoriesSheetContent): CategoriesEvent()
+    data class SelectedColor(val hex: Int): CategoriesEvent()
 }
