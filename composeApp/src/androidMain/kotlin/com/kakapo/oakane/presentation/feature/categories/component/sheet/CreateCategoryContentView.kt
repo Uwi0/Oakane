@@ -26,6 +26,7 @@ import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.feature.categories.component.CategoryIconView
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
+import com.kakapo.oakane.presentation.ui.model.asIcon
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 
@@ -69,8 +70,11 @@ private fun CategoryNameFieldView(
         verticalAlignment = Alignment.CenterVertically
     ) {
         CategoryIconView(
-            icon = R.drawable.ic_outline_account_balance_wallet,
-            color = Color(uiState.defaultSelectedColor)
+            icon = uiState.selectedIcon.asIcon(),
+            color = Color(uiState.defaultSelectedColor),
+            onClick = {
+                onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectIcon))
+            }
         )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),

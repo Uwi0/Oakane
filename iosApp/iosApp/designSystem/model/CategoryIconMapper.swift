@@ -31,7 +31,7 @@ extension CategoryIconName {
             return IconConstant.HammerFill
         case .hoaFees:
             return IconConstant.BanknoteFill
-
+            
         case .carPayment:
             return IconConstant.CarFill
         case .gas:
@@ -44,14 +44,14 @@ extension CategoryIconName {
             return IconConstant.BusFill
         case .maintenance:
             return IconConstant.WrenchFill
-
+            
         case .groceries:
             return IconConstant.CartFill
         case .restaurants:
             return IconConstant.ForkKnife
         case .diningOut:
             return IconConstant.ForkKnifeCircle
-
+            
         case .movies:
             return IconConstant.FilmFill
         case .concerts:
@@ -62,14 +62,14 @@ extension CategoryIconName {
             return IconConstant.GamecontrollerFill
         case .travel:
             return IconConstant.MapFill
-
+            
         case .tuition:
             return IconConstant.GraduationCapFill
         case .books:
             return IconConstant.BookFill
         case .supplies:
             return IconConstant.TrayFullFill
-
+            
         case .doctorsVisits:
             return IconConstant.Stethoscope
         case .prescriptions:
@@ -80,7 +80,7 @@ extension CategoryIconName {
             return IconConstant.FaceSmilingFill
         case .visionCare:
             return IconConstant.Eyeglasses
-
+            
         case .hair:
             return IconConstant.CombFill
         case .nails:
@@ -89,7 +89,7 @@ extension CategoryIconName {
             return IconConstant.TShirt
         case .toiletries:
             return IconConstant.Shower
-
+            
         case .giftsExpense:
             return IconConstant.Gift
         case .clothes:
@@ -98,16 +98,13 @@ extension CategoryIconName {
             return IconConstant.DesktopComputer
         case .householdItems:
             return IconConstant.HouseFill
-
+            
         case .creditCardPayments:
             return IconConstant.CreditCard
         case .loanPayments:
             return IconConstant.BanknoteFill
         case .interestExpense:
             return IconConstant.ArrowUpRightCircle
-
-        default:
-            return IconConstant.AppleLogo
         }
     }
 }

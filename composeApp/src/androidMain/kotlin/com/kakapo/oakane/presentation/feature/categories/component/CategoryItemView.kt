@@ -11,10 +11,15 @@ import com.kakapo.oakane.presentation.ui.model.asIcon
 @Composable
 internal fun CategoryItemView(category: CategoryModel) {
     RowWrapper {
-        CategoryIconView(
-            icon = category.icon.asIcon(),
-            color = Color(category.formattedColor)
-        )
+        if (category.isDefault) {
+            CategoryIconView(
+                icon = category.iconName.asIcon(),
+                color = Color(category.formattedColor)
+            )
+        } else {
+            Text(text = "Not Implemented yet")
+        }
+
         Text(text = category.name, style = MaterialTheme.typography.titleMedium)
     }
 }

@@ -70,5 +70,8 @@ fun CategoryIconName.asIcon(): Int {
         CategoryIconName.CREDIT_CARD_PAYMENTS -> R.drawable.ic_rounded_credit_card
         CategoryIconName.LOAN_PAYMENTS -> R.drawable.ic_outline_payments
         CategoryIconName.INTEREST_EXPENSE -> R.drawable.ic_round_attach_money
+
+        //Default
+        CategoryIconName.DEFAULT -> R.drawable.ic_outline_account_balance_wallet
     }
 }

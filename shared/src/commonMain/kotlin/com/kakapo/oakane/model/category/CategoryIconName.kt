@@ -66,7 +66,10 @@ enum class CategoryIconName(val displayName: String, val parentCategory: ParentC
     // DEBT
     CREDIT_CARD_PAYMENTS("Credit Card Payments", ParentCategory.DEBT),
     LOAN_PAYMENTS("Loan Payments", ParentCategory.DEBT),
-    INTEREST_EXPENSE("Interest Expense", ParentCategory.DEBT);
+    INTEREST_EXPENSE("Interest Expense", ParentCategory.DEBT),
+
+    //Default
+    DEFAULT("Default", ParentCategory.INCOME);
 
     companion object {
         // Map a string to the corresponding enum value

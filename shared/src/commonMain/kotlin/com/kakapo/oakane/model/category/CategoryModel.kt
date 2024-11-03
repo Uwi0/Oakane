@@ -7,11 +7,16 @@ data class CategoryModel(
     val id: Long,
     val name: String,
     val type: TransactionType,
-    val icon: CategoryIconName,
+    val icon: String,
     val color: String,
-    val isDefault: Long
+    val isDefault: Boolean
 ) {
     val formattedColor: Int get() {
         return color.toColorInt()
+    }
+
+    val iconName: CategoryIconName get() {
+        return if (isDefault) CategoryIconName.fromString(icon)
+        else CategoryIconName.SALARY
     }
 }
