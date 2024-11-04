@@ -6,9 +6,6 @@ fun String.asTextEllipsis(maxLine: Int): String {
 }
 
 fun String.toColorInt(): Int {
-    return if (this.startsWith("0x")) {
-        this.removePrefix("0x").toLong(16).toInt()
-    } else {
-        this.toLong(16).toInt()
-    }
+    val normalized = this.uppercase().replace("0X", "")
+    return normalized.toLong(16).toInt()
 }

@@ -96,7 +96,7 @@ internal fun SelectCategoryColorView(uiState: CategoriesState, onEvent: (Categor
             modifier = Modifier.fillMaxWidth(),
             text = { Text(text = "Select Color") },
             onClick = {
-                val hex = hexCode.toColorInt()
+                val hex = "0x$hexCode"
                 onEvent.invoke(CategoriesEvent.SelectedColor(hex))
             }
         )

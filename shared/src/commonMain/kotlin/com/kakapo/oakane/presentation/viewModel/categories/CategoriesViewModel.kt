@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.repository.base.CategoryRepository
+import com.kakapo.oakane.model.category.CategoryIconName
+import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -33,10 +35,9 @@ class CategoriesViewModel(
             is CategoriesEvent.ChangeCategory -> _uiState.update { it.copy(categoryName = event.name) }
             is CategoriesEvent.Selected -> _uiState.update { it.copy(selectedType = event.type) }
             is CategoriesEvent.ChangeSheet -> _uiState.update { it.copy(sheetContent = event.content) }
-            is CategoriesEvent.ChangeColor -> _uiState.update { it.copy(selectedColor = event.hex) }
             is CategoriesEvent.SelectedColor -> _uiState.update { it.updateColor(event.hex) }
             is CategoriesEvent.SelectedIcon -> _uiState.update { it.updateIcon(event.name) }
-            CategoriesEvent.CreateCategory -> createCategory()
+            CategoriesEvent.SaveCategory -> saveCategory()
         }
     }
 
@@ -52,7 +53,15 @@ class CategoriesViewModel(
     }
 
     private fun handleSheet(visibility: Boolean) {
-        _uiState.update { it.copy(showSheet = visibility, categoryName = "") }
+        _uiState.update {
+            it.copy(
+                showSheet = visibility,
+                categoryName = "",
+                selectedType = TransactionType.Expense,
+                selectedColor = "",
+                selectedIcon = CategoryIconName.DEFAULT
+            )
+        }
         if (!visibility) emitEffect(CategoriesEffect.HideSheet)
     }
 
@@ -69,7 +78,7 @@ class CategoriesViewModel(
         }
     }
 
-    private fun createCategory() = viewModelScope.launch {
+    private fun saveCategory() = viewModelScope.launch {
         val category = uiState.value.asCategoryModel()
         repository.save(category).fold(
             onSuccess = {

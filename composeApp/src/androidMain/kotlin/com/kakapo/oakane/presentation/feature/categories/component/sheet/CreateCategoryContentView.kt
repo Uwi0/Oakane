@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
+import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.feature.categories.component.CategoryIconView
@@ -49,7 +50,7 @@ fun CreateCategoryContentView(
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
             text = { Text(text = "Create") },
-            onClick = { onEvent.invoke(CategoriesEvent.CreateCategory)}
+            onClick = { onEvent.invoke(CategoriesEvent.SaveCategory)}
         )
         Spacer(Modifier.size(8.dp))
     }
@@ -126,8 +127,8 @@ private fun CategoryColorSelectionView(
         items(uiState.categoriesColor) { hex ->
             CategoryIconView(
                 icon = R.drawable.ic_empty,
-                color = Color(hex),
-                onClick = { onEvent.invoke(CategoriesEvent.ChangeColor(hex)) }
+                color = Color(hex.toColorInt()),
+                onClick = { onEvent.invoke(CategoriesEvent.SelectedColor(hex)) }
             )
         }
     }
