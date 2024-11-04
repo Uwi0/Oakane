@@ -49,7 +49,7 @@ fun CreateCategoryContentView(
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
             text = { Text(text = "Create") },
-            onClick = {}
+            onClick = { onEvent.invoke(CategoriesEvent.CreateCategory)}
         )
         Spacer(Modifier.size(8.dp))
     }

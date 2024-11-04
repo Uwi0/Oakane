@@ -8,13 +8,25 @@ import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryEntity
 import com.kakapo.oakane.data.database.model.toEntity
 
-class CategoryLocalDatasourceImpl(driver: SqlDriver): CategoryLocalDatasource {
+class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
 
     private val categoryDb = Database.invoke(driver).categoryEntityQueries
 
     override suspend fun getCategories(): Result<List<CategoryEntity>> {
         return proceed {
             categoryDb.getCategories().executeAsList().map(CategoryTable::toEntity)
+        }
+    }
+
+    override suspend fun insertCategory(category: CategoryEntity): Result<Unit> {
+        return proceed {
+            categoryDb.insertCategory(
+                name = category.name,
+                type = category.type,
+                icon = category.icon,
+                color = category.color,
+                isDefault = category.isDefault
+            )
         }
     }
 }

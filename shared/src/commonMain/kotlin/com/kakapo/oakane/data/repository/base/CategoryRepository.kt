@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CategoryRepository {
     suspend fun loadCategories(): Flow<Result<List<CategoryModel>>>
+    suspend fun save(category: CategoryModel): Result<Unit>
 }

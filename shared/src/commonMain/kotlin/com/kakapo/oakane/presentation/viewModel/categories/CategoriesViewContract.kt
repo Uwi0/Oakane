@@ -39,6 +39,16 @@ data class CategoriesState(
         selectedIcon = name,
         sheetContent = CategoriesSheetContent.Create
     )
+
+    fun asCategoryModel(): CategoryModel {
+        return CategoryModel(
+            name = categoryName,
+            color = selectedColor.toString(),
+            icon = selectedIcon.displayName,
+            type = selectedType,
+            isDefault = true
+        )
+    }
 }
 
 sealed class CategoriesEffect {
@@ -55,4 +65,5 @@ sealed class CategoriesEvent {
     data class ChangeSheet(val content: CategoriesSheetContent): CategoriesEvent()
     data class SelectedColor(val hex: Int): CategoriesEvent()
     data class SelectedIcon(val name: CategoryIconName): CategoriesEvent()
+    data object CreateCategory : CategoriesEvent()
 }

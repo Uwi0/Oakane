@@ -36,6 +36,7 @@ class CategoriesViewModel(
             is CategoriesEvent.ChangeColor -> _uiState.update { it.copy(selectedColor = event.hex) }
             is CategoriesEvent.SelectedColor -> _uiState.update { it.updateColor(event.hex) }
             is CategoriesEvent.SelectedIcon -> _uiState.update { it.updateIcon(event.name) }
+            CategoriesEvent.CreateCategory -> createCategory()
         }
     }
 
@@ -66,6 +67,20 @@ class CategoriesViewModel(
                 }
             )
         }
+    }
+
+    private fun createCategory() = viewModelScope.launch {
+        val category = uiState.value.asCategoryModel()
+        repository.save(category).fold(
+            onSuccess = {
+                _uiState.update { it.copy(showSheet = false) }
+                loadCategories()
+                Logger.d { "Category created successfully" }
+            },
+            onFailure = {
+                Logger.e(it) { "Failed to create category ${it.message}" }
+            }
+        )
     }
 
     private fun emitEffect(effect: CategoriesEffect) = viewModelScope.launch {

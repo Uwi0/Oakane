@@ -13,6 +13,10 @@ SELECT * FROM CategoryTable;
 checkIfExist:
 SELECT COUNT(*) FROM CategoryTable;
 
+insertCategory:
+INSERT INTO CategoryTable(name, type, icon, color, isDefault)
+VALUES (?, ?, ?, ?, ?);
+
 insertDefaultCategories:
 INSERT INTO CategoryTable (name, type, icon, color, isDefault) VALUES
     -- INCOME
