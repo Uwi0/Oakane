@@ -2,17 +2,15 @@ import Foundation
 import Shared
 
 final class CategoriesViewModel: ObservableObject {
-    @Published var categories: [CategoryModel] = []
-    @Published var selectedTab: Int = 0
-    @Published var searchQuery: String = ""
+    @Published var uiState = CategoriesState()
     let tabBars = TransactionType.allCases.map(\.name)
     
     var expenseCategories: [CategoryModel] {
-        CategoryModelKt.swiftFilterBy(categories, type: .expense)
+        CategoryModelKt.swiftFilterBy(uiState.categories, type: .expense)
     }
     
     var incomeCategories: [CategoryModel] {
-        CategoryModelKt.swiftFilterBy(categories, type: .income)
+        CategoryModelKt.swiftFilterBy(uiState.categories, type: .income)
     }
     
     private var viewModel: CategoriesViewModelAdapter = Koin.instance.get()
@@ -20,13 +18,20 @@ final class CategoriesViewModel: ObservableObject {
     init() {
         viewModel.observeData { [weak self] uiState in
             DispatchQueue.main.async {
-                self?.categories = uiState.filteredCategories
+                self?.uiState.categories = uiState.filteredCategories
+                self?.uiState.sheetContent = uiState.sheetContent
+                self?.uiState.selectedColor = uiState.defaultSelectedColor
+                self?.uiState.defaultColors = uiState.categoriesColor
             }
         }
     }
     
     func onSearchQueryChanged(query: String) {
         viewModel.handleEvent(event: CategoriesEvent.Search(query: query))
+    }
+    
+    func onEvent(event: CategoriesEvent) {
+        viewModel.handleEvent(event: event)
     }
     
 }

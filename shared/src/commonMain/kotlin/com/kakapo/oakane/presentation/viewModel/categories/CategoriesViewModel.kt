@@ -28,6 +28,7 @@ class CategoriesViewModel(
     }
 
     fun handleEvent(event: CategoriesEvent) {
+        Logger.d{ "Categories_Event: $event" }
         when (event) {
             is CategoriesEvent.Search -> onSearchQueryChanged(event.query)
             is CategoriesEvent.ChangeTab -> onSelectedTab(event.index)
@@ -54,13 +55,7 @@ class CategoriesViewModel(
 
     private fun handleSheet(visibility: Boolean) {
         _uiState.update {
-            it.copy(
-                showSheet = visibility,
-                categoryName = "",
-                selectedType = TransactionType.Expense,
-                selectedColor = "",
-                selectedIcon = CategoryIconName.DEFAULT
-            )
+            it.updateSheet(visibility)
         }
         if (!visibility) emitEffect(CategoriesEffect.HideSheet)
     }
@@ -82,9 +77,8 @@ class CategoriesViewModel(
         val category = uiState.value.asCategoryModel()
         repository.save(category).fold(
             onSuccess = {
-                _uiState.update { it.copy(showSheet = false) }
+                _uiState.update { it.updateSheet(visibility = false)}
                 loadCategories()
-                Logger.d { "Category created successfully" }
             },
             onFailure = {
                 Logger.e(it) { "Failed to create category ${it.message}" }

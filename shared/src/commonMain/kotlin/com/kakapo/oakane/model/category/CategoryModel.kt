@@ -12,6 +12,8 @@ data class CategoryModel(
     val isDefault: Boolean
 ) {
 
+    val formattedColor: Int get() = color.toColorInt()
+
     val iconName: CategoryIconName get() {
         return if (isDefault) CategoryIconName.fromString(icon)
         else CategoryIconName.SALARY

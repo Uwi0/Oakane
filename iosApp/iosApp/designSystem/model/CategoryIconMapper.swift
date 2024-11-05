@@ -105,6 +105,8 @@ extension CategoryIconName {
             return IconConstant.BanknoteFill
         case .interestExpense:
             return IconConstant.ArrowUpRightCircle
+        case .default:
+            return IconConstant.AppleLogo
         }
     }
 }

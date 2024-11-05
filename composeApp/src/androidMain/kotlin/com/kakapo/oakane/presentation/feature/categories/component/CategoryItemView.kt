@@ -15,7 +15,7 @@ internal fun CategoryItemView(category: CategoryModel) {
         if (category.isDefault) {
             CategoryIconView(
                 icon = category.iconName.asIcon(),
-                color = Color(category.color.toColorInt())
+                color = Color(category.formattedColor)
             )
         } else {
             Text(text = "Not Implemented yet")

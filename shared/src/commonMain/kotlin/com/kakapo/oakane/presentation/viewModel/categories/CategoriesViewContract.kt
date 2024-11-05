@@ -23,7 +23,7 @@ data class CategoriesState(
     }
 
     val defaultSelectedColor: Int get() {
-        return if(selectedColor == "") categories[0].color.toColorInt()
+        return if(selectedColor == "") categories[0].formattedColor
         else selectedColor.toColorInt()
     }
 
@@ -40,6 +40,14 @@ data class CategoriesState(
     fun updateIcon(name: CategoryIconName) = copy(
         selectedIcon = name,
         sheetContent = CategoriesSheetContent.Create
+    )
+
+    fun updateSheet(visibility: Boolean) = copy(
+        showSheet = visibility,
+        categoryName = "",
+        selectedType = TransactionType.Expense,
+        selectedColor = "",
+        selectedIcon = CategoryIconName.DEFAULT
     )
 
     fun asCategoryModel(): CategoryModel {

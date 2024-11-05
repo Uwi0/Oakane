@@ -133,7 +133,3 @@ private fun CategoryColorSelectionView(
         }
     }
 }
-
-
-
-
