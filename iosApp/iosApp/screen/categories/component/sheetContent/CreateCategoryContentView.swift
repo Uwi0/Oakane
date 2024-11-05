@@ -14,7 +14,7 @@ struct CreateCategoryContentView: View {
             TitleView(title: "Category Type")
             CategorySegmentedButtonView(onEvent: onEvent)
             TitleView(title: "Category Color")
-            CategoryColorSeleectionView(uiState: uiState)
+            CategoryColorSeleectionView(uiState: uiState, onEvent: onEvent)
             Spacer()
             FilledButtonView(text: "Save Category", onClick: { onEvent(.SaveCategory())})
                 .frame(height: 48)
@@ -33,12 +33,12 @@ private struct TitleView: View {
 private struct CategoryNameFieldView: View {
     @State private var categoryName: String = ""
     let uiState: CategoriesState
-    let onOvent: (CategoriesEvent) -> Void
+    let onEvent: (CategoriesEvent) -> Void
     
     init(uiState: CategoriesState, onEvent: @escaping (CategoriesEvent) -> Void) {
         categoryName = uiState.categoryName
         self.uiState = uiState
-        self.onOvent = onEvent
+        self.onEvent = onEvent
     }
     
     private var icon: String {
@@ -48,10 +48,13 @@ private struct CategoryNameFieldView: View {
     var body: some View {
         HStack(spacing: 16) {
             CategoryIconView(icon: icon, color: Color(hex: uiState.selectedColor))
+                .onTapGesture {
+                    onEvent(.ChangeSheet(content: .selectIcon))
+                }
             OutlinedTextFieldView(value: $categoryName, placeHolder: "Category Name")
         }
         .onChange(of: categoryName){ newCategoryName in
-            onOvent(.ChangeCategory(name: newCategoryName))
+            onEvent(.ChangeCategory(name: newCategoryName))
         }
         
     }
@@ -79,11 +82,17 @@ private struct CategorySegmentedButtonView: View {
 private struct CategoryColorSeleectionView: View {
     
     let uiState: CategoriesState
+    let onEvent: (CategoriesEvent) -> Void
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 16) {
-                CategoryIconView(icon: IconConstant.Paintbrush, color: Color(hex:uiState.selectedColor))
+                CategoryIconView(
+                    icon: IconConstant.Paintbrush,
+                    color: Color(hex:uiState.selectedColor)
+                ).onTapGesture {
+                    onEvent(.ChangeSheet(content: .selectColor))
+                }
                 ForEach(uiState.defaultColors, id: \.self) { hex in
                     let colorHex = hex.toColorInt()
                     let color = Color(hex: colorHex)
