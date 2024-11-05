@@ -83,6 +83,13 @@ private struct CategoryColorSeleectionView: View {
     
     let uiState: CategoriesState
     let onEvent: (CategoriesEvent) -> Void
+    @State private var selectedColor: Color
+    
+    init(uiState: CategoriesState, onEvent: @escaping (CategoriesEvent) -> Void) {
+        self.uiState = uiState
+        self.onEvent = onEvent
+        self.selectedColor = Color(hex: uiState.selectedColor)
+    }
     
     var body: some View {
         ScrollView(.horizontal) {
@@ -90,8 +97,15 @@ private struct CategoryColorSeleectionView: View {
                 CategoryIconView(
                     icon: IconConstant.Paintbrush,
                     color: Color(hex:uiState.selectedColor)
-                ).onTapGesture {
-                    onEvent(.ChangeSheet(content: .selectColor))
+                )
+                .allowsHitTesting(false)
+                .background {
+                    ColorPicker("CustomColor",selection: $selectedColor)
+                        .labelsHidden()
+                        .onChange(of: selectedColor) { newSelectedColor in
+                            let colorHex = newSelectedColor.toHexString() ?? "0xFFFFFF"
+                            onEvent(.SelectedColor(hex: colorHex))
+                        }
                 }
                 ForEach(uiState.defaultColors, id: \.self) { hex in
                     let colorHex = hex.toColorInt()
