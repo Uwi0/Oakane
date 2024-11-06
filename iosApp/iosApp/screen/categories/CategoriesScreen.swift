@@ -6,12 +6,16 @@ struct CategoriesScreen: View {
     @StateObject private var viewModel = CategoriesViewModel()
     let toolbarContent = ToolBarContent(title: "Categories")
     
-    var bottomSheetSize: PresentationDetent {
+    private var bottomSheetSize: PresentationDetent {
         switch viewModel.uiState.sheetContent {
         case .create: return .medium
         case .selectColor: return .large
         case .selectIcon: return .fraction(0.9)
         }
+    }
+    
+    private var sheetDisable: Bool {
+        viewModel.uiState.sheetContent == CategoriesSheetContent.create
     }
     
     var body: some View {
@@ -32,7 +36,7 @@ struct CategoriesScreen: View {
                     size: 56,
                     xPos: geometry.size.width - FabConstant.xOffset,
                     yPos: geometry.size.height - FabConstant.yOffset,
-                    onClick: { viewModel.uiState.showSheet.toggle() }
+                    onClick: { viewModel.onEvent(event: .ShowSheet(visibility: true)) }
                 )
             }
             .customToolbar(content: toolbarContent, onEvent: onToolbarEvent(toolbarEvent:))
@@ -44,10 +48,13 @@ struct CategoriesScreen: View {
                     case .selectColor:
                         Text("Select Color")
                     case .selectIcon:
-                        SelectCategoryIconView(onEvent: viewModel.onEvent)
+                        SelectCategoryIconView(
+                            uiState: viewModel.uiState,
+                            onEvent: viewModel.onEvent
+                        )
                     }
                 }
-                .presentationDetents([.medium])
+                .presentationDetents([bottomSheetSize])
                 .presentationDragIndicator(.visible)
             }
         }

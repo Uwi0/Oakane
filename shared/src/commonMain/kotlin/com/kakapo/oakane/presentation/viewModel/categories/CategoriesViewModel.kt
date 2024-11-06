@@ -6,6 +6,7 @@ import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.model.category.CategoryIconName
 import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -39,6 +40,7 @@ class CategoriesViewModel(
             is CategoriesEvent.SelectedColor -> _uiState.update { it.updateColor(event.hex) }
             is CategoriesEvent.SelectedIcon -> _uiState.update { it.updateIcon(event.name) }
             CategoriesEvent.SaveCategory -> saveCategory()
+            CategoriesEvent.ConfirmIcon -> _uiState.update { it.confirmSelectedIcon() }
         }
     }
 

@@ -2,9 +2,8 @@ import SwiftUI
 import Shared
 
 struct SelectCategoryIconView: View {
-    
+    let uiState: CategoriesState
     let onEvent: (CategoriesEvent) -> Void
-    @State private var iconName: CategoryIconName? = nil
     
     var body: some View {
         VStack{
@@ -14,8 +13,11 @@ struct SelectCategoryIconView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     ForEach(parentCategories, id: \.name){ parentCategory in
                         SelectionIconItemView(
+                            uiState: uiState,
                             parentCategory: parentCategory,
-                            onEvent: { categoryName in iconName = categoryName }
+                            onEvent: { iconName in
+                                onEvent(.SelectedIcon(name: iconName))
+                            }
                         )
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -27,9 +29,7 @@ struct SelectCategoryIconView: View {
             FilledButtonView(
                 text: "Select Icon",
                 onClick: {
-                    if let iconName {
-                        onEvent(.SelectedIcon(name: iconName))
-                    }
+                    onEvent(.ConfirmIcon())
                 }
             )
             .frame(height: 48)
@@ -39,13 +39,18 @@ struct SelectCategoryIconView: View {
 }
 
 private struct SelectionIconItemView: View {
+    let uiState: CategoriesState
     let parentCategory: ParentCategory
     let onEvent: (CategoryIconName) -> Void
     
     var body: some View {
         VStack(spacing: 8) {
             SelectionHeaderView(parentCategory: parentCategory)
-            CategoryIconContentView(parentCategory: parentCategory, onEvent: onEvent)
+            CategoryIconContentView(
+                uiState: uiState,
+                parentCategory: parentCategory,
+                onEvent: onEvent
+            )
         }
     }
 }
@@ -66,6 +71,7 @@ private struct SelectionHeaderView: View {
 }
 
 private struct CategoryIconContentView: View {
+    let uiState: CategoriesState
     let parentCategory: ParentCategory
     let onEvent: (CategoryIconName) -> Void
     private let column: [GridItem] = [.init(.adaptive(minimum: 48, maximum: 48))]
@@ -74,30 +80,35 @@ private struct CategoryIconContentView: View {
         LazyVGrid(columns: column, alignment: .leading) {
             let categories = categoriesName(parentCategory: parentCategory)
             ForEach(categories, id: \.self) { category in
-                SelectionIconView(category: category, onEvent: onEvent)
+                SelectionIconView(uiState: uiState,category: category, onEvent: onEvent)
             }
         }
     }
 }
 
 struct SelectionIconView: View {
+    let uiState: CategoriesState
     let category: CategoryIconName
     let onEvent: (CategoryIconName) -> Void
+    
+    private var color: Color {
+        uiState.selectedIcon == category ? Color(hex: uiState.selectedColor) : ColorTheme.outline
+    }
+    
+    private var iconName: String {
+        category.asIconCategory()
+    }
 
     var body: some View {
-        Button(action: { onEvent(category) }) {
-            Image(systemName: category.asIconCategory())
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(ColorTheme.outline)
-        }
-        .buttonStyle(PlainButtonStyle())
-        .frame(width: 36, height: 36)
+        CategoryIconView(icon: iconName, color: color)
+            .onTapGesture {
+                onEvent(category)
+            }
     }
 }
 
 #Preview {
-    SelectCategoryIconView { _ in
+    SelectCategoryIconView(uiState: CategoriesState()) { _ in
         
     }
 }

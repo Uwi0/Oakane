@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTex
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.categories.component.CategoriesSheetView
 import com.kakapo.oakane.presentation.feature.categories.component.CategoryItemView
+import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEffect
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
@@ -44,7 +46,12 @@ import org.koin.androidx.compose.koinViewModel
 internal fun CategoriesRoute() {
     val viewModel = koinViewModel<CategoriesViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { targetValue ->
+            targetValue != SheetValue.Hidden || uiState.sheetContent == CategoriesSheetContent.Create
+        }
+    )
 
     LaunchedEffect(Unit) {
         viewModel.initializeData()
@@ -64,7 +71,7 @@ internal fun CategoriesRoute() {
     )
 
     if(uiState.showSheet){
-        CategoriesSheetView(sheetState, uiState = uiState,viewModel::handleEvent)
+        CategoriesSheetView(sheetState = sheetState,uiState = uiState, viewModel::handleEvent)
     }
 }
 

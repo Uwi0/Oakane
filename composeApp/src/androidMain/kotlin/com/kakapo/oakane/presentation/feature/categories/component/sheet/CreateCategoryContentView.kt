@@ -71,7 +71,7 @@ private fun CategoryNameFieldView(
         verticalAlignment = Alignment.CenterVertically
     ) {
         CategoryIconView(
-            icon = uiState.selectedIcon.asIcon(),
+            icon = uiState.defaultIcon.asIcon(),
             color = Color(uiState.defaultSelectedColor),
             onClick = {
                 onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectIcon))

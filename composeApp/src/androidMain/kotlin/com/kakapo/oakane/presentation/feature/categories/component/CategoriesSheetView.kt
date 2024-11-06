@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import com.kakapo.oakane.presentation.feature.categories.component.sheet.CreateCategoryContentView
 import com.kakapo.oakane.presentation.feature.categories.component.sheet.SelectCategoryColorView
@@ -19,15 +20,23 @@ fun CategoriesSheetView(
     uiState: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit
 ) {
+
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = { onEvent.invoke(CategoriesEvent.ShowSheet(visibility = false)) }
+        onDismissRequest = {
+            if (uiState.sheetContent == CategoriesSheetContent.Create) {
+                onEvent.invoke(CategoriesEvent.ShowSheet(visibility = false))
+            }
+        },
     ) {
-        AnimatedContent(targetState = uiState.sheetContent, label = "CategoriesSheetView") { content ->
-            when(content) {
+        AnimatedContent(
+            targetState = uiState.sheetContent,
+            label = "CategoriesSheetView"
+        ) { content ->
+            when (content) {
                 CategoriesSheetContent.Create -> CreateCategoryContentView(uiState, onEvent)
                 CategoriesSheetContent.SelectColor -> SelectCategoryColorView(uiState, onEvent)
-                CategoriesSheetContent.SelectIcon -> SelectCategoryIconView(onEvent)
+                CategoriesSheetContent.SelectIcon -> SelectCategoryIconView(uiState, onEvent)
             }
         }
     }

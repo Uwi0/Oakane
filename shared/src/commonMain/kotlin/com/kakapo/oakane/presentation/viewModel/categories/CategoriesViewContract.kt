@@ -17,15 +17,23 @@ data class CategoriesState(
     val selectedIcon: CategoryIconName = CategoryIconName.DEFAULT,
     val showSheet: Boolean = false,
     val categoryName: String = "",
-){
-    val categoriesColor: List<String> get() {
-        return categories.map { it.color }.distinct()
-    }
+) {
+    val categoriesColor: List<String>
+        get() {
+            return categories.map { it.color }.distinct()
+        }
 
-    val defaultSelectedColor: Int get() {
-        return if(selectedColor == "") categories[0].formattedColor
-        else selectedColor.toColorInt()
-    }
+    val defaultIcon: CategoryIconName
+        get() {
+            return if (selectedIcon == CategoryIconName.DEFAULT) categories[1].iconName
+            else selectedIcon
+        }
+
+    val defaultSelectedColor: Int
+        get() {
+            return if (selectedColor == "") categories[0].formattedColor
+            else selectedColor.toColorInt()
+        }
 
     fun updateCategories(categories: List<CategoryModel>) = copy(
         categories = categories,
@@ -39,7 +47,10 @@ data class CategoriesState(
 
     fun updateIcon(name: CategoryIconName) = copy(
         selectedIcon = name,
-        sheetContent = CategoriesSheetContent.Create
+    )
+
+    fun confirmSelectedIcon() = copy(
+        sheetContent = CategoriesSheetContent.Create,
     )
 
     fun updateSheet(visibility: Boolean) = copy(
@@ -69,10 +80,11 @@ sealed class CategoriesEvent {
     data class Search(val query: String) : CategoriesEvent()
     data class ChangeTab(val index: Int) : CategoriesEvent()
     data class ShowSheet(val visibility: Boolean) : CategoriesEvent()
-    data class ChangeCategory(val name: String): CategoriesEvent()
-    data class Selected(val type: TransactionType): CategoriesEvent()
-    data class ChangeSheet(val content: CategoriesSheetContent): CategoriesEvent()
-    data class SelectedColor(val hex: String): CategoriesEvent()
-    data class SelectedIcon(val name: CategoryIconName): CategoriesEvent()
+    data class ChangeCategory(val name: String) : CategoriesEvent()
+    data class Selected(val type: TransactionType) : CategoriesEvent()
+    data class ChangeSheet(val content: CategoriesSheetContent) : CategoriesEvent()
+    data class SelectedColor(val hex: String) : CategoriesEvent()
+    data class SelectedIcon(val name: CategoryIconName) : CategoriesEvent()
     data object SaveCategory : CategoriesEvent()
+    data object ConfirmIcon : CategoriesEvent()
 }
