@@ -20,8 +20,10 @@ final class CategoriesViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.uiState.categories = uiState.filteredCategories
                 self?.uiState.sheetContent = uiState.sheetContent
+                self?.uiState.categoryName = uiState.categoryName
                 self?.uiState.selectedColor = uiState.defaultSelectedColor
                 self?.uiState.defaultColors = uiState.categoriesColor
+                self?.uiState.selectedIcon = uiState.selectedIcon
             }
         }
     }

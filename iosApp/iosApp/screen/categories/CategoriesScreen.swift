@@ -44,7 +44,7 @@ struct CategoriesScreen: View {
                     case .selectColor:
                         Text("Select Color")
                     case .selectIcon:
-                        Text("Select Icon")
+                        SelectCategoryIconView(onEvent: viewModel.onEvent)
                     }
                 }
                 .presentationDetents([.medium])
