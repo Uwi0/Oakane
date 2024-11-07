@@ -122,6 +122,7 @@ private fun CategoriesContentView(
     AnimatedContent(
         targetState = tab,
         transitionSpec = { slidingContentAnimation() },
+        label = "CategoriesContentViewAnimation",
     ) { selectedTab ->
         val selectedCategories = categories.filter { it.type.ordinal == selectedTab }
         LazyColumn(

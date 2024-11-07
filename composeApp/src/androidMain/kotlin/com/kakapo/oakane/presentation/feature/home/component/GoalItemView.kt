@@ -47,8 +47,7 @@ internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Rp. ${goal.savedMoney}"+
-                            "/${goal.progress}%",
+                    text = "Rp. ${goal.savedMoney}/${goal.progress}%",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline
                 )

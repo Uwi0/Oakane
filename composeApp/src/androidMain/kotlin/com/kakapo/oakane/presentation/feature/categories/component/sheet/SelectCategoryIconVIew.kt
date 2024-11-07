@@ -1,5 +1,8 @@
 package com.kakapo.oakane.presentation.feature.categories.component.sheet
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -16,19 +19,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.common.utils.saveImageUri
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.model.category.CategoryIconName
 import com.kakapo.oakane.model.category.ParentCategory
 import com.kakapo.oakane.model.category.categoryMap
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.categories.component.CategoryIconView
 import com.kakapo.oakane.presentation.ui.model.asIcon
@@ -40,6 +43,25 @@ internal fun SelectCategoryIconView(
     uiState: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit
 ) {
+
+    val context = LocalContext.current
+    val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            uri?.let {
+                context.saveImageUri(it).fold(
+                    onSuccess = { file ->
+                        onEvent.invoke(CategoriesEvent.PickImage(file))
+                    },
+                    onFailure = {
+                        context.showToast("Failed to save image")
+                    }
+                )
+            }
+        }
+    )
+
     Scaffold(
         topBar = {
             Text(
@@ -71,8 +93,16 @@ internal fun SelectCategoryIconView(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                CustomOutlinedButton(
+                    onClick = {
+                        singlePhotoPickerLauncher.launch(PickVisualMediaRequest(mediaType))
+                    }
+                ) {
+                    Text(text = "Take From Gallery")
+                }
                 CustomButton(
                     modifier = Modifier.weight(1f),
                     onClick = { onEvent.invoke(CategoriesEvent.ConfirmIcon) }

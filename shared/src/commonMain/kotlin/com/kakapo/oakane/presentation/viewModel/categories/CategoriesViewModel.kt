@@ -39,8 +39,10 @@ class CategoriesViewModel(
             is CategoriesEvent.ChangeSheet -> _uiState.update { it.copy(sheetContent = event.content) }
             is CategoriesEvent.SelectedColor -> _uiState.update { it.updateColor(event.hex) }
             is CategoriesEvent.SelectedIcon -> _uiState.update { it.updateIcon(event.name) }
+            is CategoriesEvent.PickImage -> _uiState.update { it.updateFileName(event.file) }
             CategoriesEvent.SaveCategory -> saveCategory()
             CategoriesEvent.ConfirmIcon -> _uiState.update { it.confirmSelectedIcon() }
+
         }
     }
 

@@ -15,6 +15,7 @@ data class CategoriesState(
     val sheetContent: CategoriesSheetContent = CategoriesSheetContent.Create,
     val selectedColor: String = "",
     val selectedIcon: CategoryIconName = CategoryIconName.DEFAULT,
+    val fileName: String = "",
     val showSheet: Boolean = false,
     val categoryName: String = "",
 ) {
@@ -47,10 +48,16 @@ data class CategoriesState(
 
     fun updateIcon(name: CategoryIconName) = copy(
         selectedIcon = name,
+        fileName = ""
     )
 
     fun confirmSelectedIcon() = copy(
         sheetContent = CategoriesSheetContent.Create,
+    )
+
+    fun updateFileName(fileName: String) = copy(
+        fileName = fileName,
+        sheetContent = CategoriesSheetContent.Create
     )
 
     fun updateSheet(visibility: Boolean) = copy(
@@ -58,16 +65,18 @@ data class CategoriesState(
         categoryName = "",
         selectedType = TransactionType.Expense,
         selectedColor = "",
-        selectedIcon = CategoryIconName.DEFAULT
+        selectedIcon = CategoryIconName.DEFAULT,
+        fileName = ""
     )
 
     fun asCategoryModel(): CategoryModel {
+        val icon = fileName.ifEmpty { selectedIcon.displayName }
         return CategoryModel(
             name = categoryName,
             color = selectedColor,
-            icon = selectedIcon.displayName,
+            icon = icon,
             type = selectedType,
-            isDefault = true
+            isDefault = fileName.isEmpty()
         )
     }
 }
@@ -87,4 +96,5 @@ sealed class CategoriesEvent {
     data class SelectedIcon(val name: CategoryIconName) : CategoriesEvent()
     data object SaveCategory : CategoriesEvent()
     data object ConfirmIcon : CategoriesEvent()
+    data class PickImage(val file: String): CategoriesEvent()
 }
