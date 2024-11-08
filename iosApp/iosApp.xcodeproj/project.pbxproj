@@ -30,7 +30,7 @@
 		FB4A15742CB247220079FAE0 /* screen */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = screen; sourceTree = "<group>"; };
 		FB4A15802CB2514E0079FAE0 /* modifier */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = modifier; sourceTree = "<group>"; };
 		FB8B8DFA2CBDBAA00014D610 /* viewModel */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = viewModel; sourceTree = "<group>"; };
-		FBE01C142CBEFD9600AD082F /* extensions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = extensions; sourceTree = "<group>"; };
+		FB95D2052CDE12C7002EE7A9 /* common */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = common; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,8 +80,8 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				FB95D2052CDE12C7002EE7A9 /* common */,
 				FB4A15702CB234E70079FAE0 /* designSystem */,
-				FBE01C142CBEFD9600AD082F /* extensions */,
 				FB4A15802CB2514E0079FAE0 /* modifier */,
 				FB4A15742CB247220079FAE0 /* screen */,
 				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
@@ -124,7 +124,7 @@
 				FB4A15742CB247220079FAE0 /* screen */,
 				FB4A15802CB2514E0079FAE0 /* modifier */,
 				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
-				FBE01C142CBEFD9600AD082F /* extensions */,
+				FB95D2052CDE12C7002EE7A9 /* common */,
 			);
 			name = iosApp;
 			packageProductDependencies = (
