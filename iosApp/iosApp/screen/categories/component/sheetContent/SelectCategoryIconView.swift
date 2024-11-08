@@ -1,9 +1,11 @@
 import SwiftUI
 import Shared
+import PhotosUI
 
 struct SelectCategoryIconView: View {
     let uiState: CategoriesState
     let onEvent: (CategoriesEvent) -> Void
+    let onClickedFromGallery: () -> Void
     
     var body: some View {
         VStack{
@@ -21,17 +23,19 @@ struct SelectCategoryIconView: View {
                         )
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    
                 }
             }
             .accessibilityHidden(true)
             
-            FilledButtonView(
-                text: "Select Icon",
-                onClick: {
-                    onEvent(.ConfirmIcon())
-                }
-            )
+            HStack(spacing: 16) {
+                CategoryImagePickerView(onEvent: onEvent)
+                FilledButtonView(
+                    text: "Select Icon",
+                    onClick: {
+                        onEvent(.ConfirmIcon())
+                    }
+                )
+            }
             .frame(height: 48)
         }
         .padding(16)
@@ -107,8 +111,51 @@ struct SelectionIconView: View {
     }
 }
 
-#Preview {
-    SelectCategoryIconView(uiState: CategoriesState()) { _ in
-        
+private struct CategoryImagePickerView: View {
+    
+    let onEvent: (CategoriesEvent) -> Void
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImage: UIImage? = nil
+    
+    var body: some View {
+        PhotosPicker(
+            selection: $selectedItem,
+            matching: .images,
+            photoLibrary: .shared()
+        ){
+            Text("From Gallery")
+                .font(.headline)
+                .foregroundStyle(ColorTheme.primary)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 16)
+                .frame(maxWidth: .infinity)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(ColorTheme.primary, lineWidth: 3)
+                }
+        }
+        .onChange(of: selectedItem){ newItem in
+            Task {
+                if let data = try? await newItem?.loadTransferable(type: Data.self),
+                   let uiImage = UIImage(data: data) {
+                    selectedImage = uiImage
+                    let savedImage = saveImageToFileSystem(image: uiImage)
+                    switch savedImage {
+                    case .success(let imageName):
+                        onEvent(.PickImage(file: imageName))
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
+        }
     }
+}
+
+#Preview {
+    SelectCategoryIconView(
+        uiState: CategoriesState(),
+        onEvent: {_ in },
+        onClickedFromGallery: { }
+    )
 }

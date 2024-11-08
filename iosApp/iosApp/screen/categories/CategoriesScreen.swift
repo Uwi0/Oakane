@@ -50,7 +50,10 @@ struct CategoriesScreen: View {
                     case .selectIcon:
                         SelectCategoryIconView(
                             uiState: viewModel.uiState,
-                            onEvent: viewModel.onEvent
+                            onEvent: viewModel.onEvent,
+                            onClickedFromGallery: {
+                                
+                            }
                         )
                     }
                 }

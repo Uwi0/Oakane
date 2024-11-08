@@ -9,6 +9,7 @@ struct CategoriesState {
     var sheetContent: CategoriesSheetContent = .create
     var categoryName: String = ""
     var selectedIcon: CategoryIconName = .default
+    var imageName: String = ""
     var selectedColor: Int32 = 0
     var defaultColors: [String] = []
 }

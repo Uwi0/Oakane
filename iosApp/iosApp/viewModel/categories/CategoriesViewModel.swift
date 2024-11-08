@@ -25,6 +25,7 @@ final class CategoriesViewModel: ObservableObject {
                 self?.uiState.defaultColors = uiState.categoriesColor
                 self?.uiState.selectedIcon = uiState.defaultIcon
                 self?.uiState.showSheet = uiState.showSheet
+                self?.uiState.imageName = uiState.fileName
             }
         }
     }
