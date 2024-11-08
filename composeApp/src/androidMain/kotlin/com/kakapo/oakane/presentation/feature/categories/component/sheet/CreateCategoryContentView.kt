@@ -1,6 +1,8 @@
 package com.kakapo.oakane.presentation.feature.categories.component.sheet
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -57,7 +59,7 @@ fun CreateCategoryContentView(
         CategoryColorSelectionView(uiState, onEvent)
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
-            text = { Text(text = "Create") },
+            text = { Text(text = "Save Category") },
             onClick = { onEvent.invoke(CategoriesEvent.SaveCategory) }
         )
         Spacer(Modifier.size(8.dp))
@@ -108,6 +110,11 @@ private fun SelectedIconView(uiState: CategoriesState, onEvent: (CategoriesEvent
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
+                .border(
+                    color = Color(uiState.defaultSelectedColor),
+                    width = 3.dp,
+                    shape = CircleShape
+                )
                 .clickable {
                     onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectIcon))
                 },

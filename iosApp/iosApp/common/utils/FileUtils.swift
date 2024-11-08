@@ -16,3 +16,10 @@ func saveImageToFileSystem(image: UIImage) -> Result<String, Error>{
         return .failure(error)
     }
 }
+
+extension FileManager {
+    func getSavedImageURL(fileName: String) -> URL? {
+        let fileURL = temporaryDirectory.appendingPathComponent(fileName)
+        return fileExists(atPath: fileURL.path) ? fileURL : nil
+    }
+}

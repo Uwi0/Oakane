@@ -41,16 +41,14 @@ private struct CategoryNameFieldView: View {
         self.onEvent = onEvent
     }
     
-    private var icon: String {
-        uiState.selectedIcon.asIconCategory()
-    }
     
     var body: some View {
         HStack(spacing: 16) {
-            CategoryIconView(icon: icon, color: Color(hex: uiState.selectedColor))
-                .onTapGesture {
-                    onEvent(.ChangeSheet(content: .selectIcon))
-                }
+            SelectedCategoryIconView(uiState: uiState)
+            .onTapGesture {
+                onEvent(.ChangeSheet(content: .selectIcon))
+            }
+            
             OutlinedTextFieldView(value: $categoryName, placeHolder: "Category Name")
         }
         .onChange(of: categoryName){ newCategoryName in
@@ -59,6 +57,34 @@ private struct CategoryNameFieldView: View {
         
     }
 }
+
+private struct SelectedCategoryIconView: View {
+    
+    let uiState: CategoriesState
+    
+    private var icon: String {
+        uiState.selectedIcon.asIconCategory()
+    }
+    
+    private var color: Color {
+        Color(hex: uiState.selectedColor)
+    }
+    
+    var body: some View {
+        VStack{
+            if uiState.imageName.isEmpty {
+                CategoryIconView(icon: icon, color: color)
+            } else {
+                DisplayImageFileView(fileName: uiState.imageName, width: 48, height: 48)
+                    .overlay{
+                        Circle()
+                            .stroke(color, lineWidth: 3)
+                    }
+            }
+        }
+    }
+}
+
 
 private struct CategorySegmentedButtonView: View {
     
@@ -113,6 +139,9 @@ private struct CategoryColorSeleectionView: View {
                     Circle()
                         .fill(color)
                         .frame(width: 48, height: 48)
+                        .onTapGesture {
+                            onEvent(.SelectedColor(hex: hex))
+                        }
                 }
             }
         }
