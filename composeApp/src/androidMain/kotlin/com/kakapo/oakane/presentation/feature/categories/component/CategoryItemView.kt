@@ -11,17 +11,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.model.asIcon
+import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 
 @Composable
-internal fun CategoryItemView(category: CategoryModel) {
+internal fun CategoryItemView(category: CategoryModel, onEvent: (CategoriesEvent) -> Unit) {
     val context = LocalContext.current
-    RowWrapper {
+    RowWrapper(onClick = { onEvent.invoke(CategoriesEvent.OnTapped(category)) }) {
         if (category.isDefault) {
             CategoryIconView(
                 icon = category.iconName.asIcon(),
@@ -30,7 +30,9 @@ internal fun CategoryItemView(category: CategoryModel) {
         } else {
             val icon = context.getSavedImageUri(category.icon).getOrNull()
             CustomDynamicAsyncImage(
-                modifier = Modifier.size(48.dp).clip(CircleShape),
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape),
                 imageUrl = icon,
                 contentScale = ContentScale.FillBounds
             )

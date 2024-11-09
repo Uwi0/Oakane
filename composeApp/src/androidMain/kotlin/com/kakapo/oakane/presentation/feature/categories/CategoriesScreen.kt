@@ -59,7 +59,7 @@ internal fun CategoriesRoute() {
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 CategoriesEffect.HideSheet -> sheetState.hide()
             }
         }
@@ -70,8 +70,8 @@ internal fun CategoriesRoute() {
         onEvent = viewModel::handleEvent
     )
 
-    if(uiState.showSheet){
-        CategoriesSheetView(sheetState = sheetState,uiState = uiState, viewModel::handleEvent)
+    if (uiState.showSheet) {
+        CategoriesSheetView(sheetState = sheetState, uiState = uiState, viewModel::handleEvent)
     }
 }
 
@@ -100,12 +100,12 @@ private fun CategoriesScreen(
                     onValueChange = { onEvent.invoke(CategoriesEvent.Search(it)) }
                 )
                 CategoriesTabView(uiState.selectedTab, onEvent)
-                CategoriesContentView(uiState.selectedTab, uiState.filteredCategories)
+                CategoriesContentView(uiState.selectedTab, uiState.filteredCategories, onEvent)
             }
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onEvent.invoke(CategoriesEvent.ShowSheet(visibility = true))},
+                onClick = { onEvent.invoke(CategoriesEvent.ShowSheet(visibility = true)) },
                 content = {
                     Icon(imageVector = Icons.Default.Add, contentDescription = null)
                 }
@@ -117,7 +117,8 @@ private fun CategoriesScreen(
 @Composable
 private fun CategoriesContentView(
     tab: Int,
-    categories: List<CategoryModel>
+    categories: List<CategoryModel>,
+    onEvent: (CategoriesEvent) -> Unit
 ) {
     AnimatedContent(
         targetState = tab,
@@ -130,7 +131,7 @@ private fun CategoriesContentView(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(selectedCategories, key = { it.id }) { category ->
-                CategoryItemView(category)
+                CategoryItemView(category, onEvent)
             }
         }
     }

@@ -10,6 +10,24 @@ CREATE TABLE CategoryTable (
 getCategories:
 SELECT * FROM CategoryTable;
 
+getCategory:
+SELECT *
+FROM CategoryTable
+WHERE id = ?;
+
+updateCategory:
+UPDATE CategoryTable
+SET name = ?,
+    type = ?,
+    icon = ?,
+    color = ?,
+    isDefault = ?
+WHERE id = ?;
+
+deleteCategory:
+DELETE FROM CategoryTable
+WHERE id = ?;
+
 checkIfExist:
 SELECT COUNT(*) FROM CategoryTable;
 

@@ -18,6 +18,7 @@ data class CategoriesState(
     val fileName: String = "",
     val showSheet: Boolean = false,
     val categoryName: String = "",
+    val isEditMode: Boolean = false
 ) {
     val categoriesColor: List<String>
         get() {
@@ -69,6 +70,17 @@ data class CategoriesState(
         fileName = ""
     )
 
+    fun tapped(category: CategoryModel) = copy(
+        showSheet = true,
+        sheetContent = CategoriesSheetContent.Create,
+        categoryName = category.name,
+        selectedType = category.type,
+        selectedColor = category.color,
+        selectedIcon = category.iconName,
+        fileName = category.icon,
+        isEditMode = true
+    )
+
     fun asCategoryModel(): CategoryModel {
         val icon = fileName.ifEmpty { selectedIcon.displayName }
         return CategoryModel(
@@ -97,4 +109,5 @@ sealed class CategoriesEvent {
     data object SaveCategory : CategoriesEvent()
     data object ConfirmIcon : CategoriesEvent()
     data class PickImage(val file: String): CategoriesEvent()
+    data class OnTapped(val category: CategoryModel): CategoriesEvent()
 }

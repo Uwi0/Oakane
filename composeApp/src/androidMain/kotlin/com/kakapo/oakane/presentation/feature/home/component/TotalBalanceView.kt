@@ -14,7 +14,7 @@ internal fun TotalBalanceView() {
     ColumnWrapper(modifier = Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "You're Balance"
+            text = "Total Balance"
         )
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),

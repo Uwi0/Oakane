@@ -21,6 +21,13 @@ class CategoryRepositoryImpl(
         emit(result)
     }
 
+    override suspend fun loadCategoryBy(id: Int): Flow<Result<CategoryModel>> = flow {
+        val result = proceedResult(executed = { localDatasource.getCategoryById(id) }) { entity ->
+            entity.toModel()
+        }
+        emit(result)
+    }
+
     override suspend fun save(category: CategoryModel): Result<Unit> {
         return proceedResult(
             executed = { localDatasource.insertCategory(category.toEntity()) },

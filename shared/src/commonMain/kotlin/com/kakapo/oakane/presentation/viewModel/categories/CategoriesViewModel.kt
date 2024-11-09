@@ -42,7 +42,7 @@ class CategoriesViewModel(
             is CategoriesEvent.PickImage -> _uiState.update { it.updateFileName(event.file) }
             CategoriesEvent.SaveCategory -> saveCategory()
             CategoriesEvent.ConfirmIcon -> _uiState.update { it.confirmSelectedIcon() }
-
+            is CategoriesEvent.OnTapped -> _uiState.update { it.tapped(event.category) }
         }
     }
 

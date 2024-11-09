@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation
 
+import co.touchlab.kermit.Logger
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel

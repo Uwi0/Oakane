@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.model.dummyGoals
 import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.home.component.GoalHeaderView
 import com.kakapo.oakane.presentation.feature.home.component.GoalItemView
 import com.kakapo.oakane.presentation.feature.home.component.MonthlyBudgetView
@@ -121,7 +122,10 @@ private fun HomeContentView(
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen(transactions = emptyList()) {
+    AppTheme {
+        HomeScreen(transactions = emptyList()) {
 
+        }
     }
+
 }

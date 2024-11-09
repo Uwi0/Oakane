@@ -18,6 +18,12 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
         }
     }
 
+    override suspend fun getCategoryById(id: Int): Result<CategoryEntity> {
+        return proceed {
+            categoryDb.getCategory(id = id.toLong()).executeAsOne().toEntity()
+        }
+    }
+
     override suspend fun insertCategory(category: CategoryEntity): Result<Unit> {
         return proceed {
             categoryDb.insertCategory(

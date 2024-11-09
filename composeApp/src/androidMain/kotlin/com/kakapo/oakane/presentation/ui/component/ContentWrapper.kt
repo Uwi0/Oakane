@@ -40,12 +40,13 @@ fun ColumnWrapper(
 }
 
 @Composable
-fun RowWrapper(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) {
+fun RowWrapper(modifier: Modifier = Modifier, onClick: () -> Unit = {},content: @Composable RowScope.() -> Unit) {
     Surface(
         modifier = modifier,
         tonalElevation = 2.dp,
         shape = MaterialTheme.shapes.medium,
-        shadowElevation = 2.dp
+        shadowElevation = 2.dp,
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier
