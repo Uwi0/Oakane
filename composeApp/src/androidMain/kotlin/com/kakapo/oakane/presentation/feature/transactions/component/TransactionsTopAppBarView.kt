@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.transactions.OnNavigateBack
-import com.kakapo.oakane.presentation.feature.transactions.TransactionBottomSheet
 import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiEvent
 import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiState
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper

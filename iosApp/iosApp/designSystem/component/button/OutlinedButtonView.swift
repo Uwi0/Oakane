@@ -4,17 +4,19 @@ struct OutlinedButtonView: View {
     
     let text: String
     let onClick: () -> Void
+    var color: Color = ColorTheme.primary
     
     var body: some View {
         Button(action: onClick) {
             Text(text)
-                .foregroundStyle(ColorTheme.primary)
+                .foregroundStyle(color)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 16)
         }
         .overlay {
             RoundedRectangle(cornerRadius: 16)
-                .stroke(ColorTheme.primary, lineWidth: 3)
+                .stroke(color, lineWidth: 2)
         }
     }
 }

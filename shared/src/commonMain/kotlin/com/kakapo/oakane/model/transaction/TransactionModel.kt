@@ -11,9 +11,11 @@ data class TransactionModel(
     val amount: Double = 0.0,
     val note: String = ""
 ) {
-    val formattedDate: String get() {
-        return dateCreated.formatDateWith(pattern = TransactionModel.DATE_FORMAT)
-    }
+    val formattedDate: String
+        get() {
+            return dateCreated.formatDateWith(pattern = TransactionModel.DATE_FORMAT)
+        }
+
     companion object {
         const val DATE_FORMAT = "dd MMM yyyy"
     }

@@ -80,10 +80,10 @@ private fun TransactionScreen(
                     )
                     CustomIconButton(
                         icon = Icons.Default.DeleteOutline,
-                        onClick = { onEvent.invoke(OnDeletedTransaction(transactionModel.id))}
+                        onClick = { onEvent.invoke(OnDeletedTransaction(transactionModel.id)) }
                     )
                 },
-                onNavigateBack = { onEvent.invoke(OnNavigateBack)}
+                onNavigateBack = { onEvent.invoke(OnNavigateBack) }
             )
         },
         content = {

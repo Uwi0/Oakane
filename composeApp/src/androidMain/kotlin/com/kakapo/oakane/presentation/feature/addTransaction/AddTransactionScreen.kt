@@ -26,7 +26,6 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOut
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
-import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -43,7 +42,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
     }
 
     LaunchedEffect(transaction) {
-        if (transactionId != 0L){
+        if (transactionId != 0L) {
             state.initializeData(transaction)
         }
     }

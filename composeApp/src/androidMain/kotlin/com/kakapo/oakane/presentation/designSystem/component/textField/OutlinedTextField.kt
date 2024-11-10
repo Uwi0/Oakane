@@ -25,7 +25,7 @@ fun CustomOutlinedTextField(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         value = value,
-        onValueChange =onValueChange,
+        onValueChange = onValueChange,
         placeholder = { Text(text = placeHolder) },
         label = { Text(text = placeHolder) }
     )

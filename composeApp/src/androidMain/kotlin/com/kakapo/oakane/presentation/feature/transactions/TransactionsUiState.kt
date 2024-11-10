@@ -48,7 +48,7 @@ class TransactionsUiState {
         bottomSheetShown = false
     }
 
-    fun changeFilterCategory(selectedCategory: String){
+    fun changeFilterCategory(selectedCategory: String) {
         this.selectedCategory = selectedCategory
         bottomSheetShown = false
     }
@@ -62,15 +62,15 @@ class TransactionsUiState {
     }
 
     fun onFilterByDate() {
-        if (selectedDate == 0L){
+        if (selectedDate == 0L) {
             showBottomSheet(TransactionBottomSheet.Date)
         } else {
             changeFilterDate(selectedDate = 0L)
         }
     }
 
-    fun onFilterByCategory(){
-        if (selectedCategory == ""){
+    fun onFilterByCategory() {
+        if (selectedCategory == "") {
             showBottomSheet(TransactionBottomSheet.Category)
         } else {
             changeFilterCategory(selectedCategory = "")

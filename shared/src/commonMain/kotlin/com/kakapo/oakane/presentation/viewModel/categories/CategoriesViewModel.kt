@@ -26,7 +26,7 @@ class CategoriesViewModel(
     }
 
     fun handleEvent(event: CategoriesEvent) {
-        Logger.d{ "Categories_Event: $event" }
+        Logger.d { "Categories_Event: $event" }
         when (event) {
             is CategoriesEvent.Search -> onSearchQueryChanged(event.query)
             is CategoriesEvent.ChangeTab -> onSelectedTab(event.index)
@@ -85,7 +85,7 @@ class CategoriesViewModel(
         val category = uiState.value.asCategoryModel()
         repository.save(category).fold(
             onSuccess = {
-                _uiState.update { it.updateSheet(visibility = false)}
+                _uiState.update { it.updateSheet(visibility = false) }
                 loadCategories()
             },
             onFailure = {
@@ -98,7 +98,7 @@ class CategoriesViewModel(
         val category = uiState.value.asCategoryModel()
         repository.update(category).fold(
             onSuccess = {
-                _uiState.update { it.updateSheet(visibility = false)}
+                _uiState.update { it.updateSheet(visibility = false) }
                 loadCategories()
             },
             onFailure = {
@@ -110,6 +110,7 @@ class CategoriesViewModel(
     private fun deleteCategoryBy(id: Long) = viewModelScope.launch {
         repository.deleteCategoryBy(id).fold(
             onSuccess = {
+                _uiState.update { it.copy(showSheet = false) }
                 loadCategories()
             },
             onFailure = {

@@ -1,6 +1,5 @@
 package com.kakapo.oakane.common
 
-import co.touchlab.kermit.Logger
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -22,6 +21,6 @@ actual fun Long.formatDateWith(pattern: String): String {
         dateFormat = pattern
         timeZone = NSTimeZone.localTimeZone
     }
-    val date = NSDate( timeIntervalSinceReferenceDate = this.toDouble() / 1000)
+    val date = NSDate(timeIntervalSinceReferenceDate = this.toDouble() / 1000)
     return formatter.stringFromDate(date)
 }

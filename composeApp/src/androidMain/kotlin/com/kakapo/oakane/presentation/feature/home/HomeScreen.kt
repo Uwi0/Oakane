@@ -33,7 +33,10 @@ import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun HomeRoute(navigateToAddTransaction: (Long) -> Unit, navigateToTransactions: () -> Unit) {
+internal fun HomeRoute(
+    navigateToAddTransaction: (Long) -> Unit,
+    navigateToTransactions: () -> Unit
+) {
     val viewModel = koinViewModel<HomeViewModel>()
 
     val onEvent: (HomeUiEvent) -> Unit = {

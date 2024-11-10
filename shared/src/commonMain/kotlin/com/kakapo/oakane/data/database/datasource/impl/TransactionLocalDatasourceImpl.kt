@@ -29,7 +29,7 @@ class TransactionLocalDatasourceImpl(
     }
 
     override suspend fun getRecentTransactions(): Result<List<TransactionEntity>> {
-        return proceed{
+        return proceed {
             transactionDb.getLastedt3Items().executeAsList().map(TransactionTable::toEntity)
         }
     }
@@ -61,7 +61,7 @@ class TransactionLocalDatasourceImpl(
     }
 
     override suspend fun deleteTransaction(id: Long): Result<Unit> {
-        return  proceed {
+        return proceed {
             transactionDb.deleteTransaction(id)
         }
     }

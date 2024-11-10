@@ -19,7 +19,7 @@ junit = "4.13.2"
 kermit = "2.0.4"
 kotlin = "2.0.21"
 kotlinx-datetime = "0.6.1"
-koin-bom= "4.0.0"
+koin-bom = "4.0.0"
 skie = "0.9.3"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.5"
@@ -50,7 +50,7 @@ koin-android = { module = "io.insert-koin:koin-android" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 koin-core = { module = "io.insert-koin:koin-core" }
-koin-compose = { module = "io.insert-koin:koin-compose"}
+koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-compose-viewmodel-navigation" }

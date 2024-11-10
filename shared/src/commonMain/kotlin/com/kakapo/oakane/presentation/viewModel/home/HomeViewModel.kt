@@ -15,7 +15,8 @@ class HomeViewModel(
 ) : ViewModel() {
 
     val transactions get() = _transactions.asStateFlow()
-    private val _transactions: MutableStateFlow<List<TransactionModel>> = MutableStateFlow(emptyList())
+    private val _transactions: MutableStateFlow<List<TransactionModel>> =
+        MutableStateFlow(emptyList())
 
     fun initializeData() {
         loadRecentTransactions()

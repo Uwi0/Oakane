@@ -28,9 +28,10 @@ struct CategoriesScreen: View {
                     searchQuery: $viewModel.uiState.searchQuery,
                     tabBars: viewModel.tabBars,
                     expenseCategories: viewModel.expenseCategories,
-                    incomeCategories: viewModel.incomeCategories
+                    incomeCategories: viewModel.incomeCategories,
+                    onEvent: viewModel.onEvent
                 )
-                .onChange(of: viewModel.uiState.searchQuery, perform: viewModel.onSearchQueryChanged(query:))
+                .onChange(of: viewModel.uiState.searchQuery, perform: { query in viewModel.onEvent(event: .Search(query: query))})
                 
                 FabButtonView(
                     size: 56,

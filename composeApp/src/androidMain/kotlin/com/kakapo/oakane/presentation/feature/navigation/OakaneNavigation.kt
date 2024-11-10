@@ -7,7 +7,6 @@ import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTrans
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.navigateToAddTransaction
 import com.kakapo.oakane.presentation.feature.categories.navigation.CATEGORIES_ROUTE
 import com.kakapo.oakane.presentation.feature.categories.navigation.categoriesScreen
-import com.kakapo.oakane.presentation.feature.home.navigation.HOME_ROUTE
 import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
 import com.kakapo.oakane.presentation.feature.transaction.navigation.navigateToTransaction
 import com.kakapo.oakane.presentation.feature.transaction.navigation.transactionScreen

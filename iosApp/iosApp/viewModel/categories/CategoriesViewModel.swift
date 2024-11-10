@@ -26,12 +26,10 @@ final class CategoriesViewModel: ObservableObject {
                 self?.uiState.selectedIcon = uiState.defaultIcon
                 self?.uiState.showSheet = uiState.showSheet
                 self?.uiState.imageName = uiState.fileName
+                self?.uiState.categoryId = uiState.categoryId
+                self?.uiState.isEditMode = uiState.isEditMode
             }
         }
-    }
-    
-    func onSearchQueryChanged(query: String) {
-        viewModel.handleEvent(event: CategoriesEvent.Search(query: query))
     }
     
     func onEvent(event: CategoriesEvent) {

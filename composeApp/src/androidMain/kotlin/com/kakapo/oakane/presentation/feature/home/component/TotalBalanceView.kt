@@ -11,7 +11,10 @@ import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 
 @Composable
 internal fun TotalBalanceView() {
-    ColumnWrapper(modifier = Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    ColumnWrapper(
+        modifier = Modifier.padding(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = "Total Balance"

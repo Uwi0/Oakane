@@ -6,7 +6,6 @@ import com.kakapo.oakane.presentation.CategoriesViewModelAdapter
 import com.kakapo.oakane.presentation.HomeViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionsViewModelAdapter
-import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
 import org.koin.core.Koin

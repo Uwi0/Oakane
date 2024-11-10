@@ -30,7 +30,7 @@ fun CustomButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(containerColor = containerColor,),
+        colors = ButtonDefaults.buttonColors(containerColor = containerColor),
         contentPadding = contentPadding,
         content = content,
     )
@@ -194,6 +194,7 @@ private fun CustomButtonContent(
         }
     }
 }
+
 object CustomButtonDefaults {
     const val DisabledOutlinedButtonBorderAlpha = 0.12f
     val OutlinedButtonBorderWidth = 1.dp

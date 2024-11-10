@@ -1,4 +1,5 @@
 package com.kakapo.oakane.presentation.designSystem.theme
+
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF3B6939)

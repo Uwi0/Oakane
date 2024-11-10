@@ -5,7 +5,7 @@ import android.content.Context
 import com.kakapo.oakane.di.initKoin
 import org.koin.dsl.module
 
-class OakaneApplication: Application() {
+class OakaneApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

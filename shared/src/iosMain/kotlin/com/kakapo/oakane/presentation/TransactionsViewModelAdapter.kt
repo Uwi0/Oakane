@@ -27,7 +27,7 @@ class TransactionsViewModelAdapter(
         }
     }
 
-    fun filterTransactionsBy(query: String, type: String, selectedDate: Long){
+    fun filterTransactionsBy(query: String, type: String, selectedDate: Long) {
         val transactionType = if (type.isEmpty()) null else type.asTransactionType()
         viewModel.filterTransactionsBy(query, transactionType, selectedDate)
     }

@@ -16,8 +16,7 @@ struct CreateCategoryContentView: View {
             TitleView(title: "Category Color")
             CategoryColorSeleectionView(uiState: uiState, onEvent: onEvent)
             Spacer()
-            FilledButtonView(text: "Save Category", onClick: { onEvent(.SaveCategory())})
-                .frame(height: 48)
+            CreateCategoryButtonView(uiState: uiState, onEvent: onEvent)
         }
         .padding(16)
     }
@@ -146,6 +145,33 @@ private struct CategoryColorSeleectionView: View {
             }
         }
         .scrollIndicators(.hidden)
+    }
+}
+
+private struct CreateCategoryButtonView: View {
+    let uiState: CategoriesState
+    let onEvent: (CategoriesEvent) -> Void
+    
+    private var isEditMode: Bool {
+        uiState.isEditMode
+    }
+    private var saveTitle: String {
+        isEditMode ? "Update" : "Create"
+    }
+    var body: some View {
+        HStack {
+            if isEditMode {
+                OutlinedButtonView(
+                    text: "Delete",
+                    onClick: {onEvent(.SwipeToDeleteBy(id: uiState.categoryId))},
+                    color: ColorTheme.error
+                )
+            }
+            
+            FilledButtonView(text: saveTitle, onClick: { onEvent(.SaveCategory())})
+            
+        }
+        .frame(height: 48)
     }
 }
 

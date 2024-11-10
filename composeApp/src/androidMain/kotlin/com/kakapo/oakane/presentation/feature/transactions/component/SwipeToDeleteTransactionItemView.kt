@@ -5,7 +5,6 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.presentation.feature.transactions.OnDelete
 import com.kakapo.oakane.presentation.feature.transactions.OnNavigateToTransaction

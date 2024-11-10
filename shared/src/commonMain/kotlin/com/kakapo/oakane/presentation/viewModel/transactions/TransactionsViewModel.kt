@@ -62,10 +62,10 @@ class TransactionsViewModel(
         }
     }
 
-    private fun updateDeletedTransaction(item: TransactionModel){
+    private fun updateDeletedTransaction(item: TransactionModel) {
         val deletedTransaction = _filteredTransactions.value.toMutableList()
         deletedTransaction.remove(item)
-        Logger.d{ "TransactionValue $deletedTransaction"}
+        Logger.d { "TransactionValue $deletedTransaction" }
         _filteredTransactions.update { deletedTransaction }
     }
 

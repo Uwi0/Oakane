@@ -46,11 +46,12 @@ fun SwipeToDeleteBackgroundView(dismissState: SwipeToDismissBoxState) {
         contentAlignment = alignment
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            when(dismissState.dismissDirection){
+            when (dismissState.dismissDirection) {
                 SwipeToDismissBoxValue.StartToEnd -> {
                     DeleteText()
                     DeleteIcon()
                 }
+
                 else -> {
                     DeleteIcon()
                     DeleteText()
@@ -77,7 +78,7 @@ private fun DeleteIcon() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun SwipeToDeleteBackgroundPrev(){
+private fun SwipeToDeleteBackgroundPrev() {
     AppTheme {
         val swipeToDismissBoxState = rememberSwipeToDismissBoxState(
             initialValue = SwipeToDismissBoxValue.EndToStart

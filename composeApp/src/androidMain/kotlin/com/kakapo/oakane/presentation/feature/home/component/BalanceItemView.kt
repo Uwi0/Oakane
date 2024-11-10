@@ -12,7 +12,11 @@ import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
 
 @Composable
-internal fun BalanceItemView(modifier: Modifier = Modifier, balance: Double, type: TransactionType) {
+internal fun BalanceItemView(
+    modifier: Modifier = Modifier,
+    balance: Double,
+    type: TransactionType
+) {
     ConstraintLayout(modifier = modifier) {
         val (icon, detail) = createRefs()
         TransactionTypeIcon(

@@ -2,11 +2,11 @@ package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.oakane.common.proceed
 import com.kakapo.oakane.common.proceedResult
-import com.kakapo.oakane.data.model.TransactionParam
-import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.model.TransactionEntity
+import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.model.toModel
+import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.model.transaction.TransactionModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -38,7 +38,7 @@ class TransactionRepositoryImpl(
     }
 
     override suspend fun loadTransactionBy(id: Long): Result<TransactionModel> {
-        return proceedResult({localDatasource.getTransaction(id)}, TransactionEntity::toModel)
+        return proceedResult({ localDatasource.getTransaction(id) }, TransactionEntity::toModel)
     }
 
     override suspend fun update(transaction: TransactionParam, id: Long): Result<Unit> {

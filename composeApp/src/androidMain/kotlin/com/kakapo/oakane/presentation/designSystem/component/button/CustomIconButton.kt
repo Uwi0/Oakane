@@ -29,7 +29,7 @@ fun CustomOutlinedIconCircleButton(
 ) {
     OutlinedIconButton(
         modifier = modifier,
-        border =  BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
+        border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         onClick = onClick
     ) {
         Icon(

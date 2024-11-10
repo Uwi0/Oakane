@@ -7,6 +7,7 @@ struct CategoriesContentView: View {
     let tabBars: [String]
     let expenseCategories: [CategoryModel]
     let incomeCategories: [CategoryModel]
+    let onEvent: (CategoriesEvent) -> Void
     
     
     var body: some View {
@@ -16,8 +17,12 @@ struct CategoriesContentView: View {
                 .padding(.horizontal, 16)
             TabBarView(currentTab: $selectedTab, tabBarOptions: tabBars)
             TabView(selection: $selectedTab) {
-                CategoriesView(categories: expenseCategories).tag(0)
-                CategoriesView(categories: incomeCategories).tag(1)
+                CategoriesView(categories: expenseCategories, onEvent: onEvent)
+                    .tag(0)
+                    .interactiveDismissDisabled(true)
+                CategoriesView(categories: incomeCategories, onEvent: onEvent)
+                    .tag(1)
+                    .interactiveDismissDisabled(true)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             

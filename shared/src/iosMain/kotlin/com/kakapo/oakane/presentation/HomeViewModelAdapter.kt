@@ -3,7 +3,6 @@ package com.kakapo.oakane.presentation
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModelAdapter(

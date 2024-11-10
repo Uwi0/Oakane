@@ -11,7 +11,7 @@ fun String.asLong() = TransactionType.entries
     ?.toLong() ?: 0
 
 fun Long.asTransactionType(): TransactionType {
-    return if (this.toInt() == TransactionType.Expense.ordinal){
+    return if (this.toInt() == TransactionType.Expense.ordinal) {
         TransactionType.Expense
     } else {
         TransactionType.Income
@@ -19,7 +19,7 @@ fun Long.asTransactionType(): TransactionType {
 }
 
 fun String.asTransactionType(): TransactionType {
-    return when(this){
+    return when (this) {
         TransactionType.Income.name -> TransactionType.Income
         TransactionType.Expense.name -> TransactionType.Expense
         else -> TransactionType.Income

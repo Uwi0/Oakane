@@ -73,17 +73,20 @@ data class CategoriesState(
         categoryId = 0
     )
 
-    fun tapped(category: CategoryModel) = copy(
-        showSheet = true,
-        sheetContent = CategoriesSheetContent.Create,
-        categoryName = category.name,
-        selectedType = category.type,
-        selectedColor = category.color,
-        selectedIcon = category.iconName,
-        fileName = category.icon,
-        isEditMode = true,
-        categoryId = category.id
-    )
+    fun tapped(category: CategoryModel): CategoriesState {
+        val fileName = if (category.isDefault) "" else category.icon
+        return copy(
+            showSheet = true,
+            sheetContent = CategoriesSheetContent.Create,
+            categoryName = category.name,
+            selectedType = category.type,
+            selectedColor = category.color,
+            selectedIcon = category.iconName,
+            fileName = fileName,
+            isEditMode = true,
+            categoryId = category.id
+        )
+    }
 
     fun asCategoryModel(): CategoryModel {
         val icon = fileName.ifEmpty { selectedIcon.displayName }
@@ -114,7 +117,7 @@ sealed class CategoriesEvent {
     data class SelectedIcon(val name: CategoryIconName) : CategoriesEvent()
     data object SaveCategory : CategoriesEvent()
     data object ConfirmIcon : CategoriesEvent()
-    data class PickImage(val file: String): CategoriesEvent()
-    data class OnTapped(val category: CategoryModel): CategoriesEvent()
-    data class SwipeToDeleteBy(val id: Long): CategoriesEvent()
+    data class PickImage(val file: String) : CategoriesEvent()
+    data class OnTapped(val category: CategoryModel) : CategoriesEvent()
+    data class SwipeToDeleteBy(val id: Long) : CategoriesEvent()
 }

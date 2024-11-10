@@ -24,7 +24,7 @@ internal fun FilterCategoryView(state: TransactionsUiState) {
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
             onClick = { state.changeFilterCategory(selectedCategory = "") },
-            content = { Text("Apply filter Category")}
+            content = { Text("Apply filter Category") }
         )
     }
 }
