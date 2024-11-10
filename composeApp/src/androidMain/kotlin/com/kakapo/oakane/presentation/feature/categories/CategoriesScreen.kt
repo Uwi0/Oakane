@@ -33,7 +33,7 @@ import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.categories.component.CategoriesSheetView
-import com.kakapo.oakane.presentation.feature.categories.component.CategoryItemView
+import com.kakapo.oakane.presentation.feature.categories.component.SwipeToDeleteCategoryView
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEffect
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
@@ -131,7 +131,7 @@ private fun CategoriesContentView(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(selectedCategories, key = { it.id }) { category ->
-                CategoryItemView(category, onEvent)
+                SwipeToDeleteCategoryView(category, onEvent)
             }
         }
     }

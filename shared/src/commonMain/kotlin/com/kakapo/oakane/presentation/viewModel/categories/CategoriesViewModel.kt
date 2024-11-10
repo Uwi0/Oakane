@@ -4,9 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.repository.base.CategoryRepository
-import com.kakapo.oakane.model.category.CategoryIconName
-import com.kakapo.oakane.model.transaction.TransactionType
-import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -41,6 +38,7 @@ class CategoriesViewModel(
             is CategoriesEvent.SelectedIcon -> _uiState.update { it.updateIcon(event.name) }
             is CategoriesEvent.PickImage -> _uiState.update { it.updateFileName(event.file) }
             is CategoriesEvent.OnTapped -> _uiState.update { it.tapped(event.category) }
+            is CategoriesEvent.SwipeToDeleteBy -> deleteCategoryBy(event.id)
             CategoriesEvent.SaveCategory -> saveClicked()
             CategoriesEvent.ConfirmIcon -> _uiState.update { it.confirmSelectedIcon() }
         }
@@ -101,6 +99,17 @@ class CategoriesViewModel(
         repository.update(category).fold(
             onSuccess = {
                 _uiState.update { it.updateSheet(visibility = false)}
+                loadCategories()
+            },
+            onFailure = {
+                Logger.e(it) { "Failed to update category ${it.message}" }
+            }
+        )
+    }
+
+    private fun deleteCategoryBy(id: Long) = viewModelScope.launch {
+        repository.deleteCategoryBy(id).fold(
+            onSuccess = {
                 loadCategories()
             },
             onFailure = {

@@ -28,7 +28,6 @@ class CategoryRepositoryImpl(
         emit(result)
     }
 
-
     override suspend fun save(category: CategoryModel): Result<Unit> {
         return proceedResult(
             executed = { localDatasource.insertCategory(category.toEntity()) },
@@ -39,6 +38,10 @@ class CategoryRepositoryImpl(
     override suspend fun update(category: CategoryModel): Result<Unit> {
         val entity = category.toEntity()
         return localDatasource.updateCategory(entity)
+    }
+
+    override suspend fun deleteCategoryBy(id: Long): Result<Unit> {
+        return localDatasource.deleteCategoryBy(id)
     }
 
 }

@@ -48,4 +48,8 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
             )
         }
     }
+
+    override suspend fun deleteCategoryBy(id: Long): Result<Unit> {
+        return proceed { categoryDb.deleteCategory(id) }
+    }
 }

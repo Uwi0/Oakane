@@ -87,10 +87,11 @@ data class CategoriesState(
 
     fun asCategoryModel(): CategoryModel {
         val icon = fileName.ifEmpty { selectedIcon.displayName }
+        val color = selectedColor.ifEmpty { categories[0].color }
         return CategoryModel(
             id = categoryId,
             name = categoryName,
-            color = selectedColor,
+            color = color,
             icon = icon,
             type = selectedType,
             isDefault = fileName.isEmpty()
@@ -115,4 +116,5 @@ sealed class CategoriesEvent {
     data object ConfirmIcon : CategoriesEvent()
     data class PickImage(val file: String): CategoriesEvent()
     data class OnTapped(val category: CategoryModel): CategoriesEvent()
+    data class SwipeToDeleteBy(val id: Long): CategoriesEvent()
 }
