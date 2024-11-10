@@ -1,12 +1,14 @@
 package com.kakapo.oakane.presentation.feature.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTransactionScreen
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.navigateToAddTransaction
 import com.kakapo.oakane.presentation.feature.categories.navigation.CATEGORIES_ROUTE
 import com.kakapo.oakane.presentation.feature.categories.navigation.categoriesScreen
+import com.kakapo.oakane.presentation.feature.home.navigation.HOME_ROUTE
 import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
 import com.kakapo.oakane.presentation.feature.transaction.navigation.navigateToTransaction
 import com.kakapo.oakane.presentation.feature.transaction.navigation.transactionScreen
@@ -15,11 +17,13 @@ import com.kakapo.oakane.presentation.feature.transactions.navigation.transactio
 
 @Composable
 internal fun OakaneNavHost(
-    startDestination: String = CATEGORIES_ROUTE
+    navController: NavHostController,
+    startDestination: String = HOME_ROUTE,
+    openDrawer: () -> Unit
 ) {
-    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = startDestination) {
         homeScreen(
+            openDrawer = openDrawer,
             navigateToAddTransaction = navController::navigateToAddTransaction,
             navigateToTransactions = navController::navigateToTransactions
         )
@@ -32,7 +36,9 @@ internal fun OakaneNavHost(
             navigateToEdit = navController::navigateToAddTransaction,
             navigateBack = navController::popBackStack
         )
-        categoriesScreen()
+        categoriesScreen(
+            navigateBack = navController::popBackStack
+        )
     }
 
 }

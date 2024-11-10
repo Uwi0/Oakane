@@ -8,11 +8,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.model.dummyGoals
 import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.home.component.GoalHeaderView
 import com.kakapo.oakane.presentation.feature.home.component.GoalItemView
@@ -29,20 +33,28 @@ import com.kakapo.oakane.presentation.feature.home.component.MonthlyBudgetView
 import com.kakapo.oakane.presentation.feature.home.component.ShowMoreButtonView
 import com.kakapo.oakane.presentation.feature.home.component.TotalBalanceView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
+import com.kakapo.oakane.presentation.viewModel.home.HomeEffect
+import com.kakapo.oakane.presentation.viewModel.home.HomeEvent
+import com.kakapo.oakane.presentation.viewModel.home.HomeState
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun HomeRoute(
-    navigateToAddTransaction: (Long) -> Unit,
+    openDrawer: () -> Unit,
+    navigateToAddTransaction: () -> Unit,
     navigateToTransactions: () -> Unit
 ) {
     val viewModel = koinViewModel<HomeViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val onEvent: (HomeUiEvent) -> Unit = {
-        when (it) {
-            OnNavigateToAddTransaction -> navigateToAddTransaction.invoke(0L)
-            OnNavigateToTransactions -> navigateToTransactions.invoke()
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                HomeEffect.ToCreateTransaction -> navigateToAddTransaction.invoke()
+                HomeEffect.ToTransactions -> navigateToTransactions.invoke()
+                HomeEffect.OpenDrawer -> openDrawer.invoke()
+            }
         }
     }
 
@@ -50,26 +62,39 @@ internal fun HomeRoute(
         viewModel.initializeData()
     }
 
-    val transactions by viewModel.transactions.collectAsStateWithLifecycle()
-    HomeScreen(transactions = transactions, onEvent = onEvent)
+    HomeScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreen(transactions: List<TransactionModel>, onEvent: (HomeUiEvent) -> Unit) {
+private fun HomeScreen(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("Dashboard")
+                },
+                navigationIcon = {
+                    CustomIconButton(
+                        icon = Icons.Default.Menu,
+                        onClick = { onEvent.invoke(HomeEvent.OpenDrawer) }
+                    )
+                }
+            )
+        },
         content = { paddingValues ->
             HomeContentView(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-                transactions = transactions,
+                transactions = uiState.transactions,
                 onEvent = onEvent
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 shape = MaterialTheme.shapes.medium,
-                onClick = { onEvent.invoke(OnNavigateToAddTransaction) }
+                onClick = { onEvent.invoke(HomeEvent.ToCreateTransaction) }
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
@@ -81,7 +106,7 @@ private fun HomeScreen(transactions: List<TransactionModel>, onEvent: (HomeUiEve
 private fun HomeContentView(
     modifier: Modifier,
     transactions: List<TransactionModel>,
-    onEvent: (HomeUiEvent) -> Unit
+    onEvent: (HomeEvent) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -106,17 +131,17 @@ private fun HomeContentView(
         item {
             ShowMoreButtonView(
                 isVisible = transactions.size == 3,
-                onClick = { onEvent.invoke(OnNavigateToTransactions) }
+                onClick = { onEvent.invoke(HomeEvent.ToTransactions) }
             )
         }
         item {
-            GoalHeaderView(isVisible = true, onAddItem = {})
+            GoalHeaderView(isVisible = dummyGoals().size > 3, onAddItem = {})
         }
         items(dummyGoals().take(3)) { goal ->
             GoalItemView(goal, onClicked = {})
         }
         item {
-            ShowMoreButtonView(isVisible = true, onClick = {})
+            ShowMoreButtonView(isVisible = dummyGoals().size > 3, onClick = {})
         }
 
     }
@@ -126,7 +151,7 @@ private fun HomeContentView(
 @Composable
 private fun HomeScreenPreview() {
     AppTheme {
-        HomeScreen(transactions = emptyList()) {
+        HomeScreen(uiState = HomeState()) {
 
         }
     }

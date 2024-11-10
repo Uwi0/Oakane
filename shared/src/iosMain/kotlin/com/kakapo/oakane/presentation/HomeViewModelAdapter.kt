@@ -18,8 +18,8 @@ class HomeViewModelAdapter(
 
     fun observeState(onStateChange: (List<TransactionModel>) -> Unit) {
         scope.launch {
-            viewModel.transactions.collect { transactions ->
-                onStateChange.invoke(transactions)
+            viewModel.uiState.collect { state ->
+                onStateChange.invoke(state.transactions)
             }
         }
     }

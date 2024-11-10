@@ -26,7 +26,6 @@ class CategoriesViewModel(
     }
 
     fun handleEvent(event: CategoriesEvent) {
-        Logger.d { "Categories_Event: $event" }
         when (event) {
             is CategoriesEvent.Search -> onSearchQueryChanged(event.query)
             is CategoriesEvent.ChangeTab -> onSelectedTab(event.index)
@@ -41,6 +40,7 @@ class CategoriesViewModel(
             is CategoriesEvent.SwipeToDeleteBy -> deleteCategoryBy(event.id)
             CategoriesEvent.SaveCategory -> saveClicked()
             CategoriesEvent.ConfirmIcon -> _uiState.update { it.confirmSelectedIcon() }
+            CategoriesEvent.NavigateBack -> emit(effect = CategoriesEffect.NavigateBack)
         }
     }
 
@@ -59,7 +59,7 @@ class CategoriesViewModel(
         _uiState.update {
             it.updateSheet(visibility)
         }
-        if (!visibility) emitEffect(CategoriesEffect.HideSheet)
+        if (!visibility) emit(CategoriesEffect.HideSheet)
     }
 
     private fun loadCategories() = viewModelScope.launch {
@@ -119,7 +119,7 @@ class CategoriesViewModel(
         )
     }
 
-    private fun emitEffect(effect: CategoriesEffect) = viewModelScope.launch {
+    private fun emit(effect: CategoriesEffect) = viewModelScope.launch {
         _uiEffect.emit(effect)
     }
 }

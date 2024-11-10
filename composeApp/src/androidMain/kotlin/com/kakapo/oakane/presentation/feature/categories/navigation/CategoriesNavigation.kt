@@ -12,8 +12,10 @@ fun NavController.navigateToCategories(navOptions: NavOptions? = null) {
     navigate(CATEGORIES_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.categoriesScreen() {
+fun NavGraphBuilder.categoriesScreen(
+    navigateBack: () -> Unit
+) {
     composable(CATEGORIES_ROUTE) {
-        CategoriesRoute()
+        CategoriesRoute(navigateBack = navigateBack)
     }
 }

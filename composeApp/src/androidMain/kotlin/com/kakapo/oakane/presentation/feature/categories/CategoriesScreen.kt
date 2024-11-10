@@ -43,7 +43,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun CategoriesRoute() {
+internal fun CategoriesRoute(
+    navigateBack: () -> Unit
+) {
     val viewModel = koinViewModel<CategoriesViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(
@@ -61,6 +63,7 @@ internal fun CategoriesRoute() {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 CategoriesEffect.HideSheet -> sheetState.hide()
+                CategoriesEffect.NavigateBack -> navigateBack.invoke()
             }
         }
     }
@@ -85,7 +88,7 @@ private fun CategoriesScreen(
             CustomNavigationTopAppBarView(
                 title = "Categories",
                 tonalElevation = 0.dp,
-                onNavigateBack = {}
+                onNavigateBack = {onEvent.invoke(CategoriesEvent.NavigateBack)}
             )
         },
         content = { paddingValues ->

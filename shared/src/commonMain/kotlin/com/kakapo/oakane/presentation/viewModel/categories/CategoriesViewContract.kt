@@ -103,10 +103,12 @@ data class CategoriesState(
 }
 
 sealed class CategoriesEffect {
+    data object NavigateBack: CategoriesEffect()
     data object HideSheet : CategoriesEffect()
 }
 
 sealed class CategoriesEvent {
+    data object NavigateBack: CategoriesEvent()
     data class Search(val query: String) : CategoriesEvent()
     data class ChangeTab(val index: Int) : CategoriesEvent()
     data class ShowSheet(val visibility: Boolean) : CategoriesEvent()
