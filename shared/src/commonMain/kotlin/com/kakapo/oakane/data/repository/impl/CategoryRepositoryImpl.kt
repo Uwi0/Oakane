@@ -14,25 +14,31 @@ class CategoryRepositoryImpl(
     private val localDatasource: CategoryLocalDatasource
 ) : CategoryRepository {
 
-    override suspend fun loadCategories(): Flow<Result<List<CategoryModel>>> = flow {
+    override fun loadCategories(): Flow<Result<List<CategoryModel>>> = flow {
         val result = proceedResult(localDatasource::getCategories) { entities ->
             entities.map(CategoryEntity::toModel)
         }
         emit(result)
     }
 
-    override suspend fun loadCategoryBy(id: Int): Flow<Result<CategoryModel>> = flow {
-        val result = proceedResult(executed = { localDatasource.getCategoryById(id) }) { entity ->
+    override fun loadCategoryBy(id: Int): Flow<Result<CategoryModel>> = flow {
+        val result = proceedResult(executed = { localDatasource.getCategoryBy(id) }) { entity ->
             entity.toModel()
         }
         emit(result)
     }
+
 
     override suspend fun save(category: CategoryModel): Result<Unit> {
         return proceedResult(
             executed = { localDatasource.insertCategory(category.toEntity()) },
             transform = {}
         )
+    }
+
+    override suspend fun update(category: CategoryModel): Result<Unit> {
+        val entity = category.toEntity()
+        return localDatasource.updateCategory(entity)
     }
 
 }

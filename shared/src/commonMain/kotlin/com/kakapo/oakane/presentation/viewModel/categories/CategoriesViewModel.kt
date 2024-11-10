@@ -40,9 +40,9 @@ class CategoriesViewModel(
             is CategoriesEvent.SelectedColor -> _uiState.update { it.updateColor(event.hex) }
             is CategoriesEvent.SelectedIcon -> _uiState.update { it.updateIcon(event.name) }
             is CategoriesEvent.PickImage -> _uiState.update { it.updateFileName(event.file) }
-            CategoriesEvent.SaveCategory -> saveCategory()
-            CategoriesEvent.ConfirmIcon -> _uiState.update { it.confirmSelectedIcon() }
             is CategoriesEvent.OnTapped -> _uiState.update { it.tapped(event.category) }
+            CategoriesEvent.SaveCategory -> saveClicked()
+            CategoriesEvent.ConfirmIcon -> _uiState.update { it.confirmSelectedIcon() }
         }
     }
 
@@ -77,6 +77,12 @@ class CategoriesViewModel(
         }
     }
 
+    private fun saveClicked() {
+        val isEditMode = uiState.value.isEditMode
+        if (isEditMode) updateCategory()
+        else saveCategory()
+    }
+
     private fun saveCategory() = viewModelScope.launch {
         val category = uiState.value.asCategoryModel()
         repository.save(category).fold(
@@ -86,6 +92,19 @@ class CategoriesViewModel(
             },
             onFailure = {
                 Logger.e(it) { "Failed to create category ${it.message}" }
+            }
+        )
+    }
+
+    private fun updateCategory() = viewModelScope.launch {
+        val category = uiState.value.asCategoryModel()
+        repository.update(category).fold(
+            onSuccess = {
+                _uiState.update { it.updateSheet(visibility = false)}
+                loadCategories()
+            },
+            onFailure = {
+                Logger.e(it) { "Failed to update category ${it.message}" }
             }
         )
     }
