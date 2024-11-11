@@ -12,7 +12,9 @@ class AddTransactionViewModelAdapter(
     private val scope: CoroutineScope
 ) {
     fun initializeData(id: Long) {
-        viewModel.initializeData(id)
+        if (id != 0L){
+            viewModel.initializeData(id)
+        }
     }
 
     fun onClickButton(transaction: TransactionParam, transactionId: Long) {
@@ -22,7 +24,6 @@ class AddTransactionViewModelAdapter(
     fun observeState(onStateChange: (TransactionModel) -> Unit) {
         scope.launch {
             viewModel.transaction.collect { transaction ->
-                Logger.d { "observeState $transaction" }
                 onStateChange.invoke(transaction)
             }
         }

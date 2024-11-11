@@ -3,7 +3,6 @@ import Shared
 
 struct HomeScreen: View {
     @Binding var showDrawer: Bool
-    let goals = GoalModelKt.dummyGoals()
     
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
     @EnvironmentObject private var navigation: AppNavigation
@@ -12,16 +11,19 @@ struct HomeScreen: View {
         GeometryReader { geometryReader in
             ZStack {
                 ColorTheme.surface
-                .ignoresSafeArea(.all)
+                    .ignoresSafeArea(.all)
                 
-                HomeContentView(
-                    showDrawer: $showDrawer,
-                    transactions: viewModel.transactions,
-                    goals: goals,
-                    onShowTransactionClick: {
-                        navigation.navigate(to: .transactions)
-                    }
-                )
+                VStack {
+                    HomeTopBarView(
+                        onClick: {
+                            viewModel.handle(event: .OpenDrawer())
+                        }
+                    )
+                    HomeContentView(
+                        uiState: viewModel.uiState,
+                        onEvent: viewModel.handle(event:)
+                    )
+                }
                 
                 FabButtonView(
                     size: 56,
@@ -36,6 +38,20 @@ struct HomeScreen: View {
         .onAppear {
             viewModel.initViewModel()
         }
-
+        .onChange(of: viewModel.uiEffects, perform: observe(effect:))
+    }
+    
+    private func observe(effect: HomeEffect?) {
+        if let safeEffect = effect {
+            switch onEnum(of: safeEffect) {
+            case .openDrawer:
+                showDrawer = !showDrawer
+            case .toCreateTransaction:
+                navigation.navigate(to: .addTransaction(transactionId: 0))
+            case .toTransactions:
+                navigation.navigate(to: .transactions)
+            }
+        }
+        viewModel.uiEffects = nil
     }
 }
