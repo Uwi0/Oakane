@@ -11,7 +11,6 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		FB26300F2CBBAE4900EB7270 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB26300E2CBBAE4900EB7270 /* Koin.swift */; };
-		FB715DDC2CC8CECE00ECE511 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB715DDB2CC8CECE00ECE511 /* AppNavigation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +21,6 @@
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		FB26300E2CBBAE4900EB7270 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
-		FB715DDB2CC8CECE00ECE511 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +29,7 @@
 		FB4A15802CB2514E0079FAE0 /* modifier */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = modifier; sourceTree = "<group>"; };
 		FB8B8DFA2CBDBAA00014D610 /* viewModel */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = viewModel; sourceTree = "<group>"; };
 		FB95D2052CDE12C7002EE7A9 /* common */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = common; sourceTree = "<group>"; };
+		FBEF5D7F2CE197EB006B814E /* main */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = main; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,14 +81,14 @@
 			children = (
 				FB95D2052CDE12C7002EE7A9 /* common */,
 				FB4A15702CB234E70079FAE0 /* designSystem */,
+				FBEF5D7F2CE197EB006B814E /* main */,
 				FB4A15802CB2514E0079FAE0 /* modifier */,
 				FB4A15742CB247220079FAE0 /* screen */,
 				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
-				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				FB26300E2CBBAE4900EB7270 /* Koin.swift */,
-				FB715DDB2CC8CECE00ECE511 /* AppNavigation.swift */,
-				7555FF8C242A565B00829871 /* Info.plist */,
+				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
+				7555FF8C242A565B00829871 /* Info.plist */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
 			);
 			path = iosApp;
@@ -125,6 +124,7 @@
 				FB4A15802CB2514E0079FAE0 /* modifier */,
 				FB8B8DFA2CBDBAA00014D610 /* viewModel */,
 				FB95D2052CDE12C7002EE7A9 /* common */,
+				FBEF5D7F2CE197EB006B814E /* main */,
 			);
 			name = iosApp;
 			packageProductDependencies = (
@@ -208,7 +208,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB26300F2CBBAE4900EB7270 /* Koin.swift in Sources */,
-				FB715DDC2CC8CECE00ECE511 /* AppNavigation.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

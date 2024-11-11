@@ -1,5 +1,5 @@
 import SwiftUI
-
+import Shared
 
 final class AppNavigation: ObservableObject {
     
@@ -7,6 +7,7 @@ final class AppNavigation: ObservableObject {
         case addTransaction(transactionId: Int64)
         case transactions
         case transaction(transactionId: Int64)
+        case categories
     }
     
     @Published var navPath = NavigationPath()
@@ -21,6 +22,17 @@ final class AppNavigation: ObservableObject {
     
     func navigateToRoot() {
         navPath.removeLast(navPath.count)
+    }
+    
+    func navigateFrom(menu: DrawerMenuNavigation){
+        switch menu {
+        case .dashboard:
+            print("Dashboard")
+        case .transactions:
+            navigate(to: .transactions)
+        case .categories:
+            navigate(to: .categories)
+        }
     }
     
 }

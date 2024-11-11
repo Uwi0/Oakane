@@ -2,6 +2,7 @@ import SwiftUI
 import Shared
 
 struct HomeScreen: View {
+    @Binding var showDrawer: Bool
     let goals = GoalModelKt.dummyGoals()
     
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
@@ -14,6 +15,7 @@ struct HomeScreen: View {
                 .ignoresSafeArea(.all)
                 
                 HomeContentView(
+                    showDrawer: $showDrawer,
                     transactions: viewModel.transactions,
                     goals: goals,
                     onShowTransactionClick: {

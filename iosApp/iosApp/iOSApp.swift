@@ -12,20 +12,7 @@ struct iOSApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack(path: $navigation.navPath) {
-                CategoriesScreen()
-                    .navigationDestination(for: AppNavigation.Destination.self) { destination in
-                        switch destination {
-                        case .addTransaction(let transactionId):
-                            AddTransactionScreen(transactionId: transactionId)
-                        case .transactions:
-                            TransactionsScreen()
-                        case .transaction(let transactionId):
-                            TransactionScreen(transactionId: transactionId)
-                        }
-                    }
-                
-            }
+            ContentView()
             .environmentObject(navigation)
         }
     }

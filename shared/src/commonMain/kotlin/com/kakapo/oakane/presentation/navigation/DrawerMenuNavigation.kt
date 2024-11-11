@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.navigation
+package com.kakapo.oakane.presentation.navigation
 
 enum class DrawerMenuNavigation(val title: String) {
     DASHBOARD("Dashboard"),
