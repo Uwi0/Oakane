@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation
 
-import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.presentation.viewModel.home.HomeEffect
 import com.kakapo.oakane.presentation.viewModel.home.HomeEvent
 import com.kakapo.oakane.presentation.viewModel.home.HomeState

@@ -2,7 +2,6 @@ package com.kakapo.oakane.presentation.feature.addTransaction
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,66 +16,65 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.common.toDateWith
-import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
+import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.oakane.model.transaction.asTransactionType
 import com.kakapo.oakane.presentation.designSystem.component.menu.CustomDropdownMenu
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
-import com.kakapo.oakane.presentation.designSystem.component.textField.CustomNumberOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
+import com.kakapo.oakane.presentation.designSystem.component.textField.OutlinedCurrencyTextField
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
+import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEffect
+import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEvent
+import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionState
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) {
-    val viewmodel = koinViewModel<AddTransactionViewModel>()
-    val transaction by viewmodel.transaction.collectAsStateWithLifecycle()
+    val viewModel = koinViewModel<AddTransactionViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val state = rememberAddTransactionState(
         transactionId = transactionId,
         categories = dummyCategories
     )
 
     LaunchedEffect(Unit) {
-        viewmodel.initializeData(transactionId)
-    }
-
-    LaunchedEffect(transaction) {
-        if (transactionId != 0L) {
-            state.initializeData(transaction)
-        }
-    }
-    val onEvent: (AddTransactionUiEvent) -> Unit = {
-        when (it) {
-            OnNavigateBack -> navigateBack.invoke()
-            OnSaveTransaction -> {
-                val transactionParam = state.getTransaction()
-                viewmodel.onClickButton(transactionParam, transactionId)
-                navigateBack.invoke()
+        viewModel.uiSideEffect.collect { effect ->
+            when (effect) {
+                AddTransactionEffect.NavigateBack -> navigateBack.invoke()
             }
         }
     }
 
-    AddTransactionScreen(state = state, onEvent = onEvent)
+    LaunchedEffect(Unit) {
+        if (transactionId != 0L) {
+            viewModel.initializeData(transactionId)
+        }
+    }
 
-    if (state.isDatePickerDialogShown) {
+    AddTransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+
+    if (uiState.isShowDialog) {
         CustomDatePickerDialog(
-            initialValue = state.selectedDate,
-            onDismiss = { state.toggleDatePickerDialog(false) },
-            onConfirm = state::onSelectedDate
+            initialValue = uiState.date,
+            onDismiss = { viewModel.handleEvent(AddTransactionEvent.Dialog(shown = false)) },
+            onConfirm = { viewModel.handleEvent(AddTransactionEvent.ChangeDate(it))}
         )
     }
 }
 
 @Composable
 private fun AddTransactionScreen(
-    state: AddTransactionState,
-    onEvent: (AddTransactionUiEvent) -> Unit
+    uiState: AddTransactionState,
+    onEvent: (AddTransactionEvent) -> Unit
 ) {
     Scaffold(
         topBar = {
+            val screenTitle = if (uiState.isEditMode) "Edit Transaction" else "Add Transaction"
             CustomNavigationTopAppBarView(
-                title = state.screenTitle,
-                onNavigateBack = { onEvent.invoke(OnNavigateBack) }
+                title = screenTitle,
+                onNavigateBack = { onEvent.invoke(AddTransactionEvent.NavigateBack) }
             )
         },
         content = { paddingValues ->
@@ -91,57 +88,66 @@ private fun AddTransactionScreen(
                 CustomOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Title",
-                    value = state.title,
-                    onValueChange = state::onTitleChanged
+                    value = uiState.title,
+                    onValueChange = { onEvent.invoke(AddTransactionEvent.ChangedTitle(it)) }
                 )
-                CustomNumberOutlinedTextField(
+                OutlinedCurrencyTextField(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Amount",
-                    value = state.amount,
-                    onValueChange = state::onAmountChanged
+                    value = uiState.amount,
+                    prefix = "Rp ",
+                    onValueChange = { onEvent.invoke(AddTransactionEvent.ChangedAmount(it)) }
                 )
-                CustomDropdownMenu(
-                    options = state.transactionOptions,
-                    expanded = state.isTypeExpanded,
-                    onExpandedChange = state::toggleTransactionType,
-                    value = state.selectedTransactionType,
-                    label = "Transaction Type",
-                    onDismissRequest = { state.toggleTransactionType(false) },
-                    onClick = { state.onTransactionTypeChanged(it) }
-                )
-                CustomDropdownMenu(
-                    options = state.categories,
-                    expanded = state.isCategoryExpanded,
-                    onExpandedChange = state::toggleCategoryExpanded,
-                    value = state.selectedCategory,
-                    label = "Category",
-                    onDismissRequest = { state.toggleCategoryExpanded(false) },
-                    onClick = { state.onCategoryChanged(it) }
-                )
+                TransactionTypeDropDown(uiState, onEvent)
+//                CustomDropdownMenu(
+//                    options = state.categories,
+//                    expanded = state.isCategoryExpanded,
+//                    onExpandedChange = state::toggleCategoryExpanded,
+//                    value = state.selectedCategory,
+//                    label = "Category",
+//                    onDismissRequest = { state.toggleCategoryExpanded(false) },
+//                    onClick = { state.onCategoryChanged(it) }
+//                )
                 CustomClickableOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Date",
                     trailingIcon = Icons.Default.Today,
-                    value = state.selectedDate.toDateWith(format = "dd MMM yyyy"),
-                    onClick = { state.toggleDatePickerDialog(true) }
+                    value = uiState.date.toDateWith(format = "dd MMM yyyy"),
+                    onClick = { onEvent.invoke(AddTransactionEvent.Dialog(shown = true)) }
                 )
                 CustomOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Note",
-                    value = state.note,
-                    onValueChange = state::onNoteChanged
+                    value = uiState.note,
+                    onValueChange = { onEvent.invoke(AddTransactionEvent.ChangeNote(it))}
                 )
                 Spacer(Modifier.weight(1f))
-                CustomButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(vertical = 16.dp),
-                    onClick = { onEvent.invoke(OnSaveTransaction) },
-                    content = {
-                        Text(text = state.buttonTitle)
-                    }
-                )
+//                CustomButton(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    contentPadding = PaddingValues(vertical = 16.dp),
+//                    onClick = { onEvent.invoke(OnSaveTransaction) },
+//                    content = {
+//                        Text(text = state.buttonTitle)
+//                    }
+//                )
             }
         }
+    )
+}
+
+@Composable
+private fun TransactionTypeDropDown(
+    uiState: AddTransactionState,
+    onEvent: (AddTransactionEvent) -> Unit
+) {
+    CustomDropdownMenu(
+        options = TransactionType.entries.map { it.name },
+        expanded = uiState.isDropdownExpanded,
+        onExpandedChange = { onEvent.invoke(AddTransactionEvent.DropDownTypeIs(expanded = it)) },
+        value = uiState.transactionType.name,
+        label = "Transaction Type",
+        onDismissRequest = { onEvent.invoke(AddTransactionEvent.DropDownTypeIs(expanded = false)) },
+        onClick = { onEvent.invoke(AddTransactionEvent.ChangeType(it.asTransactionType())) }
     )
 }
 
