@@ -11,11 +11,11 @@ data class CategoryEntity(
     val isDefault: Long
 )
 
-fun CategoryTable.toEntity() = CategoryEntity(
+fun CategoryTable.toCategoryEntity() = CategoryEntity(
     id = id,
     name = name,
     type = type,
     icon = icon,
-    color = color ?: "0xFF4CAF50",
+    color = color,
     isDefault = isDefault
 )

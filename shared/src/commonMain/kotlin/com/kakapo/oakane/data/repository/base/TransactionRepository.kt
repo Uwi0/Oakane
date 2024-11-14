@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
     suspend fun save(transaction: TransactionParam): Result<Unit>
-    fun loadRecentTransactions(): Flow<Result<List<TransactionModel>>>
     fun loadTransactions(): Flow<Result<List<TransactionModel>>>
     suspend fun deleteTransactionBy(id: Long): Result<Unit>
     suspend fun loadTransactionBy(id: Long): Result<TransactionModel>

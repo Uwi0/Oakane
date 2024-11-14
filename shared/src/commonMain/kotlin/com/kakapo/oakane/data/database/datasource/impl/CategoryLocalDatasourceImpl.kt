@@ -6,7 +6,7 @@ import com.kakapo.Database
 import com.kakapo.oakane.common.proceed
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryEntity
-import com.kakapo.oakane.data.database.model.toEntity
+import com.kakapo.oakane.data.database.model.toCategoryEntity
 
 class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
 
@@ -14,13 +14,13 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
 
     override suspend fun getCategories(): Result<List<CategoryEntity>> {
         return proceed {
-            categoryDb.getCategories().executeAsList().map(CategoryTable::toEntity)
+            categoryDb.getCategories().executeAsList().map(CategoryTable::toCategoryEntity)
         }
     }
 
     override suspend fun getCategoryBy(id: Int): Result<CategoryEntity> {
         return proceed {
-            categoryDb.getCategory(id = id.toLong()).executeAsOne().toEntity()
+            categoryDb.getCategory(id = id.toLong()).executeAsOne().toCategoryEntity()
         }
     }
 

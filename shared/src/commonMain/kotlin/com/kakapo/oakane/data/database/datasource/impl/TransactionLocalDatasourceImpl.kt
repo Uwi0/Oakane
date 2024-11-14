@@ -2,11 +2,11 @@ package com.kakapo.oakane.data.database.datasource.impl
 
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
-import com.kakapo.TransactionTable
+import com.kakapo.GetTransactions
 import com.kakapo.oakane.common.proceed
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.model.TransactionEntity
-import com.kakapo.oakane.data.database.model.toEntity
+import com.kakapo.oakane.data.database.model.toTransactionEntity
 
 class TransactionLocalDatasourceImpl(
     driver: SqlDriver
@@ -15,34 +15,30 @@ class TransactionLocalDatasourceImpl(
     private val transactionDb = Database.invoke(driver).transactionEntityQueries
 
     override suspend fun insertTransaction(entity: TransactionEntity): Result<Unit> {
-        return proceed {
+        return runCatching {
             transactionDb.insert(
                 id = null,
                 title = entity.title,
                 amount = entity.amount,
                 type = entity.type,
-                category = entity.category,
+                category = entity.category.id,
                 dateCreated = entity.dateCreated,
                 note = entity.note
             )
         }
     }
 
-    override suspend fun getRecentTransactions(): Result<List<TransactionEntity>> {
-        return proceed {
-            transactionDb.getLastedt3Items().executeAsList().map(TransactionTable::toEntity)
-        }
-    }
-
     override suspend fun getTransactions(): Result<List<TransactionEntity>> {
-        return proceed {
-            transactionDb.getTransactions().executeAsList().map(TransactionTable::toEntity)
+        return runCatching {
+            transactionDb.getTransactions()
+                .executeAsList()
+                .map(GetTransactions::toTransactionEntity)
         }
     }
 
     override suspend fun getTransaction(id: Long): Result<TransactionEntity> {
         return proceed {
-            transactionDb.getTransaction(id).executeAsList().first().toEntity()
+            transactionDb.getTransactionBy(id).executeAsList().first().toTransactionEntity()
         }
     }
 
@@ -52,7 +48,7 @@ class TransactionLocalDatasourceImpl(
                 title = entity.title,
                 amount = entity.amount,
                 type = entity.type,
-                category = entity.category,
+                category = entity.category.id,
                 dateCreated = entity.dateCreated,
                 note = entity.note,
                 id = entity.id ?: 0
@@ -61,7 +57,7 @@ class TransactionLocalDatasourceImpl(
     }
 
     override suspend fun deleteTransaction(id: Long): Result<Unit> {
-        return proceed {
+        return runCatching {
             transactionDb.deleteTransaction(id)
         }
     }

@@ -6,9 +6,7 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.model.transaction.TransactionType
-import com.kakapo.oakane.model.transaction.asLong
 
 @Composable
 fun rememberAddTransactionState(
@@ -16,13 +14,11 @@ fun rememberAddTransactionState(
     categories: List<String>
 ) = remember {
     OldAddTransactionState(
-        transactionId = transactionId,
         categories = categories
     )
 }
 
 class OldAddTransactionState(
-    val transactionId: Long,
     val categories: List<String>
 ) {
 
@@ -83,14 +79,6 @@ class OldAddTransactionState(
         this.isDatePickerDialogShown = isShown
     }
 
-    fun getTransaction() = TransactionParam(
-        title = title,
-        amount = amount.toDouble(),
-        type = selectedTransactionType.asLong(),
-        category = selectedCategory,
-        dateCreated = selectedDate,
-        note = note
-    )
 }
 
 val dummyCategories = listOf(

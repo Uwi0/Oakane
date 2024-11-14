@@ -14,7 +14,7 @@ fun CategoryEntity.toModel() = CategoryModel(
     color = color
 )
 
-fun CategoryModel.toEntity() = CategoryEntity(
+fun CategoryModel.toCategoryEntity() = CategoryEntity(
     id = id,
     name = name,
     type = type.ordinal.toLong(),

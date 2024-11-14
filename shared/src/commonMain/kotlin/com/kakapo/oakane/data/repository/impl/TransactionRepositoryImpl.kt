@@ -19,13 +19,6 @@ class TransactionRepositoryImpl(
         return proceed { localDatasource.insertTransaction(transaction.toEntity()) }
     }
 
-    override fun loadRecentTransactions(): Flow<Result<List<TransactionModel>>> = flow {
-        val result = proceedResult(localDatasource::getRecentTransactions) {
-            it.map(TransactionEntity::toModel)
-        }
-        emit(result)
-    }
-
     override fun loadTransactions(): Flow<Result<List<TransactionModel>>> = flow {
         val result = proceedResult(localDatasource::getTransactions) {
             it.map(TransactionEntity::toModel)

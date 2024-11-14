@@ -36,9 +36,9 @@ class HomeViewModel(
 
     private fun loadRecentTransactions() = viewModelScope.launch {
         val onSuccess: (List<TransactionModel>) -> Unit = { transactions ->
-            _uiState.update { it.copy(transactions = transactions) }
+            _uiState.update { it.copy(transactions = transactions.take(3)) }
         }
-        repository.loadRecentTransactions().collect { result ->
+        repository.loadTransactions().collect { result ->
             result.fold(
                 onSuccess = onSuccess,
                 onFailure = { e ->

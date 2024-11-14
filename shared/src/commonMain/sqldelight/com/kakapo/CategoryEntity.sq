@@ -3,7 +3,7 @@ CREATE TABLE CategoryTable (
     name TEXT NOT NULL,
     type INTEGER NOT NULL,
     icon TEXT NOT NULL,
-    color TEXT,
+    color TEXT NOT NULL,
     isDefault INTEGER NOT NULL
 );
 

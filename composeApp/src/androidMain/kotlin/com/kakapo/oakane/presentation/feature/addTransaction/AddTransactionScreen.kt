@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.feature.addTransaction
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.common.toDateWith
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.model.transaction.asTransactionType
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.menu.CustomDropdownMenu
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
@@ -34,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) {
     val viewModel = koinViewModel<AddTransactionViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val state = rememberAddTransactionState(
+    rememberAddTransactionState(
         transactionId = transactionId,
         categories = dummyCategories
     )
@@ -122,14 +125,15 @@ private fun AddTransactionScreen(
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangeNote(it))}
                 )
                 Spacer(Modifier.weight(1f))
-//                CustomButton(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    contentPadding = PaddingValues(vertical = 16.dp),
-//                    onClick = { onEvent.invoke(OnSaveTransaction) },
-//                    content = {
-//                        Text(text = state.buttonTitle)
-//                    }
-//                )
+                val buttonTitle = if(uiState.isEditMode) "Save" else "Add"
+                CustomButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(vertical = 16.dp),
+                    onClick = { onEvent.invoke(AddTransactionEvent.SaveTransaction) },
+                    content = {
+                        Text(text = buttonTitle)
+                    }
+                )
             }
         }
     )

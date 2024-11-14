@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.addTransaction
 
+import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.datetime.Clock
@@ -9,7 +10,7 @@ data class AddTransactionState(
     val title: String = "",
     val amount: String = "0",
     val transactionType: TransactionType = TransactionType.Expense,
-    val category: String = "",
+    val category: CategoryModel = CategoryModel(),
     val date: Long = Clock.System.now().toEpochMilliseconds(),
     val note: String = "",
     val isDropdownExpanded: Boolean = false,

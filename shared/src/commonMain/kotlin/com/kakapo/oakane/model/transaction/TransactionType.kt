@@ -1,8 +1,8 @@
 package com.kakapo.oakane.model.transaction
 
 enum class TransactionType {
-    Expense,
-    Income
+    Income,
+    Expense
 }
 
 fun String.asLong() = TransactionType.entries

@@ -43,7 +43,7 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
                 text = transaction.title.asTextEllipsis(15),
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(text = transaction.category)
+            Text(text = transaction.category.name)
         }
         Spacer(modifier = Modifier.weight(1f))
         Column(

@@ -3,7 +3,7 @@ package com.kakapo.oakane.data.repository.impl
 import com.kakapo.oakane.common.proceedResult
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryEntity
-import com.kakapo.oakane.data.model.toEntity
+import com.kakapo.oakane.data.model.toCategoryEntity
 import com.kakapo.oakane.data.model.toModel
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.model.category.CategoryModel
@@ -30,13 +30,13 @@ class CategoryRepositoryImpl(
 
     override suspend fun save(category: CategoryModel): Result<Unit> {
         return proceedResult(
-            executed = { localDatasource.insertCategory(category.toEntity()) },
+            executed = { localDatasource.insertCategory(category.toCategoryEntity()) },
             transform = {}
         )
     }
 
     override suspend fun update(category: CategoryModel): Result<Unit> {
-        val entity = category.toEntity()
+        val entity = category.toCategoryEntity()
         return localDatasource.updateCategory(entity)
     }
 

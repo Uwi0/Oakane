@@ -3,9 +3,10 @@ CREATE TABLE TransactionTable (
     title TEXT NOT NULL,
     amount REAL NOT NULL,
     type INTEGER NOT NULL,
-    category TEXT NOT NULL,
+    category INTEGER NOT NULL,
     dateCreated INTEGER NOT NULL,
-    note Text
+    note Text,
+    FOREIGN KEY (category) REFERENCES CategoryTable(id)
 );
 
 insert:
@@ -34,10 +35,6 @@ FROM TransactionTable
 ORDER BY dateCreated DESC
 LIMIT 3;
 
-getTransactions:
-SELECT *
-FROM TransactionTable
-ORDER BY dateCreated DESC;
 
 getTransaction:
 SELECT *
@@ -57,3 +54,44 @@ WHERE id = ?;
 deleteTransaction:
 DELETE FROM TransactionTable
 WHERE id = ?;
+
+getTransactions:
+SELECT
+    TransactionTable.id AS transactionId,
+    TransactionTable.title,
+    TransactionTable.amount,
+    TransactionTable.type AS transactionType,
+    TransactionTable.dateCreated,
+    TransactionTable.note,
+    CategoryTable.id AS categoryId,
+    CategoryTable.name AS categoryName,
+    CategoryTable.icon AS categoryIcon,
+    CategoryTable.color AS categoryColor,
+    CategoryTable.isDefault AS defaultCategory
+FROM
+    TransactionTable
+INNER JOIN
+    CategoryTable
+ON
+    TransactionTable.category = CategoryTable.id;
+
+getTransactionBy:
+SELECT
+    TransactionTable.id AS transactionId,
+    TransactionTable.title,
+    TransactionTable.amount,
+    TransactionTable.type AS transactionType,
+    TransactionTable.dateCreated,
+    TransactionTable.note,
+    CategoryTable.id AS categoryId,
+    CategoryTable.name AS categoryName,
+    CategoryTable.icon AS categoryIcon,
+    CategoryTable.color AS categoryColor,
+    CategoryTable.isDefault AS defaultCategory
+FROM
+    TransactionTable
+INNER JOIN
+    CategoryTable
+ON
+    TransactionTable.category = CategoryTable.id
+WHERE transactionId = ?;

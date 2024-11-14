@@ -4,12 +4,12 @@ import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.model.transaction.TransactionType
 
 data class CategoryModel(
-    val id: Long = 0,
-    val name: String,
-    val type: TransactionType,
-    val icon: String,
-    val color: String,
-    val isDefault: Boolean
+    val id: Long = 1,
+    val name: String = "Salary",
+    val type: TransactionType = TransactionType.Income,
+    val icon: String = "Salary",
+    val color: String = "0xFF4CAF50",
+    val isDefault: Boolean = true
 ) {
 
     val formattedColor: Int get() = color.toColorInt()

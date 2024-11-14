@@ -133,7 +133,7 @@ private fun TopContentView(transactionModel: TransactionModel) {
 private fun DetailContentView(transactionModel: TransactionModel) {
     ColumnWrapper(modifier = Modifier.padding(16.dp)) {
         ColumnText(title = "Date", value = transactionModel.formattedDate)
-        ColumnText(title = "Category", value = transactionModel.category)
+        ColumnText(title = "Category", value = transactionModel.category.name)
         ColumnText(title = "Type", value = transactionModel.type.name)
     }
 }
@@ -180,7 +180,6 @@ private fun TransactionScreenPreview() {
         id = 6644,
         title = "Indomie",
         type = TransactionType.Expense,
-        category = "Food",
         dateCreated = 1729655383,
         amount = 1000.0,
         note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
