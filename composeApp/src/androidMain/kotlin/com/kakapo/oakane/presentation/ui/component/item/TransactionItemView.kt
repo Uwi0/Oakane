@@ -1,7 +1,6 @@
 package com.kakapo.oakane.presentation.ui.component.item
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +27,7 @@ import com.kakapo.oakane.presentation.ui.component.transactionColor
 @Composable
 internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> Unit) {
     RowWrapper(
-        modifier = Modifier.clickable { onClick.invoke() },
+        onClick = onClick
     ) {
         Image(
             painter = painterResource(R.drawable.fubuki_stare),

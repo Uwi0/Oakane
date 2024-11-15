@@ -29,6 +29,11 @@ data class AddTransactionState(
         sheetShown = false
     )
 
+    fun update(date: Long) = copy(
+        date = date,
+        isShowDialog = false
+    )
+
     fun copy(transaction: TransactionModel) = copy(
         transactionId = transaction.id,
         title = transaction.title,

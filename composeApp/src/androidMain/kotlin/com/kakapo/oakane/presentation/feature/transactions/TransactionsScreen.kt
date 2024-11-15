@@ -21,63 +21,55 @@ import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.presentation.feature.transactions.component.SwipeToDeleteTransactionView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionBottomSheetView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionTopAppBarView
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEffect
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsState
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TransactionsRoute(navigateBack: () -> Unit, navigateToTransaction: (Long) -> Unit) {
     val viewModel = koinViewModel<TransactionsViewModel>()
-    val transactions by viewModel.transactions.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
-    val state = rememberTransactionUiState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
-        confirmValueChange = { state.bottomSheetShown }
+        confirmValueChange = { uiState.sheetShown }
     )
-    val onEvent: (TransactionsUiEvent) -> Unit = {
-        when (it) {
-            OnNavigateBack -> navigateBack.invoke()
-            OnDismissBottomSheet -> scope.launch {
-                sheetState.hide()
-                state.hideBottomSheet()
-            }
-
-            is OnDelete -> viewModel.deleteTransaction(it.item)
-            is OnNavigateToTransaction -> navigateToTransaction.invoke(it.id)
-        }
-    }
 
     LaunchedEffect(Unit) {
         viewModel.initializeData()
     }
 
-    //TODO: add filter by category
-    LaunchedEffect(
-        state.searchQuery,
-        state.selectedType,
-        state.selectedDate
-    ) {
-        viewModel.filterTransactionsBy(
-            state.searchQuery,
-            state.selectedType,
-            state.selectedDate
-        )
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when(effect) {
+                is TransactionsEffect.ToDetail -> navigateToTransaction.invoke(effect.id)
+                TransactionsEffect.HideSheet -> sheetState.hide()
+                TransactionsEffect.NavigateBack -> navigateBack.invoke()
+            }
+        }
     }
 
-    TransactionsScreen(state = state, transactions = transactions, onEvent = onEvent)
-    if (state.bottomSheetShown) {
-        TransactionBottomSheetView(state = state, sheetState = sheetState, onEvent = onEvent)
+    TransactionsScreen(
+        state = uiState,
+        onEvent = viewModel::handleEvent
+    )
+
+    if (uiState.sheetShown) {
+        TransactionBottomSheetView(
+            state = uiState,
+            sheetState = sheetState,
+            onEvent = viewModel::handleEvent
+        )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TransactionsScreen(
-    state: TransactionsUiState,
-    transactions: List<TransactionModel>,
-    onEvent: (TransactionsUiEvent) -> Unit
+    state: TransactionsState,
+    onEvent: (TransactionsEvent) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -90,7 +82,7 @@ private fun TransactionsScreen(
                 contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                val groupedItems = transactions.groupBy { it.formattedDate }
+                val groupedItems = state.filteredTransactions.groupBy { it.formattedDate }
                 groupedItems.entries.forEach { (date, transactions) ->
                     stickyHeader {
                         Text(date)
@@ -99,7 +91,6 @@ private fun TransactionsScreen(
                         SwipeToDeleteTransactionView(transaction, onEvent = onEvent)
                     }
                 }
-
             }
         }
     )

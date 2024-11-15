@@ -29,7 +29,7 @@ class HomeViewModel(
     fun handleEvent(event: HomeEvent) {
         when(event){
             HomeEvent.ToCreateTransaction -> emit(HomeEffect.ToCreateTransaction)
-            HomeEvent.ToTransactions -> emit(HomeEffect.ToCreateTransaction)
+            HomeEvent.ToTransactions -> emit(HomeEffect.ToTransactions)
             HomeEvent.OpenDrawer -> emit(HomeEffect.OpenDrawer)
         }
     }

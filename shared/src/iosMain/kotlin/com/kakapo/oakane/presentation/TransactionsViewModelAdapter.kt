@@ -21,18 +21,17 @@ class TransactionsViewModelAdapter(
 
     fun observeState(onStateChange: (List<TransactionModel>) -> Unit) {
         scope.launch {
-            viewModel.transactions.collect { transactions ->
-                onStateChange.invoke(transactions)
+            viewModel.uiState.collect { uiState->
+                onStateChange.invoke(uiState.filteredTransactions)
             }
         }
     }
 
     fun filterTransactionsBy(query: String, type: String, selectedDate: Long) {
-        val transactionType = if (type.isEmpty()) null else type.asTransactionType()
-        viewModel.filterTransactionsBy(query, transactionType, selectedDate)
+
     }
 
     fun deleteTransaction(item: TransactionModel) {
-        viewModel.deleteTransaction(item)
+
     }
 }

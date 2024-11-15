@@ -11,12 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
-import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiState
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePicker
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun FilterDateView(state: TransactionsUiState) {
+internal fun FilterDateView(onEvent: (TransactionsEvent) -> Unit) {
     val datePickerState = rememberDatePickerState()
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         CustomDatePicker(state = datePickerState)
@@ -25,8 +25,8 @@ internal fun FilterDateView(state: TransactionsUiState) {
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             onClick = {
-                val selectedDate = datePickerState.selectedDateMillis ?: 0
-                state.changeFilterDate(selectedDate = selectedDate)
+                val timeMillis = datePickerState.selectedDateMillis ?: 0
+                onEvent.invoke(TransactionsEvent.FilterByDate(timeMillis))
             },
             content = {
                 Text("Apply Filter Date")

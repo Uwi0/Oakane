@@ -4,26 +4,25 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
-import com.kakapo.oakane.presentation.feature.transactions.OnDismissBottomSheet
-import com.kakapo.oakane.presentation.feature.transactions.TransactionBottomSheet
-import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiEvent
-import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiState
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsContentSheet
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TransactionBottomSheetView(
-    state: TransactionsUiState,
+    state: TransactionsState,
     sheetState: SheetState,
-    onEvent: (TransactionsUiEvent) -> Unit
+    onEvent: (TransactionsEvent) -> Unit
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = { onEvent.invoke(OnDismissBottomSheet) },
+        onDismissRequest = { onEvent.invoke(TransactionsEvent.HideSheet) },
         content = {
-            when (state.bottomSheetContent) {
-                TransactionBottomSheet.Type -> FilterTypeView(state = state)
-                TransactionBottomSheet.Date -> FilterDateView(state = state)
-                TransactionBottomSheet.Category -> FilterCategoryView(state = state)
+            when(state.sheetContent) {
+                TransactionsContentSheet.Type -> FilterTypeView(state, onEvent)
+                TransactionsContentSheet.Date -> FilterDateView(onEvent)
+                TransactionsContentSheet.Category -> FilterCategoryView(state, onEvent)
             }
         }
     )

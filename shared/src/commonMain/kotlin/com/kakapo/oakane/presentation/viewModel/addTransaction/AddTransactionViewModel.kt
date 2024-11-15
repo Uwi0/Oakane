@@ -45,7 +45,7 @@ class AddTransactionViewModel(
             is AddTransactionEvent.DropDownTypeIs -> _uiState.update { it.dropDownType(event.expanded) }
             is AddTransactionEvent.ChangeType -> updateTransactionType(value = event.value)
             is AddTransactionEvent.Dialog -> _uiState.update { it.copy(isShowDialog = event.shown) }
-            is AddTransactionEvent.ChangeDate -> _uiState.update { it.copy(date = event.value) }
+            is AddTransactionEvent.ChangeDate -> _uiState.update { it.update(date = event.value) }
             is AddTransactionEvent.Sheet -> _uiState.update { it.copy(sheetShown = event.shown) }
             is AddTransactionEvent.SetCategory -> _uiState.update { it.update(category = event.value) }
             AddTransactionEvent.NavigateBack -> emit(AddTransactionEffect.NavigateBack)

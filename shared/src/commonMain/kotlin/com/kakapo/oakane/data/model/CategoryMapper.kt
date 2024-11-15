@@ -5,7 +5,7 @@ import com.kakapo.oakane.data.database.model.CategoryEntity
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.asTransactionType
 
-fun CategoryEntity.toModel() = CategoryModel(
+fun CategoryEntity.toCategoryModel() = CategoryModel(
     id = id,
     name = name,
     type = type.asTransactionType(),

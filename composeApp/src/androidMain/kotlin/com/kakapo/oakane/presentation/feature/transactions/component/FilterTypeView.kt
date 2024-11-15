@@ -14,11 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
-import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiState
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsState
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun FilterTypeView(state: TransactionsUiState) {
+internal fun FilterTypeView(
+    state: TransactionsState,
+    onEvent: (TransactionsEvent) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,14 +40,14 @@ internal fun FilterTypeView(state: TransactionsUiState) {
                 InputChip(
                     label = { Text(type.name) },
                     selected = isNotNull && isSelected,
-                    onClick = { state.changeFilterType(type) }
+                    onClick = { onEvent.invoke(TransactionsEvent.FilterByType(value = type)) }
                 )
             }
         }
 
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = state::hideBottomSheet,
+            onClick = { onEvent.invoke(TransactionsEvent.HideSheet) },
             content = { Text("Apply Filter Type") }
         )
     }

@@ -18,15 +18,15 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
-import com.kakapo.oakane.presentation.feature.transactions.OnNavigateBack
-import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiEvent
-import com.kakapo.oakane.presentation.feature.transactions.TransactionsUiState
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsContentSheet
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsState
 
 @Composable
 internal fun TransactionTopAppBarView(
-    state: TransactionsUiState,
-    onEvent: (TransactionsUiEvent) -> Unit
+    state: TransactionsState,
+    onEvent: (TransactionsEvent) -> Unit
 ) {
     ColumnWrapper(modifier = Modifier.padding(bottom = 8.dp), shapes = RectangleShape) {
         CustomNavigationTopAppBarView(
@@ -34,7 +34,7 @@ internal fun TransactionTopAppBarView(
             shadowElevation = 0.dp,
             tonalElevation = 0.dp,
             onNavigateBack = {
-                onEvent.invoke(OnNavigateBack)
+                onEvent.invoke(TransactionsEvent.NavigateBack)
             }
         )
         SearchTextFieldView(
@@ -43,7 +43,7 @@ internal fun TransactionTopAppBarView(
                 .padding(horizontal = 16.dp, vertical = 4.dp),
             placeHolder = "Search Transaction...",
             value = state.searchQuery,
-            onValueChange = state::onChangedQuery
+            onValueChange = { query -> onEvent.invoke(TransactionsEvent.FilterBy(query)) }
         )
         Row(
             modifier = Modifier
@@ -54,17 +54,32 @@ internal fun TransactionTopAppBarView(
             ChipSelector(
                 title = state.typeTile,
                 isSelected = state.selectedType != null,
-                onClick = state::onFilterByType
+                onClick = {
+                    if (state.selectedType != null)
+                        onEvent.invoke(TransactionsEvent.FilterByType(null))
+                    else
+                        onEvent.invoke(TransactionsEvent.ShowSheet(TransactionsContentSheet.Type))
+                }
             )
             ChipSelector(
                 title = "By Date",
                 isSelected = state.selectedDate != 0L,
-                onClick = state::onFilterByDate
+                onClick = {
+                    if (state.selectedDate != 0L)
+                        onEvent.invoke(TransactionsEvent.FilterByDate(0L))
+                    else
+                    onEvent.invoke(TransactionsEvent.ShowSheet(TransactionsContentSheet.Date))
+                }
             )
             ChipSelector(
                 title = "By Category",
-                isSelected = state.selectedCategory.isNotEmpty(),
-                onClick = state::onFilterByCategory
+                isSelected = state.selectedCategory != null,
+                onClick = {
+                    if (state.selectedCategory != null)
+                        onEvent.invoke(TransactionsEvent.FilterByCategory(null))
+                    else
+                    onEvent.invoke(TransactionsEvent.ShowSheet(TransactionsContentSheet.Category))
+                }
             )
         }
     }
