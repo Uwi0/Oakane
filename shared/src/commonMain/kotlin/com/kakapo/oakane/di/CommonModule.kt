@@ -36,7 +36,7 @@ object CommonModule {
     }
 
     val viewModel: Module = module {
-        viewModel { AddTransactionViewModel(get()) }
+        viewModel { AddTransactionViewModel(get(), get()) }
         viewModel { HomeViewModel(get()) }
         viewModel { TransactionsViewModel(get()) }
         viewModel { TransactionViewModel(get()) }

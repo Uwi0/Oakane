@@ -29,18 +29,6 @@ VALUES (
     ?
 );
 
-getLastedt3Items:
-SELECT *
-FROM TransactionTable
-ORDER BY dateCreated DESC
-LIMIT 3;
-
-
-getTransaction:
-SELECT *
-FROM TransactionTable
-WHERE id = ?;
-
 updateTransaction:
 UPDATE TransactionTable
 SET title = ?,

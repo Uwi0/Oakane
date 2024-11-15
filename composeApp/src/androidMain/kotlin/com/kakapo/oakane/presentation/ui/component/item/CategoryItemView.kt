@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.categories.component
+package com.kakapo.oakane.presentation.ui.component.item
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -14,14 +14,15 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
+import com.kakapo.oakane.presentation.feature.categories.component.CategoryIconView
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.model.asIcon
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 
 @Composable
-internal fun CategoryItemView(category: CategoryModel, onEvent: (CategoriesEvent) -> Unit) {
+fun CategoryItemView(category: CategoryModel, onEvent: () -> Unit) {
     val context = LocalContext.current
-    RowWrapper(onClick = { onEvent.invoke(CategoriesEvent.OnTapped(category)) }) {
+    RowWrapper(onClick = { onEvent.invoke() }) {
         if (category.isDefault) {
             CategoryIconView(
                 icon = category.iconName.asIcon(),

@@ -4,7 +4,7 @@ import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.model.transaction.TransactionType
 
 data class CategoryModel(
-    val id: Long = 1,
+    val id: Long = 0,
     val name: String = "Salary",
     val type: TransactionType = TransactionType.Income,
     val icon: String = "Salary",

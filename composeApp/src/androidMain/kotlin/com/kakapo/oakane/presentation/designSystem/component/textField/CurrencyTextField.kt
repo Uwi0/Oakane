@@ -2,9 +2,6 @@ package com.kakapo.oakane.presentation.designSystem.component.textField
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Money
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -15,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
@@ -25,7 +21,8 @@ import java.util.Locale
 @Composable
 fun OutlinedCurrencyTextField(
     modifier: Modifier = Modifier,
-    placeHolder: String = "0",
+    placeHolder: String,
+    label: String = placeHolder,
     prefix: String,
     value: String,
     enabled: Boolean = true,
@@ -58,6 +55,9 @@ fun OutlinedCurrencyTextField(
             }
             formattedValue = formattedText
             onValueChange(unformattedValue)
+        },
+        label = {
+            Text(label)
         },
         shape = MaterialTheme.shapes.medium,
         textStyle = MaterialTheme.typography.labelLarge,

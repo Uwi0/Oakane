@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Today
+import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +29,7 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.CustomCli
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.OutlinedCurrencyTextField
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEffect
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEvent
@@ -33,14 +37,12 @@ import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionSta
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) {
     val viewModel = koinViewModel<AddTransactionViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    rememberAddTransactionState(
-        transactionId = transactionId,
-        categories = dummyCategories
-    )
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     LaunchedEffect(Unit) {
         viewModel.uiSideEffect.collect { effect ->
@@ -51,9 +53,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
     }
 
     LaunchedEffect(Unit) {
-        if (transactionId != 0L) {
-            viewModel.initializeData(transactionId)
-        }
+        viewModel.initializeData(transactionId)
     }
 
     AddTransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
@@ -62,7 +62,15 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
         CustomDatePickerDialog(
             initialValue = uiState.date,
             onDismiss = { viewModel.handleEvent(AddTransactionEvent.Dialog(shown = false)) },
-            onConfirm = { viewModel.handleEvent(AddTransactionEvent.ChangeDate(it))}
+            onConfirm = { viewModel.handleEvent(AddTransactionEvent.ChangeDate(it)) }
+        )
+    }
+
+    if (uiState.sheetShown) {
+        SelectCategorySheet(
+            sheetState = sheetState,
+            uiState = uiState,
+            onEvent = viewModel::handleEvent
         )
     }
 }
@@ -96,21 +104,20 @@ private fun AddTransactionScreen(
                 )
                 OutlinedCurrencyTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    placeHolder = "Amount",
+                    label = "Amount",
+                    placeHolder = "0",
                     value = uiState.amount,
                     prefix = "Rp ",
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangedAmount(it)) }
                 )
                 TransactionTypeDropDown(uiState, onEvent)
-//                CustomDropdownMenu(
-//                    options = state.categories,
-//                    expanded = state.isCategoryExpanded,
-//                    onExpandedChange = state::toggleCategoryExpanded,
-//                    value = state.selectedCategory,
-//                    label = "Category",
-//                    onDismissRequest = { state.toggleCategoryExpanded(false) },
-//                    onClick = { state.onCategoryChanged(it) }
-//                )
+                CustomClickableOutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    placeHolder = "Category",
+                    trailingIcon = Icons.Outlined.Category,
+                    value = uiState.category.name,
+                    onClick = { onEvent.invoke(AddTransactionEvent.Sheet(shown = true)) }
+                )
                 CustomClickableOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Date",
@@ -122,10 +129,10 @@ private fun AddTransactionScreen(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Note",
                     value = uiState.note,
-                    onValueChange = { onEvent.invoke(AddTransactionEvent.ChangeNote(it))}
+                    onValueChange = { onEvent.invoke(AddTransactionEvent.ChangeNote(it)) }
                 )
                 Spacer(Modifier.weight(1f))
-                val buttonTitle = if(uiState.isEditMode) "Save" else "Add"
+                val buttonTitle = if (uiState.isEditMode) "Save" else "Add"
                 CustomButton(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(vertical = 16.dp),

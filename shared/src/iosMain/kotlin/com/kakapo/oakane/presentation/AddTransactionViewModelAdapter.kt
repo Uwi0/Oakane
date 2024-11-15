@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation
 
-import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
@@ -12,13 +11,11 @@ class AddTransactionViewModelAdapter(
     private val scope: CoroutineScope
 ) {
     fun initializeData(id: Long) {
-        if (id != 0L){
-            viewModel.initializeData(id)
-        }
+        viewModel.initializeData(id)
     }
 
     fun onClickButton(transaction: TransactionParam, transactionId: Long) {
-        viewModel.onClickButton(transaction, transactionId)
+        viewModel.onClickButton()
     }
 
     fun observeState(onStateChange: (TransactionModel) -> Unit) {
