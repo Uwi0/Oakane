@@ -6,7 +6,7 @@ struct TransactionDetailContentView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ColumnTextView(title: "Date", value: transaction.dateCreated.toDateWith(format: "dd MMM yyyy"))
-            ColumnTextView(title: "Category", value: transaction.category)
+            ColumnTextView(title: "Category", value: transaction.category.name)
             ColumnTextView(title: "Type", value: transaction.type.name)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

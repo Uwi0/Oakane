@@ -36,7 +36,6 @@ struct HomeContentView: View {
 }
 
 #Preview {
-    let transactions = TransactionModelKt.dummyValues()
     NavigationView {
         HomeContentView(
             uiState: HomeState(),

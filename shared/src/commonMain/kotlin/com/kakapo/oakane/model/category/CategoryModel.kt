@@ -20,3 +20,11 @@ data class CategoryModel(
             else CategoryIconName.SALARY
         }
 }
+
+val defaultCategoryModel = CategoryModel(
+    id = 1,
+    name = "Salary",
+    type = TransactionType.Income,
+    icon = "Salary",
+    color = "0xFF4CAF50",
+)

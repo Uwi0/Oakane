@@ -1,7 +1,8 @@
 package com.kakapo.oakane.presentation
 
-import com.kakapo.oakane.model.transaction.TransactionModel
-import com.kakapo.oakane.model.transaction.asTransactionType
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEffect
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsState
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -19,19 +20,23 @@ class TransactionsViewModelAdapter(
         viewModel.initializeData()
     }
 
-    fun observeState(onStateChange: (List<TransactionModel>) -> Unit) {
+    fun observeState(onStateChange: (TransactionsState) -> Unit) {
         scope.launch {
             viewModel.uiState.collect { uiState->
-                onStateChange.invoke(uiState.filteredTransactions)
+                onStateChange.invoke(uiState)
             }
         }
     }
 
-    fun filterTransactionsBy(query: String, type: String, selectedDate: Long) {
-
+    fun observeEffect(onEffectChange: (TransactionsEffect) -> Unit) {
+        scope.launch {
+            viewModel.uiEffect.collect { effect ->
+                onEffectChange.invoke(effect)
+            }
+        }
     }
 
-    fun deleteTransaction(item: TransactionModel) {
-
+    fun handleEvent(event: TransactionsEvent){
+        viewModel.handleEvent(event)
     }
 }

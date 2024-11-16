@@ -16,7 +16,7 @@ struct TransactionItemView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(StringExtKt.asTextEllipsis(transaction.title, maxLine: 8))
                     .font(Typography.titleSmall)
-                Text(transaction.category)
+                Text(transaction.category.name)
             }.minimumScaleFactor(1)
             Spacer()
             VStack(alignment: .trailing, spacing: 8) {

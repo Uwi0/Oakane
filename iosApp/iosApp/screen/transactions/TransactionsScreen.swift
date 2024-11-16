@@ -7,13 +7,10 @@ struct TransactionsScreen: View {
     @EnvironmentObject private var navigation: AppNavigation
     
     private var bottomSheetSize: CGFloat {
-        switch(viewModel.bottomSheetContent){
-        case .TransactionType:
-            160
-        case .DateCreated:
-            560
-        case .Categroy:
-            160
+        switch (viewModel.uiState.sheetContent) {
+        case .type: 160
+        case .date: 560
+        case .category: 640
         }
     }
     
@@ -23,44 +20,48 @@ struct TransactionsScreen: View {
             VStack {
                 
                 TransactionTopAppBarView(
-                    query: $viewModel.searchQuery,
-                    selectedType: $viewModel.transactionType,
-                    selectedDate: $viewModel.dateCreated,
-                    selectedCategory: "",
-                    onClick: viewModel.onShowBottomSheet,
-                    onNavigateBack: { navigation.navigateBack() }
+                    uiState: viewModel.uiState,
+                    onEvent: viewModel.handle(event:)
                 )
                 
                 TransactionsView(
-                    transactions: viewModel.transactions,
-                    deleteTransaction: viewModel.deleteTransacion,
-                    onItemClick: { transaction in navigation.navigate(to: .transaction(transactionId: transaction.id)) }
+                    transactions: viewModel.uiState.transactions,
+                    onEvent: viewModel.handle(event:)
                 )
             }
-            .onChange(of: viewModel.searchQuery, perform: viewModel.filterBy(query:))
-            .onChange(of: viewModel.transactionType, perform: viewModel.filterBy(type:))
-            .onChange(of: viewModel.dateCreated, perform: viewModel.filterBy(date:))
+
         }
         .navigationBarBackButtonHidden(true)
-        .sheet(isPresented: $viewModel.showBottomSheet){
+        .sheet(isPresented: $viewModel.uiState.sheetSown){
             VStack {
-                switch viewModel.bottomSheetContent {
-                case .TransactionType:
+                switch viewModel.uiState.sheetContent {
+                case .type:
                     FilterByTypeView(
-                        selectedType: $viewModel.transactionType,
-                        onClick: viewModel.hideBottomSheet
+                        uiState: viewModel.uiState,
+                        onEvent: viewModel.handle(event:)
                     )
-                case .DateCreated:
-                    FilterByDateView(onSelectedDate: viewModel.onSelected(date:))
-                case .Categroy:
+                case .date:
+                    FilterByDateView(onEvent: viewModel.handle(event:))
+                case .category:
                     Text("This fearture is not implemented yet")
                 }
             }
             .presentationDetents([.height(bottomSheetSize)])
             .presentationDragIndicator(.visible)
         }
-        
-        
+        .onChange(of: viewModel.uiEffect, perform: observe(effect:))
+    }
+    
+    private func observe(effect: TransactionsEffect?) {
+        if let sideEffect = effect {
+            switch onEnum(of: sideEffect) {
+            case .hideSheet: print("Hide sheet")
+            case .navigateBack: navigation.navigateBack()
+            case .toDetail(let effect):
+                navigation.navigate(to: .transaction(transactionId: effect.id))
+            }
+        }
+        viewModel.uiEffect = nil
     }
 }
 

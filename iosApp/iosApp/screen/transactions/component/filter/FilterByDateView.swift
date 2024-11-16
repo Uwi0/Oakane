@@ -1,8 +1,11 @@
 import SwiftUI
+import Shared
 
 struct FilterByDateView: View {
+    
     @State private var date: Date = Date()
-    let onSelectedDate: (Int64) -> Void
+    let onEvent: (TransactionsEvent) -> Void
+    
     var body: some View {
         VStack(spacing: 16) {
             Text("Filter by Date")
@@ -14,7 +17,10 @@ struct FilterByDateView: View {
             
             Spacer()
             
-            FilledButtonView(text: "Apply Filter", onClick: {onSelectedDate(Int64(date.timeIntervalSince1970) * 1000)})
+            FilledButtonView(
+                text: "Apply Filter",
+                onClick: {onEvent(.FilterByDate(timeMillis: date.toInt64()))}
+            )
                 .frame(height: 48)
         }
         .padding(.vertical, 24)
@@ -24,5 +30,5 @@ struct FilterByDateView: View {
 }
 
 #Preview {
-    FilterByDateView(onSelectedDate: {_ in})
+    FilterByDateView(onEvent: { _ in })
 }

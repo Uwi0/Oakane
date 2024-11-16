@@ -1,45 +1,53 @@
 import SwiftUI
+import Shared
 
 struct FilterSelectorView: View {
-    @Binding var selectedType: String
-    @Binding var selectedDate: Int64
-    let selectedCategory: String
-    let onClick: (TransactionsUiEvent) -> Void
+    let uiState: TransactionsState
+    let onEvent: (TransactionsEvent) -> Void
+    
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
                 ChipSelectorView(
                     name: "By Type",
-                    isSelected: !selectedType.isEmpty,
-                    onClick: filterByType
+                    isSelected: uiState.selectedType != nil,
+                    onClick: onSelectedType
                 )
                 ChipSelectorView(
                     name: "By Date",
-                    isSelected: selectedDate != 0,
-                    onClick: filterByDate
+                    isSelected: uiState.selectedDate != 0,
+                    onClick: onSelectedDate
                 )
                 ChipSelectorView(
                     name: "By Category",
-                    isSelected: !selectedCategory.isEmpty,
-                    onClick: {onClick(TransactionsUiEvent.Categroy)}
+                    isSelected: uiState.selectedCategory != nil,
+                    onClick: onSelectedCategory
                 )
             }
         }
     }
     
-    func filterByType(){
-        if selectedType.isEmpty {
-            onClick(TransactionsUiEvent.TransactionType)
+    private func onSelectedType() {
+        if uiState.selectedType == nil {
+            onEvent(.ShowSheet(content: .type))
         } else {
-            selectedType = ""
+            onEvent(.FilterByType(value: nil))
         }
     }
     
-    func filterByDate(){
-        if selectedDate == 0 {
-            onClick(TransactionsUiEvent.DateCreated)
+    private func onSelectedDate() {
+        if uiState.selectedDate == 0 {
+            onEvent(.ShowSheet(content: .date))
         } else {
-            selectedDate = 0
+            onEvent(.FilterByDate(timeMillis: 0))
+        }
+    }
+    
+    private func onSelectedCategory() {
+        if uiState.selectedCategory == nil {
+            onEvent(.ShowSheet(content: .category))
+        } else {
+            onEvent(.FilterByCategory(value: nil))
         }
     }
 }
@@ -60,9 +68,7 @@ private struct ChipSelectorView: View {
 
 #Preview {
     FilterSelectorView(
-        selectedType: .constant("InCome"),
-        selectedDate: .constant(0),
-        selectedCategory: "",
-        onClick: {_ in }
+        uiState: TransactionsState(),
+        onEvent: {_ in }
     )
 }

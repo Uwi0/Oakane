@@ -4,8 +4,7 @@ import Shared
 struct TransactionsView: View {
     
     let transactions: [TransactionModel]
-    let deleteTransaction: (IndexSet) -> Void
-    let onItemClick: (TransactionModel) -> Void
+    let onEvent: (TransactionsEvent) -> Void
     
     var body: some View {
         ZStack {
@@ -16,7 +15,7 @@ struct TransactionsView: View {
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                         .onTapGesture {
-                            onItemClick(transaction)
+                            onEvent(.ToDetail(id: transaction.id))
                         }
                 }
                 .onDelete(perform: deleteTransaction)
@@ -27,9 +26,19 @@ struct TransactionsView: View {
         }
         
     }
+    
+    private func deleteTransaction(_ indexSet: IndexSet) {
+        indexSet.forEach { index in
+            let transaction = transactions[index]
+            onEvent(.Delete(transaction: transaction))
+        }
+    }
 }
 
 #Preview {
     let dummyValues = TransactionModelKt.dummyValues()
-    TransactionsView(transactions: dummyValues, deleteTransaction: {_ in}, onItemClick: {_ in})
+    TransactionsView(
+        transactions: dummyValues,
+        onEvent: { _ in }
+    )
 }

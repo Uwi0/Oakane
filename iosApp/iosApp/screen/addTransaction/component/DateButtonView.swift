@@ -1,14 +1,16 @@
 import SwiftUI
 
 struct DateButtonView: View {
-    @Binding var date: Date
+    
     let title: String
-    let onClick: () -> Void
+    let onClick: (Date) -> Void
+    
+    @State private var selectedDate: Date = Date()
     
     
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-            Text(date.formmatTo("dd MMM yyyy"))
+            Text(selectedDate.formmatTo("dd MMM yyyy"))
                 .font(Typography.bodyLarge)
                 .foregroundStyle(ColorTheme.outline)
             Spacer()
@@ -17,12 +19,14 @@ struct DateButtonView: View {
         .padding(16)
         .background(RoundedRectangle(cornerRadius: 16).stroke(ColorTheme.outline, lineWidth: 2))
         .overlay {
-            DatePickerView(date: $date, scaleEffect: 3)
+            DatePickerView(date: $selectedDate.animation(), scaleEffect: 3)
         }
-        
+        .onChange(of: selectedDate) { newDate in
+            onClick(newDate)
+        }
     }
 }
 
 #Preview {
-    DateButtonView(date: .constant(Date()),title: "Today", onClick: {})
+    DateButtonView(title: "Today", onClick: { _ in })
 }

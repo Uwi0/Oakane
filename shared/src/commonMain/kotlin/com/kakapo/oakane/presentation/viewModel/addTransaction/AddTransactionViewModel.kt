@@ -6,7 +6,6 @@ import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
-import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,11 +26,8 @@ class AddTransactionViewModel(
     val uiSideEffect get() = _uiSideEffect.asSharedFlow()
     private val _uiSideEffect = MutableSharedFlow<AddTransactionEffect>()
 
-    val transaction get() = _transaction.asStateFlow()
-    private val _transaction = MutableStateFlow(TransactionModel())
-
     fun initializeData(id: Long) {
-        if (id == 0L) {
+        if (id != 0L) {
             loadTransactionBy(id)
         }
         loadCategories()
@@ -53,7 +49,7 @@ class AddTransactionViewModel(
         }
     }
 
-    fun onClickButton() {
+    private fun onClickButton() {
         val transaction = uiState.value.asTransactionParam()
         val transactionId = uiState.value.transactionId
         if (transactionId == 0L) {
@@ -67,7 +63,6 @@ class AddTransactionViewModel(
         transactionRepository.loadTransactionBy(id).fold(
             onSuccess = { transaction ->
                 _uiState.update { it.copy(transaction) }
-                _transaction.update { transaction }
             },
             onFailure = {
                 Logger.e(throwable = it, messageString = "error load transaction ${it.message}")
@@ -79,8 +74,8 @@ class AddTransactionViewModel(
         categoryRepository.loadCategories().collect { resultCategories ->
             resultCategories.fold(
                 onSuccess = { categories ->
-                    val defaultCategory =
-                        categories.first { it.type == uiState.value.transactionType }
+                    val currentType = uiState.value.transactionType
+                    val defaultCategory = categories.first { it.type == currentType }
                     _uiState.update { it.copy(categories = categories, category = defaultCategory) }
                 },
                 onFailure = {

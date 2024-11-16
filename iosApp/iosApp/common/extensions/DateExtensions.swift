@@ -20,3 +20,9 @@ extension Int64 {
     }
     
 }
+
+extension Date {
+    func toInt64() -> Int64 {
+        return Int64(timeIntervalSince1970 * 1000)
+    }
+}

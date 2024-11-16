@@ -1,23 +1,31 @@
 import SwiftUI
+import Shared
 
 struct TransactionTopAppBarView: View {
-    @Binding var query: String
-    @Binding var selectedType: String
-    @Binding var selectedDate: Int64
-    let selectedCategory: String
-    let onClick: (TransactionsUiEvent) -> Void
-    let onNavigateBack: () -> Void
+    
+    let uiState: TransactionsState
+    let onEvent: (TransactionsEvent) -> Void
+    @State private  var query: String
+    
+    init(uiState: TransactionsState, onEvent: @escaping (TransactionsEvent) -> Void) {
+        self.uiState = uiState
+        self.onEvent = onEvent
+        self.query = uiState.searchQuery
+    }
     
     var body: some View {
         VStack {
             VStack(spacing: 16) {
-                TransactionNavBarView(onClick: onNavigateBack)
+                TransactionNavBarView(onClick: { onEvent(.NavigateBack())})
+                
                 OutlinedSearchTextFieldView(query: $query, placeHolder: "Search Transactions...")
+                    .onChange(of: query) { newQuery in
+                        onEvent(.FilterBy(query: newQuery))
+                    }
+                
                 FilterSelectorView(
-                    selectedType: $selectedType,
-                    selectedDate: $selectedDate,
-                    selectedCategory: selectedCategory,
-                    onClick: onClick
+                    uiState: uiState,
+                    onEvent: onEvent
                 )
             }
             .padding(16)
@@ -29,11 +37,7 @@ struct TransactionTopAppBarView: View {
 
 #Preview {
     TransactionTopAppBarView(
-        query: .constant(""),
-        selectedType: .constant("InCome"),
-        selectedDate: .constant(0),
-        selectedCategory: "",
-        onClick: {_ in },
-        onNavigateBack: {}
+        uiState: TransactionsState(),
+        onEvent: {_ in }
     )
 }
