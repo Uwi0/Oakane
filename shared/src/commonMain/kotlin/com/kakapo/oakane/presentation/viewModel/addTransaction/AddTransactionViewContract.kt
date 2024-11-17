@@ -40,6 +40,7 @@ data class AddTransactionState(
         amount = transaction.amount.toString(),
         transactionType = transaction.type,
         category = transaction.category,
+        note = transaction.note
     )
 
     fun asTransactionParam() = TransactionParam(

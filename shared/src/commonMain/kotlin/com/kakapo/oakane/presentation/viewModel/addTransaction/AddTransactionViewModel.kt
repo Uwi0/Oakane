@@ -27,10 +27,15 @@ class AddTransactionViewModel(
     private val _uiSideEffect = MutableSharedFlow<AddTransactionEffect>()
 
     fun initializeData(id: Long) {
-        if (id != 0L) {
-            loadTransactionBy(id)
+        loadCategories().invokeOnCompletion {
+            if (id != 0L) {
+                loadTransactionBy(id)
+            } else {
+                setDefaultCategory()
+            }
         }
-        loadCategories()
+
+
     }
 
     fun handleEvent(event: AddTransactionEvent) {
@@ -63,6 +68,7 @@ class AddTransactionViewModel(
         transactionRepository.loadTransactionBy(id).fold(
             onSuccess = { transaction ->
                 _uiState.update { it.copy(transaction) }
+                Logger.d{"success load transaction $transaction"}
             },
             onFailure = {
                 Logger.e(throwable = it, messageString = "error load transaction ${it.message}")
@@ -74,9 +80,7 @@ class AddTransactionViewModel(
         categoryRepository.loadCategories().collect { resultCategories ->
             resultCategories.fold(
                 onSuccess = { categories ->
-                    val currentType = uiState.value.transactionType
-                    val defaultCategory = categories.first { it.type == currentType }
-                    _uiState.update { it.copy(categories = categories, category = defaultCategory) }
+                    _uiState.update { it.copy(categories = categories) }
                 },
                 onFailure = {
                     Logger.e(throwable = it, messageString = "error load categories ${it.message}")
@@ -129,8 +133,17 @@ class AddTransactionViewModel(
         }
     }
 
+    private fun setDefaultCategory() {
+        val currentType = uiState.value.transactionType
+        val categories = uiState.value.categories
+        val defaultCategory = categories.first { it.type == currentType }
+        _uiState.update { it.copy(category = defaultCategory) }
+    }
+
     private fun emit(effect: AddTransactionEffect) = viewModelScope.launch {
         _uiSideEffect.emit(effect)
     }
+
+
 
 }
