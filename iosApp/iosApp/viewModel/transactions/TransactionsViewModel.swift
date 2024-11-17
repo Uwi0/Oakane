@@ -12,7 +12,8 @@ final class TransactionsViewModel: ObservableObject {
     init () {
         viewModel.observeState { [weak self] state in
             DispatchQueue.main.async {
-                self?.uiState.transactions = state.transactions
+                self?.uiState.transactions = state.filteredTransactions
+                self?.uiState.categories = state.categories
                 self?.uiState.searchQuery = state.searchQuery
                 self?.uiState.selectedType = state.selectedType
                 self?.uiState.selectedDate = state.selectedDate

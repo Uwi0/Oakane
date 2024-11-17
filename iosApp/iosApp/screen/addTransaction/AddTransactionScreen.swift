@@ -23,20 +23,18 @@ struct AddTransactionScreen: View {
                     }
                 SelectionPickerView(
                     title: "Transaction Type",
-                    options: viewModel.transactionOptions,
                     onClick: { option in
                         viewModel.handle(event: .ChangeType(value: option.asTransactionType()))
                     }
                 )
-//                SelectionPickerView(
-//                    title: "Category",
-//                    options: viewModel.categoryOptions,
-//                    selectedOpion: $viewModel.selectedCategoryOption
-//                )
+                CategoryButtonView(
+                    uiState: viewModel.uiState,
+                    onEvent: viewModel.handle(event:)
+                )
                 DateButtonView(
                     title: "Today",
                     onClick: { date in
-                        let convertedDate = Int64(date.timeIntervalSince1970)
+                        let convertedDate = date.toInt64()
                         viewModel.handle(event: .ChangeDate(value: convertedDate))
                     }
                 )
@@ -58,6 +56,18 @@ struct AddTransactionScreen: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 24)
+            .sheet(
+                isPresented: $viewModel.uiState.showSheet,
+                onDismiss: { viewModel.handle(event: .Sheet(shown: false)) },
+                content: {
+                    CategoriesSheetView(
+                        categories: viewModel.uiState.categories,
+                        onEvent: viewModel.handle(event:)
+                    )
+                    .presentationDetents([.height(640)])
+                    .presentationDragIndicator(.visible)
+                }
+            )
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

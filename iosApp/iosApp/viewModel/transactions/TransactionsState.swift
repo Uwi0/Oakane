@@ -3,6 +3,7 @@ import Shared
 
 struct TransactionsState {
     var transactions: [TransactionModel] = []
+    var categories: [CategoryModel] = []
     var searchQuery: String = ""
     var selectedType: TransactionType? = nil
     var selectedDate: Int64 = 0

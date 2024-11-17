@@ -17,12 +17,18 @@ struct CategoriesContentView: View {
                 .padding(.horizontal, 16)
             TabBarView(currentTab: $selectedTab, tabBarOptions: tabBars)
             TabView(selection: $selectedTab) {
-                CategoriesView(categories: expenseCategories, onEvent: onEvent)
-                    .tag(0)
-                    .interactiveDismissDisabled(true)
-                CategoriesView(categories: incomeCategories, onEvent: onEvent)
-                    .tag(1)
-                    .interactiveDismissDisabled(true)
+                CategoriesView(
+                    categories: incomeCategories,
+                    onClick: { category in onEvent(.OnTapped(category: category)) }
+                )
+                .tag(0)
+                
+                CategoriesView(
+                    categories: expenseCategories,
+                    onClick: { category in onEvent(.OnTapped(category: category)) }
+                )
+                .tag(1)
+
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             

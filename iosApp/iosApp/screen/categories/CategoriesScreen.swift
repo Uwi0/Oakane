@@ -4,6 +4,7 @@ import Shared
 struct CategoriesScreen: View {
     
     @StateObject private var viewModel = CategoriesViewModel()
+    @EnvironmentObject private var navigation: AppNavigation
     let toolbarContent = ToolBarContent(title: "Categories")
     
     private var bottomSheetSize: PresentationDetent {
@@ -40,6 +41,7 @@ struct CategoriesScreen: View {
                     onClick: { viewModel.onEvent(event: .ShowSheet(visibility: true)) }
                 )
             }
+            .navigationBarBackButtonHidden(true)
             .customToolbar(content: toolbarContent, onEvent: onToolbarEvent(toolbarEvent:))
             .sheet(isPresented: $viewModel.uiState.showSheet) {
                 VStack {
@@ -66,7 +68,7 @@ struct CategoriesScreen: View {
     }
     
     private func onToolbarEvent(toolbarEvent: ToolbarEvent) {
-        
+        navigation.navigateBack()
     }
 }
 

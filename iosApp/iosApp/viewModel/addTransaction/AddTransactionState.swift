@@ -8,4 +8,6 @@ struct AddTransactionState {
     var category: CategoryModel = defaultCategoryModel
     var selectedDate: Int64 = 0
     var note: String = ""
+    var showSheet: Bool = false
+    var categories: [CategoryModel] = []
 }

@@ -10,7 +10,7 @@ struct TransactionsScreen: View {
         switch (viewModel.uiState.sheetContent) {
         case .type: 160
         case .date: 560
-        case .category: 640
+        case .category: 480
         }
     }
     
@@ -43,7 +43,10 @@ struct TransactionsScreen: View {
                 case .date:
                     FilterByDateView(onEvent: viewModel.handle(event:))
                 case .category:
-                    Text("This fearture is not implemented yet")
+                    FilterByCategoryView(
+                        uiState: viewModel.uiState,
+                        onEvent: viewModel.handle(event:)
+                    )
                 }
             }
             .presentationDetents([.height(bottomSheetSize)])

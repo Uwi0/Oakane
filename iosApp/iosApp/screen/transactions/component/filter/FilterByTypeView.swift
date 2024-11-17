@@ -31,8 +31,7 @@ struct FilterByTypeView: View {
                 onClick: { onEvent(.HideSheet())}
             ).frame(height: 48)
         }
-        .padding(.vertical, 24)
-        .padding(.horizontal, 16)
+        .padding(16)
         
     }
 }

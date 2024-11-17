@@ -1,14 +1,17 @@
 import SwiftUI
+import Shared
+
 
 struct SelectionPickerView: View {
     let title: String
-    let options: [String]
     let onClick: (String) -> Void
+    
+    private let options: [String] = TransactionType.allCases.map(\.self.name)
     @State private var selectedOpion: String
     
-    init(title: String, options: [String], onClick: @escaping (String) -> Void) {
+    
+    init(title: String, onClick: @escaping (String) -> Void) {
         self.title = title
-        self.options = options
         self.onClick = onClick
         self.selectedOpion = options.first ?? ""
     }
@@ -38,5 +41,5 @@ struct SelectionPickerView: View {
 }
 
 #Preview {
-    SelectionPickerView(title: "Select", options: ["1", "2", "3"], onClick: { _ in })
+    SelectionPickerView(title: "Select", onClick: { _ in })
 }
