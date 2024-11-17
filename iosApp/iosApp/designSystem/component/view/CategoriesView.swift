@@ -4,7 +4,7 @@ import Shared
 struct CategoriesView: View {
     
     let categories: [CategoryModel]
-    let onEvent: (CategoriesEvent) -> Void
+    let onClick: (CategoryModel) -> Void
     
     var body: some View {
         List {
@@ -14,7 +14,7 @@ struct CategoriesView: View {
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                     .onTapGesture {
-                        onEvent(.OnTapped(category: category))
+                        onClick(category)
                     }
             }
         }
