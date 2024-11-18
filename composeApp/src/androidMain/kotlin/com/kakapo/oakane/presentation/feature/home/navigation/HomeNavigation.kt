@@ -15,12 +15,14 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.homeScreen(
     openDrawer: () -> Unit,
     navigateToAddTransaction: (Long) -> Unit,
-    navigateToTransactions: () -> Unit
+    navigateToTransactions: () -> Unit,
+    navigateToAddGoal: () -> Unit
 ) {
     composable(HOME_ROUTE) {
         HomeRoute(
             navigateToAddTransaction = { navigateToAddTransaction.invoke(0L) },
             navigateToTransactions = navigateToTransactions,
+            navigateToAddGoal = navigateToAddGoal,
             openDrawer = openDrawer
         )
     }

@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 fun CustomOutlinedTextField(
     modifier: Modifier = Modifier,
     placeHolder: String = "",
+    label: String = placeHolder,
     value: String,
     onValueChange: (String) -> Unit
 ) {
@@ -25,7 +26,7 @@ fun CustomOutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         placeholder = { Text(text = placeHolder) },
-        label = { Text(text = placeHolder) }
+        label = { Text(text = label) }
     )
 }
 

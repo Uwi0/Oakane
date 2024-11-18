@@ -13,10 +13,12 @@ sealed class HomeEffect {
     data object OpenDrawer: HomeEffect()
     data object ToCreateTransaction: HomeEffect()
     data object ToTransactions: HomeEffect()
+    data object ToCreateGoal: HomeEffect()
 }
 
 sealed class HomeEvent {
     data object OpenDrawer: HomeEvent()
     data object ToCreateTransaction: HomeEvent()
     data object ToTransactions: HomeEvent()
+    data object ToCreateGoal: HomeEvent()
 }

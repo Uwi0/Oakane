@@ -34,8 +34,6 @@ class AddTransactionViewModel(
                 setDefaultCategory()
             }
         }
-
-
     }
 
     fun handleEvent(event: AddTransactionEvent) {

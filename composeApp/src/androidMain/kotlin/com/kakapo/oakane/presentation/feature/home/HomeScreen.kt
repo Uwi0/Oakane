@@ -43,7 +43,8 @@ import org.koin.androidx.compose.koinViewModel
 internal fun HomeRoute(
     openDrawer: () -> Unit,
     navigateToAddTransaction: () -> Unit,
-    navigateToTransactions: () -> Unit
+    navigateToTransactions: () -> Unit,
+    navigateToAddGoal: () -> Unit
 ) {
     val viewModel = koinViewModel<HomeViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,6 +55,7 @@ internal fun HomeRoute(
                 HomeEffect.ToCreateTransaction -> navigateToAddTransaction.invoke()
                 HomeEffect.ToTransactions -> navigateToTransactions.invoke()
                 HomeEffect.OpenDrawer -> openDrawer.invoke()
+                HomeEffect.ToCreateGoal -> navigateToAddGoal.invoke()
             }
         }
     }
@@ -135,7 +137,10 @@ private fun HomeContentView(
             )
         }
         item {
-            GoalHeaderView(isVisible = dummyGoals().size > 3, onAddItem = {})
+            GoalHeaderView(
+                isVisible = dummyGoals().size > 3,
+                onAddItem = { onEvent.invoke(HomeEvent.ToCreateGoal) }
+            )
         }
         items(dummyGoals().take(3)) { goal ->
             GoalItemView(goal, onClicked = {})

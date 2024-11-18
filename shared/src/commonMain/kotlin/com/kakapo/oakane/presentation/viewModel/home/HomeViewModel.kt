@@ -31,6 +31,7 @@ class HomeViewModel(
             HomeEvent.ToCreateTransaction -> emit(HomeEffect.ToCreateTransaction)
             HomeEvent.ToTransactions -> emit(HomeEffect.ToTransactions)
             HomeEvent.OpenDrawer -> emit(HomeEffect.OpenDrawer)
+            HomeEvent.ToCreateGoal -> emit(HomeEffect.ToCreateGoal)
         }
     }
 

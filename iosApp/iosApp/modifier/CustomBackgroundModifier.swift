@@ -21,7 +21,7 @@ extension View {
     func customBackground(
         cornerRadius: CGFloat = ShapeStyles.large,
         backgroundColor: Color,
-        shadowRadius: CGFloat = 4
+        shadowRadius: CGFloat = 2
     ) -> some View {
         self.modifier(
             CustomBackgroundModifier(

@@ -3,10 +3,10 @@ package com.kakapo.oakane.presentation.feature.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
+import com.kakapo.oakane.presentation.feature.addGoal.navigation.addGoalScreen
+import com.kakapo.oakane.presentation.feature.addGoal.navigation.navigateToAddGoal
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTransactionScreen
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.navigateToAddTransaction
-import com.kakapo.oakane.presentation.feature.categories.navigation.CATEGORIES_ROUTE
 import com.kakapo.oakane.presentation.feature.categories.navigation.categoriesScreen
 import com.kakapo.oakane.presentation.feature.home.navigation.HOME_ROUTE
 import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
@@ -25,7 +25,8 @@ internal fun OakaneNavHost(
         homeScreen(
             openDrawer = openDrawer,
             navigateToAddTransaction = navController::navigateToAddTransaction,
-            navigateToTransactions = navController::navigateToTransactions
+            navigateToTransactions = navController::navigateToTransactions,
+            navigateToAddGoal = navController::navigateToAddGoal
         )
         addTransactionScreen(navigateBack = navController::popBackStack)
         transactionsScreen(
@@ -39,6 +40,7 @@ internal fun OakaneNavHost(
         categoriesScreen(
             navigateBack = navController::popBackStack
         )
+        addGoalScreen()
     }
 
 }
