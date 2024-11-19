@@ -14,23 +14,48 @@ import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.OutlinedCurrencyTextField
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.addGoal.component.DateSelectorView
 import com.kakapo.oakane.presentation.feature.addGoal.component.ImageGoalPicker
+import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
+import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalEvent
+import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalState
+import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalViewModel
+import com.kakapo.oakane.presentation.viewModel.addGoal.GoalDateContent
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AddGoalRoute() {
-    AddGoalScreen()
+
+    val viewModel = koinViewModel<AddGoalViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    AddGoalScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+
+    if (uiState.dialogShown) {
+        CustomDatePickerDialog(
+            initialValue = uiState.initialDateDialog,
+            onDismiss = { viewModel.handleEvent(AddGoalEvent.HideDialog) },
+            onConfirm = { date ->
+                when(uiState.dialogContent){
+                    GoalDateContent.Start -> viewModel.handleEvent(AddGoalEvent.SetStart(date))
+                    GoalDateContent.End -> viewModel.handleEvent(AddGoalEvent.SetEnd(date))
+                }
+            }
+        )
+    }
 }
 
 @Composable
-private fun AddGoalScreen() {
+private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit) {
     Scaffold(
         topBar = {
             CustomNavigationTopAppBarView(
@@ -53,35 +78,35 @@ private fun AddGoalScreen() {
                     modifier = Modifier.fillMaxWidth(),
                     label = "Target",
                     placeHolder = "0",
-                    value = "",
+                    value = uiState.targetAmount,
                     prefix = "Rp ",
-                    onValueChange = {}
+                    onValueChange = { onEvent.invoke(AddGoalEvent.SetTarget(it)) }
                 )
                 CustomOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     label = "Goal Name",
                     placeHolder = "My Goal",
-                    value = "",
-                    onValueChange = {}
+                    value = uiState.goalName,
+                    onValueChange = { onEvent.invoke(AddGoalEvent.SetName(it)) }
                 )
                 CustomOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     label = "Note",
                     placeHolder = "Some Note",
-                    value = "",
-                    onValueChange = {}
+                    value = uiState.note,
+                    onValueChange = { onEvent.invoke(AddGoalEvent.SetNote(it)) }
                 )
                 DateSelectorView(
-                    defaultDate = System.currentTimeMillis(),
+                    defaultDate = uiState.startDate,
                     icon = Icons.Outlined.CalendarToday,
                     title = "Starting Date",
-                    onClick = {}
+                    onClick = { onEvent.invoke(AddGoalEvent.ShowDialog(GoalDateContent.Start)) }
                 )
                 DateSelectorView(
-                    defaultDate = System.currentTimeMillis(),
+                    defaultDate = uiState.endDate,
                     icon = Icons.Outlined.Event,
                     title = "End Date",
-                    onClick = {}
+                    onClick = { onEvent.invoke(AddGoalEvent.ShowDialog(GoalDateContent.End)) }
                 )
             }
         },
@@ -90,7 +115,7 @@ private fun AddGoalScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 24.dp),
-                onClick = {},
+                onClick = { onEvent.invoke(AddGoalEvent.SaveGoal) },
                 contentPadding = PaddingValues(16.dp),
                 content = {
                     Text(text = "Save Goal")

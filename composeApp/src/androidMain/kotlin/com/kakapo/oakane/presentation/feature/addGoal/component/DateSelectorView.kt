@@ -26,6 +26,7 @@ internal fun DateSelectorView(
     onClick: () -> Unit
 ) {
     Surface(
+        shape = MaterialTheme.shapes.medium,
         onClick = onClick
     ) {
         Row(

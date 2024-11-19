@@ -8,6 +8,7 @@ import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
+import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalViewModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
@@ -41,6 +42,7 @@ object CommonModule {
         viewModel { TransactionsViewModel(get()) }
         viewModel { TransactionViewModel(get()) }
         viewModel { CategoriesViewModel(get()) }
+        viewModel{ AddGoalViewModel() }
     }
 
     val coroutineScope = module {
