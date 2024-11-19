@@ -40,7 +40,9 @@ internal fun OakaneNavHost(
         categoriesScreen(
             navigateBack = navController::popBackStack
         )
-        addGoalScreen()
+        addGoalScreen(
+            navigateBack = navController::popBackStack
+        )
     }
 
 }

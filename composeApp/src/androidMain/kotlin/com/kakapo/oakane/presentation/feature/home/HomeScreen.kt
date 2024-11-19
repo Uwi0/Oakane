@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.oakane.model.dummyGoals
+import com.kakapo.oakane.model.GoalModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
@@ -138,15 +138,15 @@ private fun HomeContentView(
         }
         item {
             GoalHeaderView(
-                isVisible = dummyGoals().size > 3,
+                isVisible = true,
                 onAddItem = { onEvent.invoke(HomeEvent.ToCreateGoal) }
             )
         }
-        items(dummyGoals().take(3)) { goal ->
+        items(emptyList<GoalModel>()) { goal ->
             GoalItemView(goal, onClicked = {})
         }
         item {
-            ShowMoreButtonView(isVisible = dummyGoals().size > 3, onClick = {})
+            ShowMoreButtonView(isVisible = false, onClick = {})
         }
 
     }

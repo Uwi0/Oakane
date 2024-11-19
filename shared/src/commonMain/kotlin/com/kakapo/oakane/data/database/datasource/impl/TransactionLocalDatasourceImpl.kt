@@ -3,7 +3,6 @@ package com.kakapo.oakane.data.database.datasource.impl
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.GetTransactions
-import com.kakapo.oakane.common.proceed
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.data.database.model.toTransactionEntity
@@ -37,13 +36,13 @@ class TransactionLocalDatasourceImpl(
     }
 
     override suspend fun getTransaction(id: Long): Result<TransactionEntity> {
-        return proceed {
+        return runCatching {
             transactionDb.getTransactionBy(id).executeAsList().first().toTransactionEntity()
         }
     }
 
     override suspend fun updateTransaction(entity: TransactionEntity): Result<Unit> {
-        return proceed {
+        return runCatching {
             transactionDb.updateTransaction(
                 title = entity.title,
                 amount = entity.amount,

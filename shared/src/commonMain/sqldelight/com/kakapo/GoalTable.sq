@@ -1,0 +1,27 @@
+CREATE TABLE GoalTable (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    imageFile TEXT NOT NULL,
+    name TEXT NOT NULL,
+    targetAmount REAL NOT NULL,
+    note TEXT NOT NULL,
+    startDate INTEGER NOT NULL,
+    endDate INTEGER NOT NULL
+);
+
+insertGoal:
+INSERT OR REPLACE INTO GoalTable (
+    imageFile,
+    name,
+    targetAmount,
+    note,
+    startDate,
+    endDate
+)
+VALUES (
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);

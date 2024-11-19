@@ -12,8 +12,10 @@ fun NavController.navigateToAddGoal(navOptions: NavOptions? = null) {
     navigate(ADD_GOAL_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.addGoalScreen() {
+fun NavGraphBuilder.addGoalScreen(
+    navigateBack: () -> Unit
+) {
     composable(ADD_GOAL_ROUTE) {
-        AddGoalRoute()
+        AddGoalRoute(navigateBack = navigateBack)
     }
 }

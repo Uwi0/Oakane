@@ -1,14 +1,24 @@
 package com.kakapo.oakane.presentation.viewModel.addGoal
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.kakapo.oakane.data.repository.base.GoalRepository
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class AddGoalViewModel: ViewModel() {
+class AddGoalViewModel(
+    private val goalRepository: GoalRepository
+): ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(AddGoalState())
+
+    val uiEffect get() = _uiEffect.asSharedFlow()
+    private val _uiEffect = MutableSharedFlow<AddGoalEffect>()
 
     fun handleEvent(event: AddGoalEvent){
         when(event){
@@ -17,9 +27,29 @@ class AddGoalViewModel: ViewModel() {
             is AddGoalEvent.SetNote -> _uiState.update { it.copy(note = event.value) }
             is AddGoalEvent.SetStart -> _uiState.update { it.updateStart(event.date) }
             is AddGoalEvent.SetTarget -> _uiState.update { it.copy(targetAmount = event.amount) }
-            AddGoalEvent.SaveGoal -> {}
             is AddGoalEvent.ShowDialog -> _uiState.update { it.updateDialog(event) }
+            is AddGoalEvent.SetFile -> _uiState.update { it.copy(fileName = event.name) }
             AddGoalEvent.HideDialog -> _uiState.update { it.copy(dialogShown = false) }
+            AddGoalEvent.NavigateBack -> emit(AddGoalEffect.NavigateBack)
+            AddGoalEvent.SaveGoal -> saveGoal()
         }
+    }
+
+    private fun saveGoal() = viewModelScope.launch {
+        val goal = uiState.value.asGoalModel()
+        goalRepository.save(goal).fold(
+            onSuccess = {
+                emit(AddGoalEffect.SuccessSaveGoal)
+            },
+            onFailure = ::handleError
+        )
+    }
+
+    private fun handleError(throwable: Throwable?) {
+        emit(AddGoalEffect.ShowError(throwable?.message ?: "Error"))
+    }
+
+    private fun emit(effect: AddGoalEffect) = viewModelScope.launch {
+        _uiEffect.emit(effect)
     }
 }

@@ -1,12 +1,16 @@
 package com.kakapo.oakane.di
 
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
+import com.kakapo.oakane.data.database.datasource.base.GoalLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.datasource.impl.CategoryLocalDatasourceImpl
+import com.kakapo.oakane.data.database.datasource.impl.GoalLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.TransactionLocalDatasourceImpl
 import com.kakapo.oakane.data.repository.base.CategoryRepository
+import com.kakapo.oakane.data.repository.base.GoalRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.impl.CategoryRepositoryImpl
+import com.kakapo.oakane.data.repository.impl.GoalRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalViewModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
@@ -29,11 +33,13 @@ object CommonModule {
     val localDatasourceModule: Module = module {
         factory<TransactionLocalDatasource> { TransactionLocalDatasourceImpl(get()) }
         factory<CategoryLocalDatasource> { CategoryLocalDatasourceImpl(get()) }
+        factory<GoalLocalDatasource> { GoalLocalDatasourceImpl(get()) }
     }
 
     val repositoryModule: Module = module {
         factory<TransactionRepository> { TransactionRepositoryImpl(get()) }
         factory<CategoryRepository> { CategoryRepositoryImpl(get()) }
+        factory<GoalRepository> { GoalRepositoryImpl(get()) }
     }
 
     val viewModel: Module = module {
@@ -42,7 +48,7 @@ object CommonModule {
         viewModel { TransactionsViewModel(get()) }
         viewModel { TransactionViewModel(get()) }
         viewModel { CategoriesViewModel(get()) }
-        viewModel{ AddGoalViewModel() }
+        viewModel{ AddGoalViewModel(get()) }
     }
 
     val coroutineScope = module {

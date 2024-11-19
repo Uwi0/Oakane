@@ -38,7 +38,7 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
     }
 
     override suspend fun insertCategory(category: CategoryEntity): Result<Unit> {
-        return proceed {
+        return runCatching {
             categoryDb.insertCategory(
                 name = category.name,
                 type = category.type,
@@ -50,6 +50,6 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
     }
 
     override suspend fun deleteCategoryBy(id: Long): Result<Unit> {
-        return proceed { categoryDb.deleteCategory(id) }
+        return runCatching { categoryDb.deleteCategory(id) }
     }
 }

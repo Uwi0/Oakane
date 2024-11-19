@@ -1,12 +1,11 @@
 package com.kakapo.oakane.presentation.viewModel.home
 
 import com.kakapo.oakane.model.GoalModel
-import com.kakapo.oakane.model.dummyGoals
 import com.kakapo.oakane.model.transaction.TransactionModel
 
 data class HomeState(
     val transactions: List<TransactionModel> = emptyList(),
-    val goals: List<GoalModel> = dummyGoals()
+    val goals: List<GoalModel> = emptyList()
 )
 
 sealed class HomeEffect {

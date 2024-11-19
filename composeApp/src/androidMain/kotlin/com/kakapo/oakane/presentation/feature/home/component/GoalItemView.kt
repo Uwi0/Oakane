@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
+import com.kakapo.oakane.common.formatDateWith
 import com.kakapo.oakane.model.GoalModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
@@ -52,7 +53,7 @@ internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
                     color = MaterialTheme.colorScheme.outline
                 )
                 Text(
-                    text = goal.deadline,
+                    text = goal.endDate.formatDateWith(pattern = "dd MMM yyyy"),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline
                 )
