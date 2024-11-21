@@ -9,7 +9,7 @@ struct CategoriesScreen: View {
     
     private var bottomSheetSize: PresentationDetent {
         switch viewModel.uiState.sheetContent {
-        case .create: return .medium
+        case .create: return .fraction(0.55)
         case .selectColor: return .large
         case .selectIcon: return .fraction(0.9)
         }

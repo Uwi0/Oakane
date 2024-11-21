@@ -25,7 +25,7 @@ struct CreateCategoryContentView: View {
 private struct TitleView: View {
     let title: String
     var body: some View {
-        Text(title).font(Typography.titleSmall)
+        Text(title).font(Typography.titleMedium)
     }
 }
 
@@ -48,10 +48,12 @@ private struct CategoryNameFieldView: View {
                 onEvent(.ChangeSheet(content: .selectIcon))
             }
             
-            OutlinedTextFieldView(value: $categoryName, placeHolder: "Category Name")
-        }
-        .onChange(of: categoryName){ newCategoryName in
-            onEvent(.ChangeCategory(name: newCategoryName))
+            OutlinedTextFieldView(
+                value: categoryName,
+                placeHolder: "Category Name",
+                showLabel: false,
+                onValueChange: { newValue in onEvent(.ChangeCategory(name: newValue)) }
+            )
         }
         
     }

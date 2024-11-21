@@ -13,10 +13,11 @@ struct AddTransactionScreen: View {
             ColorTheme.surface.ignoresSafeArea()
             
             VStack(spacing: 16) {
-                OutlinedTextFieldView(value: $viewModel.uiState.title, placeHolder: "Title")
-                    .onChange(of: viewModel.uiState.title) { title in
-                        viewModel.handle(event: .ChangedTitle(value: title))
-                    }
+                OutlinedTextFieldView(
+                    value: viewModel.uiState.title,
+                    placeHolder: "Title",
+                    onValueChange: { newValue in viewModel.handle(event: .ChangedTitle(value: newValue)) }
+                )
                 OutlinedNumericTextFieldView(
                     initialValue: 5000.0,
                     placeHolder: "Amount",
@@ -40,11 +41,10 @@ struct AddTransactionScreen: View {
                     }
                 )
                 OutlinedTextFieldView(
-                    value: $viewModel.uiState.note,
-                    placeHolder: "Note"
-                ).onChange(of: viewModel.uiState.note) { note in
-                    viewModel.handle(event: .ChangeNote(value: note))
-                }
+                    value: viewModel.uiState.note,
+                    placeHolder: "Note",
+                    onValueChange: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }
+                )
                 Spacer()
                 FilledButtonView(
                     text: "Save Transaction",

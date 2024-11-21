@@ -17,6 +17,14 @@ struct AddGoalScreen: View {
             Text("Hello world")
             VStack(spacing: 16) {
                 GoalImagePickerView()
+                
+                Spacer()
+                    .frame(height: 4)
+                
+                OutlinedCurrencyTextFieldView(
+                    label: "Target",
+                    onValueChange: { amount in }
+                )
                 Spacer()
                 FilledButtonView(text: "Save Goal", onClick: {})
                     .frame(height: 48)

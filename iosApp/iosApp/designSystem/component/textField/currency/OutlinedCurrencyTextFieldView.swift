@@ -1,31 +1,45 @@
 import SwiftUI
 
 struct OutlinedCurrencyTextFieldView: View {
-    @State private var value = 0
     
+    private let label: String
+    private let onValueChange: (String) -> Void
     private var numberFormatter: NumberFormatter
+    
+    @State private var value = 0
     @FocusState private var isFocused: Bool
     @State private var borderColor = ColorTheme.outline
     
-    init(numberFormatter: NumberFormatter = NumberFormatter()) {
+    init(
+        label: String,
+        onValueChange: @escaping (String) -> Void,
+        numberFormatter: NumberFormatter = NumberFormatter()
+    ) {
+        self.label = label
+        self.onValueChange = onValueChange
         self.numberFormatter = numberFormatter
         self.numberFormatter.numberStyle = .currency
         self.numberFormatter.maximumFractionDigits = 2
     }
     
     var body: some View {
-        CurrencyTextFieldAdapter(numberFormatter: numberFormatter, value: $value)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .overlay(RoundedRectangle(cornerRadius: 16)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label)
+                .font(Typography.labelSmall)
+            CurrencyTextFieldAdapter(numberFormatter: numberFormatter, value: $value)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .overlay(RoundedRectangle(cornerRadius: 16)
                 .stroke(borderColor, lineWidth: 2))
-            .frame(height: 56)
-            .onChange(of: isFocused) { isEditing in
-                        borderColor = isEditing ? ColorTheme.primary : ColorTheme.outline
-                    }
+                .frame(height: 56)
+                .onChange(of: value) { newValue in
+                    onValueChange(String(newValue))
+                }
+        }
+        
     }
 }
 
 #Preview {
-    OutlinedCurrencyTextFieldView()
+    OutlinedCurrencyTextFieldView(label: "Target", onValueChange: { _ in })
 }

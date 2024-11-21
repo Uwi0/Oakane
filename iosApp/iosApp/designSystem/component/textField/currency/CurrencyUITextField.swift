@@ -36,15 +36,9 @@ class CurrencyUITextField: UITextField {
     
     
     @objc private func editingChanged() {
-        let cleanValue = textValue.digits
-        let decimalValue = Decimal(string: cleanValue) ?? 0
-        let scaledValue = decimalValue
-        
-        // Format the value as currency
-        text = formatter.string(for: scaledValue)
-        
-        // Update the binding
-        value = NSDecimalNumber(decimal: scaledValue * 100).intValue // Store as an integer in cents
+        text = currency(from: decimal)
+        resetSelection()
+        value = Int(doubleValue * 100)
     }
     
     @objc private func resetSelection() {
@@ -53,6 +47,18 @@ class CurrencyUITextField: UITextField {
     
     private var textValue: String {
         return text ?? ""
+    }
+    
+    private var doubleValue: Double {
+        return (decimal as NSDecimalNumber).doubleValue
+    }
+    
+    private var decimal: Decimal {
+        return textValue.decimal
+    }
+    
+    private func currency(from decimal: Decimal) -> String {
+        return formatter.string(for: decimal) ?? ""
     }
 }
 
