@@ -21,7 +21,7 @@ struct GoalItemView: View {
                         .font(Typography.bodySmall)
                         .foregroundStyle(ColorTheme.outline)
                     Spacer()
-                    Text("\(goal.deadline)")
+                    Text("\(goal.endDate.formatDateWith(pattern: "dd MMM yyyy"))")
                         .font(Typography.bodySmall)
                         .foregroundStyle(ColorTheme.outline)
                 }
@@ -32,9 +32,4 @@ struct GoalItemView: View {
         }
         .customBackground(backgroundColor: ColorTheme.surface)
     }
-}
-
-#Preview {
-    let defaultGoal = GoalModelKt.dummyGoal()
-    GoalItemView(goal: defaultGoal)
 }

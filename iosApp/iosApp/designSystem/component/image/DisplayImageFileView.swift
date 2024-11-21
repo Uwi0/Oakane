@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct DisplayImageFileView: View {
+    
+    var defaultImage: String = ""
     let fileName: String
     let width: CGFloat
     let height: CGFloat
@@ -11,6 +13,12 @@ struct DisplayImageFileView: View {
         VStack {
             if let uiImage = uiImage {
                 Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: width, height: height)
+                    .clipShape(Circle())
+            } else {
+                Image(defaultImage)
                     .resizable()
                     .scaledToFit()
                     .frame(width: width, height: height)
@@ -45,5 +53,6 @@ struct DisplayImageFileView: View {
 }
 
 #Preview {
-    DisplayImageFileView(fileName: "", width: 48, height: 48)
+    DisplayImageFileView(
+        defaultImage: ImageConstants.defaultImage,fileName: "", width: 68, height: 68)
 }

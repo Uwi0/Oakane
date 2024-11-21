@@ -16,8 +16,3 @@ struct GoalsView: View {
         }
     }
 }
-
-#Preview {
-    let goalDefault = GoalModelKt.dummyGoals()
-    GoalsView(goals: goalDefault)
-}

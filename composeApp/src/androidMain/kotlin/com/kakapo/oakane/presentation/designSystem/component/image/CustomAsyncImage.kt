@@ -91,13 +91,13 @@ private fun IconImagePicker(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = CircleShape,
-        color = MaterialTheme.colorScheme.primaryContainer
+        color = MaterialTheme.colorScheme.primary
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Icon(
                 imageVector = Icons.Outlined.PhotoCamera,
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

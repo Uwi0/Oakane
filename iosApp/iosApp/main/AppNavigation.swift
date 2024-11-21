@@ -8,6 +8,7 @@ final class AppNavigation: ObservableObject {
         case transactions
         case transaction(transactionId: Int64)
         case categories
+        case addGoal
     }
     
     @Published var navPath = NavigationPath()

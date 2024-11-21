@@ -50,6 +50,8 @@ struct HomeScreen: View {
                 navigation.navigate(to: .addTransaction(transactionId: 0))
             case .toTransactions:
                 navigation.navigate(to: .transactions)
+            case .toCreateGoal:
+                navigation.navigate(to: .addGoal)
             }
         }
         viewModel.uiEffects = nil

@@ -20,6 +20,8 @@ struct ContentView: View {
                             TransactionScreen(transactionId: transactionId)
                         case .categories:
                             CategoriesScreen()
+                        case .addGoal:
+                            AddGoalScreen()
                         }
                     }
                 

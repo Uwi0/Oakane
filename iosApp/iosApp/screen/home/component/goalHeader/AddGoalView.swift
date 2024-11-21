@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AddGoalView: View {
     
+    let onClick: () -> Void
     private let imageSize: CGFloat = 24
     
     var body: some View {
@@ -12,7 +13,7 @@ struct AddGoalView: View {
                 Text("Add New Goals")
             }
             Spacer()
-            IconButtonView(name: "plus", size: imageSize, onClick: {})
+            IconButtonView(name: "plus", size: imageSize, onClick: onClick)
                 .padding(.trailing, 12)
         }
         .customBackground(backgroundColor: ColorTheme.surface)
@@ -21,5 +22,5 @@ struct AddGoalView: View {
 }
 
 #Preview {
-    AddGoalView()
+    AddGoalView(onClick: {})
 }

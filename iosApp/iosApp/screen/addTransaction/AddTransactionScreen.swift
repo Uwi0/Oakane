@@ -17,10 +17,11 @@ struct AddTransactionScreen: View {
                     .onChange(of: viewModel.uiState.title) { title in
                         viewModel.handle(event: .ChangedTitle(value: title))
                     }
-                OutlinedNumericTextFieldView(value: $viewModel.uiState.amount, placeHolder: "Amount")
-                    .onChange(of: viewModel.uiState.amount) { amount in
-                        viewModel.handle(event: .ChangedAmount(value: amount))
-                    }
+                OutlinedNumericTextFieldView(
+                    initialValue: 5000.0,
+                    placeHolder: "Amount",
+                    onValueChange: { newValue in  }
+                )
                 SelectionPickerView(
                     title: "Transaction Type",
                     onClick: { option in

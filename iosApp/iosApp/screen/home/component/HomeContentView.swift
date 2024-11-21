@@ -20,7 +20,7 @@ struct HomeContentView: View {
                     if uiState.transactions.count > 3 {
                         ShowMoreItemView(onClick: { onEvent(.ToTransactions())})
                     }
-                    GoalHeaderView(isVisible: true)
+                    GoalHeaderView(isVisible: true, onClick: { onEvent(.ToCreateGoal()) })
                     GoalsView(goals: uiState.goals)
                     ShowMoreItemView(onClick: {})
                 }
