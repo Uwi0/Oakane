@@ -16,13 +16,15 @@ fun NavGraphBuilder.homeScreen(
     openDrawer: () -> Unit,
     navigateToAddTransaction: (Long) -> Unit,
     navigateToTransactions: () -> Unit,
-    navigateToAddGoal: () -> Unit
+    navigateToAddGoal: () -> Unit,
+    navigateToGoal: () -> Unit
 ) {
     composable(HOME_ROUTE) {
         HomeRoute(
             navigateToAddTransaction = { navigateToAddTransaction.invoke(0L) },
             navigateToTransactions = navigateToTransactions,
             navigateToAddGoal = navigateToAddGoal,
+            navigateToGoal = navigateToGoal,
             openDrawer = openDrawer
         )
     }

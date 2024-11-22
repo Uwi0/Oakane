@@ -1,7 +1,6 @@
 package com.kakapo.oakane.presentation.feature.home.component
 
 import android.net.Uri
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +27,7 @@ import com.kakapo.oakane.presentation.ui.component.RowWrapper
 internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
     val context = LocalContext.current
     val imageUri: Uri? = context.getSavedImageUri(goal.fileName).getOrNull()
-    RowWrapper(modifier = Modifier.clickable { onClicked.invoke() }) {
+    RowWrapper(onClick = onClicked) {
         CustomDynamicAsyncImage(
             modifier = Modifier
                 .size(64.dp)
