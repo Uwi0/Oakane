@@ -14,10 +14,8 @@ suspend fun <T, R> proceedResult(
 ): Result<R> {
     return executed.invoke().fold(
         onSuccess = {
-            try {
-                Result.success(transform(it))
-            } catch (e: Exception) {
-                Result.failure(e)
+            runCatching {
+                transform(it)
             }
         },
         onFailure = {

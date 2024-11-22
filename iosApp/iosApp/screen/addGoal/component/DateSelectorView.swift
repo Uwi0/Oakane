@@ -13,10 +13,10 @@ struct DateSelectorView: View {
         HStack(spacing: 8) {
             OutlinedCircleIcon(imageName: img, size: imgSize)
             Text(text)
-                .font(Typography.titleMedium)
+                .font(Typography.titleSmall)
             Spacer()
             Text(selectedDate.formmatTo("dd MMM yyyy"))
-                .font(Typography.titleMedium)
+                .font(Typography.titleSmall)
         }
         .overlay {
             DatePickerView(date: $selectedDate, scaleEffect: 3)

@@ -9,6 +9,7 @@ data class HomeState(
 )
 
 sealed class HomeEffect {
+    data class ShowError(val message: String): HomeEffect()
     data object OpenDrawer: HomeEffect()
     data object ToCreateTransaction: HomeEffect()
     data object ToTransactions: HomeEffect()

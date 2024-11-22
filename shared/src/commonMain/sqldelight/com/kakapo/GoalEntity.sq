@@ -25,3 +25,10 @@ VALUES (
     ?,
     ?
 );
+
+getGoals:
+SELECT * FROM GoalTable;
+
+getGoalBy:
+SELECT * FROM GoalTable WHERE id = ?;
+

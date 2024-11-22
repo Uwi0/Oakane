@@ -20,11 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.oakane.model.GoalModel
-import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.home.component.GoalHeaderView
@@ -46,6 +46,7 @@ internal fun HomeRoute(
     navigateToTransactions: () -> Unit,
     navigateToAddGoal: () -> Unit
 ) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<HomeViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -56,6 +57,7 @@ internal fun HomeRoute(
                 HomeEffect.ToTransactions -> navigateToTransactions.invoke()
                 HomeEffect.OpenDrawer -> openDrawer.invoke()
                 HomeEffect.ToCreateGoal -> navigateToAddGoal.invoke()
+                is HomeEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
@@ -89,7 +91,7 @@ private fun HomeScreen(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-                transactions = uiState.transactions,
+                uiState = uiState,
                 onEvent = onEvent
             )
         },
@@ -107,7 +109,7 @@ private fun HomeScreen(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
 @Composable
 private fun HomeContentView(
     modifier: Modifier,
-    transactions: List<TransactionModel>,
+    uiState: HomeState,
     onEvent: (HomeEvent) -> Unit
 ) {
     LazyColumn(
@@ -127,12 +129,12 @@ private fun HomeContentView(
                 style = MaterialTheme.typography.titleMedium
             )
         }
-        items(transactions) { item ->
+        items(uiState.transactions) { item ->
             TransactionItemView(item, onClick = {})
         }
         item {
             ShowMoreButtonView(
-                isVisible = transactions.size == 3,
+                isVisible = uiState.transactions.size == 3,
                 onClick = { onEvent.invoke(HomeEvent.ToTransactions) }
             )
         }
@@ -142,11 +144,11 @@ private fun HomeContentView(
                 onAddItem = { onEvent.invoke(HomeEvent.ToCreateGoal) }
             )
         }
-        items(emptyList<GoalModel>()) { goal ->
+        items(uiState.goals) { goal ->
             GoalItemView(goal, onClicked = {})
         }
         item {
-            ShowMoreButtonView(isVisible = false, onClick = {})
+            ShowMoreButtonView(isVisible = uiState.goals.size > 3, onClick = {})
         }
 
     }

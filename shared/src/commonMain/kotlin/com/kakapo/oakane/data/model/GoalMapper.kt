@@ -14,3 +14,14 @@ fun GoalModel.toGoalEntity(): GoalEntity {
         endDate = endDate
     )
 }
+
+fun GoalEntity.toGoalModel() = GoalModel(
+    id = id,
+    amount = targetAmount,
+    goalName = name,
+    startDate = startDate,
+    endDate = endDate,
+    fileName = imageFile,
+    savedMoney = 0.0,
+    note = note
+)

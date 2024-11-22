@@ -3,7 +3,9 @@ package com.kakapo.oakane.presentation.viewModel.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.oakane.data.repository.base.GoalRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.oakane.model.GoalModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val goalRepository: GoalRepository
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -24,6 +27,7 @@ class HomeViewModel(
 
     fun initializeData() {
         loadRecentTransactions()
+        loadGoals()
     }
 
     fun handleEvent(event: HomeEvent) {
@@ -39,14 +43,30 @@ class HomeViewModel(
         val onSuccess: (List<TransactionModel>) -> Unit = { transactions ->
             _uiState.update { it.copy(transactions = transactions.take(3)) }
         }
-        repository.loadTransactions().collect { result ->
+        transactionRepository.loadTransactions().collect { result ->
             result.fold(
                 onSuccess = onSuccess,
-                onFailure = { e ->
-                    Logger.e(messageString = "error load recent transaction ${e.message}")
-                }
+                onFailure = ::handleError
             )
         }
+    }
+
+    private fun loadGoals() = viewModelScope.launch {
+        val onSuccess: (List<GoalModel>) -> Unit = { goals ->
+            _uiState.update { it.copy(goals = goals) }
+        }
+        goalRepository.loadGoals().collect { result ->
+            result.fold(
+                onSuccess = onSuccess,
+                onFailure = ::handleError
+            )
+        }
+    }
+
+    private fun handleError(throwable: Throwable?){
+        val message = throwable?.message ?: "Error"
+        emit(HomeEffect.ShowError(message))
+        Logger.e { "Error HomeViewModel: $message" }
     }
 
     private fun emit(effect: HomeEffect) = viewModelScope.launch {

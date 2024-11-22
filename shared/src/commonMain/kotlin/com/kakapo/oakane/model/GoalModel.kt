@@ -1,7 +1,7 @@
 package com.kakapo.oakane.model
 
 data class GoalModel(
-    val id: String = "",
+    val id: Long = 0,
     val amount: Double = 0.0,
     val goalName: String = "My Goal",
     val startDate: Long = 0,
