@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
 import com.kakapo.oakane.common.formatDateWith
+import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.GoalModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
@@ -26,7 +27,7 @@ import com.kakapo.oakane.presentation.ui.component.RowWrapper
 @Composable
 internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
     val context = LocalContext.current
-    val imageUri: Uri? = null
+    val imageUri: Uri? = context.getSavedImageUri(goal.fileName).getOrNull()
     RowWrapper(modifier = Modifier.clickable { onClicked.invoke() }) {
         CustomDynamicAsyncImage(
             modifier = Modifier

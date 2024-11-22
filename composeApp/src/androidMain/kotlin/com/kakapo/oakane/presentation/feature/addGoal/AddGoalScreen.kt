@@ -89,7 +89,7 @@ private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ImageGoalPicker(onSelectedImage = {})
+                ImageGoalPicker(onSelectedImage = { onEvent.invoke(AddGoalEvent.SetFile(it))} )
                 Spacer(modifier = Modifier.size(4.dp))
                 OutlinedCurrencyTextField(
                     modifier = Modifier.fillMaxWidth(),
