@@ -3,6 +3,8 @@ import PhotosUI
 
 struct GoalImagePickerView: View {
     
+    let onSelectedFile: (String) -> Void
+    
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
     private let size: CGFloat = 120
@@ -42,7 +44,7 @@ struct GoalImagePickerView: View {
                     let savedImage = saveImageToFileSystem(image: uiImage)
                     switch savedImage {
                     case .success(let imageName):
-                        print("success")
+                        onSelectedFile(imageName)
                     case .failure(let error):
                         print(error)
                     }
@@ -67,5 +69,5 @@ private struct IconImagePicker: View {
 }
 
 #Preview {
-    GoalImagePickerView()
+    GoalImagePickerView(onSelectedFile: { name in })
 }

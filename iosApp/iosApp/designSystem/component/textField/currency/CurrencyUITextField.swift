@@ -1,13 +1,11 @@
 import SwiftUI
 
 class CurrencyUITextField: UITextField {
-    
-    @Binding private var value: Int
     private let formatter: NumberFormatter
-    
-    init(formatter: NumberFormatter, value: Binding<Int>) {
+    var onValueChange: ((Int) -> Void)?
+
+    init(formatter: NumberFormatter) {
         self.formatter = formatter
-        self._value = value
         super.init(frame: .zero)
         setupViews()
     }
@@ -34,11 +32,11 @@ class CurrencyUITextField: UITextField {
         font = .systemFont(ofSize: 16, weight: .regular)
     }
     
-    
     @objc private func editingChanged() {
         text = currency(from: decimal)
         resetSelection()
-        value = Int(doubleValue * 100)
+        let newValue = Int(doubleValue * 100)
+        onValueChange?(newValue) // Notify the parent view
     }
     
     @objc private func resetSelection() {
@@ -63,14 +61,9 @@ class CurrencyUITextField: UITextField {
 }
 
 extension StringProtocol where Self: RangeReplaceableCollection {
-    var digits: Self { filter (\.isWholeNumber) }
+    var digits: Self { filter(\.isWholeNumber) }
 }
 
 extension String {
     var decimal: Decimal { Decimal(string: digits) ?? 0 }
 }
-
-extension LosslessStringConvertible {
-    var string: String { .init(self) }
-}
-

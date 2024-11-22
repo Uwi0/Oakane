@@ -4,7 +4,6 @@ struct DateSelectorView: View {
     
     let img: String
     let text: String
-    let date: String
     let onSelectedDate: (Int64) -> Void
     
     private let imgSize: CGFloat = 24
@@ -16,7 +15,7 @@ struct DateSelectorView: View {
             Text(text)
                 .font(Typography.titleMedium)
             Spacer()
-            Text(date)
+            Text(selectedDate.formmatTo("dd MMM yyyy"))
                 .font(Typography.titleMedium)
         }
         .overlay {
@@ -30,5 +29,5 @@ struct DateSelectorView: View {
 }
 
 #Preview {
-    DateSelectorView(img: "calendar", text: "Start Date", date: "01/01/2", onSelectedDate: { _ in })
+    DateSelectorView(img: "calendar", text: "Start Date", onSelectedDate: { _ in })
 }

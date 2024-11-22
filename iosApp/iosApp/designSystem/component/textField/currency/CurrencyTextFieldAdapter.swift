@@ -2,19 +2,21 @@ import SwiftUI
 
 struct CurrencyTextFieldAdapter: UIViewRepresentable {
     
-    typealias UIViewType = CurrencyUITextField
-    
-    let numberFormatter: NumberFormatter
-    let currencyField: CurrencyUITextField
-    
-    init(numberFormatter: NumberFormatter, value: Binding<Int>) {
-        self.numberFormatter = numberFormatter
-        currencyField = CurrencyUITextField(formatter: numberFormatter, value: value)
-    }
-    
+    @Binding var value: Int
+    let formatter: NumberFormatter
+
     func makeUIView(context: Context) -> CurrencyUITextField {
-        return currencyField
+        let textField = CurrencyUITextField(formatter: formatter)
+        textField.onValueChange = { newValue in
+            DispatchQueue.main.async {
+                value = newValue
+            }
+        }
+        return textField
     }
-    
-    func updateUIView(_ uiView: CurrencyUITextField, context: Context) { }
+
+    func updateUIView(_ uiView: CurrencyUITextField, context: Context) {
+        let decimalValue = Decimal(value) / 100
+        uiView.text = formatter.string(for: decimalValue)
+    }
 }
