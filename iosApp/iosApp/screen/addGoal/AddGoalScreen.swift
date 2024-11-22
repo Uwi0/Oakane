@@ -14,7 +14,6 @@ struct AddGoalScreen: View {
     var body: some View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
-            Text("Hello world")
             VStack(spacing: 16) {
                 GoalImagePickerView()
                 
@@ -25,7 +24,35 @@ struct AddGoalScreen: View {
                     label: "Target",
                     onValueChange: { amount in }
                 )
+                
+                OutlinedTextFieldView(
+                    value: uiState.goalName,
+                    placeHolder: "Goal Name" ,
+                    onValueChange: { goalName in }
+                )
+                
+                OutlinedTextFieldView(
+                    value: uiState.note,
+                    placeHolder: "Note",
+                    onValueChange: { note in }
+                )
+                
+                DateSelectorView(
+                    img: "calendar",
+                    text: "Start Date",
+                    date: uiState.startDate.formatDateWith(pattern: "dd MMM yyyy"),
+                    onSelectedDate: { startDate in }
+                )
+                
+                DateSelectorView(
+                    img: "calendar.badge.checkmark",
+                    text: "End Date",
+                    date: uiState.endDate.formatDateWith(pattern: "dd MMM yyyy"),
+                    onSelectedDate: { endDate in }
+                )
+                
                 Spacer()
+                
                 FilledButtonView(text: "Save Goal", onClick: {})
                     .frame(height: 48)
             }
@@ -39,5 +66,9 @@ struct AddGoalScreen: View {
     private func onToolbarEvent(_ event: ToolbarEvent) {
         navigation.navigateBack()
     }
+}
+
+#Preview {
+    AddGoalScreen()
 }
 

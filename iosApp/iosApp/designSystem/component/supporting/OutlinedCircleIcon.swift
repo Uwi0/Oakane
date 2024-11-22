@@ -8,12 +8,12 @@ struct OutlinedCircleIcon: View {
             .resizable()
             .scaledToFit()
             .frame(width: size, height: size)
-            .padding()
+            .padding(12)
             .background(Circle().stroke(ColorTheme.primary, lineWidth: 3))
     }
 }
 
 
 #Preview {
-    OutlinedCircleIcon(imageName: "dollarsign", size: 64)
+    OutlinedCircleIcon(imageName: "dollarsign", size: 24)
 }

@@ -25,7 +25,7 @@ struct OutlinedCurrencyTextFieldView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
-                .font(Typography.labelSmall)
+                .font(Typography.titleSmall)
             CurrencyTextFieldAdapter(numberFormatter: numberFormatter, value: $value)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
