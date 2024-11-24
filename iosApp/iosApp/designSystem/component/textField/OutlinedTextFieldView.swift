@@ -40,7 +40,9 @@ struct OutlinedTextFieldView: View {
                 .overlay(RoundedRectangle(cornerRadius: 16)
                 .stroke(borderColor, lineWidth: 2))
         }
-        
+        .onChange(of: value){ newValue in
+            onValueChange(newValue)
+        }
     }
 }
 

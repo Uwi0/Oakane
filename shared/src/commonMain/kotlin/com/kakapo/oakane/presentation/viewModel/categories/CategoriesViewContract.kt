@@ -11,7 +11,7 @@ data class CategoriesState(
     val categories: List<CategoryModel> = emptyList(),
     val filteredCategories: List<CategoryModel> = emptyList(),
     val selectedTab: Int = TransactionType.Expense.ordinal,
-    val selectedType: TransactionType = TransactionType.Expense,
+    val selectedType: TransactionType = TransactionType.Income,
     val sheetContent: CategoriesSheetContent = CategoriesSheetContent.Create,
     val selectedColor: String = "",
     val selectedIcon: CategoryIconName = CategoryIconName.DEFAULT,

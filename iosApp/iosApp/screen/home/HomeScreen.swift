@@ -52,6 +52,10 @@ struct HomeScreen: View {
                 navigation.navigate(to: .transactions)
             case .toCreateGoal:
                 navigation.navigate(to: .addGoal)
+            case .showError(let error):
+                print("error \(error.message)")
+            case .toGoal(_):
+                print("toGoal")
             }
         }
         viewModel.uiEffects = nil

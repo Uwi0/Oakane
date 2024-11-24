@@ -157,7 +157,10 @@ private fun ContentItemView(
     parentCategory: ParentCategory,
     onEvent: (CategoryIconName) -> Unit
 ) {
-    FlowRow {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         categoryMap[parentCategory]?.forEach { category ->
             SelectionIconView(uiState = uiState, category, onEvent = onEvent)
         }
