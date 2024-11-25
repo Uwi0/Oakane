@@ -23,6 +23,6 @@ fun GoalEntity.toGoalModel() = GoalModel(
     startDate = startDate,
     endDate = endDate,
     fileName = imageFile,
-    savedMoney = 0.0,
+    savedMoney = savedAmount,
     note = note
 )

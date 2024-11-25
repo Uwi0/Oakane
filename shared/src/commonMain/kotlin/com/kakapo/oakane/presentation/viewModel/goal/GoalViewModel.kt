@@ -49,11 +49,15 @@ class GoalViewModel(
         val id = uiState.value.goal.id
         val amount = uiState.value.savingAmount.asDouble()
         repository.addSaved(amount, id).fold(
-            onSuccess = {
-                _uiState.update { it.copy(dialogShown = false) }
-            },
+            onSuccess = { updateGoal(amount) },
             onFailure = {}
         )
+    }
+
+    private fun updateGoal(amount: Double) {
+        val currentAmount = uiState.value.goal.savedMoney
+        val newAmount = currentAmount + amount
+        _uiState.update { it.copy(goal = it.goal.copy(savedMoney = newAmount), dialogShown = false) }
     }
 
     private fun emit(effect: GoalEffect) = viewModelScope.launch {
