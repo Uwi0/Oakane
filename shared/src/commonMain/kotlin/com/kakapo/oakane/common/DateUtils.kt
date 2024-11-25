@@ -34,3 +34,5 @@ fun Long.intoMidnight(): Long {
 expect fun Long.formatDateWith(pattern: String): String
 
 expect fun LocalDateTime.toFormatedString(pattern: String): String
+
+expect fun Long.daysBetween(otherDate: Long): Long

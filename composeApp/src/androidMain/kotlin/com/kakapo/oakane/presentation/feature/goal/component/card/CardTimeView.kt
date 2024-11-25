@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Event
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -22,7 +23,11 @@ import com.kakapo.oakane.presentation.viewModel.goal.GoalState
 internal fun CardTimeView(uiState: GoalState) {
     ColumnWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
         TimeContentView(uiState = uiState)
-        Text(text = "${uiState.dayLeft} Day Left")
+        Text(
+            text = "${uiState.dayLeft} Day Left",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.error
+        )
     }
 }
 

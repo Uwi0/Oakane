@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.goal
 
+import com.kakapo.oakane.common.daysBetween
 import com.kakapo.oakane.model.GoalModel
 
 data class GoalState(
@@ -11,8 +12,8 @@ data class GoalState(
         return (goal.savedMoney / goal.amount).toFloat()
     }
 
-    val dayLeft: String get() {
-        return (goal.endDate - goal.startDate).toString()
+    val dayLeft: Long get() {
+        return goal.endDate.daysBetween(goal.startDate)
     }
 }
 

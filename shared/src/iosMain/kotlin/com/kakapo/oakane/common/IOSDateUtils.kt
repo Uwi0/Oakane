@@ -7,6 +7,8 @@ import platform.Foundation.NSDate
 import platform.Foundation.NSDateFormatter
 import platform.Foundation.NSTimeZone
 import platform.Foundation.localTimeZone
+import platform.Foundation.timeIntervalSinceDate
+import kotlin.math.absoluteValue
 
 actual fun LocalDateTime.toFormatedString(pattern: String): String {
     val dateFormatter = NSDateFormatter()
@@ -23,4 +25,11 @@ actual fun Long.formatDateWith(pattern: String): String {
     }
     val date = NSDate(timeIntervalSinceReferenceDate = this.toDouble() / 1000)
     return formatter.stringFromDate(date)
+}
+
+actual fun Long.daysBetween(otherDate: Long): Long {
+    val thisDate = NSDate(this / 1000.0)
+    val otherNsDate = NSDate(otherDate / 1000.0)
+    val differenceInSeconds = thisDate.timeIntervalSinceDate(otherNsDate).absoluteValue
+    return (differenceInSeconds / (24 * 60 * 60)).toLong()
 }
