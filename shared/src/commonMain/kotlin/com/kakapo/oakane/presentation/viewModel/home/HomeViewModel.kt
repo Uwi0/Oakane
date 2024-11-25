@@ -32,11 +32,11 @@ class HomeViewModel(
 
     fun handleEvent(event: HomeEvent) {
         when(event){
+            is HomeEvent.ToGoalWith -> emit(HomeEffect.ToGoalWith(event.id))
             HomeEvent.ToCreateTransaction -> emit(HomeEffect.ToCreateTransaction)
             HomeEvent.ToTransactions -> emit(HomeEffect.ToTransactions)
             HomeEvent.OpenDrawer -> emit(HomeEffect.OpenDrawer)
             HomeEvent.ToCreateGoal -> emit(HomeEffect.ToCreateGoal)
-            HomeEvent.ToGoal -> emit(HomeEffect.ToGoal)
         }
     }
 

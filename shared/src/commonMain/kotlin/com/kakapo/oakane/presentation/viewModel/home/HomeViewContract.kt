@@ -14,7 +14,7 @@ sealed class HomeEffect {
     data object ToCreateTransaction: HomeEffect()
     data object ToTransactions: HomeEffect()
     data object ToCreateGoal: HomeEffect()
-    data object ToGoal: HomeEffect()
+    data class ToGoalWith(val id: Long): HomeEffect()
 }
 
 sealed class HomeEvent {
@@ -22,5 +22,5 @@ sealed class HomeEvent {
     data object ToCreateTransaction: HomeEvent()
     data object ToTransactions: HomeEvent()
     data object ToCreateGoal: HomeEvent()
-    data object ToGoal: HomeEvent()
+    data class ToGoalWith(val id: Long): HomeEvent()
 }

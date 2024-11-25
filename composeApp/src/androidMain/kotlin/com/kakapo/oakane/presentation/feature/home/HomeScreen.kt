@@ -45,7 +45,7 @@ internal fun HomeRoute(
     navigateToAddTransaction: () -> Unit,
     navigateToTransactions: () -> Unit,
     navigateToAddGoal: () -> Unit,
-    navigateToGoal: () -> Unit
+    navigateToGoal: (Long) -> Unit
 ) {
     val context = LocalContext.current
     val viewModel = koinViewModel<HomeViewModel>()
@@ -58,7 +58,7 @@ internal fun HomeRoute(
                 HomeEffect.ToTransactions -> navigateToTransactions.invoke()
                 HomeEffect.OpenDrawer -> openDrawer.invoke()
                 HomeEffect.ToCreateGoal -> navigateToAddGoal.invoke()
-                HomeEffect.ToGoal -> navigateToGoal.invoke()
+                is HomeEffect.ToGoalWith -> navigateToGoal.invoke(effect.id)
                 is HomeEffect.ShowError -> context.showToast(effect.message)
             }
         }
@@ -147,7 +147,7 @@ private fun HomeContentView(
             )
         }
         items(uiState.goals) { goal ->
-            GoalItemView(goal, onClicked = { onEvent.invoke(HomeEvent.ToGoal) })
+            GoalItemView(goal, onClicked = { onEvent.invoke(HomeEvent.ToGoalWith(id = goal.id)) })
         }
         item {
             ShowMoreButtonView(isVisible = uiState.goals.size > 3, onClick = {})

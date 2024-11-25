@@ -17,7 +17,7 @@ fun NavGraphBuilder.homeScreen(
     navigateToAddTransaction: (Long) -> Unit,
     navigateToTransactions: () -> Unit,
     navigateToAddGoal: () -> Unit,
-    navigateToGoal: () -> Unit
+    navigateToGoal: (Long) -> Unit
 ) {
     composable(HOME_ROUTE) {
         HomeRoute(

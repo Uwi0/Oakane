@@ -6,21 +6,32 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.feature.goal.component.CardGoalView
+import com.kakapo.oakane.presentation.feature.goal.component.CardNoteView
+import com.kakapo.oakane.presentation.feature.goal.component.CardTimeView
+import com.kakapo.oakane.presentation.viewModel.goal.GoalState
+import com.kakapo.oakane.presentation.viewModel.goal.GoalViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun GoalRoute() {
-    GoalScreen()
+fun GoalRoute(goalId: Long) {
+    val viewModel = koinViewModel<GoalViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    GoalScreen(uiState = uiState)
 }
 
 @Composable
-private fun GoalScreen() {
+private fun GoalScreen(uiState: GoalState) {
     Scaffold(
         topBar = {
             CustomNavigationTopAppBarView(
-                title = "Goal",
+                title = "My Goal",
                 onNavigateBack = {}
             )
         },
@@ -32,7 +43,9 @@ private fun GoalScreen() {
                     .padding(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
+                CardGoalView(uiState = uiState)
+                CardTimeView(uiState = uiState)
+                CardNoteView(uiState = uiState)
             }
         }
     )
