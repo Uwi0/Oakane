@@ -46,7 +46,7 @@ internal fun OakaneNavHost(
         addGoalScreen(
             navigateBack = navController::navigateUp
         )
-        goalScreen()
+        goalScreen(navigateUp = navController::navigateUp)
     }
 
 }

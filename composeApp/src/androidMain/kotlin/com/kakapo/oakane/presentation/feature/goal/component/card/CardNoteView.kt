@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.goal.component
+package com.kakapo.oakane.presentation.feature.goal.component.card
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme

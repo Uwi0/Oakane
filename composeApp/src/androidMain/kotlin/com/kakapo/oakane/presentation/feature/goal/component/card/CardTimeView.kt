@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.goal.component
+package com.kakapo.oakane.presentation.feature.goal.component.card
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

@@ -16,12 +16,12 @@ fun NavController.navigateToGoal(goalId: Long,navOptions: NavOptions? = null) {
     navigate(route, navOptions)
 }
 
-fun NavGraphBuilder.goalScreen() {
+fun NavGraphBuilder.goalScreen(navigateUp: () -> Unit) {
     val route = "$GOAL_ROUTE/{$GOAL_ID_ARGS}"
     val arguments = listOf(navArgument(GOAL_ID_ARGS) { type = NavType.LongType })
     composable(route = route, arguments = arguments) { backStackEntry ->
         val backStackArguments = requireNotNull(backStackEntry.arguments)
         val goalId = backStackArguments.getLong(GOAL_ID_ARGS)
-        GoalRoute(goalId = goalId)
+        GoalRoute(goalId = goalId, navigateUp = navigateUp)
     }
 }
