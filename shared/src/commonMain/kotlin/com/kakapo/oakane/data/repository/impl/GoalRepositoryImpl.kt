@@ -28,4 +28,12 @@ class GoalRepositoryImpl (
         )
         emit(result)
     }
+
+    override fun loadGoalBy(id: Long): Flow<Result<GoalModel>> = flow {
+        val result = proceedResult(
+            executed = { localDatasource.getGoalBy(id) },
+            transform = { it.toGoalModel() }
+        )
+        emit(result)
+    }
 }

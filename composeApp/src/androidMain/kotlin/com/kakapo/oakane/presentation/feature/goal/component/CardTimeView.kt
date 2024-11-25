@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Event
@@ -19,7 +20,7 @@ import com.kakapo.oakane.presentation.viewModel.goal.GoalState
 
 @Composable
 internal fun CardTimeView(uiState: GoalState) {
-    ColumnWrapper {
+    ColumnWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
         TimeContentView(uiState = uiState)
         Text(text = "${uiState.dayLeft} Day Left")
     }
@@ -36,14 +37,14 @@ private fun TimeContentView(uiState: GoalState) {
             modifier = Modifier.weight(1f),
             icon = Icons.Outlined.CalendarToday,
             title = "Start Date",
-            content = uiState.startDate.formatDateWith(pattern = "dd MMM yyyy")
+            content = uiState.goal.startDate.formatDateWith(pattern = "dd MMM yyyy")
         )
         VerticalDivider(modifier = Modifier.height(30.dp))
         CardContentWithIconView(
             modifier = Modifier.weight(1f),
             icon = Icons.Outlined.Event,
             title = "End Date",
-            content = uiState.endDate.formatDateWith(pattern = "dd MMM yyyy")
+            content = uiState.goal.endDate.formatDateWith(pattern = "dd MMM yyyy")
         )
     }
 }

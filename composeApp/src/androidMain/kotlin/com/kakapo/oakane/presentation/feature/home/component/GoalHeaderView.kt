@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.WorkspacePremium
@@ -39,7 +40,7 @@ internal fun GoalHeaderView(isVisible: Boolean = true, onAddItem: () -> Unit) {
 @Composable
 private fun AddGoalView(onAddItem: () -> Unit) {
     val content = defaultGoalContent()
-    RowWrapper {
+    RowWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
         CustomOutlinedIconCircleButton(icon = content.icon, onClick = {})
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(text = content.title, style = MaterialTheme.typography.titleMedium)

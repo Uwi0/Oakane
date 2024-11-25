@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -23,7 +22,6 @@ fun ColumnWrapper(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Surface(
-        tonalElevation = 2.dp,
         shape = shapes,
         shadowElevation = 2.dp,
     ) {
@@ -46,8 +44,6 @@ fun RowWrapper(
     content: @Composable RowScope.() -> Unit
 ) {
     Surface(
-        modifier = modifier,
-        tonalElevation = 2.dp,
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 2.dp,
         onClick = onClick
@@ -55,7 +51,7 @@ fun RowWrapper(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .then(modifier),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {

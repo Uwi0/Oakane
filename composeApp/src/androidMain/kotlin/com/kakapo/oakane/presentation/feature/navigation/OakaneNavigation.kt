@@ -31,20 +31,20 @@ internal fun OakaneNavHost(
             navigateToAddGoal = navController::navigateToAddGoal,
             navigateToGoal = navController::navigateToGoal
         )
-        addTransactionScreen(navigateBack = navController::popBackStack)
+        addTransactionScreen(navigateBack = navController::navigateUp)
         transactionsScreen(
-            navigateBack = navController::popBackStack,
+            navigateBack = navController::navigateUp,
             navigateToTransaction = navController::navigateToTransaction
         )
         transactionScreen(
             navigateToEdit = navController::navigateToAddTransaction,
-            navigateBack = navController::popBackStack
+            navigateBack = navController::navigateUp
         )
         categoriesScreen(
-            navigateBack = navController::popBackStack
+            navigateBack = navController::navigateUp
         )
         addGoalScreen(
-            navigateBack = navController::popBackStack
+            navigateBack = navController::navigateUp
         )
         goalScreen()
     }

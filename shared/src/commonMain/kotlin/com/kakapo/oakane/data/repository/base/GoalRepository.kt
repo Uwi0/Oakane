@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface GoalRepository {
     suspend fun save(goal: GoalModel): Result<Unit>
     fun loadGoals(): Flow<Result<List<GoalModel>>>
+    fun loadGoalBy(id: Long): Flow<Result<GoalModel>>
 }

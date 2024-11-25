@@ -17,7 +17,7 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconBu
 fun CustomNavigationTopAppBarView(
     title: String,
     shadowElevation: Dp = 2.dp,
-    tonalElevation: Dp = 2.dp,
+    tonalElevation: Dp = 0.dp,
     actions: @Composable RowScope.() -> Unit = {},
     onNavigateBack: () -> Unit
 ) {

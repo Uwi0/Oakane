@@ -30,4 +30,10 @@ class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
         }
     }
 
+    override suspend fun getGoalBy(id: Long): Result<GoalEntity> {
+        return runCatching {
+            goalTable.getGoalBy(id).executeAsOne().toGoalEntity()
+        }
+    }
+
 }

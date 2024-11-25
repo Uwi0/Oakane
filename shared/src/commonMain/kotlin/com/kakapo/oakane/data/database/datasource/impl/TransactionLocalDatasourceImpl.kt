@@ -37,7 +37,7 @@ class TransactionLocalDatasourceImpl(
 
     override suspend fun getTransaction(id: Long): Result<TransactionEntity> {
         return runCatching {
-            transactionDb.getTransactionBy(id).executeAsList().first().toTransactionEntity()
+            transactionDb.getTransactionBy(id).executeAsOne().toTransactionEntity()
         }
     }
 

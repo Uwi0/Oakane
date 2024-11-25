@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +28,10 @@ import com.kakapo.oakane.presentation.ui.component.RowWrapper
 internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
     val context = LocalContext.current
     val imageUri: Uri? = context.getSavedImageUri(goal.fileName).getOrNull()
-    RowWrapper(onClick = onClicked) {
+    RowWrapper(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+        onClick = onClicked
+    ) {
         CustomDynamicAsyncImage(
             modifier = Modifier
                 .size(64.dp)
