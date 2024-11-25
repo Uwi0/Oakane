@@ -11,6 +11,7 @@ fun GoalModel.toGoalEntity(): GoalEntity {
         targetAmount = amount,
         note = note,
         startDate = startDate,
+        savedAmount = savedMoney,
         endDate = endDate
     )
 }

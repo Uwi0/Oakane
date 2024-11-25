@@ -18,6 +18,7 @@ class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
                 name = goal.name,
                 targetAmount = goal.targetAmount,
                 note = goal.note,
+                savedAmount = 0.0,
                 startDate = goal.startDate,
                 endDate = goal.endDate
             )

@@ -7,6 +7,7 @@ data class GoalEntity(
     val imageFile: String,
     val name: String,
     val targetAmount: Double,
+    val savedAmount: Double,
     val note: String,
     val startDate: Long,
     val endDate: Long
@@ -17,6 +18,7 @@ fun GoalTable.toGoalEntity() = GoalEntity(
     imageFile = imageFile,
     name = name,
     targetAmount = targetAmount,
+    savedAmount = savedAmount,
     note = note,
     startDate = startDate,
     endDate = endDate

@@ -3,6 +3,7 @@ CREATE TABLE GoalTable (
     imageFile TEXT NOT NULL,
     name TEXT NOT NULL,
     targetAmount REAL NOT NULL,
+    savedAmount REAL NOT NULL,
     note TEXT NOT NULL,
     startDate INTEGER NOT NULL,
     endDate INTEGER NOT NULL
@@ -13,11 +14,13 @@ INSERT OR REPLACE INTO GoalTable (
     imageFile,
     name,
     targetAmount,
+    savedAmount,
     note,
     startDate,
     endDate
 )
 VALUES (
+    ?,
     ?,
     ?,
     ?,
