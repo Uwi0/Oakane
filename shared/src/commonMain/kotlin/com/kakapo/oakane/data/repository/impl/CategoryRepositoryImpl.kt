@@ -1,6 +1,5 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.common.proceedResult
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryEntity
 import com.kakapo.oakane.data.model.toCategoryEntity
@@ -15,24 +14,19 @@ class CategoryRepositoryImpl(
 ) : CategoryRepository {
 
     override fun loadCategories(): Flow<Result<List<CategoryModel>>> = flow {
-        val result = proceedResult(localDatasource::getCategories) { entities ->
-            entities.map(CategoryEntity::toCategoryModel)
-        }
+        val result = localDatasource.getCategories()
+            .mapCatching { it.map(CategoryEntity::toCategoryModel) }
         emit(result)
     }
 
     override fun loadCategoryBy(id: Int): Flow<Result<CategoryModel>> = flow {
-        val result = proceedResult(executed = { localDatasource.getCategoryBy(id) }) { entity ->
-            entity.toCategoryModel()
-        }
+        val result = localDatasource.getCategoryBy(id).mapCatching { it.toCategoryModel() }
         emit(result)
     }
 
     override suspend fun save(category: CategoryModel): Result<Unit> {
-        return proceedResult(
-            executed = { localDatasource.insertCategory(category.toCategoryEntity()) },
-            transform = {}
-        )
+        val entity = category.toCategoryEntity()
+        return localDatasource.insertCategory(entity)
     }
 
     override suspend fun update(category: CategoryModel): Result<Unit> {

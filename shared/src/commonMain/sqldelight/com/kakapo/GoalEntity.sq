@@ -35,3 +35,8 @@ SELECT * FROM GoalTable;
 getGoalBy:
 SELECT * FROM GoalTable WHERE id = ?;
 
+addSavedAmount:
+UPDATE GoalTable
+SET savedAmount = savedAmount + ?
+WHERE id = ?;
+

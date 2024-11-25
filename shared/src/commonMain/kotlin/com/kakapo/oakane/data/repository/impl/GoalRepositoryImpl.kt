@@ -1,6 +1,5 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.common.proceedResult
 import com.kakapo.oakane.data.database.datasource.base.GoalLocalDatasource
 import com.kakapo.oakane.data.database.model.GoalEntity
 import com.kakapo.oakane.data.model.toGoalEntity
@@ -15,25 +14,20 @@ class GoalRepositoryImpl (
 ) : GoalRepository {
 
     override suspend fun save(goal: GoalModel): Result<Unit> {
-        return proceedResult(
-            executed = { localDatasource.insert(goal.toGoalEntity()) },
-            transform = { }
-        )
+        return localDatasource.insert(goal.toGoalEntity())
     }
 
     override fun loadGoals(): Flow<Result<List<GoalModel>>> = flow {
-        val result = proceedResult(
-            executed = localDatasource::getGoals,
-            transform = { result -> result.map(GoalEntity::toGoalModel) }
-        )
+        val result = localDatasource.getGoals().mapCatching { it.map(GoalEntity::toGoalModel) }
         emit(result)
     }
 
     override fun loadGoalBy(id: Long): Flow<Result<GoalModel>> = flow {
-        val result = proceedResult(
-            executed = { localDatasource.getGoalBy(id) },
-            transform = { it.toGoalModel() }
-        )
+        val result = localDatasource.getGoalBy(id).mapCatching { it.toGoalModel() }
         emit(result)
+    }
+
+    override suspend fun addSaved(amount: Double, id: Long): Result<Unit> {
+        return localDatasource.addSaved(amount, id)
     }
 }

@@ -37,4 +37,10 @@ class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
         }
     }
 
+    override suspend fun addSaved(amount: Double, id: Long): Result<Unit> {
+        return runCatching {
+            goalTable.addSavedAmount(amount, id)
+        }
+    }
+
 }

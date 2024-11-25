@@ -1,7 +1,5 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.common.proceed
-import com.kakapo.oakane.common.proceedResult
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.data.model.TransactionParam
@@ -16,13 +14,12 @@ class TransactionRepositoryImpl(
 ) : TransactionRepository {
 
     override suspend fun save(transaction: TransactionParam): Result<Unit> {
-        return proceed { localDatasource.insertTransaction(transaction.toEntity()) }
+        return localDatasource.insertTransaction(transaction.toEntity())
     }
 
     override fun loadTransactions(): Flow<Result<List<TransactionModel>>> = flow {
-        val result = proceedResult(localDatasource::getTransactions) {
-            it.map(TransactionEntity::toModel)
-        }
+        val result = localDatasource.getTransactions()
+            .mapCatching { it.map(TransactionEntity::toModel) }
         emit(result)
     }
 
@@ -31,10 +28,10 @@ class TransactionRepositoryImpl(
     }
 
     override suspend fun loadTransactionBy(id: Long): Result<TransactionModel> {
-        return proceedResult({ localDatasource.getTransaction(id) }, TransactionEntity::toModel)
+        return localDatasource.getTransaction(id).mapCatching { it.toModel() }
     }
 
     override suspend fun update(transaction: TransactionParam, id: Long): Result<Unit> {
-        return proceed { localDatasource.updateTransaction(transaction.toEntity(id = id)) }
+        return localDatasource.updateTransaction(transaction.toEntity(id = id))
     }
 }

@@ -7,4 +7,5 @@ interface GoalRepository {
     suspend fun save(goal: GoalModel): Result<Unit>
     fun loadGoals(): Flow<Result<List<GoalModel>>>
     fun loadGoalBy(id: Long): Flow<Result<GoalModel>>
+    suspend fun addSaved(amount: Double, id: Long): Result<Unit>
 }

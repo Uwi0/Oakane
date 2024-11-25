@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.goal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.oakane.common.asDouble
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,7 @@ class GoalViewModel(
             is GoalEvent.Dialog -> _uiState.update { it.copy(dialogShown = event.shown) }
             is GoalEvent.Change -> _uiState.update { it.copy(savingAmount = event.amount) }
             GoalEvent.NavigateBack -> emit(GoalEffect.NavigateBack)
-            GoalEvent.AddSaving -> _uiState.update { it.copy(dialogShown = false) }
+            GoalEvent.AddSaving -> addSaving()
         }
     }
 
@@ -42,6 +43,17 @@ class GoalViewModel(
                 onFailure = {}
             )
         }
+    }
+
+    private fun addSaving() = viewModelScope.launch {
+        val id = uiState.value.goal.id
+        val amount = uiState.value.savingAmount.asDouble()
+        repository.addSaved(amount, id).fold(
+            onSuccess = {
+                _uiState.update { it.copy(dialogShown = false) }
+            },
+            onFailure = {}
+        )
     }
 
     private fun emit(effect: GoalEffect) = viewModelScope.launch {
