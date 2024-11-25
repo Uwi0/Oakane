@@ -5,7 +5,8 @@ struct TransactionDetailContentView: View {
     let transaction: TransactionModel
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ColumnTextView(title: "Date", value: transaction.dateCreated.toDateWith(format: "dd MMM yyyy"))
+            let dateCreated = transaction.dateCreated.toDateWith(format: "dd MMM yyyy")
+            ColumnTextView(title: "Date", value: dateCreated)
             ColumnTextView(title: "Category", value: transaction.category.name)
             ColumnTextView(title: "Type", value: transaction.type.name)
         }

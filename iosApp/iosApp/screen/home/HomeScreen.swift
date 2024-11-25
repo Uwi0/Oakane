@@ -54,7 +54,7 @@ struct HomeScreen: View {
                 navigation.navigate(to: .addGoal)
             case .showError(let error):
                 print("error \(error.message)")
-            case .toGoal(_):
+            case .toGoalWith(let id):
                 print("toGoal")
             }
         }
