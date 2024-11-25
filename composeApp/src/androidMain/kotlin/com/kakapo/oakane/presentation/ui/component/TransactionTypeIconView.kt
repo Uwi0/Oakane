@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,9 +36,11 @@ fun TransactionTypeIcon(
     }
 }
 
+@Composable
 fun transactionColor(type: TransactionType): Pair<ImageVector, Color> {
-    val icon =
-        if (type == TransactionType.Income) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward
-    val color = if (type == TransactionType.Income) Color.Green else Color.Red
+    val icon = if (type == TransactionType.Income) Icons.Default.ArrowUpward
+    else Icons.Default.ArrowDownward
+    val color = if (type == TransactionType.Income) MaterialTheme.colorScheme.primary
+    else MaterialTheme.colorScheme.error
     return Pair(icon, color)
 }
