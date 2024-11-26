@@ -14,6 +14,7 @@ final class GoalViewModel: ObservableObject {
                 self?.uiState.title = state.goal.goalName
                 self?.uiState.savedAmount = state.goal.savedMoney
                 self?.uiState.targetAmount = state.goal.amount
+                self?.uiState.progress = state.progress
                 self?.uiState.startDate = state.goal.startDate
                 self?.uiState.endDate = state.goal.endDate
                 self?.uiState.daysLeft = state.dayLeft
