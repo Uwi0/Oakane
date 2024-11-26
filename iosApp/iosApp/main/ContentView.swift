@@ -22,6 +22,8 @@ struct ContentView: View {
                             CategoriesScreen()
                         case .addGoal:
                             AddGoalScreen()
+                        case .goal(let goalId):
+                            GoalScreen(goalId: goalId)
                         }
                     }
                 

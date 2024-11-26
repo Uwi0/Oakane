@@ -21,7 +21,12 @@ struct HomeContentView: View {
                         ShowMoreItemView(onClick: { onEvent(.ToTransactions())})
                     }
                     GoalHeaderView(isVisible: true, onClick: { onEvent(.ToCreateGoal()) })
-                    GoalsView(goals: uiState.goals)
+                    GoalsView(
+                        goals: uiState.goals,
+                        onClick: { goal in
+                            onEvent(.ToGoalWith(id: goal.id))
+                        }
+                    )
                     ShowMoreItemView(onClick: {})
                 }
                 .padding(.vertical, 24)

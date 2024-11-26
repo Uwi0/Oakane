@@ -2,6 +2,8 @@ import SwiftUI
 
 struct GoalScreen: View {
     
+    let goalId: Int64
+    
     @StateObject private var viewModel: GoalViewModel = GoalViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     private let toolbarContent = ToolBarContent(title: "My Goal")
@@ -34,6 +36,9 @@ struct GoalScreen: View {
                 )
             }
         }
+        .onAppear {
+            
+        }
     }
     
     private func toolbar(event: ToolbarEvent) {
@@ -59,5 +64,5 @@ private struct ToolbarView: View {
 }
 
 #Preview {
-    GoalScreen()
+    GoalScreen(goalId: 0)
 }
