@@ -13,7 +13,7 @@ struct IconButtonView: View {
                 Image(systemName: name)
                     .resizable()
                     .frame(width: size, height: size)
-                    .fontWeight(.bold)
+                    .fontWeight(.regular)
                     .foregroundStyle(ColorTheme.outline)
             }
         )
