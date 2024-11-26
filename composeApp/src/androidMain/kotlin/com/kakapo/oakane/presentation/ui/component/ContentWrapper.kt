@@ -53,7 +53,7 @@ fun RowWrapper(
                 .fillMaxWidth()
                 .then(modifier),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             content.invoke(this)
         }

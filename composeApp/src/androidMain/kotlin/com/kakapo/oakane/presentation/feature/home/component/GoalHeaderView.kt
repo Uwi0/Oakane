@@ -43,8 +43,8 @@ private fun AddGoalView(onAddItem: () -> Unit) {
     RowWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
         CustomOutlinedIconCircleButton(icon = content.icon, onClick = {})
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(text = content.title, style = MaterialTheme.typography.titleMedium)
-            Text(text = content.description)
+            Text(text = content.title, style = MaterialTheme.typography.bodyMedium)
+            Text(text = content.description, style = MaterialTheme.typography.bodyMedium)
         }
         Spacer(modifier = Modifier.weight(1f))
         CustomIconButton(icon = Icons.Default.Add, onClick = onAddItem)
