@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct FabConstant {
+    static let size: CGFloat = 56
     static let xOffset: CGFloat = 35
     static let yOffset: CGFloat = 35
 }

@@ -35,7 +35,7 @@ struct CategoriesScreen: View {
                 .onChange(of: viewModel.uiState.searchQuery, perform: { query in viewModel.onEvent(event: .Search(query: query))})
                 
                 FabButtonView(
-                    size: 56,
+                    size: FabConstant.size,
                     xPos: geometry.size.width - FabConstant.xOffset,
                     yPos: geometry.size.height - FabConstant.yOffset,
                     onClick: { viewModel.onEvent(event: .ShowSheet(visibility: true)) }

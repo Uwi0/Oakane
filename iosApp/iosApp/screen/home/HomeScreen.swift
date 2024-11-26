@@ -26,7 +26,7 @@ struct HomeScreen: View {
                 }
                 
                 FabButtonView(
-                    size: 56,
+                    size: FabConstant.size,
                     xPos: geometryReader.size.width - FabConstant.xOffset,
                     yPos: geometryReader.size.height - FabConstant.yOffset,
                     onClick: {

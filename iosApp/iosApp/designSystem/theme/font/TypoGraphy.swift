@@ -8,19 +8,19 @@ struct Typography {
     static let bodyLarge = Font.custom("Roboto-Bold", size: 16)
 
     // Display fonts
-    static let displaySmall = Font.custom("Poppins-Regular", size: 20)
-    static let displayMedium = Font.custom("Poppins-Medium", size: 24)
-    static let displayLarge = Font.custom("Poppins-Bold", size: 28)
+    static let displaySmall = Font.custom("Poppins-Regular", size: 36)
+    static let displayMedium = Font.custom("Poppins-Medium", size: 45)
+    static let displayLarge = Font.custom("Poppins-Bold", size: 57)
 
     // Title fonts
-    static let titleSmall = Font.custom("Roboto-Regular", size: 18)
-    static let titleMedium = Font.custom("Roboto-Medium", size: 22)
-    static let titleLarge = Font.custom("Roboto-Bold", size: 24)
+    static let titleSmall = Font.custom("Roboto-Regular", size: 14)
+    static let titleMedium = Font.custom("Roboto-Medium", size: 16)
+    static let titleLarge = Font.custom("Roboto-Bold", size: 22)
 
     // Headline fonts
-    static let headlineSmall = Font.custom("Poppins-Regular", size: 14)
-    static let headlineMedium = Font.custom("Poppins-Medium", size: 18)
-    static let headlineLarge = Font.custom("Poppins-Bold", size: 20)
+    static let headlineSmall = Font.custom("Poppins-Regular", size: 24)
+    static let headlineMedium = Font.custom("Poppins-Medium", size: 28)
+    static let headlineLarge = Font.custom("Poppins-Bold", size: 32)
 
     // Caption fonts
     static let captionSmall = Font.custom("Roboto-Regular", size: 10)
@@ -44,7 +44,7 @@ struct Typography {
 
     // Label fonts (New)
     static let labelSmall = Font.custom("Roboto-Regular", size: 11)
-    static let labelMedium = Font.custom("Roboto-Medium", size: 13)
-    static let labelLarge = Font.custom("Roboto-Bold", size: 15)
+    static let labelMedium = Font.custom("Roboto-Medium", size: 12)
+    static let labelLarge = Font.custom("Roboto-Bold", size: 14)
 }
 

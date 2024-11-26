@@ -8,7 +8,8 @@ struct CustomBackgroundModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(12)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 16)
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(backgroundColor)
@@ -21,7 +22,7 @@ extension View {
     func customBackground(
         cornerRadius: CGFloat = ShapeStyles.large,
         backgroundColor: Color,
-        shadowRadius: CGFloat = 2
+        shadowRadius: CGFloat = 1
     ) -> some View {
         self.modifier(
             CustomBackgroundModifier(

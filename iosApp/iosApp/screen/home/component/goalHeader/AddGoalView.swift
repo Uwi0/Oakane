@@ -8,9 +8,10 @@ struct AddGoalView: View {
     var body: some View {
         HStack(spacing: 16) {
             OutlinedCircleIcon(imageName: "star.circle", size: imageSize)
-            VStack(spacing: 8) {
-                Text("My Goals").font(Typography.titleMedium)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("My Goals").font(Typography.bodyMedium)
                 Text("Add New Goals")
+                    .font(Typography.bodyMedium)
             }
             Spacer()
             IconButtonView(name: "plus", size: imageSize, onClick: onClick)
