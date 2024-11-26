@@ -22,4 +22,8 @@ final class GoalViewModel: ObservableObject {
             }
         }
     }
+    
+    func initializeData(goalId: Int64) {
+        viewModel.doInitViewModel(goalId: goalId)
+    }
 }

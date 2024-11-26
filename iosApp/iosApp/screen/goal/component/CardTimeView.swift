@@ -7,11 +7,11 @@ struct CardTimeView: View {
     private let datePattern = "dd MMM yyy"
     
     private var startDate: String {
-        uiState.startDate.formatDateWith(pattern: datePattern)
+        uiState.startDate.toDateWith(format: datePattern)
     }
     
     private var endDate: String {
-        uiState.endDate.formatDateWith(pattern: datePattern)
+        uiState.endDate.toDateWith(format: datePattern)
     }
     
     var body: some View {

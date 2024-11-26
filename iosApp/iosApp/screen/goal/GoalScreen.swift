@@ -36,8 +36,9 @@ struct GoalScreen: View {
                 )
             }
         }
+        .navigationBarBackButtonHidden(true)
         .onAppear {
-            
+            viewModel.initializeData(goalId: goalId)
         }
     }
     
