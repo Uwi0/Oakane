@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.goal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.oakane.common.asDouble
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -48,6 +49,7 @@ class GoalViewModel(
     private fun addSaving() = viewModelScope.launch {
         val id = uiState.value.goal.id
         val amount = uiState.value.savingAmount.asDouble()
+        Logger.d("amount: $amount")
         repository.addSaved(amount, id).fold(
             onSuccess = { updateGoal(amount) },
             onFailure = {}

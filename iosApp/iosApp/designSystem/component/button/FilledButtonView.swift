@@ -8,7 +8,7 @@ struct FilledButtonView: View {
     var body: some View {
         Button(action: onClick) {
             Text(text)
-                .font(.headline)
+                .font(Typography.labelLarge)
                 .foregroundColor(ColorTheme.onPrimary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding()

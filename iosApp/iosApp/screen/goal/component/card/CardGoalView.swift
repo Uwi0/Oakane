@@ -1,4 +1,5 @@
 import SwiftUI
+import Shared
 
 struct CardGoalView: View {
     
@@ -43,7 +44,7 @@ private struct SavingProgressView: View {
             CardContentWithIconView(
                 icon: "wallet.bifold",
                 title: "Balance",
-                content: uiState.savedAmount.formatted()
+                content: uiState.savedAmount
             )
             .frame(maxWidth: .infinity, alignment: .leading)
             Divider()
@@ -51,7 +52,7 @@ private struct SavingProgressView: View {
             CardContentWithIconView(
                 icon: "flag",
                 title: "Target",
-                content: uiState.targetAmount.formatted()
+                content: uiState.targetAmount
             )
             .frame(maxWidth: .infinity, alignment: .leading)
         }

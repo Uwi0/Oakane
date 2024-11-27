@@ -1,6 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.goal
 
 import com.kakapo.oakane.common.daysBetween
+import com.kakapo.oakane.common.toFormatIDRCurrency
 import com.kakapo.oakane.model.GoalModel
 
 data class GoalState(
@@ -8,12 +9,17 @@ data class GoalState(
     val savingAmount: String = "",
     val dialogShown: Boolean = false
 ){
-    val progress: Float get() {
-        return (goal.savedMoney / goal.amount).toFloat()
-    }
 
     val dayLeft: Long get() {
         return goal.endDate.daysBetween(goal.startDate)
+    }
+
+    val savedAmount: String get() {
+        return goal.savedMoney.toFormatIDRCurrency()
+    }
+
+    val targetAmount: String get() {
+        return goal.amount.toFormatIDRCurrency()
     }
 }
 

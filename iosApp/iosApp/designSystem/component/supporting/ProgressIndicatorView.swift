@@ -7,6 +7,7 @@ struct ProgressIndicatorView: View {
     private let radius: CGFloat = 12
     
     var body: some View {
+        
         ProgressView(value: animatedProgress, total: 1.0)
             .progressViewStyle(LinearProgressViewStyle())
             .controlSize(.large)
@@ -15,6 +16,11 @@ struct ProgressIndicatorView: View {
             .onAppear {
                 withAnimation(.easeInOut(duration: 0.5)) {
                     animatedProgress = value
+                }
+            }
+            .onChange(of: value) { newValue in
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    animatedProgress = newValue
                 }
             }
     }

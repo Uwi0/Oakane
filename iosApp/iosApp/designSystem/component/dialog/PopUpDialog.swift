@@ -2,9 +2,9 @@ import SwiftUI
 
 struct PopUpDialog<Content: View>: View {
     
-    @Binding var isPresented: Bool
     let content: Content
     let dismissable: Bool
+    let onDimiss: (Bool) -> Void
     
     var body: some View {
         GeometryReader { proxy in
@@ -14,7 +14,7 @@ struct PopUpDialog<Content: View>: View {
                     .onTapGesture {
                         if dismissable {
                             withAnimation {
-                                isPresented = false
+                                onDimiss(false)
                             }
                         }
                     }
@@ -42,12 +42,12 @@ struct PopUpDialog<Content: View>: View {
 extension PopUpDialog {
     
     init(
-        isPresented: Binding<Bool>,
         dismissable: Bool = true,
+        onDismiss: @escaping (Bool) -> Void = {_ in },
         @ViewBuilder _ content: () -> Content
     ) {
-        _isPresented = isPresented
         self.content = content()
         self.dismissable = dismissable
+        self.onDimiss = onDismiss
     }
 }

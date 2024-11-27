@@ -6,6 +6,7 @@ struct GoalScreen: View {
     
     @StateObject private var viewModel: GoalViewModel = GoalViewModel()
     @EnvironmentObject private var navigation: AppNavigation
+    
     private let toolbarContent = ToolBarContent(title: "My Goal")
     private var uiState: GoalState {
         viewModel.uiState
@@ -16,7 +17,7 @@ struct GoalScreen: View {
             ZStack {
                 ColorTheme.surface.ignoresSafeArea()
                 VStack {
-                    ToolbarView()
+                    ToolbarView(onClick: { navigation.navigateBack() })
                     VStack(spacing: 16) {
                         CardGoalView(uiState: uiState)
                         CardTimeView(uiState: uiState)
@@ -31,12 +32,14 @@ struct GoalScreen: View {
                     xPos: proxy.size.width - FabConstant.xOffset,
                     yPos: proxy.size.height - FabConstant.yOffset,
                     onClick: {
-                        viewModel.uiState.isDialogShown.toggle()
+                        viewModel.handle(event: .Dialog(shown: true))
                     }
                 )
                 if uiState.isDialogShown {
-                    PopUpDialog(isPresented: $viewModel.uiState.isDialogShown) {
-                        Text("Hello world")
+                    PopUpDialog(
+                        onDismiss: { dimiss in viewModel.handle(event: .Dialog(shown: false)) }
+                    ) {
+                        DialogAddGoalSavingView(onEvent: viewModel.handle(event:))
                     }
                 }
             }
@@ -54,12 +57,17 @@ struct GoalScreen: View {
 
 private struct ToolbarView: View {
     
+    let onClick: () -> Void
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 16) {
                 Image(systemName: "arrow.left")
                     .fontWeight(.semibold)
                     .frame(width: 24, height: 24)
+                    .onTapGesture {
+                        onClick()
+                    }
                 Text("Add Goal")
                     .font(Typography.titleLarge)
             }

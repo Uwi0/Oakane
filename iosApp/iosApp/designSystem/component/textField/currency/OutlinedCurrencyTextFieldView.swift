@@ -33,7 +33,7 @@ struct OutlinedCurrencyTextFieldView: View {
                 .stroke(borderColor, lineWidth: 2))
                 .frame(height: 56)
                 .onChange(of: value) { newValue in
-                    onValueChange(String(newValue))
+                    onValueChange(String(newValue / 100))
                 }
         }
         

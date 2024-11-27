@@ -56,7 +56,7 @@ private fun CardContentView(modifier: Modifier, uiState: GoalState) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(text = uiState.goal.goalName, style = MaterialTheme.typography.titleMedium)
         SavingProgressView(uiState = uiState)
-        CustomProgressIndicatorView(uiState.progress)
+        CustomProgressIndicatorView(uiState.goal.progress)
     }
 }
 
@@ -71,14 +71,14 @@ private fun SavingProgressView(uiState: GoalState) {
             modifier = Modifier.weight(1f),
             icon = Icons.Outlined.AccountBalanceWallet,
             title = "Saved",
-            content = "Rp ${uiState.goal.savedMoney}"
+            content = uiState.savedAmount
         )
         VerticalDivider(modifier = Modifier.height(30.dp))
         CardContentWithIconView(
             modifier = Modifier.weight(1f),
             icon = Icons.Outlined.Flag,
             title = "Target",
-            content = "Rp ${uiState.goal.amount}"
+            content = uiState.targetAmount
         )
     }
 }
