@@ -40,7 +40,7 @@ internal fun CardGoalView(uiState: GoalState) {
 @Composable
 private fun CardImageView(fileUrl: String) {
     val context = LocalContext.current
-    val imgUri = context.getSavedImageUri(fileUrl)
+    val imgUri = context.getSavedImageUri(fileUrl).getOrNull()
     CustomDynamicAsyncImage(
         modifier = Modifier
             .size(48.dp)
