@@ -31,9 +31,14 @@ struct GoalScreen: View {
                     xPos: proxy.size.width - FabConstant.xOffset,
                     yPos: proxy.size.height - FabConstant.yOffset,
                     onClick: {
-                        navigation.navigate(to: .addTransaction(transactionId: 0))
+                        viewModel.uiState.isDialogShown.toggle()
                     }
                 )
+                if uiState.isDialogShown {
+                    PopUpDialog(isPresented: $viewModel.uiState.isDialogShown) {
+                        Text("Hello world")
+                    }
+                }
             }
         }
         .navigationBarBackButtonHidden(true)

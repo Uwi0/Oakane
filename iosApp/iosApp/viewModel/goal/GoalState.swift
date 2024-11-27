@@ -11,4 +11,5 @@ struct GoalState {
     var endDate: Int64 = 0
     var daysLeft: Int64 = 0
     var note: String = ""
+    var isDialogShown: Bool = false
 }
