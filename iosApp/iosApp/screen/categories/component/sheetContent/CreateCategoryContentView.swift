@@ -91,7 +91,7 @@ private struct CategorySegmentedButtonView: View {
     
     let onEvent: (CategoriesEvent) -> Void
     
-    @State private var selectedType: TransactionType = .expense
+    @State private var selectedType: TransactionType = .income
     
     var body: some View {
         Picker("Transaction Type", selection: $selectedType) {

@@ -1,10 +1,10 @@
 import Foundation
 import UIKit
 
-func saveImageToFileSystem(image: UIImage) -> Result<String, Error>{
+func saveImageToFileSystem(image: UIImage) -> Result<String, Error> {
     let fileName = "image-oakane\(Date().timeIntervalSince1970).jpg"
-    let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-    
+    let fileUrl = FileManager.default.getDocumentsDirectory().appendingPathComponent(fileName)
+
     do {
         if let data = image.jpegData(compressionQuality: 1.0) {
             try data.write(to: fileUrl)
@@ -18,8 +18,12 @@ func saveImageToFileSystem(image: UIImage) -> Result<String, Error>{
 }
 
 extension FileManager {
+    func getDocumentsDirectory() -> URL {
+        return urls(for: .documentDirectory, in: .userDomainMask)[0]
+    }
+
     func getSavedImageURL(fileName: String) -> URL? {
-        let fileURL = temporaryDirectory.appendingPathComponent(fileName)
+        let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
         return fileExists(atPath: fileURL.path) ? fileURL : nil
     }
 }

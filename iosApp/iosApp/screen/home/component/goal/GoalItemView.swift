@@ -5,10 +5,11 @@ struct GoalItemView: View {
     let goal: GoalModel
     var body: some View {
         HStack(spacing: 16) {
-            Image(ImageConstants.defaultImage)
-                .resizable()
-                .frame(width: 64, height: 64)
-                .clipShape(Circle())
+            DisplayImageFileView(
+                fileName: goal.fileName,
+                width: 64,
+                height: 64
+            )
             
             VStack(alignment: .leading,spacing: 4) {
                 Text(goal.goalName)

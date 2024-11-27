@@ -9,7 +9,6 @@ final class GoalViewModel: ObservableObject {
     
     init() {
         viewModel.observeUiState { [weak self] state in
-            print("progress: \(state.goal.progress)")
             DispatchQueue.main.async {
                 self?.uiState.fileName = state.goal.fileName
                 self?.uiState.title = state.goal.goalName

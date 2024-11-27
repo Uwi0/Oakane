@@ -26,28 +26,38 @@ struct DisplayImageFileView: View {
             }
         }
         .onAppear {
-            loadSavedImage()
+            if !fileName.isEmpty {
+                loadSavedImage(imageName: fileName)
+            }
+        }
+        .onChange(of: fileName) { newImage in
+            if !newImage.isEmpty {
+                loadSavedImage(imageName: newImage)
+            }
         }
     }
     
-    private func loadSavedImage() {
-        if let fileUrl = FileManager.default.getSavedImageURL(fileName: fileName) {
-            DispatchQueue.global(qos: .background).async {
-                do {
-                    let data = try Data(contentsOf: fileUrl)
-                    if let loadedImage = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            self.uiImage = loadedImage
-                        }
-                    } else {
-                        print("Failed to create UIImage from data")
-                    }
-                } catch {
-                    print("Failed to load data from file: \(error.localizedDescription)")
-                }
-            }
-        } else {
+    private func loadSavedImage(imageName: String) {
+        print("Loading image: \(imageName)")
+        guard let fileUrl = FileManager.default.getSavedImageURL(fileName: imageName) else {
             print("Image file not found")
+            return
+        }
+        
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let data = try Data(contentsOf: fileUrl)
+                guard let loadedImage = UIImage(data: data) else {
+                    print("Failed to create UIImage from data")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    self.uiImage = loadedImage
+                }
+            } catch {
+                print("Failed to load data from file: \(error.localizedDescription)")
+            }
         }
     }
 }
