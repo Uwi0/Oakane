@@ -45,6 +45,7 @@ internal fun HomeRoute(
     navigateToAddTransaction: () -> Unit,
     navigateToTransactions: () -> Unit,
     navigateToAddGoal: () -> Unit,
+    navigateToGoals: () -> Unit,
     navigateToGoal: (Long) -> Unit
 ) {
     val context = LocalContext.current
@@ -60,6 +61,7 @@ internal fun HomeRoute(
                 HomeEffect.ToCreateGoal -> navigateToAddGoal.invoke()
                 is HomeEffect.ToGoalWith -> navigateToGoal.invoke(effect.id)
                 is HomeEffect.ShowError -> context.showToast(effect.message)
+                HomeEffect.ToGoals -> navigateToGoals.invoke()
             }
         }
     }
@@ -142,7 +144,7 @@ private fun HomeContentView(
         }
         item {
             GoalHeaderView(
-                isVisible = true,
+                isVisible = uiState.goals.isEmpty(),
                 onAddItem = { onEvent.invoke(HomeEvent.ToCreateGoal) }
             )
         }
@@ -150,9 +152,11 @@ private fun HomeContentView(
             GoalItemView(goal, onClicked = { onEvent.invoke(HomeEvent.ToGoalWith(id = goal.id)) })
         }
         item {
-            ShowMoreButtonView(isVisible = uiState.goals.size > 3, onClick = {})
+            ShowMoreButtonView(
+                isVisible = uiState.goals.size > 3,
+                onClick = { onEvent.invoke(HomeEvent.ToGoals) }
+            )
         }
-
     }
 }
 

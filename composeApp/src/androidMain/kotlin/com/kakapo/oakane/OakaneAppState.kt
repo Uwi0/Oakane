@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.kakapo.oakane.presentation.feature.categories.navigation.navigateToCategories
+import com.kakapo.oakane.presentation.feature.goals.navigation.navigateToGoals
 import com.kakapo.oakane.presentation.feature.home.navigation.navigateToHome
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
 import com.kakapo.oakane.presentation.navigation.DrawerMenuNavigation
@@ -40,6 +41,7 @@ class OakaneAppState(val navController: NavHostController) {
             DrawerMenuNavigation.DASHBOARD -> navController.navigateToHome(topLevelNavOptions)
             DrawerMenuNavigation.TRANSACTIONS -> navController.navigateToTransactions()
             DrawerMenuNavigation.CATEGORIES -> navController.navigateToCategories()
+            DrawerMenuNavigation.Goals -> navController.navigateToGoals()
         }
     }
 

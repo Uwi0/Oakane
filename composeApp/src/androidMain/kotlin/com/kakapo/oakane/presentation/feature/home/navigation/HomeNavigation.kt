@@ -17,6 +17,7 @@ fun NavGraphBuilder.homeScreen(
     navigateToAddTransaction: (Long) -> Unit,
     navigateToTransactions: () -> Unit,
     navigateToAddGoal: () -> Unit,
+    navigateToGoals: () -> Unit,
     navigateToGoal: (Long) -> Unit
 ) {
     composable(HOME_ROUTE) {
@@ -24,6 +25,7 @@ fun NavGraphBuilder.homeScreen(
             navigateToAddTransaction = { navigateToAddTransaction.invoke(0L) },
             navigateToTransactions = navigateToTransactions,
             navigateToAddGoal = navigateToAddGoal,
+            navigateToGoals = navigateToGoals,
             navigateToGoal = navigateToGoal,
             openDrawer = openDrawer
         )
