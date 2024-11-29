@@ -32,7 +32,6 @@ internal fun TransactionTopAppBarView(
         CustomNavigationTopAppBarView(
             title = "Transactions",
             shadowElevation = 0.dp,
-            tonalElevation = 0.dp,
             onNavigateBack = {
                 onEvent.invoke(TransactionsEvent.NavigateBack)
             }
