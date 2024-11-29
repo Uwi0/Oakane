@@ -13,20 +13,22 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.viewModel.goals.GoalsEvent
+import com.kakapo.oakane.presentation.viewModel.goals.GoalsState
 
 @Composable
-internal fun GoalsTopAppbarView() {
+internal fun GoalsTopAppbarView(uiState: GoalsState, onEvent: (GoalsEvent) -> Unit) {
     Column {
         CustomNavigationTopAppBarView(
             title = "Goals",
             shadowElevation = 0.dp,
-            onNavigateBack = {}
+            onNavigateBack = { onEvent.invoke(GoalsEvent.NavigateBack)}
         )
         SearchTextFieldView(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            value = "",
+            value = uiState.searchQuery,
             placeHolder = "Search Goal...",
-            onValueChange = {}
+            onValueChange = { query -> onEvent.invoke(GoalsEvent.FilterBy(query))}
         )
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         HorizontalDivider()
@@ -38,7 +40,7 @@ internal fun GoalsTopAppbarView() {
 private fun GoalsTopAppbarViewPreview() {
     AppTheme {
         Surface {
-            GoalsTopAppbarView()
+            GoalsTopAppbarView(uiState = GoalsState(), onEvent = {})
         }
     }
 }

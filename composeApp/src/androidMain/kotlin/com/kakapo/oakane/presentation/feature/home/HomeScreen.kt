@@ -28,7 +28,7 @@ import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.home.component.GoalHeaderView
-import com.kakapo.oakane.presentation.feature.home.component.GoalItemView
+import com.kakapo.oakane.presentation.ui.component.item.GoalItemView
 import com.kakapo.oakane.presentation.feature.home.component.MonthlyBudgetView
 import com.kakapo.oakane.presentation.feature.home.component.ShowMoreButtonView
 import com.kakapo.oakane.presentation.feature.home.component.TotalBalanceView

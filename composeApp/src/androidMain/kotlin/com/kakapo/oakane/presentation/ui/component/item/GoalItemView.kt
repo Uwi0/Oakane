@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.home.component
+package com.kakapo.oakane.presentation.ui.component.item
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
