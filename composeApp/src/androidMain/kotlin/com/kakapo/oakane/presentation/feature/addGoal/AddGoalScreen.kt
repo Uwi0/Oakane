@@ -38,12 +38,17 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AddGoalRoute(
+    goalId: Long,
     navigateBack: () -> Unit
 ) {
 
     val context = LocalContext.current
     val viewModel = koinViewModel<AddGoalViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.initData(goalId)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
@@ -62,7 +67,7 @@ fun AddGoalRoute(
             initialValue = uiState.initialDateDialog,
             onDismiss = { viewModel.handleEvent(AddGoalEvent.HideDialog) },
             onConfirm = { date ->
-                when(uiState.dialogContent){
+                when (uiState.dialogContent) {
                     GoalDateContent.Start -> viewModel.handleEvent(AddGoalEvent.SetStart(date))
                     GoalDateContent.End -> viewModel.handleEvent(AddGoalEvent.SetEnd(date))
                 }
@@ -75,9 +80,10 @@ fun AddGoalRoute(
 private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit) {
     Scaffold(
         topBar = {
+            val title = if(uiState.isEditMode) "Edit Goal" else "Add Goal"
             CustomNavigationTopAppBarView(
-                title = "Add Goals",
-                onNavigateBack = {}
+                title = title,
+                onNavigateBack = { onEvent.invoke(AddGoalEvent.NavigateBack) }
             )
         },
         content = { paddingValues ->
@@ -89,7 +95,10 @@ private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ImageGoalPicker(onSelectedImage = { onEvent.invoke(AddGoalEvent.SetFile(it))} )
+                ImageGoalPicker(
+                    imageUrl = uiState.fileName,
+                    onSelectedImage = { onEvent.invoke(AddGoalEvent.SetFile(it)) }
+                )
                 Spacer(modifier = Modifier.size(4.dp))
                 OutlinedCurrencyTextField(
                     modifier = Modifier.fillMaxWidth(),

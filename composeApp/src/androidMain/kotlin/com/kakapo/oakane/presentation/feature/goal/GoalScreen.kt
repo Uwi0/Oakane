@@ -33,7 +33,7 @@ import com.kakapo.oakane.presentation.viewModel.goal.GoalViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun GoalRoute(goalId: Long, navigateUp: () -> Unit, updateGoal: () -> Unit) {
+fun GoalRoute(goalId: Long, navigateUp: () -> Unit, updateGoal: (Long) -> Unit) {
     val context = LocalContext.current
     val viewModel = koinViewModel<GoalViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -47,7 +47,7 @@ fun GoalRoute(goalId: Long, navigateUp: () -> Unit, updateGoal: () -> Unit) {
             when (effect) {
                 GoalEffect.NavigateBack -> navigateUp.invoke()
                 is GoalEffect.ShowError -> context.showToast(effect.message)
-                is GoalEffect.UpdateGoalBy -> updateGoal.invoke()
+                is GoalEffect.UpdateGoalBy -> updateGoal.invoke(effect.id)
             }
         }
     }

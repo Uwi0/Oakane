@@ -6,6 +6,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,12 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
+import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.common.utils.saveImageUri
 import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomImagePicker
 
 @Composable
-internal fun ImageGoalPicker(onSelectedImage: (String) -> Unit) {
+internal fun ImageGoalPicker(imageUrl: String,onSelectedImage: (String) -> Unit) {
     val context = LocalContext.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
@@ -35,6 +37,11 @@ internal fun ImageGoalPicker(onSelectedImage: (String) -> Unit) {
             }
         }
     )
+
+    LaunchedEffect(imageUrl) {
+        val savedImageUri = context.getSavedImageUri(imageUrl).getOrNull()
+        selectedImageUri = savedImageUri
+    }
 
     CustomImagePicker(
         modifier = Modifier

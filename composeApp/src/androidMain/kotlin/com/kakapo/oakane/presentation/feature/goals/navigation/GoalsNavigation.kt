@@ -14,13 +14,13 @@ fun NavController.navigateToGoals(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.goalsScreen(
     navigateUp: () -> Unit,
-    navigateToAddGoal: () -> Unit,
+    navigateToAddGoal: (Long) -> Unit,
     navigateToGoal: (Long) -> Unit
 ) {
     composable(GOALS_ROUTE) {
         GoalRoute(
             navigateUp = navigateUp,
-            navigateToAddGoal = navigateToAddGoal,
+            navigateToAddGoal = { navigateToAddGoal.invoke(0) },
             navigateToGoal = navigateToGoal
         )
     }

@@ -16,7 +16,7 @@ fun NavGraphBuilder.homeScreen(
     openDrawer: () -> Unit,
     navigateToAddTransaction: (Long) -> Unit,
     navigateToTransactions: () -> Unit,
-    navigateToAddGoal: () -> Unit,
+    navigateToAddGoal: (Long) -> Unit,
     navigateToGoals: () -> Unit,
     navigateToGoal: (Long) -> Unit
 ) {
@@ -24,7 +24,7 @@ fun NavGraphBuilder.homeScreen(
         HomeRoute(
             navigateToAddTransaction = { navigateToAddTransaction.invoke(0L) },
             navigateToTransactions = navigateToTransactions,
-            navigateToAddGoal = navigateToAddGoal,
+            navigateToAddGoal = { navigateToAddGoal.invoke(0) },
             navigateToGoals = navigateToGoals,
             navigateToGoal = navigateToGoal,
             openDrawer = openDrawer

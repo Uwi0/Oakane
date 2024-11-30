@@ -4,6 +4,7 @@ import com.kakapo.oakane.model.GoalModel
 import kotlinx.datetime.Clock
 
 data class AddGoalState(
+    val isEditMode: Boolean = false,
     val fileName: String = "",
     val goalName: String = "",
     val targetAmount: String = "",
@@ -29,6 +30,15 @@ data class AddGoalState(
     fun updateStart(date: Long) = copy(startDate = date, dialogShown = false)
 
     fun updateEnd(date: Long) = copy(endDate = date, dialogShown = false)
+
+    fun update(goal: GoalModel) = copy(
+        fileName = goal.fileName,
+        goalName = goal.goalName,
+        targetAmount = goal.amount.toString(),
+        note = goal.note,
+        startDate = goal.startDate,
+        endDate = goal.endDate
+    )
 
     fun asGoalModel() = GoalModel(
         goalName = goalName,

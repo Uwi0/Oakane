@@ -20,6 +20,13 @@ class AddGoalViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<AddGoalEffect>()
 
+    fun initData(goalId: Long){
+        _uiState.update { it.copy(isEditMode = goalId != 0L) }
+        if (goalId != 0L){
+            loadGoalBy(goalId)
+        }
+    }
+
     fun handleEvent(event: AddGoalEvent){
         when(event){
             is AddGoalEvent.SetEnd -> _uiState.update { it.updateEnd(event.date) }
@@ -32,6 +39,17 @@ class AddGoalViewModel(
             AddGoalEvent.HideDialog -> _uiState.update { it.copy(dialogShown = false) }
             AddGoalEvent.NavigateBack -> emit(AddGoalEffect.NavigateBack)
             AddGoalEvent.SaveGoal -> saveGoal()
+        }
+    }
+
+    private fun loadGoalBy(id: Long) = viewModelScope.launch {
+        goalRepository.loadGoalBy(id).collect { goal ->
+            goal.fold(
+                onSuccess = { goalResult ->
+                    _uiState.update { it.update(goalResult) }
+                },
+                onFailure = ::handleError
+            )
         }
     }
 
