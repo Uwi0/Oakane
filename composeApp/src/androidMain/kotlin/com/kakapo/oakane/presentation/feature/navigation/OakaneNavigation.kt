@@ -51,7 +51,8 @@ internal fun OakaneNavHost(
         )
         goalsScreen(
             navigateUp = navController::navigateUp,
-            navigateToAddGoal = navController::navigateToAddGoal
+            navigateToAddGoal = navController::navigateToAddGoal,
+            navigateToGoal = navController::navigateToGoal
         )
         goalScreen(navigateUp = navController::navigateUp)
     }

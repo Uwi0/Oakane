@@ -28,7 +28,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 internal fun GoalRoute(
     navigateUp: () -> Unit,
-    navigateToAddGoal: () -> Unit
+    navigateToAddGoal: () -> Unit,
+    navigateToGoal: (Long) -> Unit
 ) {
     val viewModel = koinViewModel<GoalsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -39,9 +40,9 @@ internal fun GoalRoute(
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 GoalsEffect.NavigateBack -> navigateUp.invoke()
-                is GoalsEffect.NavigateToGoal -> {}
+                is GoalsEffect.NavigateToGoal -> navigateToGoal.invoke(effect.id)
                 GoalsEffect.AddGoal -> navigateToAddGoal.invoke()
             }
         }
@@ -64,8 +65,11 @@ private fun GoalScreen(uiState: GoalsState, onEvent: (GoalsEvent) -> Unit) {
                 contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(uiState.filteredGoals, key = { it.id }){ goal ->
-                    GoalItemView(goal = goal, onClicked = {})
+                items(uiState.filteredGoals, key = { it.id }) { goal ->
+                    GoalItemView(
+                        goal = goal,
+                        onClicked = { onEvent.invoke(GoalsEvent.NavigateToGoal(goal.id)) }
+                    )
                 }
             }
         },

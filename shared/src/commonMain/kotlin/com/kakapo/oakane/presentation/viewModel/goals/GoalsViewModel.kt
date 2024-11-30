@@ -28,7 +28,7 @@ class GoalsViewModel(
     fun handleEvent(event: GoalsEvent) {
         when(event) {
             is GoalsEvent.FilterBy -> filterGoalsBy(event.query)
-            is GoalsEvent.NavigateToGoal -> {}
+            is GoalsEvent.NavigateToGoal -> emit(GoalsEffect.NavigateToGoal(event.id))
             GoalsEvent.NavigateBack -> emit(GoalsEffect.NavigateBack)
             GoalsEvent.AddGoal -> emit(GoalsEffect.AddGoal)
         }
