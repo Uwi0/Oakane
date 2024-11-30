@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.goal.component.DialogGoalView
@@ -31,6 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun GoalRoute(goalId: Long, navigateUp: () -> Unit) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<GoalViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -42,6 +45,7 @@ fun GoalRoute(goalId: Long, navigateUp: () -> Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 GoalEffect.NavigateBack -> navigateUp.invoke()
+                is GoalEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }

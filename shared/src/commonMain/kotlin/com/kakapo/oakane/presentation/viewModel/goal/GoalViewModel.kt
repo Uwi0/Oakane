@@ -41,7 +41,7 @@ class GoalViewModel(
                 onSuccess = { goal ->
                     _uiState.update { it.copy(goal = goal) }
                 },
-                onFailure = {}
+                onFailure = ::handleError
             )
         }
     }
@@ -51,7 +51,7 @@ class GoalViewModel(
         val amount = uiState.value.savingAmount.asDouble()
         repository.addSaved(amount, id).fold(
             onSuccess = { updateGoal(amount) },
-            onFailure = {}
+            onFailure = ::handleError
         )
     }
 
@@ -73,8 +73,13 @@ class GoalViewModel(
                 _uiState.update { it.copy(dialogShown = false) }
                 emit(GoalEffect.NavigateBack)
             },
-            onFailure = {}
+            onFailure = ::handleError
         )
+    }
+
+    private fun handleError(throwable: Throwable?){
+        val message = throwable?.message ?: "Something went wrong"
+        emit(GoalEffect.ShowError(message))
     }
 
     private fun emit(effect: GoalEffect) = viewModelScope.launch {

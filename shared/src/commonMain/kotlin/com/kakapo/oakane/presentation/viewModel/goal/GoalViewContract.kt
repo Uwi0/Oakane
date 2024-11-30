@@ -38,6 +38,7 @@ enum class DialogContent {
 
 sealed class GoalEffect {
     data object NavigateBack : GoalEffect()
+    data class ShowError(val message: String): GoalEffect()
 }
 
 sealed class GoalEvent {
