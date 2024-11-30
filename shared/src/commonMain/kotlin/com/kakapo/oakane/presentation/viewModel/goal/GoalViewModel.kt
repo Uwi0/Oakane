@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class GoalViewModel(
     private val repository: GoalRepository
-): ViewModel() {
+) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(GoalState())
@@ -26,8 +26,8 @@ class GoalViewModel(
     }
 
     fun handleEvent(event: GoalEvent) {
-        when(event) {
-            is GoalEvent.Dialog -> _uiState.update { it.copy(dialogShown = event.shown) }
+        when (event) {
+            is GoalEvent.Dialog -> _uiState.update { it.updateDialog(event.shown, event.content) }
             is GoalEvent.Change -> _uiState.update { it.copy(savingAmount = event.amount) }
             GoalEvent.NavigateBack -> emit(GoalEffect.NavigateBack)
             GoalEvent.AddSaving -> addSaving()
@@ -58,13 +58,21 @@ class GoalViewModel(
     private fun updateGoal(amount: Double) {
         val currentAmount = uiState.value.goal.savedMoney
         val newAmount = currentAmount + amount
-        _uiState.update { it.copy(goal = it.goal.copy(savedMoney = newAmount), dialogShown = false) }
+        _uiState.update {
+            it.copy(
+                goal = it.goal.copy(savedMoney = newAmount),
+                dialogShown = false
+            )
+        }
     }
 
     private fun deleteGoal() = viewModelScope.launch {
         val id = uiState.value.goal.id
         repository.deleteGoalBy(id).fold(
-            onSuccess = { emit(GoalEffect.NavigateBack) },
+            onSuccess = {
+                _uiState.update { it.copy(dialogShown = false) }
+                emit(GoalEffect.NavigateBack)
+            },
             onFailure = {}
         )
     }

@@ -18,10 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
-import com.kakapo.oakane.presentation.feature.goal.component.DialogAddGoalSavingView
+import com.kakapo.oakane.presentation.feature.goal.component.DialogGoalView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardGoalView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardNoteView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardTimeView
+import com.kakapo.oakane.presentation.viewModel.goal.DialogContent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEffect
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEvent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalState
@@ -48,7 +49,7 @@ fun GoalRoute(goalId: Long, navigateUp: () -> Unit) {
     GoalScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 
     if (uiState.dialogShown) {
-        DialogAddGoalSavingView(uiState = uiState, onEvent = viewModel::handleEvent)
+        DialogGoalView(uiState = uiState, onEvent = viewModel::handleEvent)
     }
 }
 
@@ -56,15 +57,7 @@ fun GoalRoute(goalId: Long, navigateUp: () -> Unit) {
 private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
     Scaffold(
         topBar = {
-            CustomNavigationTopAppBarView(
-                title = "My Goal",
-                onNavigateBack = { onEvent.invoke(GoalEvent.NavigateBack) },
-                actions = {
-                    CustomIconButton(icon = Icons.Outlined.Delete) {
-                        onEvent.invoke(GoalEvent.DeleteGoal)
-                    }
-                }
-            )
+            GoalTopAppbar(onEvent)
         },
         content = { paddingValues ->
             Column(
@@ -85,6 +78,21 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
+        }
+    )
+}
+
+@Composable
+private fun GoalTopAppbar(onEvent: (GoalEvent) -> Unit) {
+    val dialogEvent = GoalEvent.Dialog(shown = true, content = DialogContent.DeleteGoal)
+    CustomNavigationTopAppBarView(
+        title = "My Goal",
+        onNavigateBack = { onEvent.invoke(GoalEvent.NavigateBack) },
+        actions = {
+            CustomIconButton(
+                icon = Icons.Outlined.Delete,
+                onClick = { onEvent.invoke(dialogEvent)}
+            )
         }
     )
 }
