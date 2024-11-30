@@ -27,7 +27,7 @@ class GoalsViewModel(
 
     fun handleEvent(event: GoalsEvent) {
         when(event) {
-            is GoalsEvent.FilterBy -> {}
+            is GoalsEvent.FilterBy -> filterGoalsBy(event.query)
             is GoalsEvent.NavigateToGoal -> {}
             GoalsEvent.NavigateBack -> emit(GoalsEffect.NavigateBack)
         }
@@ -37,13 +37,19 @@ class GoalsViewModel(
         repository.loadGoals().collect{ result ->
             result.fold(
                 onSuccess = { goals ->
-                    _uiState.update { it.copy(goals = goals) }
+                    _uiState.update { it.copy(goals = goals, filteredGoals = goals) }
                 },
                 onFailure = {
                     Logger.e(it) { "Error loading goals" }
                 }
             )
         }
+    }
+
+    private fun filterGoalsBy(query: String) {
+        val goals = _uiState.value.goals
+        val filteredGoals = goals.filter { it.goalName.contains(query, ignoreCase = true) }
+        _uiState.update { it.copy(filteredGoals = filteredGoals) }
     }
 
     private fun emit(effect: GoalsEffect) = viewModelScope.launch {

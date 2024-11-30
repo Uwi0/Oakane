@@ -56,7 +56,7 @@ private fun GoalScreen(uiState: GoalsState, onEvent: (GoalsEvent) -> Unit) {
                     .padding(paddingValues),
                 contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp)
             ) {
-                items(uiState.goals, key = { it.id }){ goal ->
+                items(uiState.filteredGoals, key = { it.id }){ goal ->
                     GoalItemView(goal = goal, onClicked = {})
                 }
             }

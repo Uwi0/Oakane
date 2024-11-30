@@ -4,7 +4,8 @@ import com.kakapo.oakane.model.GoalModel
 
 data class GoalsState(
     val searchQuery: String = "",
-    val goals: List<GoalModel> = emptyList()
+    val goals: List<GoalModel> = emptyList(),
+    val filteredGoals: List<GoalModel> = emptyList()
 )
 
 sealed class GoalsEffect {
