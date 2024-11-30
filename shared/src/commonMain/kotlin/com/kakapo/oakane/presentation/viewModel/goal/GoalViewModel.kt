@@ -32,15 +32,14 @@ class GoalViewModel(
             GoalEvent.NavigateBack -> emit(GoalEffect.NavigateBack)
             GoalEvent.AddSaving -> addSaving()
             GoalEvent.DeleteGoal -> deleteGoal()
+            GoalEvent.UpdateGoal -> updateGoal()
         }
     }
 
     private fun loadGoalBy(id: Long) = viewModelScope.launch {
         repository.loadGoalBy(id).collect { result ->
             result.fold(
-                onSuccess = { goal ->
-                    _uiState.update { it.copy(goal = goal) }
-                },
+                onSuccess = { goal -> _uiState.update { it.copy(goal = goal) } },
                 onFailure = ::handleError
             )
         }
@@ -77,9 +76,14 @@ class GoalViewModel(
         )
     }
 
-    private fun handleError(throwable: Throwable?){
+    private fun handleError(throwable: Throwable?) {
         val message = throwable?.message ?: "Something went wrong"
         emit(GoalEffect.ShowError(message))
+    }
+
+    private fun updateGoal() {
+        val goalId = uiState.value.goal.id
+        emit(GoalEffect.UpdateGoalBy(goalId))
     }
 
     private fun emit(effect: GoalEffect) = viewModelScope.launch {

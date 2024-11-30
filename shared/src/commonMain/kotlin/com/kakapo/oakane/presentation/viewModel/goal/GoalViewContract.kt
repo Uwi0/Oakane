@@ -39,6 +39,7 @@ enum class DialogContent {
 sealed class GoalEffect {
     data object NavigateBack : GoalEffect()
     data class ShowError(val message: String): GoalEffect()
+    data class UpdateGoalBy(val id: Long): GoalEffect()
 }
 
 sealed class GoalEvent {
@@ -51,4 +52,5 @@ sealed class GoalEvent {
     data class Change(val amount: String) : GoalEvent()
     data object AddSaving : GoalEvent()
     data object DeleteGoal : GoalEvent()
+    data object UpdateGoal : GoalEvent()
 }

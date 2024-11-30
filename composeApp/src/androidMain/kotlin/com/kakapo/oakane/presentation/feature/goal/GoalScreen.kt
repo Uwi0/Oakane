@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -32,7 +33,7 @@ import com.kakapo.oakane.presentation.viewModel.goal.GoalViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun GoalRoute(goalId: Long, navigateUp: () -> Unit) {
+fun GoalRoute(goalId: Long, navigateUp: () -> Unit, updateGoal: () -> Unit) {
     val context = LocalContext.current
     val viewModel = koinViewModel<GoalViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -46,6 +47,7 @@ fun GoalRoute(goalId: Long, navigateUp: () -> Unit) {
             when (effect) {
                 GoalEffect.NavigateBack -> navigateUp.invoke()
                 is GoalEffect.ShowError -> context.showToast(effect.message)
+                is GoalEffect.UpdateGoalBy -> updateGoal.invoke()
             }
         }
     }
@@ -94,8 +96,12 @@ private fun GoalTopAppbar(onEvent: (GoalEvent) -> Unit) {
         onNavigateBack = { onEvent.invoke(GoalEvent.NavigateBack) },
         actions = {
             CustomIconButton(
+                icon = Icons.Outlined.Edit,
+                onClick = { onEvent.invoke(GoalEvent.UpdateGoal) }
+            )
+            CustomIconButton(
                 icon = Icons.Outlined.Delete,
-                onClick = { onEvent.invoke(dialogEvent)}
+                onClick = { onEvent.invoke(dialogEvent) }
             )
         }
     )
