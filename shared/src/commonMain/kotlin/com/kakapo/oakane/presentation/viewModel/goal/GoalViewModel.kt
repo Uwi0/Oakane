@@ -2,7 +2,6 @@ package com.kakapo.oakane.presentation.viewModel.goal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.oakane.common.asDouble
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,6 +31,7 @@ class GoalViewModel(
             is GoalEvent.Change -> _uiState.update { it.copy(savingAmount = event.amount) }
             GoalEvent.NavigateBack -> emit(GoalEffect.NavigateBack)
             GoalEvent.AddSaving -> addSaving()
+            GoalEvent.DeleteGoal -> deleteGoal()
         }
     }
 
@@ -49,7 +49,6 @@ class GoalViewModel(
     private fun addSaving() = viewModelScope.launch {
         val id = uiState.value.goal.id
         val amount = uiState.value.savingAmount.asDouble()
-        Logger.d("amount: $amount")
         repository.addSaved(amount, id).fold(
             onSuccess = { updateGoal(amount) },
             onFailure = {}
@@ -60,6 +59,14 @@ class GoalViewModel(
         val currentAmount = uiState.value.goal.savedMoney
         val newAmount = currentAmount + amount
         _uiState.update { it.copy(goal = it.goal.copy(savedMoney = newAmount), dialogShown = false) }
+    }
+
+    private fun deleteGoal() = viewModelScope.launch {
+        val id = uiState.value.goal.id
+        repository.deleteGoalBy(id).fold(
+            onSuccess = { emit(GoalEffect.NavigateBack) },
+            onFailure = {}
+        )
     }
 
     private fun emit(effect: GoalEffect) = viewModelScope.launch {

@@ -32,4 +32,5 @@ sealed class GoalEvent {
     data class Dialog(val shown: Boolean): GoalEvent()
     data class Change(val amount: String): GoalEvent()
     data object AddSaving: GoalEvent()
+    data object DeleteGoal: GoalEvent()
 }

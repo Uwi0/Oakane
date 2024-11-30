@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -15,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.goal.component.DialogAddGoalSavingView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardGoalView
@@ -37,7 +39,7 @@ fun GoalRoute(goalId: Long, navigateUp: () -> Unit) {
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 GoalEffect.NavigateBack -> navigateUp.invoke()
             }
         }
@@ -56,7 +58,12 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
         topBar = {
             CustomNavigationTopAppBarView(
                 title = "My Goal",
-                onNavigateBack = { onEvent.invoke(GoalEvent.NavigateBack) }
+                onNavigateBack = { onEvent.invoke(GoalEvent.NavigateBack) },
+                actions = {
+                    CustomIconButton(icon = Icons.Outlined.Delete) {
+                        onEvent.invoke(GoalEvent.DeleteGoal)
+                    }
+                }
             )
         },
         content = { paddingValues ->

@@ -7,4 +7,5 @@ interface GoalLocalDatasource {
     suspend fun getGoals(): Result<List<GoalEntity>>
     suspend fun getGoalBy(id: Long): Result<GoalEntity>
     suspend fun addSaved(amount: Double, id: Long): Result<Unit>
+    suspend fun deleteGoalBy(id: Long): Result<Unit>
 }

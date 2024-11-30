@@ -43,4 +43,10 @@ class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
         }
     }
 
+    override suspend fun deleteGoalBy(id: Long): Result<Unit> {
+        return runCatching {
+            goalTable.deleteGoal(id)
+        }
+    }
+
 }

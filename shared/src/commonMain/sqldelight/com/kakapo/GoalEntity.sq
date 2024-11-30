@@ -40,3 +40,6 @@ UPDATE GoalTable
 SET savedAmount = savedAmount + ?
 WHERE id = ?;
 
+deleteGoal:
+DELETE FROM GoalTable WHERE id = ?;
+

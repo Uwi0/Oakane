@@ -30,4 +30,8 @@ class GoalRepositoryImpl (
     override suspend fun addSaved(amount: Double, id: Long): Result<Unit> {
         return localDatasource.addSaved(amount, id)
     }
+
+    override suspend fun deleteGoalBy(id: Long): Result<Unit> {
+        return localDatasource.deleteGoalBy(id)
+    }
 }
