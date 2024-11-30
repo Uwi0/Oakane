@@ -30,6 +30,7 @@ class GoalsViewModel(
             is GoalsEvent.FilterBy -> filterGoalsBy(event.query)
             is GoalsEvent.NavigateToGoal -> {}
             GoalsEvent.NavigateBack -> emit(GoalsEffect.NavigateBack)
+            GoalsEvent.AddGoal -> emit(GoalsEffect.AddGoal)
         }
     }
 
