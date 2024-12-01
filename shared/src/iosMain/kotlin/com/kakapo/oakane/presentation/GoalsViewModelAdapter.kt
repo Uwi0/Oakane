@@ -12,7 +12,7 @@ class GoalsViewModelAdapter(
     private val scope: CoroutineScope
 ) {
 
-    init {
+    fun initData() {
         viewModel.initData()
     }
 

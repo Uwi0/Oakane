@@ -20,6 +20,10 @@ final class GoalsViewModel: ObservableObject {
         }
     }
     
+    func initData(){
+        viewModel.doInitData()
+    }
+    
     func handle(event: GoalsEvent){
         viewModel.handle(event: event)
     }

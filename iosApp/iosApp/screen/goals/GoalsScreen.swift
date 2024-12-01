@@ -39,6 +39,7 @@ struct GoalsScreen: View {
             )
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear(perform: viewModel.initData)
         .onChange(of: viewModel.uiEffect, perform: observe(effect:))
     }
     
