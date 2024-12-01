@@ -21,7 +21,7 @@ class AddGoalViewModel(
     private val _uiEffect = MutableSharedFlow<AddGoalEffect>()
 
     fun initData(goalId: Long){
-        _uiState.update { it.copy(isEditMode = goalId != 0L) }
+        _uiState.update { it.copy(id = goalId) }
         if (goalId != 0L){
             loadGoalBy(goalId)
         }
@@ -54,8 +54,25 @@ class AddGoalViewModel(
     }
 
     private fun saveGoal() = viewModelScope.launch {
+        val isEditMode = uiState.value.isEditMode
+        if (isEditMode) updateGoal()
+        else addGoal()
+    }
+
+    private fun addGoal() = viewModelScope.launch {
         val goal = uiState.value.asGoalModel()
         goalRepository.save(goal).fold(
+            onSuccess = {
+                emit(AddGoalEffect.SuccessSaveGoal)
+            },
+            onFailure = ::handleError
+        )
+    }
+
+    private fun updateGoal() = viewModelScope.launch {
+        val goal = uiState.value.asGoalModel()
+        val id = uiState.value.id
+        goalRepository.update(goal, id).fold(
             onSuccess = {
                 emit(AddGoalEffect.SuccessSaveGoal)
             },

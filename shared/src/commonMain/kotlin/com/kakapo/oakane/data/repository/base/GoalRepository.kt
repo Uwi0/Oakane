@@ -9,4 +9,5 @@ interface GoalRepository {
     fun loadGoalBy(id: Long): Flow<Result<GoalModel>>
     suspend fun addSaved(amount: Double, id: Long): Result<Unit>
     suspend fun deleteGoalBy(id: Long): Result<Unit>
+    suspend fun update(goal: GoalModel, id: Long): Result<Unit>
 }

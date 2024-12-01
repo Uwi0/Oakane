@@ -23,7 +23,7 @@ VALUES (
     ?,
     ?,
     ?,
-    ?,
+    0,
     ?,
     ?,
     ?
@@ -42,4 +42,15 @@ WHERE id = ?;
 
 deleteGoal:
 DELETE FROM GoalTable WHERE id = ?;
+
+updateGoal:
+UPDATE GoalTable
+SET imageFile = ?,
+    name = ?,
+    targetAmount = ?,
+    savedAmount = ?,
+    note = ?,
+    startDate = ?,
+    endDate = ?
+WHERE id = ?;
 

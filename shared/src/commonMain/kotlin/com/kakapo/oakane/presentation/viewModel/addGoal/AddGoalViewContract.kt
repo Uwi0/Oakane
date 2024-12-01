@@ -4,7 +4,7 @@ import com.kakapo.oakane.model.GoalModel
 import kotlinx.datetime.Clock
 
 data class AddGoalState(
-    val isEditMode: Boolean = false,
+    val id: Long = 0L,
     val fileName: String = "",
     val goalName: String = "",
     val targetAmount: String = "",
@@ -14,6 +14,8 @@ data class AddGoalState(
     val dialogShown: Boolean = false,
     val dialogContent: GoalDateContent = GoalDateContent.Start
 ){
+
+    val isEditMode: Boolean get() = id != 0L
 
     val initialDateDialog: Long get() {
         return when(dialogContent){

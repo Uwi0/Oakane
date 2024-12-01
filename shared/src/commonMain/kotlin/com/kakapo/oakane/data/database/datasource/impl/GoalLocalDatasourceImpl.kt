@@ -18,7 +18,6 @@ class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
                 name = goal.name,
                 targetAmount = goal.targetAmount,
                 note = goal.note,
-                savedAmount = 0.0,
                 startDate = goal.startDate,
                 endDate = goal.endDate
             )
@@ -46,6 +45,21 @@ class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
     override suspend fun deleteGoalBy(id: Long): Result<Unit> {
         return runCatching {
             goalTable.deleteGoal(id)
+        }
+    }
+
+    override suspend fun update(goal: GoalEntity, id: Long): Result<Unit> {
+        return runCatching {
+            goalTable.updateGoal(
+                imageFile = goal.imageFile,
+                name = goal.name,
+                targetAmount = goal.targetAmount,
+                savedAmount = goal.savedAmount,
+                note = goal.note,
+                startDate = goal.startDate,
+                endDate = goal.endDate,
+                id = id
+            )
         }
     }
 

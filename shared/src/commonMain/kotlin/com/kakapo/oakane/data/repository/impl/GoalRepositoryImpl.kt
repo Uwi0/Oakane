@@ -34,4 +34,9 @@ class GoalRepositoryImpl (
     override suspend fun deleteGoalBy(id: Long): Result<Unit> {
         return localDatasource.deleteGoalBy(id)
     }
+
+    override suspend fun update(goal: GoalModel, id: Long): Result<Unit> {
+        val goalEntity = goal.toGoalEntity()
+        return localDatasource.update(goalEntity, id)
+    }
 }
