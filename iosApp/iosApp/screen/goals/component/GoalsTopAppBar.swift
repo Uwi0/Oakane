@@ -1,8 +1,16 @@
 import SwiftUI
 
 struct GoalsTopAppBar: View {
+    
+    @State var query: String = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 16) {
+            NavigationTopAppbar(title: "Goals", navigateBack: {})
+            OutlinedSearchTextFieldView(query: $query, placeHolder: "Search goal...")
+                .padding(.horizontal, 16)
+            Divider()
+        }
     }
 }
 
