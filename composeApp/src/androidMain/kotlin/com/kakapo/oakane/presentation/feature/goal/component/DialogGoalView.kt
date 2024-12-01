@@ -5,7 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import com.kakapo.oakane.presentation.feature.goal.component.dialog.DialogAddSavingView
 import com.kakapo.oakane.presentation.feature.goal.component.dialog.DialogDeleteGoalView
-import com.kakapo.oakane.presentation.viewModel.goal.DialogContent
+import com.kakapo.oakane.presentation.viewModel.goal.GoalDialogContent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEvent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalState
 
@@ -19,8 +19,8 @@ internal fun DialogGoalView(
         onDismissRequest = { onEvent.invoke(GoalEvent.Dialog(false)) }
     ) {
         when (uiState.dialogContent) {
-            DialogContent.UpdateAmount -> DialogAddSavingView(uiState = uiState, onEvent = onEvent)
-            DialogContent.DeleteGoal -> DialogDeleteGoalView(onEvent = onEvent)
+            GoalDialogContent.UpdateAmount -> DialogAddSavingView(uiState = uiState, onEvent = onEvent)
+            GoalDialogContent.DeleteGoal -> DialogDeleteGoalView(onEvent = onEvent)
         }
 
     }

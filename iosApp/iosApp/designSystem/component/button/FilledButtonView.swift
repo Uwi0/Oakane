@@ -3,6 +3,7 @@ import SwiftUI
 struct FilledButtonView: View {
     
     let text: String
+    var bgColor: Color = ColorTheme.primary
     let onClick: () -> Void
     
     var body: some View {
@@ -12,7 +13,7 @@ struct FilledButtonView: View {
                 .foregroundColor(ColorTheme.onPrimary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding()
-                .background(ColorTheme.primary)
+                .background(bgColor)
                 .cornerRadius(16)
         }
     }

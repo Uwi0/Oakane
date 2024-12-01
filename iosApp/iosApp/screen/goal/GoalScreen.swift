@@ -36,13 +36,10 @@ struct GoalScreen: View {
                     }
                 )
                 if uiState.isDialogShown {
-                    PopUpDialog(
-                        onDismiss: { dimiss in
-                            viewModel.handle(event: .Dialog(shown: false, content: .updateAmount))
-                        }
-                    ) {
-                        DialogAddGoalSavingView(onEvent: viewModel.handle(event:))
-                    }
+                    GoalDialogView(
+                        uiState: uiState,
+                        onEvent: viewModel.handle(event:)
+                    )
                 }
             }
         }
@@ -68,6 +65,28 @@ struct GoalScreen: View {
     }
 }
 
+private struct GoalDialogView: View {
+    
+    let uiState: GoalState
+    let onEvent: (GoalEvent) -> Void
+    
+    var body: some View {
+        PopUpDialog(
+            onDismiss: { _ in
+                onEvent(.Dialog(shown: false, content: .updateAmount))
+            }
+        ) {
+            switch uiState.dialogContent {
+            case .updateAmount:
+                DialogAddGoalSavingView(onEvent: onEvent)
+            case .deleteGoal:
+                DialogDeleteGoalConfirmationView(onEvent: onEvent)
+            }
+            
+        }
+    }
+}
+
 private struct ToolbarView: View {
     
     let onEvent: (GoalEvent) -> Void
@@ -86,7 +105,7 @@ private struct ToolbarView: View {
                     Image(systemName: "trash")
                         .frame(width: 24, height:  24)
                         .onTapGesture {
-                            onEvent(.DeleteGoal())
+                            onEvent(.Dialog(shown: true, content: .deleteGoal))
                         }
                 },
                 navigateBack: { onEvent(.NavigateBack()) }

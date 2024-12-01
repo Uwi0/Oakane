@@ -12,4 +12,5 @@ struct GoalState {
     var daysLeft: Int64 = 0
     var note: String = ""
     var isDialogShown: Bool = false
+    var dialogContent: GoalDialogContent = .updateAmount
 }

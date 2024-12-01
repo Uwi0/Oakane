@@ -21,6 +21,7 @@ final class GoalViewModel: ObservableObject {
                 self?.uiState.daysLeft = state.dayLeft
                 self?.uiState.note = state.goal.note
                 self?.uiState.isDialogShown = state.dialogShown
+                self?.uiState.dialogContent = state.dialogContent
             }
         }
         viewModel.observeUiEffect { [weak self] effect in

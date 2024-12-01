@@ -25,7 +25,7 @@ import com.kakapo.oakane.presentation.feature.goal.component.DialogGoalView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardGoalView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardNoteView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardTimeView
-import com.kakapo.oakane.presentation.viewModel.goal.DialogContent
+import com.kakapo.oakane.presentation.viewModel.goal.GoalDialogContent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEffect
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEvent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalState
@@ -90,7 +90,7 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
 
 @Composable
 private fun GoalTopAppbar(onEvent: (GoalEvent) -> Unit) {
-    val dialogEvent = GoalEvent.Dialog(shown = true, content = DialogContent.DeleteGoal)
+    val dialogEvent = GoalEvent.Dialog(shown = true, content = GoalDialogContent.DeleteGoal)
     CustomNavigationTopAppBarView(
         title = "My Goal",
         onNavigateBack = { onEvent.invoke(GoalEvent.NavigateBack) },

@@ -8,7 +8,7 @@ data class GoalState(
     val goal: GoalModel = GoalModel(),
     val savingAmount: String = "",
     val dialogShown: Boolean = false,
-    val dialogContent: DialogContent = DialogContent.UpdateAmount
+    val dialogContent: GoalDialogContent = GoalDialogContent.UpdateAmount
 ) {
 
     val dayLeft: Long
@@ -26,13 +26,13 @@ data class GoalState(
             return goal.amount.toFormatIDRCurrency()
         }
 
-    fun updateDialog(shown: Boolean, content: DialogContent) = copy(
+    fun updateDialog(shown: Boolean, content: GoalDialogContent) = copy(
         dialogShown = shown,
         dialogContent = content
     )
 }
 
-enum class DialogContent {
+enum class GoalDialogContent {
     UpdateAmount, DeleteGoal
 }
 
@@ -46,7 +46,7 @@ sealed class GoalEvent {
     data object NavigateBack : GoalEvent()
     data class Dialog(
         val shown: Boolean,
-        val content: DialogContent = DialogContent.UpdateAmount
+        val content: GoalDialogContent = GoalDialogContent.UpdateAmount
     ) : GoalEvent()
 
     data class Change(val amount: String) : GoalEvent()
