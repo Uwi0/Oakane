@@ -12,7 +12,7 @@ struct GoalsScreen: View {
         GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
             VStack{
-                GoalsTopAppBar()
+                GoalsTopAppBar(onSearch: { query in viewModel.handle(event: .FilterBy(query: query))})
                 ScrollView {
                     VStack(spacing: 16) {
                         ForEach(uiState.goals, id: \.self) { goal in

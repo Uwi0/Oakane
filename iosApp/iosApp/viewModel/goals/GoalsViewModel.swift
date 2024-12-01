@@ -9,8 +9,12 @@ final class GoalsViewModel: ObservableObject {
     init() {
         viewModel.observeState{ [weak self] state in
             DispatchQueue.main.async {
-                self?.uiState.goals = state.goals
+                self?.uiState.goals = state.filteredGoals
             }
         }
+    }
+    
+    func handle(event: GoalsEvent){
+        viewModel.handle(event: event)
     }
 }

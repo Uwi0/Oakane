@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GoalsTopAppBar: View {
     
+    let onSearch: (String) -> Void
     @State var query: String = ""
     
     var body: some View {
@@ -11,9 +12,12 @@ struct GoalsTopAppBar: View {
                 .padding(.horizontal, 16)
             Divider()
         }
+        .onChange(of: query){ newQuery in
+            onSearch(newQuery)
+        }
     }
 }
 
 #Preview {
-    GoalsTopAppBar()
+    GoalsTopAppBar(onSearch: { _ in })
 }
