@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DisplayImageFileView: View {
     
-    var defaultImage: String = ""
+    var defaultImage: String = ImageConstants.defaultImage
     let fileName: String
     let width: CGFloat
     let height: CGFloat

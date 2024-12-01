@@ -1,6 +1,13 @@
 import SwiftUI
 
 struct GoalsScreen: View {
+    
+    @StateObject private var viewModel: GoalsViewModel = GoalsViewModel()
+    
+    private var uiState: GoalsState {
+        viewModel.uiState
+    }
+    
     var body: some View {
         GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
@@ -8,12 +15,14 @@ struct GoalsScreen: View {
                 GoalsTopAppBar()
                 ScrollView {
                     VStack(spacing: 16) {
-                        Text("Another hellow world")
+                        ForEach(uiState.goals, id: \.self) { goal in
+                            GoalItemView(goal: goal)
+                        }
                     }
+                    .padding(16)
                 }
                 .scrollIndicators(.hidden)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 24)
+                
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
             
@@ -24,6 +33,7 @@ struct GoalsScreen: View {
                 onClick: {}
             )
         }
+        .navigationBarBackButtonHidden(true)
         
     }
 }

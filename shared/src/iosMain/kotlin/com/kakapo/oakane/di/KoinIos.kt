@@ -5,6 +5,7 @@ import com.kakapo.oakane.presentation.AddGoalViewModelAdapter
 import com.kakapo.oakane.presentation.AddTransactionViewModelAdapter
 import com.kakapo.oakane.presentation.CategoriesViewModelAdapter
 import com.kakapo.oakane.presentation.GoalViewModelAdapter
+import com.kakapo.oakane.presentation.GoalsViewModelAdapter
 import com.kakapo.oakane.presentation.HomeViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionsViewModelAdapter
@@ -27,6 +28,7 @@ object KoinIos {
             factory { CategoriesViewModelAdapter(get(), get()) }
             factory { AddGoalViewModelAdapter(get(), get()) }
             factory { GoalViewModelAdapter(get(), get()) }
+            factory { GoalsViewModelAdapter(get(), get()) }
         }
     )
 }
