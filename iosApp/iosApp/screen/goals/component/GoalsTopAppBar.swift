@@ -1,23 +1,30 @@
 import SwiftUI
+import Shared
 
 struct GoalsTopAppBar: View {
     
-    let onSearch: (String) -> Void
-    @State var query: String = ""
+    let onEvent: (GoalsEvent) -> Void
+    @State private var query: String = ""
     
     var body: some View {
         VStack(spacing: 16) {
-            NavigationTopAppbar(title: "Goals", navigateBack: {})
-            OutlinedSearchTextFieldView(query: $query, placeHolder: "Search goal...")
-                .padding(.horizontal, 16)
+            NavigationTopAppbar(
+                title: "Goals",
+                navigateBack: { onEvent(.NavigateBack())}
+            )
+            OutlinedSearchTextFieldView(
+                query: $query,
+                placeHolder: "Search goal..."
+            )
+            .padding(.horizontal, 16)
             Divider()
         }
         .onChange(of: query){ newQuery in
-            onSearch(newQuery)
+            onEvent(.FilterBy(query: newQuery))
         }
     }
 }
 
 #Preview {
-    GoalsTopAppBar(onSearch: { _ in })
+    GoalsTopAppBar(onEvent: { _ in })
 }
