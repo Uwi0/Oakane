@@ -3,6 +3,7 @@ import PhotosUI
 
 struct GoalImagePickerView: View {
     
+    let imageUrl: String
     let onSelectedFile: (String) -> Void
     
     @State private var selectedItem: PhotosPickerItem? = nil
@@ -15,26 +16,10 @@ struct GoalImagePickerView: View {
             matching: .images,
             photoLibrary: .shared()
         ){
-            ZStack {
-                if let uiImage = selectedImage {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: size, height: size)
-                        .clipShape(Circle())
-                } else {
-                    Image(ImageConstants.imageAddGoalDefault)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: size, height: size)
-                        .clipShape(Circle())
-                }
-                
-                IconImagePicker()
-                    .frame(width: size * 0.25, height: size * 0.25)
-                    .offset(x: size * 0.35, y: size * 0.35)
-            }
-            .frame(width: size, height: size)
+            SelectedGoalImageView(
+                imageUrl: imageUrl,
+                selectedImage: selectedImage
+            )
         }
         .onChange(of: selectedItem) { newItem in
             Task {
@@ -54,6 +39,39 @@ struct GoalImagePickerView: View {
     }
 }
 
+private struct SelectedGoalImageView: View {
+    
+    let imageUrl: String
+    var selectedImage: UIImage? = nil
+    
+    private let size: CGFloat = 120
+    
+    var body: some View {
+        ZStack {
+            
+            if let uiImage = selectedImage {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
+            }
+            else {
+                Image(ImageConstants.imageAddGoalDefault)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
+            }
+            
+            IconImagePicker()
+                .frame(width: size * 0.25, height: size * 0.25)
+                .offset(x: size * 0.35, y: size * 0.35)
+        }
+        .frame(width: size, height: size)
+    }
+}
+
 private struct IconImagePicker: View {
     var body: some View {
         ZStack {
@@ -69,5 +87,5 @@ private struct IconImagePicker: View {
 }
 
 #Preview {
-    GoalImagePickerView(onSelectedFile: { name in })
+    GoalImagePickerView(imageUrl: "",onSelectedFile: { name in })
 }

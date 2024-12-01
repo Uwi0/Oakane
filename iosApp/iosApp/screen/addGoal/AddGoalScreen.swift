@@ -17,6 +17,7 @@ struct AddGoalScreen: View {
             ColorTheme.surface.ignoresSafeArea()
             VStack(spacing: 16) {
                 GoalImagePickerView(
+                    imageUrl: uiState.fileName,
                     onSelectedFile: { name in viewModel.handle(event: .SetFile(name: name))}
                 )
                 
