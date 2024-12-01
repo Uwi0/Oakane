@@ -46,7 +46,7 @@ struct GoalsScreen: View {
         if let safEffect = effect {
             switch onEnum(of: safEffect) {
             case .addGoal:
-                navigation.navigate(to:.addGoal)
+                navigation.navigate(to:.addGoal(goalId: 0))
             case .navigateBack:
                 navigation.navigateBack()
             case .navigateToGoal(let goalsEffect):

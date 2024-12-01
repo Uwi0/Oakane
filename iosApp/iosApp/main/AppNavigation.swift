@@ -8,7 +8,7 @@ final class AppNavigation: ObservableObject {
         case transactions
         case transaction(transactionId: Int64)
         case categories
-        case addGoal
+        case addGoal(goalId: Int64)
         case goal(goalId: Int64)
         case goals
     }

@@ -4,6 +4,7 @@ import Shared
 final class GoalViewModel: ObservableObject {
     
     @Published var uiState: GoalState = GoalState()
+    @Published var uiEffect: GoalEffect? = nil
     
     private let viewModel: GoalViewModelAdapter = Koin.instance.get()
     
@@ -22,11 +23,18 @@ final class GoalViewModel: ObservableObject {
                 self?.uiState.isDialogShown = state.dialogShown
             }
         }
+        viewModel.observeUiEffect { [weak self] effect in
+            DispatchQueue.main.async {
+                self?.uiEffect = effect
+            }
+        }
     }
     
     func initializeData(goalId: Int64) {
         viewModel.doInitViewModel(goalId: goalId)
     }
+    
+    
     
     func handle(event: GoalEvent) {
         viewModel.handleEvent(event: event)

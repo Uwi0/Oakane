@@ -1,4 +1,5 @@
 import SwiftUI
+import Shared
 
 struct GoalScreen: View {
     
@@ -16,7 +17,7 @@ struct GoalScreen: View {
             ZStack {
                 ColorTheme.surface.ignoresSafeArea()
                 VStack {
-                    ToolbarView(onClick: { navigation.navigateBack() })
+                    ToolbarView(onEvent: viewModel.handle(event:))
                     VStack(spacing: 16) {
                         CardGoalView(uiState: uiState)
                         CardTimeView(uiState: uiState)
@@ -49,20 +50,47 @@ struct GoalScreen: View {
         .onAppear {
             viewModel.initializeData(goalId: goalId)
         }
+        .onChange(of: viewModel.uiEffect, perform: observe(effect:))
     }
     
-    private func toolbar(event: ToolbarEvent) {
-        navigation.navigateBack()
+    private func observe(effect: GoalEffect?){
+        if let safeEffect = effect {
+            switch onEnum(of: safeEffect) {
+            case .navigateBack:
+                navigation.navigateBack()
+            case .showError(let goalEffect):
+                print(goalEffect.message)
+            case .updateGoalBy(let goalEffect):
+                navigation.navigate(to: .addGoal(goalId: goalEffect.id))
+            }
+        }
+        viewModel.uiEffect = nil
     }
 }
 
 private struct ToolbarView: View {
     
-    let onClick: () -> Void
+    let onEvent: (GoalEvent) -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
-            NavigationTopAppbar(title: "My Goal", navigateBack: onClick)
+            NavigationTopAppbar(
+                title: "My Goal",
+                actionContent: {
+                    Image(systemName: "pencil")
+                        .frame(width: 24, height:  24)
+                        .onTapGesture {
+                            onEvent(.UpdateGoal())
+                        }
+                    
+                    Image(systemName: "trash")
+                        .frame(width: 24, height:  24)
+                        .onTapGesture {
+                            onEvent(.DeleteGoal())
+                        }
+                },
+                navigateBack: { onEvent(.NavigateBack()) }
+            )
             Divider()
         }
     }
