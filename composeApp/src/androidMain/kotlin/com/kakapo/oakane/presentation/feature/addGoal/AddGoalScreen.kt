@@ -21,12 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.oakane.common.toDateWith
 import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
+import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.OutlinedCurrencyTextField
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
-import com.kakapo.oakane.presentation.feature.addGoal.component.DateSelectorView
 import com.kakapo.oakane.presentation.feature.addGoal.component.ImageGoalPicker
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalEffect
@@ -122,16 +123,18 @@ private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit
                     value = uiState.note,
                     onValueChange = { onEvent.invoke(AddGoalEvent.SetNote(it)) }
                 )
-                DateSelectorView(
-                    defaultDate = uiState.startDate,
-                    icon = Icons.Outlined.CalendarToday,
-                    title = "Starting Date",
+                CustomClickableOutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = uiState.startDate.toDateWith(format = "dd MMM yyyy"),
+                    placeHolder = "Starting Date",
+                    trailingIcon = Icons.Outlined.CalendarToday,
                     onClick = { onEvent.invoke(AddGoalEvent.ShowDialog(GoalDateContent.Start)) }
                 )
-                DateSelectorView(
-                    defaultDate = uiState.endDate,
-                    icon = Icons.Outlined.Event,
-                    title = "End Date",
+                CustomClickableOutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = uiState.endDate.toDateWith(format = "dd MMM yyyy"),
+                    placeHolder = "End Date",
+                    trailingIcon = Icons.Outlined.Event,
                     onClick = { onEvent.invoke(AddGoalEvent.ShowDialog(GoalDateContent.End)) }
                 )
             }
