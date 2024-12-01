@@ -10,6 +10,7 @@ final class AppNavigation: ObservableObject {
         case categories
         case addGoal
         case goal(goalId: Int64)
+        case goals
     }
     
     @Published var navPath = NavigationPath()
@@ -34,6 +35,8 @@ final class AppNavigation: ObservableObject {
             navigate(to: .transactions)
         case .categories:
             navigate(to: .categories)
+        case .goals:
+            navigate(to: .goals)
         }
     }
     

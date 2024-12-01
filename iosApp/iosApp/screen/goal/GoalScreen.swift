@@ -32,12 +32,14 @@ struct GoalScreen: View {
                     xPos: proxy.size.width - FabConstant.xOffset,
                     yPos: proxy.size.height - FabConstant.yOffset,
                     onClick: {
-                        viewModel.handle(event: .Dialog(shown: true))
+                        viewModel.handle(event: .Dialog(shown: true, content: .updateAmount))
                     }
                 )
                 if uiState.isDialogShown {
                     PopUpDialog(
-                        onDismiss: { dimiss in viewModel.handle(event: .Dialog(shown: false)) }
+                        onDismiss: { dimiss in
+                            viewModel.handle(event: .Dialog(shown: false, content: .updateAmount))
+                        }
                     ) {
                         DialogAddGoalSavingView(onEvent: viewModel.handle(event:))
                     }

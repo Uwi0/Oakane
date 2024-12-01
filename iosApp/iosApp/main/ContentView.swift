@@ -24,6 +24,8 @@ struct ContentView: View {
                             AddGoalScreen()
                         case .goal(let goalId):
                             GoalScreen(goalId: goalId)
+                        case .goals:
+                            GoalsScreen()
                         }
                     }
                 

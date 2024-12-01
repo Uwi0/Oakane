@@ -22,7 +22,7 @@ struct DialogAddGoalSavingView: View {
                 .frame(height: 16)
             
             HStack(spacing: 16) {
-                Button(action: { onEvent(.Dialog(shown: false))}) {
+                Button(action: { onEvent(.Dialog(shown: false, content: .updateAmount))}) {
                     Text("Cancel")
                         .font(Typography.labelLarge)
                         .foregroundStyle(ColorTheme.primary)

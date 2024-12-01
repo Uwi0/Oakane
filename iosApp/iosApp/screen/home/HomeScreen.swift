@@ -56,6 +56,8 @@ struct HomeScreen: View {
                 print("error \(error.message)")
             case .toGoalWith(let homeEvent):
                 navigation.navigate(to: .goal(goalId: homeEvent.id))
+            case .toGoals:
+                navigation.navigate(to: .goals)
             }
         }
         viewModel.uiEffects = nil
