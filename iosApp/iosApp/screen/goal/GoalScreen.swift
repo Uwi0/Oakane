@@ -7,7 +7,6 @@ struct GoalScreen: View {
     @StateObject private var viewModel: GoalViewModel = GoalViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     
-    private let toolbarContent = ToolBarContent(title: "My Goal")
     private var uiState: GoalState {
         viewModel.uiState
     }
@@ -63,17 +62,7 @@ private struct ToolbarView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack(spacing: 16) {
-                Image(systemName: "arrow.left")
-                    .fontWeight(.semibold)
-                    .frame(width: 24, height: 24)
-                    .onTapGesture {
-                        onClick()
-                    }
-                Text("Add Goal")
-                    .font(Typography.titleLarge)
-            }
-            .padding(16)
+            NavigationTopAppbar(title: "My Goal", navigateBack: onClick)
             Divider()
         }
     }
