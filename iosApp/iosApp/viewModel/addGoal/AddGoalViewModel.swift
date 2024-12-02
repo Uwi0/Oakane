@@ -9,11 +9,26 @@ final class AddGoalViewModel: ObservableObject {
     private let viewModel: AddGoalViewModelAdapter = Koin.instance.get()
     
     init() {
+        viewModel.observeState { [weak self] uiState in
+            print("AddGoalViewModel: \(uiState.goalName)")
+            DispatchQueue.main.async {
+                self?.uiState.fileName = uiState.fileName
+                self?.uiState.goalName = uiState.goalName
+                self?.uiState.targetAmount = uiState.targetAmount
+                self?.uiState.note = uiState.note
+                self?.uiState.startDate = uiState.startDate
+                self?.uiState.endDate = uiState.endDate
+            }
+        }
         viewModel.observeEffect { [weak self] uiEffect in
             DispatchQueue.main.async {
                 self?.uiEffect = uiEffect
             }
         }
+    }
+    
+    func initData(goalId: Int64){
+        viewModel.doInitData(goalId: goalId)
     }
     
     func handle(event: AddGoalEvent) {

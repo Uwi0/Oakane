@@ -12,6 +12,8 @@ class AddGoalViewModelAdapter(
     private val scope: CoroutineScope
 ) {
 
+    fun initData(goalId: Long) = viewModel.initData(goalId)
+
     fun observeState(state: (AddGoalState) -> Unit) = scope.launch {
         viewModel.uiState.collect { state.invoke(it) }
     }
