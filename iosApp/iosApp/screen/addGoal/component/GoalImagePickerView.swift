@@ -21,19 +21,45 @@ struct GoalImagePickerView: View {
                 selectedImage: selectedImage
             )
         }
-        .onChange(of: selectedItem) { newItem in
-            Task {
-                if let data = try? await newItem?.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: data) {
-                    selectedImage = uiImage
-                    let savedImage = saveImageToFileSystem(image: uiImage)
-                    switch savedImage {
-                    case .success(let imageName):
-                        onSelectedFile(imageName)
-                    case .failure(let error):
-                        print(error)
-                    }
+        .onChange(of: selectedItem, perform: displayImage(photoPicker:))
+        .onChange(of: imageUrl, perform: displayImage(url:))
+    }
+    
+    private func displayImage(photoPicker: PhotosPickerItem?) {
+        Task {
+            if let data = try? await photoPicker?.loadTransferable(type: Data.self),
+               let uiImage = UIImage(data: data) {
+                selectedImage = uiImage
+                let savedImage = saveImageToFileSystem(image: uiImage)
+                switch savedImage {
+                case .success(let imageName):
+                    onSelectedFile(imageName)
+                case .failure(let error):
+                    print(error)
                 }
+            }
+        }
+    }
+    
+    private func displayImage(url: String) {
+        guard let fileUrl = FileManager.default.getSavedImageURL(fileName: url) else {
+            print("Image file not found")
+            return
+        }
+        
+        DispatchQueue.global(qos: .background).async {
+            do {
+                let data = try Data(contentsOf: fileUrl)
+                guard let loadedImage = UIImage(data: data) else {
+                    print("Failed to create UIImage from data")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    self.selectedImage = loadedImage
+                }
+            } catch {
+                print("Failed to load data from file: \(error.localizedDescription)")
             }
         }
     }
@@ -85,7 +111,7 @@ private struct IconImagePicker: View {
         }
     }
 }
-
+    
 #Preview {
     GoalImagePickerView(imageUrl: "",onSelectedFile: { name in })
 }

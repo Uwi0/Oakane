@@ -38,7 +38,6 @@ struct DisplayImageFileView: View {
     }
     
     private func loadSavedImage(imageName: String) {
-        print("Loading image: \(imageName)")
         guard let fileUrl = FileManager.default.getSavedImageURL(fileName: imageName) else {
             print("Image file not found")
             return

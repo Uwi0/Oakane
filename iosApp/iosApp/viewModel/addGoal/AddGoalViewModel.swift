@@ -10,7 +10,6 @@ final class AddGoalViewModel: ObservableObject {
     
     init() {
         viewModel.observeState { [weak self] uiState in
-            print("AddGoalViewModel: \(uiState.goalName)")
             DispatchQueue.main.async {
                 self?.uiState.fileName = uiState.fileName
                 self?.uiState.goalName = uiState.goalName
