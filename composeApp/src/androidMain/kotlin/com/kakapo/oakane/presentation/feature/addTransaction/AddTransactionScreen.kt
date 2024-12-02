@@ -106,7 +106,7 @@ private fun AddTransactionScreen(
                     modifier = Modifier.fillMaxWidth(),
                     label = "Amount",
                     placeHolder = "0",
-                    value = uiState.amount,
+                    value = uiState.transactionAmount,
                     prefix = "Rp ",
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangedAmount(it)) }
                 )

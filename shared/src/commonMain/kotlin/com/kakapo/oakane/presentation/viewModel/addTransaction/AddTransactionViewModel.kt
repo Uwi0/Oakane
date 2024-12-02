@@ -39,7 +39,7 @@ class AddTransactionViewModel(
     fun handleEvent(event: AddTransactionEvent) {
         when (event) {
             is AddTransactionEvent.ChangeNote -> _uiState.update { it.copy(note = event.value) }
-            is AddTransactionEvent.ChangedAmount -> _uiState.update { it.copy(amount = event.value) }
+            is AddTransactionEvent.ChangedAmount -> _uiState.update { it.copy(transactionAmount = event.value) }
             is AddTransactionEvent.ChangedTitle -> _uiState.update { it.copy(title = event.value) }
             is AddTransactionEvent.DropDownTypeIs -> _uiState.update { it.dropDownType(event.expanded) }
             is AddTransactionEvent.ChangeType -> updateTransactionType(value = event.value)
@@ -66,7 +66,6 @@ class AddTransactionViewModel(
         transactionRepository.loadTransactionBy(id).fold(
             onSuccess = { transaction ->
                 _uiState.update { it.copy(transaction) }
-                Logger.d{"success load transaction $transaction"}
             },
             onFailure = {
                 Logger.e(throwable = it, messageString = "error load transaction ${it.message}")
@@ -90,7 +89,6 @@ class AddTransactionViewModel(
     private fun create(transaction: TransactionParam) = viewModelScope.launch {
         transactionRepository.save(transaction).fold(
             onSuccess = {
-                Logger.d { "success create transaction $transaction" }
                 emit(AddTransactionEffect.NavigateBack)
             },
             onFailure = {
@@ -102,7 +100,6 @@ class AddTransactionViewModel(
     private fun update(transaction: TransactionParam, transactionId: Long) = viewModelScope.launch {
         transactionRepository.update(transaction, transactionId).fold(
             onSuccess = {
-                Logger.d { "success update transaction $transaction" }
                 emit(AddTransactionEffect.NavigateBack)
             },
             onFailure = {

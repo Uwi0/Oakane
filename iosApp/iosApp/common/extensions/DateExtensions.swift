@@ -8,19 +8,6 @@ extension Date {
     }
 }
 
-extension Int64 {
-    
-    func toDateWith(format: String) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(self) / 1000)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        dateFormatter.locale = Locale.current
-        let formattedDate = dateFormatter.string(from: date)
-        return formattedDate
-    }
-    
-}
-
 extension Date {
     func toInt64() -> Int64 {
         return Int64(timeIntervalSince1970 * 1000)

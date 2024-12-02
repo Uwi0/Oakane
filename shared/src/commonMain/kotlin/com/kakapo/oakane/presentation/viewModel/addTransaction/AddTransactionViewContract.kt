@@ -10,7 +10,7 @@ import kotlinx.datetime.Clock
 data class AddTransactionState(
     val transactionId: Long = 0,
     val title: String = "",
-    val amount: String = "0",
+    val transactionAmount: String = "0",
     val transactionType: TransactionType = TransactionType.Income,
     val category: CategoryModel = CategoryModel(),
     val date: Long = Clock.System.now().toEpochMilliseconds(),
@@ -21,6 +21,11 @@ data class AddTransactionState(
     val categories: List<CategoryModel> = emptyList()
 ) {
     val isEditMode get() = transactionId != 0L
+
+    val amount: Int get() {
+        val doubleValue = transactionAmount.toDoubleOrNull() ?: 0.0
+        return doubleValue.toInt()
+    }
 
     fun dropDownType(expanded: Boolean) = copy(isDropdownExpanded = expanded)
 
@@ -37,7 +42,7 @@ data class AddTransactionState(
     fun copy(transaction: TransactionModel) = copy(
         transactionId = transaction.id,
         title = transaction.title,
-        amount = transaction.amount.toString(),
+        transactionAmount = transaction.amount.toString(),
         transactionType = transaction.type,
         category = transaction.category,
         note = transaction.note
@@ -45,7 +50,7 @@ data class AddTransactionState(
 
     fun asTransactionParam() = TransactionParam(
         title = title,
-        amount = amount.asDouble(),
+        amount = transactionAmount.asDouble(),
         type = transactionType.ordinal.toLong(),
         category = category,
         dateCreated = date,
