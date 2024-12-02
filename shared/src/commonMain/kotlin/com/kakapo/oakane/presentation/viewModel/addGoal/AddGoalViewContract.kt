@@ -24,6 +24,11 @@ data class AddGoalState(
         }
     }
 
+    val amount: Int get() {
+        val doubleValue = targetAmount.toDoubleOrNull() ?: 0.0
+        return doubleValue.toInt()
+    }
+
     fun updateDialog(event: AddGoalEvent.ShowDialog) = copy(
         dialogShown = true,
         dialogContent = event.date

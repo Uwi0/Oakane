@@ -20,6 +20,7 @@ struct AddTransactionScreen: View {
                 )
                 OutlinedCurrencyTextFieldView(
                     label: "Amount",
+                    value: $viewModel.uiState.amount,
                     onValueChange: { newValue in viewModel.handle(event: .ChangedAmount(value: newValue))}
                 )
                 SelectionPickerView(

@@ -16,7 +16,7 @@ struct CurrencyTextFieldAdapter: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: CurrencyUITextField, context: Context) {
-        let decimalValue = Decimal(value) / 100
+        let decimalValue = Decimal(value)
         uiView.text = formatter.string(for: decimalValue)
     }
 }

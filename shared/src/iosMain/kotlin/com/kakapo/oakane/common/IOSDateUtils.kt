@@ -23,7 +23,11 @@ actual fun Long.formatDateWith(pattern: String): String {
         dateFormat = pattern
         timeZone = NSTimeZone.localTimeZone
     }
-    val date = NSDate(timeIntervalSinceReferenceDate = this.toDouble() / 1000)
+
+    val timeOffsetFrom1970To2001 = 978307200.0
+    val secondsSince2001 = (this / 1000.0) - timeOffsetFrom1970To2001
+    val date = NSDate(timeIntervalSinceReferenceDate = secondsSince2001)
+
     return formatter.stringFromDate(date)
 }
 

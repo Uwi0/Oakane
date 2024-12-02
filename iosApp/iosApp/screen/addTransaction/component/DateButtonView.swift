@@ -6,8 +6,7 @@ struct DateButtonView: View {
     let onClick: (Date) -> Void
     
     @State private var selectedDate: Date = Date()
-    
-    
+
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             Text(selectedDate.formmatTo("dd MMM yyyy"))

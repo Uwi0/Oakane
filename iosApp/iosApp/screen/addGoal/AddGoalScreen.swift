@@ -7,7 +7,6 @@ struct AddGoalScreen: View {
     
     @StateObject private var viewModel = AddGoalViewModel()
     @EnvironmentObject private var navigation: AppNavigation
-    private let toolbarContent = ToolBarContent(title: "Add Goal")
     private let imgSize: CGFloat = 120
     
     private var uiState: AddGoalState {
@@ -28,6 +27,7 @@ struct AddGoalScreen: View {
                 
                 OutlinedCurrencyTextFieldView(
                     label: "Target",
+                    value: $viewModel.uiState.targetAmount,
                     onValueChange: { amount in viewModel.handle(event: .SetTarget(amount: amount))}
                 )
                 
@@ -46,12 +46,14 @@ struct AddGoalScreen: View {
                 DateSelectorView(
                     img: "calendar",
                     text: "Start Date",
+                    selectedDate: uiState.startDate,
                     onSelectedDate: { startDate in viewModel.handle(event: .SetStart(date: startDate))}
                 )
                 
                 DateSelectorView(
                     img: "calendar.badge.checkmark",
                     text: "End Date",
+                    selectedDate: uiState.endDate,
                     onSelectedDate: { endDate in viewModel.handle(event: .SetEnd(date: endDate))}
                 )
                 
@@ -65,7 +67,6 @@ struct AddGoalScreen: View {
         }
         .onAppear(perform: { viewModel.initData(goalId: goalId) } )
         .navigationBarBackButtonHidden(true)
-        .customToolbar(content: toolbarContent, onEvent: onToolbarEvent)
         .onChange(of: viewModel.uiEffect, perform: observeEffect(effect:))
     }
     

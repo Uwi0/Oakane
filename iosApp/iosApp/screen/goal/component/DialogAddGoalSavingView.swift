@@ -4,6 +4,7 @@ import Shared
 struct DialogAddGoalSavingView: View {
     
     let onEvent: (GoalEvent) -> Void
+    @State private var amount: Int = 0
     
     var body: some View {
         VStack(alignment: .center) {
@@ -15,6 +16,7 @@ struct DialogAddGoalSavingView: View {
             
             OutlinedCurrencyTextFieldView(
                 label: "Amount",
+                value: $amount,
                 onValueChange: { amount in onEvent(.Change(amount: amount)) }
             )
             

@@ -10,7 +10,7 @@ final class AddTransactionViewModel: ObservableObject {
         viewModel.observeState(onStateChange: { [weak self] state in
             DispatchQueue.main.async {
                 self?.uiState.title = state.title
-                self?.uiState.amount = state.amount
+                self?.uiState.amount = Int(state.amount) ?? 0
                 self?.uiState.transactionType = state.transactionType
                 self?.uiState.category = state.category
                 self?.uiState.selectedDate = state.date

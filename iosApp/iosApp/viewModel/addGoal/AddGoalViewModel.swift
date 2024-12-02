@@ -13,7 +13,7 @@ final class AddGoalViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.uiState.fileName = uiState.fileName
                 self?.uiState.goalName = uiState.goalName
-                self?.uiState.targetAmount = uiState.targetAmount
+                self?.uiState.targetAmount = Int(uiState.amount)
                 self?.uiState.note = uiState.note
                 self?.uiState.startDate = uiState.startDate
                 self?.uiState.endDate = uiState.endDate

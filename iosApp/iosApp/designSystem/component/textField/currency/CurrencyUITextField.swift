@@ -35,8 +35,8 @@ class CurrencyUITextField: UITextField {
     @objc private func editingChanged() {
         text = currency(from: decimal)
         resetSelection()
-        let newValue = Int(doubleValue * 100)
-        onValueChange?(newValue) // Notify the parent view
+        let newValue = Int(doubleValue)
+        onValueChange?(newValue)
     }
     
     @objc private func resetSelection() {

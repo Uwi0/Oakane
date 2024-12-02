@@ -6,18 +6,20 @@ struct OutlinedCurrencyTextFieldView: View {
     private let onValueChange: (String) -> Void
     private var numberFormatter: NumberFormatter
     
-    @State private var value = 0
+    @Binding var value: Int
     @FocusState private var isFocused: Bool
     @State private var borderColor = ColorTheme.outline
     
     init(
         label: String,
+        value: Binding<Int>,
         onValueChange: @escaping (String) -> Void,
         numberFormatter: NumberFormatter = NumberFormatter()
     ) {
         self.label = label
         self.onValueChange = onValueChange
         self.numberFormatter = numberFormatter
+        self._value = value
         self.numberFormatter.numberStyle = .currency
         self.numberFormatter.maximumFractionDigits = 2
     }
@@ -33,7 +35,7 @@ struct OutlinedCurrencyTextFieldView: View {
                 .stroke(borderColor, lineWidth: 2))
                 .frame(height: 56)
                 .onChange(of: value) { newValue in
-                    onValueChange(String(newValue / 100))
+                    onValueChange(String(newValue))
                 }
         }
         
@@ -41,5 +43,5 @@ struct OutlinedCurrencyTextFieldView: View {
 }
 
 #Preview {
-    OutlinedCurrencyTextFieldView(label: "Target", onValueChange: { _ in })
+    OutlinedCurrencyTextFieldView(label: "Target", value: .constant(5000),onValueChange: { _ in })
 }

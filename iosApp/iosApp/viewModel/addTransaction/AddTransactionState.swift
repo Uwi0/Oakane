@@ -3,7 +3,7 @@ import Shared
 
 struct AddTransactionState {
     var title = ""
-    var amount: String = ""
+    var amount: Int = 0
     var transactionType: TransactionType = .income
     var category: CategoryModel = defaultCategoryModel
     var selectedDate: Int64 = 0
