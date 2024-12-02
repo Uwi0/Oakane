@@ -3,6 +3,8 @@ import Shared
 
 struct AddGoalScreen: View {
     
+    let goalId: Int64
+    
     @StateObject private var viewModel = AddGoalViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     private let toolbarContent = ToolBarContent(title: "Add Goal")
@@ -30,13 +32,13 @@ struct AddGoalScreen: View {
                 )
                 
                 OutlinedTextFieldView(
-                    value: uiState.goalName,
+                    value: $viewModel.uiState.goalName,
                     placeHolder: "Goal Name" ,
                     onValueChange: { goalName in viewModel.handle(event: .SetName(value: goalName))}
                 )
                 
                 OutlinedTextFieldView(
-                    value: uiState.note,
+                    value: $viewModel.uiState.note,
                     placeHolder: "Note",
                     onValueChange: { note in viewModel.handle(event: .SetNote(value: note))}
                 )
@@ -61,6 +63,7 @@ struct AddGoalScreen: View {
             .padding(.vertical, 24)
             .padding(.horizontal, 24)
         }
+        .onAppear(perform: { viewModel.initData(goalId: goalId) } )
         .navigationBarBackButtonHidden(true)
         .customToolbar(content: toolbarContent, onEvent: onToolbarEvent)
         .onChange(of: viewModel.uiEffect, perform: observeEffect(effect:))
@@ -86,6 +89,6 @@ struct AddGoalScreen: View {
 }
 
 #Preview {
-    AddGoalScreen()
+    AddGoalScreen(goalId: 0)
 }
 

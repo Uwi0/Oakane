@@ -14,7 +14,7 @@ struct AddTransactionScreen: View {
             
             VStack(spacing: 16) {
                 OutlinedTextFieldView(
-                    value: viewModel.uiState.title,
+                    value: $viewModel.uiState.title,
                     placeHolder: "Title",
                     onValueChange: { newValue in viewModel.handle(event: .ChangedTitle(value: newValue)) }
                 )
@@ -40,7 +40,7 @@ struct AddTransactionScreen: View {
                     }
                 )
                 OutlinedTextFieldView(
-                    value: viewModel.uiState.note,
+                    value: $viewModel.uiState.note,
                     placeHolder: "Note",
                     onValueChange: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }
                 )

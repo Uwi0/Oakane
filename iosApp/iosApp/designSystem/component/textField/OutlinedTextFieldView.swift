@@ -7,17 +7,17 @@ struct OutlinedTextFieldView: View {
     private let showLabel: Bool
     private let onValueChange: (String) -> Void
 
-    @State private var value: String = ""
+    @Binding var value: String
     @State private var borderColor = ColorTheme.outline
     
     init(
-        value: String,
+        value: Binding<String>,
         placeHolder: String = "PlaceHolder",
         label: String = "",
         showLabel: Bool = true,
         onValueChange: @escaping (String) -> Void
-    ){
-        self.value = value
+    ) {
+        self._value = value // Use `_value` to assign the binding
         self.placeHolder = placeHolder
         self.label = label.isEmpty ? placeHolder : label
         self.showLabel = showLabel
@@ -25,7 +25,7 @@ struct OutlinedTextFieldView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading,spacing: 8) {
+        VStack(alignment: .leading, spacing: 8) {
             if showLabel {
                 Text(label)
                     .font(Typography.titleSmall)
@@ -37,15 +37,19 @@ struct OutlinedTextFieldView: View {
                 .tint(ColorTheme.onSurfaceVariant)
                 .autocorrectionDisabled(true)
                 .padding(12)
-                .overlay(RoundedRectangle(cornerRadius: 16)
-                .stroke(borderColor, lineWidth: 2))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(borderColor, lineWidth: 2)
+                )
         }
-        .onChange(of: value){ newValue in
+        .onChange(of: value) { newValue in
             onValueChange(newValue)
         }
     }
 }
-
 #Preview {
-    OutlinedTextFieldView(value: "", placeHolder: "PlaceHolder", onValueChange: {_ in })
+    OutlinedTextFieldView(
+        value: .constant("Hello world"),
+        placeHolder: "PlaceHolder", onValueChange: {_ in }
+    )
 }
