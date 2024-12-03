@@ -7,20 +7,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.monthlyBudget.component.MonthlyBottomContentView
 import com.kakapo.oakane.presentation.feature.monthlyBudget.component.MonthlyTopContentView
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetState
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun MonthlyBudgetRoute() {
-    MonthlyBudgetScreen()
+    val viewModel = koinViewModel<MonthlyBudgetViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    MonthlyBudgetScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 }
 
 @Composable
-private fun MonthlyBudgetScreen() {
+private fun MonthlyBudgetScreen(
+    uiState: MonthlyBudgetState,
+    onEvent: (MonthlyBudgetEvent) -> Unit
+) {
     Scaffold(
         topBar = {
             CustomNavigationTopAppBarView(title = "Monthly Budget") { }
@@ -31,7 +42,7 @@ private fun MonthlyBudgetScreen() {
                     .padding(paddingValues),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                MonthlyTopContentView()
+                MonthlyTopContentView(uiState = uiState, onEvent = onEvent)
                 MonthlyBottomContentView()
             }
         },

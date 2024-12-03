@@ -34,7 +34,7 @@ internal fun BudgetTextFieldView(value: String, onValueChange: (String) -> Unit)
 
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
-        value = value,
+        value = formattedValue,
         onValueChange = { newValue ->
             val unformattedValue = newValue.filter { it.isDigit() }
             val formattedText = if (unformattedValue.isNotEmpty()) {

@@ -8,9 +8,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetState
 
 @Composable
-internal fun MonthlyTopContentView() {
+internal fun MonthlyTopContentView(
+    uiState: MonthlyBudgetState,
+    onEvent: (MonthlyBudgetEvent) -> Unit
+) {
     Column(
         modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -24,6 +29,9 @@ internal fun MonthlyTopContentView() {
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.outline
         )
-        BudgetTextFieldView("") { }
+        BudgetTextFieldView(
+            value = uiState.amount,
+            onValueChange = { onEvent.invoke(MonthlyBudgetEvent.Changed(it)) }
+        )
     }
 }
