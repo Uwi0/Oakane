@@ -10,9 +10,11 @@ import com.kakapo.oakane.data.database.datasource.impl.MonthlyBudgetLocalDatasou
 import com.kakapo.oakane.data.database.datasource.impl.TransactionLocalDatasourceImpl
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.GoalRepository
+import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.GoalRepositoryImpl
+import com.kakapo.oakane.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalViewModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
@@ -45,6 +47,7 @@ object CommonModule {
         factory<TransactionRepository> { TransactionRepositoryImpl(get()) }
         factory<CategoryRepository> { CategoryRepositoryImpl(get()) }
         factory<GoalRepository> { GoalRepositoryImpl(get()) }
+        factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
     }
 
     val viewModel: Module = module {

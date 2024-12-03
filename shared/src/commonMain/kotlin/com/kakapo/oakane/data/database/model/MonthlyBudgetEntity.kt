@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.database.model
 
 data class MonthlyBudgetEntity(
-    val id: Long,
+    val id: Long = 0,
     val totalBudget: Double,
     val spentAmount: Double,
     val startDate: Long,
