@@ -1,0 +1,27 @@
+CREATE TABLE MonthlyBudgetTable (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    totalBudget REAL NOT NULL,
+    spentAmount REAL NOT NULL DEFAULT 0,
+    startDate INTEGER NOT NULL,
+    endDate INTEGER NOT NULL,
+    createdAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000),
+    updatedAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000)
+);
+
+insertMonthlyBudget:
+INSERT OR REPLACE INTO MonthlyBudgetTable(
+    totalBudget,
+    spentAmount,
+    startDate,
+    endDate,
+    createdAt,
+    updatedAt
+)
+VALUES (
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);
