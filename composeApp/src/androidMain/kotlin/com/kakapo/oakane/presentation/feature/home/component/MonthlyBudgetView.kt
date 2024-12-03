@@ -24,25 +24,26 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconBu
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedIconCircleButton
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
+import com.kakapo.oakane.presentation.viewModel.home.HomeEvent
 
 @Composable
-internal fun MonthlyBudgetView() {
+internal fun MonthlyBudgetView(onEvent: (HomeEvent) -> Unit) {
     ColumnWrapper(modifier = Modifier.padding(12.dp)) {
-        MonthlyBudgetContent()
+        MonthlyBudgetContent(onEvent = onEvent)
         HorizontalDivider()
         IncomeAndExpenseContent()
     }
 }
 
 @Composable
-private fun MonthlyBudgetContent() {
+private fun MonthlyBudgetContent(onEvent: (HomeEvent) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         CustomOutlinedIconCircleButton(icon = Icons.Outlined.Payments) { }
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            BudgetHeader(onNavigateToAddBudget = {})
+            BudgetHeader(onNavigateToAddBudget = { onEvent.invoke(HomeEvent.ToMonthlyBudget) })
             Text(text = "Rp. 0", style = MaterialTheme.typography.titleMedium)
             CustomProgressIndicatorView(value = 0.5f)
             SupportContent(

@@ -18,7 +18,8 @@ fun NavGraphBuilder.homeScreen(
     navigateToTransactions: () -> Unit,
     navigateToAddGoal: (Long) -> Unit,
     navigateToGoals: () -> Unit,
-    navigateToGoal: (Long) -> Unit
+    navigateToGoal: (Long) -> Unit,
+    navigateToMonthlyBudget: () -> Unit
 ) {
     composable(HOME_ROUTE) {
         HomeRoute(
@@ -27,7 +28,8 @@ fun NavGraphBuilder.homeScreen(
             navigateToAddGoal = { navigateToAddGoal.invoke(0) },
             navigateToGoals = navigateToGoals,
             navigateToGoal = navigateToGoal,
-            openDrawer = openDrawer
+            openDrawer = openDrawer,
+            navigateToMonthlyBudget = navigateToMonthlyBudget
         )
     }
 }

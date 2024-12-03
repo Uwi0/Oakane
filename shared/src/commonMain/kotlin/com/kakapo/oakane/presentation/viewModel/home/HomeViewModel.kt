@@ -38,6 +38,7 @@ class HomeViewModel(
             HomeEvent.OpenDrawer -> emit(HomeEffect.OpenDrawer)
             HomeEvent.ToCreateGoal -> emit(HomeEffect.ToCreateGoal)
             HomeEvent.ToGoals -> emit(HomeEffect.ToGoals)
+            HomeEvent.ToMonthlyBudget -> emit(HomeEffect.ToMonthlyBudget)
         }
     }
 

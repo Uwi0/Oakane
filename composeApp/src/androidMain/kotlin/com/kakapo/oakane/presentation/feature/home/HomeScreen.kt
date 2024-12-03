@@ -28,10 +28,10 @@ import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.home.component.GoalHeaderView
-import com.kakapo.oakane.presentation.ui.component.item.GoalItemView
 import com.kakapo.oakane.presentation.feature.home.component.MonthlyBudgetView
 import com.kakapo.oakane.presentation.feature.home.component.ShowMoreButtonView
 import com.kakapo.oakane.presentation.feature.home.component.TotalBalanceView
+import com.kakapo.oakane.presentation.ui.component.item.GoalItemView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.viewModel.home.HomeEffect
 import com.kakapo.oakane.presentation.viewModel.home.HomeEvent
@@ -46,7 +46,8 @@ internal fun HomeRoute(
     navigateToTransactions: () -> Unit,
     navigateToAddGoal: () -> Unit,
     navigateToGoals: () -> Unit,
-    navigateToGoal: (Long) -> Unit
+    navigateToGoal: (Long) -> Unit,
+    navigateToMonthlyBudget: () -> Unit
 ) {
     val context = LocalContext.current
     val viewModel = koinViewModel<HomeViewModel>()
@@ -62,6 +63,7 @@ internal fun HomeRoute(
                 is HomeEffect.ToGoalWith -> navigateToGoal.invoke(effect.id)
                 is HomeEffect.ShowError -> context.showToast(effect.message)
                 HomeEffect.ToGoals -> navigateToGoals.invoke()
+                HomeEffect.ToMonthlyBudget -> navigateToMonthlyBudget.invoke()
             }
         }
     }
@@ -125,7 +127,7 @@ private fun HomeContentView(
             TotalBalanceView()
         }
         item {
-            MonthlyBudgetView()
+            MonthlyBudgetView(onEvent = onEvent)
         }
         item {
             Text(

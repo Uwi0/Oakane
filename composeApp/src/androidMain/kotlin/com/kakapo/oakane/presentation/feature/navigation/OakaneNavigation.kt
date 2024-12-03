@@ -14,6 +14,8 @@ import com.kakapo.oakane.presentation.feature.goals.navigation.goalsScreen
 import com.kakapo.oakane.presentation.feature.goals.navigation.navigateToGoals
 import com.kakapo.oakane.presentation.feature.home.navigation.HOME_ROUTE
 import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
+import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.monthlyBudgetScreen
+import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.navigateToMonthlyBudget
 import com.kakapo.oakane.presentation.feature.transaction.navigation.navigateToTransaction
 import com.kakapo.oakane.presentation.feature.transaction.navigation.transactionScreen
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
@@ -32,7 +34,8 @@ internal fun OakaneNavHost(
             navigateToTransactions = navController::navigateToTransactions,
             navigateToAddGoal = navController::navigateToAddGoal,
             navigateToGoals = navController::navigateToGoals,
-            navigateToGoal = navController::navigateToGoal
+            navigateToGoal = navController::navigateToGoal,
+            navigateToMonthlyBudget = navController::navigateToMonthlyBudget
         )
         addTransactionScreen(navigateBack = navController::navigateUp)
         transactionsScreen(
@@ -58,6 +61,7 @@ internal fun OakaneNavHost(
             navigateUp = navController::navigateUp,
             updateGoal = navController::navigateToAddGoal
         )
+        monthlyBudgetScreen()
     }
 
 }

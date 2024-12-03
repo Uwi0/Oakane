@@ -16,6 +16,7 @@ sealed class HomeEffect {
     data object ToCreateGoal: HomeEffect()
     data object ToGoals: HomeEffect()
     data class ToGoalWith(val id: Long): HomeEffect()
+    data object ToMonthlyBudget: HomeEffect()
 }
 
 sealed class HomeEvent {
@@ -25,4 +26,5 @@ sealed class HomeEvent {
     data object ToCreateGoal: HomeEvent()
     data object ToGoals: HomeEvent()
     data class ToGoalWith(val id: Long): HomeEvent()
+    data object ToMonthlyBudget: HomeEvent()
 }
