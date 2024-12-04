@@ -60,7 +60,7 @@ object CommonModule {
         viewModel { AddGoalViewModel(get()) }
         viewModel { GoalViewModel(get()) }
         viewModel { GoalsViewModel(get()) }
-        viewModel { MonthlyBudgetViewModel() }
+        viewModel { MonthlyBudgetViewModel(get()) }
     }
 
     val coroutineScope = module {

@@ -12,8 +12,8 @@ fun NavController.navigateToMonthlyBudget(navOptions: NavOptions? = null) {
     navigate(MONTHLY_BUDGET_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.monthlyBudgetScreen() {
+fun NavGraphBuilder.monthlyBudgetScreen(navigateBack: () -> Unit) {
     composable(MONTHLY_BUDGET_ROUTE) {
-        MonthlyBudgetRoute()
+        MonthlyBudgetRoute(navigateBack = navigateBack)
     }
 }

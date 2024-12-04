@@ -61,7 +61,9 @@ internal fun OakaneNavHost(
             navigateUp = navController::navigateUp,
             updateGoal = navController::navigateToAddGoal
         )
-        monthlyBudgetScreen()
+        monthlyBudgetScreen(
+            navigateBack = navController::navigateUp
+        )
     }
 
 }
