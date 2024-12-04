@@ -31,3 +31,9 @@ SELECT COUNT(*) FROM MonthlyBudgetTable;
 
 getMonthlyBudget:
 SELECT * FROM MonthlyBudgetTable;
+
+updateMonthlyBudget:
+UPDATE MonthlyBudgetTable
+SET totalBudget = ?,
+    updatedAt = ?
+WHERE id = ?;

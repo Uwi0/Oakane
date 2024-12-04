@@ -4,12 +4,12 @@ import com.kakapo.MonthlyBudgetTable
 
 data class MonthlyBudgetEntity(
     val id: Long = 0,
-    val totalBudget: Double,
-    val spentAmount: Double,
-    val startDate: Long,
-    val endDate: Long,
-    val createdAt: Long,
-    val updatedAt: Long
+    val totalBudget: Double = 0.0,
+    val spentAmount: Double = 0.0,
+    val startDate: Long = 0,
+    val endDate: Long = 0,
+    val createdAt: Long = 0,
+    val updatedAt: Long = 0
 )
 
 fun MonthlyBudgetTable.toMonthlyBudgetEntity() = MonthlyBudgetEntity(

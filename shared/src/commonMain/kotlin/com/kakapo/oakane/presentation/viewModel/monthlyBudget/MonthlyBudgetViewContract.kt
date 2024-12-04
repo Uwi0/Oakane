@@ -6,12 +6,14 @@ import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import kotlinx.datetime.Clock
 
 data class MonthlyBudgetState(
+    val id: Long = 0,
     val amount: String = "",
     val isEditMode: Boolean = false
 ){
     fun asMonthlyBudgetParam(): MonthlyBudgetParam {
         val currentTime = Clock.System.now().toEpochMilliseconds()
         return MonthlyBudgetParam(
+            id = id,
             totalBudget = amount.asDouble(),
             spentAmount = 0.0,
             startDate = currentTime,

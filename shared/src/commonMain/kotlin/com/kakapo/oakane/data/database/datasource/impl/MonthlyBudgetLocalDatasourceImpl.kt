@@ -1,6 +1,7 @@
 package com.kakapo.oakane.data.database.datasource.impl
 
 import app.cash.sqldelight.db.SqlDriver
+import co.touchlab.kermit.Logger
 import com.kakapo.Database
 import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.database.model.MonthlyBudgetEntity
@@ -34,6 +35,18 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver): MonthlyBudgetLocal
             monthlyBudgetTable.getMonthlyBudget()
                 .executeAsOne()
                 .toMonthlyBudgetEntity()
+        }
+    }
+
+    override suspend fun updateMonthlyBudget(entity: MonthlyBudgetEntity): Result<Unit> {
+        Logger.d("entity: $entity")
+        return runCatching {
+            monthlyBudgetTable.updateMonthlyBudget(
+                totalBudget = entity.totalBudget,
+                updatedAt = entity.updatedAt,
+                id = entity.id
+            )
+
         }
     }
 }

@@ -4,15 +4,17 @@ import com.kakapo.oakane.data.database.model.MonthlyBudgetEntity
 import com.kakapo.oakane.model.MonthlyBudgetModel
 
 data class MonthlyBudgetParam(
-    val totalBudget: Double,
-    val spentAmount: Double,
-    val startDate: Long,
-    val endDate: Long,
-    val createdAt: Long,
-    val updatedAt: Long
+    val id: Long = 0,
+    val totalBudget: Double = 0.0,
+    val spentAmount: Double = 0.0,
+    val startDate: Long = 0,
+    val endDate: Long = 0,
+    val createdAt: Long = 0,
+    val updatedAt: Long = 0
 ){
 
     fun toEntity() = MonthlyBudgetEntity(
+        id = id,
         totalBudget = totalBudget,
         spentAmount = spentAmount,
         startDate = startDate,

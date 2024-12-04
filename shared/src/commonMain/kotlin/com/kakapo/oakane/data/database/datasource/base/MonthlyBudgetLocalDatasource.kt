@@ -6,4 +6,5 @@ interface MonthlyBudgetLocalDatasource {
     suspend fun insertMonthlyBudget(entity: MonthlyBudgetEntity): Result<Unit>
     suspend fun tableIsNotEmpty(): Result<Boolean>
     suspend fun getMonthlyBudget(): Result<MonthlyBudgetEntity>
+    suspend fun updateMonthlyBudget(entity: MonthlyBudgetEntity): Result<Unit>
 }

@@ -1,5 +1,6 @@
 package com.kakapo.oakane.data.repository.impl
 
+import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.data.model.toMonthlyBudgetModel
@@ -10,7 +11,7 @@ class MonthlyBudgetRepositoryImpl(
     private val localDatasource: MonthlyBudgetLocalDatasource
 ): MonthlyBudgetRepository {
 
-    override suspend fun save(monthlyBudget: MonthlyBudgetParam): Result<Unit> {
+    override suspend fun add(monthlyBudget: MonthlyBudgetParam): Result<Unit> {
         return localDatasource.insertMonthlyBudget(monthlyBudget.toEntity())
     }
 
@@ -20,6 +21,11 @@ class MonthlyBudgetRepositoryImpl(
 
     override suspend fun loadMonthlyBudget(): Result<MonthlyBudgetModel> {
         return localDatasource.getMonthlyBudget().mapCatching { it.toMonthlyBudgetModel() }
+    }
+
+    override suspend fun update(monthlyBudget: MonthlyBudgetParam): Result<Unit> {
+        Logger.d("monthlyBudget: $monthlyBudget")
+        return localDatasource.updateMonthlyBudget(monthlyBudget.toEntity())
     }
 
 }
