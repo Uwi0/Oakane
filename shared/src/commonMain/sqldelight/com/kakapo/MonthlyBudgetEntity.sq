@@ -28,3 +28,6 @@ VALUES (
 
 countRows:
 SELECT COUNT(*) FROM MonthlyBudgetTable;
+
+getMonthlyBudget:
+SELECT * FROM MonthlyBudgetTable;

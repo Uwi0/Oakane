@@ -1,6 +1,7 @@
 package com.kakapo.oakane.data.model
 
 import com.kakapo.oakane.data.database.model.MonthlyBudgetEntity
+import com.kakapo.oakane.model.MonthlyBudgetModel
 
 data class MonthlyBudgetParam(
     val totalBudget: Double,
@@ -20,3 +21,8 @@ data class MonthlyBudgetParam(
         updatedAt = updatedAt
     )
 }
+
+fun MonthlyBudgetEntity.toMonthlyBudgetModel() = MonthlyBudgetModel(
+    id = id,
+    totalBudget = totalBudget
+)
