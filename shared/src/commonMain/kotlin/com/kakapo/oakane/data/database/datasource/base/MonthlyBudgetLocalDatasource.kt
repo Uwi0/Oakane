@@ -4,4 +4,5 @@ import com.kakapo.oakane.data.database.model.MonthlyBudgetEntity
 
 interface MonthlyBudgetLocalDatasource {
     suspend fun insertMonthlyBudget(entity: MonthlyBudgetEntity): Result<Unit>
+    suspend fun tableIsNotEmpty(): Result<Boolean>
 }

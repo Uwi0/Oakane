@@ -25,3 +25,6 @@ VALUES (
     ?,
     ?
 );
+
+countRows:
+SELECT COUNT(*) FROM MonthlyBudgetTable;

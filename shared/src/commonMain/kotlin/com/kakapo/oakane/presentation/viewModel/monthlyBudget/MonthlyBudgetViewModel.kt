@@ -21,12 +21,28 @@ class MonthlyBudgetViewModel(
     val effect get() = _effect.asSharedFlow()
     private val _effect = MutableSharedFlow<MonthlyBudgetEffect>()
 
+    fun initializeData(){
+        checkTableIsNotEmpty()
+    }
+
     fun handleEvent(event: MonthlyBudgetEvent) {
         when(event){
             MonthlyBudgetEvent.NavigateBack -> emit(MonthlyBudgetEffect.NavigateBack)
             MonthlyBudgetEvent.Save -> saveBudget()
             is MonthlyBudgetEvent.Changed -> _uiState.update { it.copy(amount = event.amount) }
         }
+    }
+
+    private fun checkTableIsNotEmpty() = viewModelScope.launch {
+        repository.tableNotEmpty().fold(
+            onSuccess = { tableNotEmpty ->
+                Logger.d(messageString = "Table is not empty: $tableNotEmpty")
+                _uiState.update { it.copy(isEditMode = tableNotEmpty) }
+            },
+            onFailure = {
+                Logger.e(messageString = it.message.toString())
+            }
+        )
     }
 
     private fun saveBudget() = viewModelScope.launch {
@@ -36,7 +52,7 @@ class MonthlyBudgetViewModel(
                 emit(MonthlyBudgetEffect.NavigateBack)
             },
             onFailure = {
-                Logger.e(it.message.toString())
+                Logger.e(messageString = it.message.toString())
             }
         )
     }

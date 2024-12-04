@@ -12,4 +12,8 @@ class MonthlyBudgetRepositoryImpl(
         return localDatasource.insertMonthlyBudget(monthlyBudget.toEntity())
     }
 
+    override suspend fun tableNotEmpty(): Result<Boolean> {
+        return localDatasource.tableIsNotEmpty()
+    }
+
 }

@@ -21,4 +21,10 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver): MonthlyBudgetLocal
             )
         }
     }
+
+    override suspend fun tableIsNotEmpty(): Result<Boolean> {
+        return runCatching {
+            monthlyBudgetTable.countRows().executeAsOne() != 0L
+        }
+    }
 }

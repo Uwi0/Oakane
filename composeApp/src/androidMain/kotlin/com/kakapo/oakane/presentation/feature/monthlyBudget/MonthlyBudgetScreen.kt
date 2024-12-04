@@ -30,6 +30,10 @@ internal fun MonthlyBudgetRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        viewModel.initializeData()
+    }
+
+    LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 MonthlyBudgetEffect.NavigateBack -> navigateBack.invoke()
