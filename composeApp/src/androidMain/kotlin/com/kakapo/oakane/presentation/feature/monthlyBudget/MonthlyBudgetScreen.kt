@@ -45,7 +45,7 @@ internal fun MonthlyBudgetRoute(
     MonthlyBudgetScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 
     if (uiState.dialogShown){
-        AddCategoryLimitDialogView(onEvent = viewModel::handleEvent)
+        AddCategoryLimitDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
     }
 }
 

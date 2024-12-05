@@ -10,6 +10,9 @@ CREATE TABLE CategoryTable (
 getCategories:
 SELECT * FROM CategoryTable;
 
+getExpenseCategories:
+SELECT * FROM CategoryTable WHERE type = 1;
+
 getCategory:
 SELECT *
 FROM CategoryTable

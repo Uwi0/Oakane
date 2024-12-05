@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
+import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MonthlyBudgetViewModel(
-    private val repository: MonthlyBudgetRepository
+    private val monthlyBudgetRepository: MonthlyBudgetRepository,
+    private val categoryRepository: CategoryRepository
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -24,6 +26,7 @@ class MonthlyBudgetViewModel(
 
     fun initializeData() {
         checkTableIsNotEmpty()
+        loadExpenseCategory()
     }
 
     fun handleEvent(event: MonthlyBudgetEvent) {
@@ -36,7 +39,7 @@ class MonthlyBudgetViewModel(
     }
 
     private fun checkTableIsNotEmpty() = viewModelScope.launch {
-        repository.tableNotEmpty().fold(
+        monthlyBudgetRepository.tableNotEmpty().fold(
             onSuccess = { tableNotEmpty ->
                 _uiState.update { it.copy(isEditMode = tableNotEmpty) }
                 loadMonthlyBudget()
@@ -48,7 +51,7 @@ class MonthlyBudgetViewModel(
     }
 
     private fun loadMonthlyBudget() = viewModelScope.launch {
-        repository.loadMonthlyBudget().fold(
+        monthlyBudgetRepository.loadMonthlyBudget().fold(
             onSuccess = { monthlyBudget ->
                 _uiState.update {
                     it.copy(
@@ -63,6 +66,19 @@ class MonthlyBudgetViewModel(
         )
     }
 
+    private fun loadExpenseCategory() = viewModelScope.launch {
+        categoryRepository.loadExpenseCategories().collect { result ->
+            result.fold(
+                onSuccess = { categories ->
+                    _uiState.update { it.copy(expenseCategories = categories) }
+                },
+                onFailure = {
+                    Logger.e(messageString = it.message.toString())
+                }
+            )
+        }
+    }
+
     private fun saveBudget() {
         val monthlyBudget = uiState.value.asMonthlyBudgetParam()
         val isEditMode = uiState.value.isEditMode
@@ -75,7 +91,7 @@ class MonthlyBudgetViewModel(
     }
 
     private fun add(monthlyBudget: MonthlyBudgetParam) = viewModelScope.launch {
-        repository.add(monthlyBudget).fold(
+        monthlyBudgetRepository.add(monthlyBudget).fold(
             onSuccess = {
                 emit(MonthlyBudgetEffect.NavigateBack)
             },
@@ -86,7 +102,7 @@ class MonthlyBudgetViewModel(
     }
 
     private fun update(monthlyBudget: MonthlyBudgetParam) = viewModelScope.launch {
-        repository.update(monthlyBudget).fold(
+        monthlyBudgetRepository.update(monthlyBudget).fold(
             onSuccess = {
                 emit(MonthlyBudgetEffect.NavigateBack)
             },

@@ -3,11 +3,13 @@ package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 import com.kakapo.oakane.common.asDouble
 import com.kakapo.oakane.common.getEndOfMonthUnixTime
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
+import com.kakapo.oakane.model.category.CategoryModel
 import kotlinx.datetime.Clock
 
 data class MonthlyBudgetState(
     val id: Long = 0,
     val amount: String = "",
+    val expenseCategories: List<CategoryModel> = emptyList(),
     val isEditMode: Boolean = false,
     val dialogShown: Boolean = false
 ){

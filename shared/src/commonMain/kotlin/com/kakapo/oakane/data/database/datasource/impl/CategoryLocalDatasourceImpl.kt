@@ -3,7 +3,6 @@ package com.kakapo.oakane.data.database.datasource.impl
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.CategoryTable
 import com.kakapo.Database
-import com.kakapo.oakane.common.proceed
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryEntity
 import com.kakapo.oakane.data.database.model.toCategoryEntity
@@ -13,19 +12,25 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
     private val categoryDb = Database.invoke(driver).categoryEntityQueries
 
     override suspend fun getCategories(): Result<List<CategoryEntity>> {
-        return proceed {
+        return runCatching {
             categoryDb.getCategories().executeAsList().map(CategoryTable::toCategoryEntity)
         }
     }
 
+    override suspend fun getExpenseCategories(): Result<List<CategoryEntity>> {
+        return runCatching {
+            categoryDb.getExpenseCategories().executeAsList().map(CategoryTable::toCategoryEntity)
+        }
+    }
+
     override suspend fun getCategoryBy(id: Int): Result<CategoryEntity> {
-        return proceed {
+        return runCatching {
             categoryDb.getCategory(id = id.toLong()).executeAsOne().toCategoryEntity()
         }
     }
 
     override suspend fun updateCategory(entity: CategoryEntity): Result<Unit> {
-        return proceed {
+        return runCatching {
             categoryDb.updateCategory(
                 id = entity.id,
                 name = entity.name,

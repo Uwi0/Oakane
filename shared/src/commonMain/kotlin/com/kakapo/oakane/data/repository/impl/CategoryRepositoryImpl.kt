@@ -24,6 +24,12 @@ class CategoryRepositoryImpl(
         emit(result)
     }
 
+    override fun loadExpenseCategories(): Flow<Result<List<CategoryModel>>> = flow {
+        val result = localDatasource.getExpenseCategories()
+            .mapCatching { it.map(CategoryEntity::toCategoryModel) }
+        emit(result)
+    }
+
     override suspend fun save(category: CategoryModel): Result<Unit> {
         val entity = category.toCategoryEntity()
         return localDatasource.insertCategory(entity)

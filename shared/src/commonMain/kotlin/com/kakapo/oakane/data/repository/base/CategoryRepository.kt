@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface CategoryRepository {
     fun loadCategories(): Flow<Result<List<CategoryModel>>>
     fun loadCategoryBy(id: Int): Flow<Result<CategoryModel>>
+    fun loadExpenseCategories(): Flow<Result<List<CategoryModel>>>
     suspend fun save(category: CategoryModel): Result<Unit>
     suspend fun update(category: CategoryModel): Result<Unit>
     suspend fun deleteCategoryBy(id: Long): Result<Unit>
