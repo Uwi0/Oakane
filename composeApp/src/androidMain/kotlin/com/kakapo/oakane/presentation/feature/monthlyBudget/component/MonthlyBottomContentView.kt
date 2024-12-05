@@ -9,11 +9,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
 
 @Composable
-internal fun MonthlyBottomContentView() {
+internal fun MonthlyBottomContentView(onEvent: (MonthlyBudgetEvent) -> Unit) {
     Column {
-        LimitCategoryHeaderView(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp))
+        LimitCategoryHeaderView(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            onEvent = onEvent
+        )
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)

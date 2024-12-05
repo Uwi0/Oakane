@@ -8,7 +8,8 @@ import kotlinx.datetime.Clock
 data class MonthlyBudgetState(
     val id: Long = 0,
     val amount: String = "",
-    val isEditMode: Boolean = false
+    val isEditMode: Boolean = false,
+    val dialogShown: Boolean = false
 ){
     fun asMonthlyBudgetParam(): MonthlyBudgetParam {
         val currentTime = Clock.System.now().toEpochMilliseconds()
@@ -31,5 +32,6 @@ sealed class MonthlyBudgetEffect {
 sealed class MonthlyBudgetEvent {
     data object NavigateBack: MonthlyBudgetEvent()
     data class Changed(val amount: String): MonthlyBudgetEvent()
+    data class Dialog(val shown: Boolean): MonthlyBudgetEvent()
     data object Save: MonthlyBudgetEvent()
 }

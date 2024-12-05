@@ -10,9 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
 
 @Composable
-internal fun LimitCategoryHeaderView(modifier: Modifier = Modifier) {
+internal fun LimitCategoryHeaderView(
+    modifier: Modifier = Modifier,
+    onEvent: (MonthlyBudgetEvent) -> Unit
+) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -22,6 +26,9 @@ internal fun LimitCategoryHeaderView(modifier: Modifier = Modifier) {
             text = "Limited Category",
             style = MaterialTheme.typography.bodyLarge
         )
-        CustomIconButton(icon = Icons.Default.Add, onClick = {})
+        CustomIconButton(
+            icon = Icons.Default.Add,
+            onClick = { onEvent.invoke(MonthlyBudgetEvent.Dialog(shown = true)) }
+        )
     }
 }

@@ -31,6 +31,7 @@ class MonthlyBudgetViewModel(
             MonthlyBudgetEvent.NavigateBack -> emit(MonthlyBudgetEffect.NavigateBack)
             MonthlyBudgetEvent.Save -> saveBudget()
             is MonthlyBudgetEvent.Changed -> _uiState.update { it.copy(amount = event.amount) }
+            is MonthlyBudgetEvent.Dialog -> _uiState.update { it.copy(dialogShown = event.shown) }
         }
     }
 

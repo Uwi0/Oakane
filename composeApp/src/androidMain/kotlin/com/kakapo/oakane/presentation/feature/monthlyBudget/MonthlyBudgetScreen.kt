@@ -16,6 +16,7 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.monthlyBudget.component.MonthlyBottomContentView
 import com.kakapo.oakane.presentation.feature.monthlyBudget.component.MonthlyTopContentView
+import com.kakapo.oakane.presentation.feature.monthlyBudget.component.dialog.AddCategoryLimitDialogView
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEffect
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetState
@@ -42,6 +43,10 @@ internal fun MonthlyBudgetRoute(
     }
 
     MonthlyBudgetScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+
+    if (uiState.dialogShown){
+        AddCategoryLimitDialogView(onEvent = viewModel::handleEvent)
+    }
 }
 
 @Composable
@@ -63,7 +68,7 @@ private fun MonthlyBudgetScreen(
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 MonthlyTopContentView(uiState = uiState, onEvent = onEvent)
-                MonthlyBottomContentView()
+                MonthlyBottomContentView(onEvent = onEvent)
             }
         },
         bottomBar = {
