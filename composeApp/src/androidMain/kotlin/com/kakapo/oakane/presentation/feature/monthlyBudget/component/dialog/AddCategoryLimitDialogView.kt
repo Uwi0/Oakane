@@ -1,6 +1,8 @@
 package com.kakapo.oakane.presentation.feature.monthlyBudget.component.dialog
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,9 +12,12 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.feature.monthlyBudget.component.BudgetTextFieldView
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetState
@@ -47,7 +52,23 @@ private fun AddCategoryLimitDialogContentView(
             Spacer(modifier = Modifier.size(8.dp))
             CategoryLimitDropdownMenuView(expenseCategories = uiState.expenseCategories)
             Spacer(modifier = Modifier.size(24.dp))
-            Text("button action")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextButton(
+                    onClick = { onEvent.invoke(MonthlyBudgetEvent.Dialog(shown = false)) }
+                ) {
+                    Text("Cancel")
+                }
+                Spacer(Modifier.size(16.dp))
+                CustomButton(
+                    onClick = {}
+                ) {
+                    Text("Save Limit")
+                }
+            }
         }
     }
 }
