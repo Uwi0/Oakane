@@ -1,0 +1,25 @@
+CREATE TABLE CategoryLimitTable (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    categoryId INTEGER NOT NULL,
+    monthlyBudgetId INTEGER NOT NULL,
+    limitAmount REAL NOT NULL,
+    spentAmount REAL NOT NULL DEFAULT 0,
+    createdAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000),
+    updatedAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000),
+    FOREIGN KEY (categoryId) REFERENCES CategoryTable(id) ON DELETE CASCADE,
+    FOREIGN KEY (monthlyBudgetId) REFERENCES MonthlyBudgetTable(id) ON DELETE CASCADE
+);
+
+insertCategoryLimit:
+INSERT OR REPLACE INTO CategoryLimitTable(
+    categoryId,
+    monthlyBudgetId,
+    limitAmount,
+    spentAmount
+)
+VALUES (
+    ?,
+    ?,
+    ?,
+    ?
+);

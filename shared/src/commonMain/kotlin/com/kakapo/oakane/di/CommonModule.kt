@@ -1,9 +1,11 @@
 package com.kakapo.oakane.di
 
+import com.kakapo.oakane.data.database.datasource.base.CategoryLimitLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.GoalLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
+import com.kakapo.oakane.data.database.datasource.impl.CategoryLimitLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.CategoryLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.GoalLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
@@ -42,6 +44,7 @@ object CommonModule {
         factory<CategoryLocalDatasource> { CategoryLocalDatasourceImpl(get()) }
         factory<GoalLocalDatasource> { GoalLocalDatasourceImpl(get()) }
         factory<MonthlyBudgetLocalDatasource> { MonthlyBudgetLocalDatasourceImpl(get()) }
+        factory<CategoryLimitLocalDatasource> { CategoryLimitLocalDatasourceImpl(get()) }
     }
 
     val repositoryModule: Module = module {

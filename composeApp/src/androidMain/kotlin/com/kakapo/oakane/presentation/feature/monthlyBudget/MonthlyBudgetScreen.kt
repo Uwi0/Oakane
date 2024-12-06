@@ -44,7 +44,7 @@ internal fun MonthlyBudgetRoute(
 
     MonthlyBudgetScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 
-    if (uiState.dialogShown){
+    if (uiState.dialogShown) {
         AddCategoryLimitDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
     }
 }
@@ -68,7 +68,7 @@ private fun MonthlyBudgetScreen(
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 MonthlyTopContentView(uiState = uiState, onEvent = onEvent)
-                MonthlyBottomContentView(onEvent = onEvent)
+                MonthlyBottomContentView(uiState = uiState, onEvent = onEvent)
             }
         },
         bottomBar = {
