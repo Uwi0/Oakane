@@ -29,7 +29,7 @@ import com.kakapo.oakane.presentation.designSystem.animation.slidingContentAnima
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
-import com.kakapo.oakane.presentation.ui.component.item.CategoryItemView
+import com.kakapo.oakane.presentation.ui.component.item.category.CategoryItemView
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEvent
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionState
 

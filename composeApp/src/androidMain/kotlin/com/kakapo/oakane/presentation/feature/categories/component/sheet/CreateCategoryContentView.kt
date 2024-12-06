@@ -34,7 +34,7 @@ import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
-import com.kakapo.oakane.presentation.feature.categories.component.CategoryIconView
+import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import com.kakapo.oakane.presentation.ui.model.asIcon
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent

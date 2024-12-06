@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.categories.component
+package com.kakapo.oakane.presentation.ui.component.item.category
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
