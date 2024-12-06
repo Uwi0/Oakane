@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation.feature.monthlyBudget.component
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,38 +11,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.R
+import com.kakapo.oakane.common.toFormatIDRCurrency
+import com.kakapo.oakane.common.utils.getSavedImageUri
+import com.kakapo.oakane.model.category.CategoryLimitModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
+import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
+import com.kakapo.oakane.presentation.ui.model.asIcon
 
 @Composable
-internal fun LimitCategoryItemView() {
+internal fun CategoryLimitItemView(category: CategoryLimitModel) {
     Surface(shape = MaterialTheme.shapes.medium, shadowElevation = 2.dp) {
-        val context = LocalContext.current
-        val imageUrl by remember { mutableStateOf<Uri?>(null) }
         Row(
             modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CustomDynamicAsyncImage(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape),
-                imageUrl = imageUrl,
-                placeholder = painterResource(R.drawable.fubuki_stare),
-                contentScale = ContentScale.Crop
-            )
+            CategoryLimitIconView(category)
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -54,22 +45,42 @@ internal fun LimitCategoryItemView() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        "Groceries",
+                        category.name,
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        "Rp 200.000",
+                        category.limit.toFormatIDRCurrency(),
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
                 CustomProgressIndicatorView(0.5f)
                 Text(
-                    text = "Spent: Rp. 100.000/50%",
+                    text = "Spent: ${category.spent.toFormatIDRCurrency()}/${category.progress * 100}%",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.outline
                 )
             }
-
         }
+    }
+}
+
+
+@Composable
+private fun CategoryLimitIconView(category: CategoryLimitModel){
+    if (category.isDefault) {
+        CategoryIconView(
+            icon = category.iconName.asIcon(),
+            color = Color(category.formattedColor)
+        )
+    } else {
+        val context = LocalContext.current
+        val icon = context.getSavedImageUri(category.fileName).getOrNull()
+        CustomDynamicAsyncImage(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape),
+            imageUrl = icon,
+            contentScale = ContentScale.FillBounds
+        )
     }
 }

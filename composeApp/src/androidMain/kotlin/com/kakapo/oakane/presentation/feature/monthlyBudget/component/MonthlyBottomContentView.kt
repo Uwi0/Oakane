@@ -6,13 +6,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetState
 
 @Composable
-internal fun MonthlyBottomContentView(onEvent: (MonthlyBudgetEvent) -> Unit) {
+internal fun MonthlyBottomContentView(uiState: MonthlyBudgetState, onEvent: (MonthlyBudgetEvent) -> Unit) {
     Column {
         LimitCategoryHeaderView(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
@@ -22,8 +24,8 @@ internal fun MonthlyBottomContentView(onEvent: (MonthlyBudgetEvent) -> Unit) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
         ) {
-            items(10) {
-                LimitCategoryItemView()
+            items(uiState.categoryLimits) { category ->
+                CategoryLimitItemView(category)
             }
         }
     }
