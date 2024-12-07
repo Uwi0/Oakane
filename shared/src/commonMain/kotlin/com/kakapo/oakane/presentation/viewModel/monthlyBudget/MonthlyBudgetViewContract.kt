@@ -27,6 +27,7 @@ data class MonthlyBudgetState(
             updatedAt = currentTime
         )
     }
+
 }
 
 sealed class MonthlyBudgetEffect {
@@ -37,5 +38,6 @@ sealed class MonthlyBudgetEvent {
     data object NavigateBack: MonthlyBudgetEvent()
     data class Changed(val amount: String): MonthlyBudgetEvent()
     data class Dialog(val shown: Boolean): MonthlyBudgetEvent()
+    data class CreateCategoryLimitBy(val categoryId: Long, val limitAmount: Double): MonthlyBudgetEvent()
     data object Save: MonthlyBudgetEvent()
 }

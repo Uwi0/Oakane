@@ -14,9 +14,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.common.asDouble
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.feature.monthlyBudget.component.BudgetTextFieldView
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
@@ -40,6 +46,12 @@ private fun AddCategoryLimitDialogContentView(
     uiState: MonthlyBudgetState,
     onEvent: (MonthlyBudgetEvent) -> Unit
 ) {
+    var categoryId by remember { mutableLongStateOf(0L) }
+    var limitAmount by remember { mutableStateOf("") }
+    val onClick: () -> Unit = {
+        val event = MonthlyBudgetEvent.CreateCategoryLimitBy(categoryId, limitAmount.asDouble())
+        onEvent.invoke(event)
+    }
     Surface(shape = RoundedCornerShape(28.dp)) {
         Column(
             modifier = Modifier
@@ -48,9 +60,12 @@ private fun AddCategoryLimitDialogContentView(
         ) {
             Text("Add your Category Limit")
             Spacer(modifier = Modifier.size(16.dp))
-            BudgetTextFieldView(value = "", onValueChange = {})
+            BudgetTextFieldView(value = limitAmount, onValueChange = { limitAmount = it})
             Spacer(modifier = Modifier.size(8.dp))
-            CategoryLimitDropdownMenuView(expenseCategories = uiState.expenseCategories)
+            CategoryLimitDropdownMenuView(
+                expenseCategories = uiState.expenseCategories,
+                onClick = { categoryId = it }
+            )
             Spacer(modifier = Modifier.size(24.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -64,7 +79,7 @@ private fun AddCategoryLimitDialogContentView(
                 }
                 Spacer(Modifier.size(16.dp))
                 CustomButton(
-                    onClick = {}
+                    onClick = onClick
                 ) {
                     Text("Save Limit")
                 }

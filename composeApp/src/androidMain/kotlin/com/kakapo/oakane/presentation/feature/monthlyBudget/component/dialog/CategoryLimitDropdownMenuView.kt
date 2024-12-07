@@ -34,7 +34,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryLimitDropdownMenuView(expenseCategories: List<CategoryModel>) {
+fun CategoryLimitDropdownMenuView(expenseCategories: List<CategoryModel>, onClick: (Long) -> Unit) {
     val categories by remember { mutableStateOf(expenseCategories) }
     var expanded by remember { mutableStateOf(false) }
     var selectedCategory by remember { mutableStateOf(categories.first()) }
@@ -89,6 +89,7 @@ fun CategoryLimitDropdownMenuView(expenseCategories: List<CategoryModel>) {
                             selectedOptionText = categoryOption.name
                             expanded = false
                             userStartedTyping = false
+                            onClick.invoke(categoryOption.id)
                         }
                     )
                 }

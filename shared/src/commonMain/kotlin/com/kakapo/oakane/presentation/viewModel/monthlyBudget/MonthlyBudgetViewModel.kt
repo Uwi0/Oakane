@@ -3,6 +3,8 @@ package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.oakane.data.database.datasource.base.CategoryLimitRepository
+import com.kakapo.oakane.data.database.model.CategoryLimitParam
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
@@ -15,7 +17,8 @@ import kotlinx.coroutines.launch
 
 class MonthlyBudgetViewModel(
     private val monthlyBudgetRepository: MonthlyBudgetRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val categoryLimitRepository: CategoryLimitRepository
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -35,6 +38,7 @@ class MonthlyBudgetViewModel(
             MonthlyBudgetEvent.Save -> saveBudget()
             is MonthlyBudgetEvent.Changed -> _uiState.update { it.copy(amount = event.amount) }
             is MonthlyBudgetEvent.Dialog -> _uiState.update { it.copy(dialogShown = event.shown) }
+            is MonthlyBudgetEvent.CreateCategoryLimitBy -> createCategoryLimitBy(event.categoryId, event.limitAmount)
         }
     }
 
@@ -105,6 +109,19 @@ class MonthlyBudgetViewModel(
         monthlyBudgetRepository.update(monthlyBudget).fold(
             onSuccess = {
                 emit(MonthlyBudgetEffect.NavigateBack)
+            },
+            onFailure = {
+                Logger.e(messageString = it.message.toString())
+            }
+        )
+    }
+
+    private fun createCategoryLimitBy(categoryId: Long, limitAmount: Double) = viewModelScope.launch {
+        val monthlyBudgetId = uiState.value.id
+        val categoryLimit = CategoryLimitParam(categoryId, monthlyBudgetId, limitAmount)
+        categoryLimitRepository.save(categoryLimit).fold(
+            onSuccess = {
+                _uiState.update { it.copy(dialogShown = false) }
             },
             onFailure = {
                 Logger.e(messageString = it.message.toString())

@@ -1,11 +1,13 @@
 package com.kakapo.oakane.di
 
 import com.kakapo.oakane.data.database.datasource.base.CategoryLimitLocalDatasource
+import com.kakapo.oakane.data.database.datasource.base.CategoryLimitRepository
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.GoalLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.datasource.impl.CategoryLimitLocalDatasourceImpl
+import com.kakapo.oakane.data.database.datasource.impl.CategoryLimitRepositoryImpl
 import com.kakapo.oakane.data.database.datasource.impl.CategoryLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.GoalLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
@@ -52,6 +54,7 @@ object CommonModule {
         factory<CategoryRepository> { CategoryRepositoryImpl(get()) }
         factory<GoalRepository> { GoalRepositoryImpl(get()) }
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
+        factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get()) }
     }
 
     val viewModel: Module = module {
@@ -63,7 +66,7 @@ object CommonModule {
         viewModel { AddGoalViewModel(get()) }
         viewModel { GoalViewModel(get()) }
         viewModel { GoalsViewModel(get()) }
-        viewModel { MonthlyBudgetViewModel(get(), get()) }
+        viewModel { MonthlyBudgetViewModel(get(), get(), get()) }
     }
 
     val coroutineScope = module {
