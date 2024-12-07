@@ -14,11 +14,9 @@ insertCategoryLimit:
 INSERT OR REPLACE INTO CategoryLimitTable(
     categoryId,
     monthlyBudgetId,
-    limitAmount,
-    spentAmount
+    limitAmount
 )
 VALUES (
-    ?,
     ?,
     ?,
     ?

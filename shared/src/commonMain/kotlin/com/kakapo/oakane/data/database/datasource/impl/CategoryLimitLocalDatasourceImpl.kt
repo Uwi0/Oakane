@@ -15,7 +15,6 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
                 categoryId = categoryLimit.categoryId,
                 monthlyBudgetId = categoryLimit.monthlyBudgetId,
                 limitAmount = categoryLimit.limitAmount,
-                spentAmount = categoryLimit.spentAmount,
             )
         }
     }
