@@ -22,7 +22,21 @@ VALUES (
     ?
 );
 
-getCategoryLimitBy:
+getTotalCategoryLimitBy:
 SELECT COALESCE(SUM(limitAmount), 0) AS totalLimit
 FROM CategoryLimitTable
+WHERE monthlyBudgetId = ?;
+
+getCategoryLimits:
+SELECT
+    CategoryLimitTable.id AS limitId,
+    CategoryTable.id AS categoryId,
+    CategoryTable.name AS categoryName,
+    CategoryTable.icon AS categoryIcon,
+    CategoryTable.color AS categoryColor,
+    CategoryTable.isDefault AS categoryIsDefault,
+    CategoryLimitTable.limitAmount,
+    CategoryLimitTable.spentAmount
+FROM CategoryLimitTable
+JOIN CategoryTable ON CategoryLimitTable.categoryId = CategoryTable.id
 WHERE monthlyBudgetId = ?;

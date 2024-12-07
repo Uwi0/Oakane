@@ -3,13 +3,16 @@ package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.kakapo.oakane.data.database.model.CategoryLimitParam
+import com.kakapo.oakane.common.asCustomResult
+import com.kakapo.oakane.common.subscribe
+import com.kakapo.oakane.data.model.CategoryLimitParam
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
 import com.kakapo.oakane.model.MonthlyBudgetModel
+import com.kakapo.oakane.model.category.CategoryLimitModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -50,6 +53,7 @@ class MonthlyBudgetViewModel(
             onSuccess = { tableNotEmpty ->
                 _uiState.update { it.copy(isEditMode = tableNotEmpty) }
                 loadMonthlyBudget()
+                loadCategoryLimits()
             },
             onFailure = {
                 Logger.e(messageString = it.message.toString())
@@ -82,12 +86,8 @@ class MonthlyBudgetViewModel(
     private fun saveBudget() {
         val monthlyBudget = uiState.value.asMonthlyBudgetParam()
         val isEditMode = uiState.value.isEditMode
-        Logger.d("isEditMode: $isEditMode")
-        if (isEditMode) {
-            update(monthlyBudget)
-        } else {
-            add(monthlyBudget)
-        }
+        if (isEditMode) update(monthlyBudget)
+        else add(monthlyBudget)
     }
 
     private fun add(monthlyBudget: MonthlyBudgetParam) = viewModelScope.launch {
@@ -121,13 +121,28 @@ class MonthlyBudgetViewModel(
         )
     }
 
-    private fun createCategoryLimitBy(categoryId: Long, limitAmount: Double) = viewModelScope.launch {
+    private fun createCategoryLimitBy(categoryId: Long, limitAmount: Double) =
+        viewModelScope.launch {
+            val monthlyBudgetId = uiState.value.id
+            val categoryLimit = CategoryLimitParam(categoryId, monthlyBudgetId, limitAmount)
+            categoryLimitRepository.save(categoryLimit).fold(
+                onSuccess = { _uiState.update { it.copy(dialogShown = false) } },
+                onFailure = ::handleError
+            )
+        }
+
+    private fun loadCategoryLimits() = viewModelScope.launch {
         val monthlyBudgetId = uiState.value.id
-        val categoryLimit = CategoryLimitParam(categoryId, monthlyBudgetId, limitAmount)
-        categoryLimitRepository.save(categoryLimit).fold(
-            onSuccess = { _uiState.update { it.copy(dialogShown = false) } },
-            onFailure = ::handleError
-        )
+        val onSuccess: (List<CategoryLimitModel>) -> Unit = { categoryLimits ->
+            Logger.d(messageString = categoryLimits.toString())
+            _uiState.update { it.copy(categoryLimits = categoryLimits) }
+        }
+        categoryLimitRepository.loadCategoryLimitsBy(monthlyBudgetId)
+            .asCustomResult()
+            .subscribe(
+                onSuccess = onSuccess,
+                onError = ::handleError
+            )
     }
 
     private fun handleError(throwable: Throwable?) {

@@ -25,18 +25,19 @@ import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamic
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 import com.kakapo.oakane.presentation.ui.model.asIcon
+import java.text.NumberFormat
 
 @Composable
 internal fun CategoryLimitItemView(category: CategoryLimitModel) {
+    val progress = NumberFormat.getInstance().format(category.progress)
     Surface(shape = MaterialTheme.shapes.medium, shadowElevation = 2.dp) {
         Row(
-            modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
+            modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             CategoryLimitIconView(category)
             Column(
-                modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(
@@ -55,7 +56,7 @@ internal fun CategoryLimitItemView(category: CategoryLimitModel) {
                 }
                 CustomProgressIndicatorView(0.5f)
                 Text(
-                    text = "Spent: ${category.spent.toFormatIDRCurrency()}/${category.progress * 100}%",
+                    text = "Spent: ${category.spent.toFormatIDRCurrency()}/${progress}%",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.outline
                 )

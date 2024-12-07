@@ -11,5 +11,5 @@ data class CategoryLimitModel(
     val fileName: String get() = category.icon
     val formattedColor: Int get() = category.formattedColor
     val iconName: CategoryIconName get() = category.iconName
-    val progress: Float get() = spent.toFloat() / limit.toFloat()
+    val progress: Float get() = if(spent == 0.0) 0F else spent.toFloat() / limit.toFloat()
 }

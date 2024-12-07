@@ -1,4 +1,7 @@
-package com.kakapo.oakane.data.database.model
+package com.kakapo.oakane.data.model
+
+import com.kakapo.oakane.data.database.model.CategoryLimitEntity
+import com.kakapo.oakane.model.category.CategoryLimitModel
 
 data class CategoryLimitParam(
     val categoryId: Long,
@@ -6,7 +9,7 @@ data class CategoryLimitParam(
     val limitAmount: Double,
     val spentAmount: Double = 0.0,
     val updateAt: Long = 0
-){
+) {
 
     fun toEntity() = CategoryLimitEntity(
         categoryId = categoryId,
@@ -15,3 +18,10 @@ data class CategoryLimitParam(
         spentAmount = 0.0,
     )
 }
+
+fun CategoryLimitEntity.toCategoryLimitModel() = CategoryLimitModel(
+    id = id,
+    category = categoryEntity.toCategoryModel(),
+    limit = limitAmount,
+    spent = spentAmount
+)

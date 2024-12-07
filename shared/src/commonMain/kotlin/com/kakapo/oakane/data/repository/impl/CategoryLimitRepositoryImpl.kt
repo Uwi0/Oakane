@@ -1,8 +1,13 @@
 package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.oakane.data.database.datasource.base.CategoryLimitLocalDatasource
-import com.kakapo.oakane.data.database.model.CategoryLimitParam
+import com.kakapo.oakane.data.database.model.CategoryLimitEntity
+import com.kakapo.oakane.data.model.CategoryLimitParam
+import com.kakapo.oakane.data.model.toCategoryLimitModel
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
+import com.kakapo.oakane.model.category.CategoryLimitModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class CategoryLimitRepositoryImpl(
     private val localDatasource: CategoryLimitLocalDatasource
@@ -14,5 +19,11 @@ class CategoryLimitRepositoryImpl(
 
     override suspend fun loadTotalCategoryLimitBy(monthlyBudgetId: Long): Result<Double> {
         return localDatasource.getTotalCategoryLimitBy(monthlyBudgetId)
+    }
+
+    override fun loadCategoryLimitsBy(monthlyBudgetId: Long): Flow<Result<List<CategoryLimitModel>>> = flow {
+        val result =  localDatasource.getCategoryLimitsBy(monthlyBudgetId)
+            .mapCatching { it.map(CategoryLimitEntity::toCategoryLimitModel) }
+        emit(result)
     }
 }
