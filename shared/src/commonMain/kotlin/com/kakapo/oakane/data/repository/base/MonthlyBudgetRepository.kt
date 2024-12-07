@@ -8,4 +8,5 @@ interface MonthlyBudgetRepository {
     suspend fun tableNotEmpty(): Result<Boolean>
     suspend fun loadMonthlyBudget(): Result<MonthlyBudgetModel>
     suspend fun update(monthlyBudget: MonthlyBudgetParam): Result<Unit>
+    suspend fun loadLimit(): Result<Double>
 }

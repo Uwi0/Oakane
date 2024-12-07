@@ -1,25 +1,27 @@
 package com.kakapo.oakane.di
 
 import com.kakapo.oakane.data.database.datasource.base.CategoryLimitLocalDatasource
-import com.kakapo.oakane.data.database.datasource.base.CategoryLimitRepository
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.GoalLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.datasource.impl.CategoryLimitLocalDatasourceImpl
-import com.kakapo.oakane.data.database.datasource.impl.CategoryLimitRepositoryImpl
 import com.kakapo.oakane.data.database.datasource.impl.CategoryLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.GoalLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.TransactionLocalDatasourceImpl
+import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.oakane.data.repository.impl.CategoryLimitRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.GoalRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
+import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
+import com.kakapo.oakane.domain.usecase.impl.ValidateCategoryLimitUseCaseImpl
 import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalViewModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
@@ -57,6 +59,10 @@ object CommonModule {
         factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get()) }
     }
 
+    val domainModule: Module = module {
+        factory<ValidateCategoryLimitUseCase> { ValidateCategoryLimitUseCaseImpl(get(), get()) }
+    }
+
     val viewModel: Module = module {
         viewModel { AddTransactionViewModel(get(), get()) }
         viewModel { HomeViewModel(get(), get()) }
@@ -66,7 +72,7 @@ object CommonModule {
         viewModel { AddGoalViewModel(get()) }
         viewModel { GoalViewModel(get()) }
         viewModel { GoalsViewModel(get()) }
-        viewModel { MonthlyBudgetViewModel(get(), get(), get()) }
+        viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
     }
 
     val coroutineScope = module {
@@ -75,9 +81,10 @@ object CommonModule {
 }
 
 fun initKoin(
-    appModule: Module = module { },
+    appModule: Module = module {},
     localDatasourceModule: Module = CommonModule.localDatasourceModule,
     repositoryModule: Module = CommonModule.repositoryModule,
+    domainModules: Module = CommonModule.domainModule,
     viewModel: Module = CommonModule.viewModel,
     coroutineScope: Module = CommonModule.coroutineScope
 ): KoinApplication = startKoin {
@@ -85,6 +92,7 @@ fun initKoin(
         appModule,
         localDatasourceModule,
         repositoryModule,
+        domainModules,
         viewModel,
         coroutineScope,
         platformModule

@@ -46,7 +46,12 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver): MonthlyBudgetLocal
                 updatedAt = entity.updatedAt,
                 id = entity.id
             )
+        }
+    }
 
+    override suspend fun getTotalBudget(): Result<Double> {
+        return runCatching {
+            monthlyBudgetTable.getTotalBudget().executeAsOne()
         }
     }
 }

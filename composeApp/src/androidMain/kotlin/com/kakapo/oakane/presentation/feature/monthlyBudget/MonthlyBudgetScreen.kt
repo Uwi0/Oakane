@@ -4,14 +4,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.monthlyBudget.component.MonthlyBottomContentView
@@ -27,6 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 internal fun MonthlyBudgetRoute(
     navigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<MonthlyBudgetViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -38,6 +42,7 @@ internal fun MonthlyBudgetRoute(
         viewModel.effect.collect { effect ->
             when (effect) {
                 MonthlyBudgetEffect.NavigateBack -> navigateBack.invoke()
+                is MonthlyBudgetEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
@@ -68,7 +73,15 @@ private fun MonthlyBudgetScreen(
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 MonthlyTopContentView(uiState = uiState, onEvent = onEvent)
-                MonthlyBottomContentView(uiState = uiState, onEvent = onEvent)
+                if (uiState.isEditMode) {
+                    MonthlyBottomContentView(uiState = uiState, onEvent = onEvent)
+                } else {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = "you may set some expense limits for each category, after adding your budget",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
             }
         },
         bottomBar = {

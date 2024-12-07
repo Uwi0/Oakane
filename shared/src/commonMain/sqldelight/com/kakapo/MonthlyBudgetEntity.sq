@@ -37,3 +37,7 @@ UPDATE MonthlyBudgetTable
 SET totalBudget = ?,
     updatedAt = ?
 WHERE id = ?;
+
+getTotalBudget:
+SELECT totalBudget
+FROM MonthlyBudgetTable;

@@ -32,7 +32,10 @@ data class MonthlyBudgetState(
 
 sealed class MonthlyBudgetEffect {
     data object NavigateBack: MonthlyBudgetEffect()
+    data class ShowError(val message: String): MonthlyBudgetEffect()
 }
+
+typealias CreateCategoryLimit = MonthlyBudgetEvent.CreateCategoryLimitBy
 
 sealed class MonthlyBudgetEvent {
     data object NavigateBack: MonthlyBudgetEvent()

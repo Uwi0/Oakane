@@ -28,4 +28,8 @@ class MonthlyBudgetRepositoryImpl(
         return localDatasource.updateMonthlyBudget(monthlyBudget.toEntity())
     }
 
+    override suspend fun loadLimit(): Result<Double> {
+        return localDatasource.getTotalBudget()
+    }
+
 }

@@ -3,11 +3,13 @@ package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.kakapo.oakane.data.database.datasource.base.CategoryLimitRepository
 import com.kakapo.oakane.data.database.model.CategoryLimitParam
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
+import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
+import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
+import com.kakapo.oakane.model.MonthlyBudgetModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -18,7 +20,8 @@ import kotlinx.coroutines.launch
 class MonthlyBudgetViewModel(
     private val monthlyBudgetRepository: MonthlyBudgetRepository,
     private val categoryRepository: CategoryRepository,
-    private val categoryLimitRepository: CategoryLimitRepository
+    private val categoryLimitRepository: CategoryLimitRepository,
+    private val validateCategoryLimitUseCase: ValidateCategoryLimitUseCase
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -38,7 +41,7 @@ class MonthlyBudgetViewModel(
             MonthlyBudgetEvent.Save -> saveBudget()
             is MonthlyBudgetEvent.Changed -> _uiState.update { it.copy(amount = event.amount) }
             is MonthlyBudgetEvent.Dialog -> _uiState.update { it.copy(dialogShown = event.shown) }
-            is MonthlyBudgetEvent.CreateCategoryLimitBy -> createCategoryLimitBy(event.categoryId, event.limitAmount)
+            is MonthlyBudgetEvent.CreateCategoryLimitBy -> validateCreateCategoryLimit(event)
         }
     }
 
@@ -55,18 +58,13 @@ class MonthlyBudgetViewModel(
     }
 
     private fun loadMonthlyBudget() = viewModelScope.launch {
+        val onSuccess: (MonthlyBudgetModel) -> Unit = { monthlyBudget ->
+            val totalBudget = monthlyBudget.totalBudget.toInt().toString()
+            _uiState.update { it.copy(amount = totalBudget, id = monthlyBudget.id) }
+        }
         monthlyBudgetRepository.loadMonthlyBudget().fold(
-            onSuccess = { monthlyBudget ->
-                _uiState.update {
-                    it.copy(
-                        amount = monthlyBudget.totalBudget.toInt().toString(),
-                        id = monthlyBudget.id
-                    )
-                }
-            },
-            onFailure = {
-                Logger.e(messageString = it.message.toString())
-            }
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 
@@ -76,9 +74,7 @@ class MonthlyBudgetViewModel(
                 onSuccess = { categories ->
                     _uiState.update { it.copy(expenseCategories = categories) }
                 },
-                onFailure = {
-                    Logger.e(messageString = it.message.toString())
-                }
+                onFailure = ::handleError
             )
         }
     }
@@ -96,23 +92,32 @@ class MonthlyBudgetViewModel(
 
     private fun add(monthlyBudget: MonthlyBudgetParam) = viewModelScope.launch {
         monthlyBudgetRepository.add(monthlyBudget).fold(
-            onSuccess = {
-                emit(MonthlyBudgetEffect.NavigateBack)
-            },
-            onFailure = {
-                Logger.e(messageString = it.message.toString())
-            }
+            onSuccess = { emit(MonthlyBudgetEffect.NavigateBack) },
+            onFailure = ::handleError
         )
     }
 
     private fun update(monthlyBudget: MonthlyBudgetParam) = viewModelScope.launch {
         monthlyBudgetRepository.update(monthlyBudget).fold(
-            onSuccess = {
-                emit(MonthlyBudgetEffect.NavigateBack)
-            },
-            onFailure = {
-                Logger.e(messageString = it.message.toString())
+            onSuccess = { emit(MonthlyBudgetEffect.NavigateBack) },
+            onFailure = ::handleError
+        )
+    }
+
+    private fun validateCreateCategoryLimit(event: CreateCategoryLimit) = viewModelScope.launch {
+        val monthlyBudgetId = uiState.value.id
+        val categoryId = event.categoryId
+        val limitAmount = event.limitAmount
+        val onSuccess: (Boolean) -> Unit = { isValid ->
+            if (isValid) {
+                createCategoryLimitBy(categoryId, limitAmount)
+            } else {
+                emit(MonthlyBudgetEffect.ShowError("Limit amount must be less than total budget"))
             }
+        }
+        validateCategoryLimitUseCase.execute(monthlyBudgetId, limitAmount).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 
@@ -120,13 +125,15 @@ class MonthlyBudgetViewModel(
         val monthlyBudgetId = uiState.value.id
         val categoryLimit = CategoryLimitParam(categoryId, monthlyBudgetId, limitAmount)
         categoryLimitRepository.save(categoryLimit).fold(
-            onSuccess = {
-                _uiState.update { it.copy(dialogShown = false) }
-            },
-            onFailure = {
-                Logger.e(messageString = it.message.toString())
-            }
+            onSuccess = { _uiState.update { it.copy(dialogShown = false) } },
+            onFailure = ::handleError
         )
+    }
+
+    private fun handleError(throwable: Throwable?) {
+        val message = throwable?.message ?: "Unknown error"
+        Logger.e(messageString = message)
+        emit(MonthlyBudgetEffect.ShowError(message))
     }
 
     private fun emit(effect: MonthlyBudgetEffect) = viewModelScope.launch {

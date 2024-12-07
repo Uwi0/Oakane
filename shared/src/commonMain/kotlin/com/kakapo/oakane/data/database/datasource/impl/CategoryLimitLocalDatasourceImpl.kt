@@ -18,4 +18,10 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
             )
         }
     }
+
+    override suspend fun getTotalCategoryLimitBy(monthlyBudgetId: Long): Result<Double> {
+        return runCatching {
+            categoryLimitQueries.getCategoryLimitBy(monthlyBudgetId).executeAsOne()
+        }
+    }
 }

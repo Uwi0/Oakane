@@ -21,3 +21,8 @@ VALUES (
     ?,
     ?
 );
+
+getCategoryLimitBy:
+SELECT COALESCE(SUM(limitAmount), 0) AS totalLimit
+FROM CategoryLimitTable
+WHERE monthlyBudgetId = ?;
