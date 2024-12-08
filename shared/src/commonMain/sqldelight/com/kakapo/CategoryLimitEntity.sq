@@ -40,3 +40,10 @@ SELECT
 FROM CategoryLimitTable
 JOIN CategoryTable ON CategoryLimitTable.categoryId = CategoryTable.id
 WHERE monthlyBudgetId = ?;
+
+updateCategoryLimit:
+UPDATE CategoryLimitTable
+SET categoryId = ?,
+    limitAmount = ?,
+    updatedAt = ?
+WHERE id = ?;

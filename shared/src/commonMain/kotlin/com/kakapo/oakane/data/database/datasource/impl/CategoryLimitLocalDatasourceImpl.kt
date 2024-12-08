@@ -34,4 +34,15 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
                 .map(GetCategoryLimits::toCategoryLimitEntity)
         }
     }
+
+    override suspend fun update(categoryLimit: CategoryLimitEntity): Result<Unit> {
+        return runCatching { 
+            categoryLimitQueries.updateCategoryLimit(
+                categoryId = categoryLimit.categoryId,
+                limitAmount = categoryLimit.limitAmount,
+                updatedAt = categoryLimit.updatedAt,
+                id = categoryLimit.id,
+            )
+        }
+    }
 }

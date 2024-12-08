@@ -8,7 +8,6 @@ data class CategoryLimitParam(
     val monthlyBudgetId: Long,
     val limitAmount: Double,
     val spentAmount: Double = 0.0,
-    val updateAt: Long = 0
 ) {
 
     fun toEntity() = CategoryLimitEntity(

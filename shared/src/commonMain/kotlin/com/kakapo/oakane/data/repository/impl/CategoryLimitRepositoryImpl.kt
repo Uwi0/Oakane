@@ -8,6 +8,7 @@ import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.model.category.CategoryLimitModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.datetime.Clock
 
 class CategoryLimitRepositoryImpl(
     private val localDatasource: CategoryLimitLocalDatasource
@@ -25,5 +26,11 @@ class CategoryLimitRepositoryImpl(
         val result =  localDatasource.getCategoryLimitsBy(monthlyBudgetId)
             .mapCatching { it.map(CategoryLimitEntity::toCategoryLimitModel) }
         emit(result)
+    }
+
+    override suspend fun update(categoryLimit: CategoryLimitParam): Result<Unit> {
+        val currentTimestamp = Clock.System.now().toEpochMilliseconds()
+        val categoryLimitEntity = categoryLimit.toEntity().copy(updatedAt = currentTimestamp)
+        return localDatasource.update(categoryLimitEntity)
     }
 }
