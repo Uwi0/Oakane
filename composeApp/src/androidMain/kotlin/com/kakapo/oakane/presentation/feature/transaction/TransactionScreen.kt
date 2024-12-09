@@ -22,11 +22,13 @@ import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.R
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
@@ -34,6 +36,9 @@ import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNav
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
+import com.kakapo.oakane.presentation.viewModel.transaction.TransactionEffect
+import com.kakapo.oakane.presentation.viewModel.transaction.TransactionEvent
+import com.kakapo.oakane.presentation.viewModel.transaction.TransactionState
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -43,31 +48,31 @@ internal fun TransactionRoute(
     navigateToEdit: (Long) -> Unit,
     navigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<TransactionViewModel>()
-    val transaction by viewModel.transaction.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.initializeData(transactionId)
     }
 
-    val onEvent: (TransactionUiEvent) -> Unit = { event ->
-        when (event) {
-            is OnNavigateToEdit -> navigateToEdit.invoke(event.transactionId)
-            OnNavigateBack -> navigateBack.invoke()
-            is OnDeletedTransaction -> {
-                viewModel.deleteTransactionBy()
-                navigateBack.invoke()
+    LaunchedEffect(Unit){
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                TransactionEffect.NavigateBack -> navigateBack()
+                is TransactionEffect.EditTransactionBy -> navigateToEdit(effect.id)
+                is TransactionEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
 
-    TransactionScreen(transactionModel = transaction, onEvent = onEvent)
+    TransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 }
 
 @Composable
 private fun TransactionScreen(
-    transactionModel: TransactionModel,
-    onEvent: (TransactionUiEvent) -> Unit
+    uiState: TransactionState,
+    onEvent: (TransactionEvent) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -76,14 +81,14 @@ private fun TransactionScreen(
                 actions = {
                     CustomIconButton(
                         icon = Icons.Default.Edit,
-                        onClick = { onEvent.invoke(OnNavigateToEdit(transactionModel.id)) }
+                        onClick = { onEvent.invoke(TransactionEvent.EditTransaction) }
                     )
                     CustomIconButton(
                         icon = Icons.Default.DeleteOutline,
-                        onClick = { onEvent.invoke(OnDeletedTransaction(transactionModel.id)) }
+                        onClick = { onEvent.invoke(TransactionEvent.DeleteTransaction) }
                     )
                 },
-                onNavigateBack = { onEvent.invoke(OnNavigateBack) }
+                onNavigateBack = { onEvent.invoke(TransactionEvent.NavigateBack) }
             )
         },
         content = {
@@ -94,9 +99,9 @@ private fun TransactionScreen(
                     .padding(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                TopContentView(transactionModel)
-                DetailContentView(transactionModel)
-                NoteContentView(transactionModel.note)
+                TopContentView(state = uiState)
+                DetailContentView(state = uiState)
+                NoteContentView(uiState.transaction.note)
                 Text("Add Another feature in the future")
             }
 
@@ -105,7 +110,8 @@ private fun TransactionScreen(
 }
 
 @Composable
-private fun TopContentView(transactionModel: TransactionModel) {
+private fun TopContentView(state: TransactionState) {
+    val transactionModel = state.transaction
     RowWrapper {
         Image(
             painter = painterResource(R.drawable.fubuki_stare),
@@ -130,7 +136,8 @@ private fun TopContentView(transactionModel: TransactionModel) {
 }
 
 @Composable
-private fun DetailContentView(transactionModel: TransactionModel) {
+private fun DetailContentView(state: TransactionState) {
+    val transactionModel = state.transaction
     ColumnWrapper(modifier = Modifier.padding(16.dp)) {
         ColumnText(title = "Date", value = transactionModel.formattedDate)
         ColumnText(title = "Category", value = transactionModel.category.name)
@@ -185,7 +192,7 @@ private fun TransactionScreenPreview() {
         note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     )
     AppTheme {
-        TransactionScreen(transactionModel = transactionModel) {
+        TransactionScreen(uiState = TransactionState(transaction = transactionModel)) {
 
         }
     }
