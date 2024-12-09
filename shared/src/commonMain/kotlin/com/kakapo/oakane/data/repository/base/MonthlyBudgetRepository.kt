@@ -9,4 +9,5 @@ interface MonthlyBudgetRepository {
     suspend fun loadMonthlyBudget(): Result<MonthlyBudgetModel>
     suspend fun update(monthlyBudget: MonthlyBudgetParam): Result<Unit>
     suspend fun loadLimit(): Result<Double>
+    suspend fun loadActiveMonthlyBudget(): Result<Long>
 }

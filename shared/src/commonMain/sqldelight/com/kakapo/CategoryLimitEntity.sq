@@ -54,3 +54,9 @@ SET categoryId = ?,
     limitAmount = ?,
     updatedAt = ?
 WHERE id = ?;
+
+updateSpendAmount:
+UPDATE CategoryLimitTable
+SET spentAmount = spentAmount + ?
+WHERE categoryId = ?
+AND monthlyBudgetId = ?;

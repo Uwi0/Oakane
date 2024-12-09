@@ -8,4 +8,5 @@ interface CategoryLimitLocalDatasource {
     suspend fun getTotalCategoryLimitBy(monthlyBudgetId: Long): Result<Double>
     suspend fun getCategoryLimitsBy(monthlyBudgetId: Long): Result<List<CategoryLimitEntity>>
     suspend fun update(categoryLimit: CategoryLimitEntity): Result<Unit>
+    suspend fun update(spentAmount: Double, categoryId: Long, monthlyBudgetId: Long): Result<Unit>
 }

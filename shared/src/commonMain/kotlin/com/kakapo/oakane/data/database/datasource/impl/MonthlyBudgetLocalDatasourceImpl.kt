@@ -54,4 +54,8 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver): MonthlyBudgetLocal
             monthlyBudgetTable.getTotalBudget().executeAsOne()
         }
     }
+
+    override suspend fun selectActiveMonthlyBudgets(): Result<Long> {
+        return runCatching { monthlyBudgetTable.selectActiveMonthlyBudgets().executeAsOne() }
+    }
 }

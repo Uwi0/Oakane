@@ -41,3 +41,9 @@ WHERE id = ?;
 getTotalBudget:
 SELECT totalBudget
 FROM MonthlyBudgetTable;
+
+selectActiveMonthlyBudgets:
+SELECT id
+FROM MonthlyBudgetTable
+WHERE strftime('%s', 'now') * 1000 BETWEEN startDate AND endDate
+LIMIT 1;

@@ -49,4 +49,18 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
             )
         }
     }
+
+    override suspend fun update(
+        spentAmount: Double,
+        categoryId: Long,
+        monthlyBudgetId: Long
+    ): Result<Unit> {
+        return runCatching {
+            categoryLimitQueries.updateSpendAmount(
+                spentAmount = spentAmount,
+                categoryId = categoryId,
+                monthlyBudgetId = monthlyBudgetId
+            )
+        }
+    }
 }
