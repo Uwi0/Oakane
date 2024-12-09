@@ -13,7 +13,8 @@ data class MonthlyBudgetState(
     val expenseCategories: List<CategoryModel> = emptyList(),
     val isEditMode: Boolean = false,
     val dialogShown: Boolean = false,
-    val categoryLimits: List<CategoryLimitModel> = emptyList()
+    val categoryLimits: List<CategoryLimitModel> = emptyList(),
+    val selectedCategoryLimit: CategoryLimitModel? = null
 ){
     fun asMonthlyBudgetParam(): MonthlyBudgetParam {
         val currentTime = Clock.System.now().toEpochMilliseconds()
@@ -27,6 +28,11 @@ data class MonthlyBudgetState(
             updatedAt = currentTime
         )
     }
+
+    fun showDialog(categoryLimit: CategoryLimitModel) = copy(
+        selectedCategoryLimit = categoryLimit,
+        dialogShown = true
+    )
 
 }
 
@@ -42,5 +48,6 @@ sealed class MonthlyBudgetEvent {
     data class Changed(val amount: String): MonthlyBudgetEvent()
     data class Dialog(val shown: Boolean): MonthlyBudgetEvent()
     data class CreateCategoryLimitBy(val categoryId: Long, val limitAmount: Double): MonthlyBudgetEvent()
+    data class Selected(val categoryLimit: CategoryLimitModel): MonthlyBudgetEvent()
     data object Save: MonthlyBudgetEvent()
 }

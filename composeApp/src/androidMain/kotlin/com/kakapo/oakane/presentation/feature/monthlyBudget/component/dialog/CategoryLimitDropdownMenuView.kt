@@ -15,10 +15,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -30,67 +26,42 @@ import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.ui.model.asIcon
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryLimitDropdownMenuView(expenseCategories: List<CategoryModel>, onClick: (Long) -> Unit) {
-    val categories by remember { mutableStateOf(expenseCategories) }
-    var expanded by remember { mutableStateOf(false) }
-    var selectedCategory by remember { mutableStateOf(categories.first()) }
-    var selectedOptionText by remember { mutableStateOf(selectedCategory.name) }
-    var filteredOptions by remember { mutableStateOf(categories) }
-    var userStartedTyping by remember { mutableStateOf(false) }
+fun CategoryLimitDropdownMenuView(state: AddCategoryLimitState) {
 
-    LaunchedEffect(selectedOptionText) {
-        if (userStartedTyping) {
-            delay(500)
-            filteredOptions = if (selectedOptionText.isNotEmpty()) {
-                categories.filter {
-                    it.name.contains(selectedOptionText, ignoreCase = true)
-                }
-            } else {
-                categories
-            }
-            expanded = true
-        }
+    LaunchedEffect(state.selectedOptionText) {
+        state.filterCategories(state.selectedOptionText)
     }
 
     ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
+        expanded = state.expanded,
+        onExpandedChange = state::changeExpanded
     ) {
         OutlinedTextField(
             modifier = Modifier.menuAnchor(),
-            value = selectedOptionText,
-            onValueChange = {
-                selectedOptionText = it
-                userStartedTyping = true
-            },
+            value = state.selectedOptionText,
+            onValueChange = state::changeSelectedOptionText,
             shape = MaterialTheme.shapes.medium,
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-            leadingIcon = { LeadingIcon(selectedCategory) }
+            placeholder = { Text(state.selectedCategory.name) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(state.expanded) },
+            leadingIcon = { LeadingIcon(state.selectedCategory) }
         )
 
-        if (filteredOptions.isNotEmpty()) {
+        if (state.filteredOptions.isNotEmpty()) {
             DropdownMenu(
                 modifier = Modifier.heightIn(max = 180.dp),
                 properties = PopupProperties(focusable = false),
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
+                expanded = state.expanded,
+                onDismissRequest = { state.expanded = false },
             ) {
-                filteredOptions.forEach { categoryOption ->
+                state.filteredOptions.forEach { categoryOption ->
                     DropdownMenuItem(
                         modifier = Modifier.fillMaxWidth(),
                         text = { Text(categoryOption.name) },
                         leadingIcon = { LeadingIcon(categoryOption) },
-                        onClick = {
-                            selectedCategory = categoryOption
-                            selectedOptionText = categoryOption.name
-                            expanded = false
-                            userStartedTyping = false
-                            onClick.invoke(categoryOption.id)
-                        }
+                        onClick = { state.onClickedCategory(categoryOption) }
                     )
                 }
             }

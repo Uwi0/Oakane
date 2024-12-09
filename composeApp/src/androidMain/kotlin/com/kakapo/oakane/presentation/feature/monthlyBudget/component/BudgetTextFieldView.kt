@@ -1,6 +1,7 @@
 package com.kakapo.oakane.presentation.feature.monthlyBudget.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material3.Icon
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -46,6 +48,7 @@ internal fun BudgetTextFieldView(value: String, onValueChange: (String) -> Unit)
             formattedValue = formattedText
             onValueChange(unformattedValue)
         },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         placeholder = {
             Text("0")
         },

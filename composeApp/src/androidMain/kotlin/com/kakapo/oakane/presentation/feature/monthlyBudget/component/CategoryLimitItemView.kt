@@ -25,12 +25,19 @@ import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamic
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 import com.kakapo.oakane.presentation.ui.model.asIcon
+import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
 import java.text.NumberFormat
 
 @Composable
-internal fun CategoryLimitItemView(category: CategoryLimitModel) {
+internal fun CategoryLimitItemView(
+    category: CategoryLimitModel,
+    onEvent: (MonthlyBudgetEvent) -> Unit
+) {
     val progress = NumberFormat.getInstance().format(category.progress)
-    Surface(shape = MaterialTheme.shapes.medium, shadowElevation = 2.dp) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = 2.dp,
+        onClick = { onEvent.invoke(MonthlyBudgetEvent.Selected(category)) }) {
         Row(
             modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -67,7 +74,7 @@ internal fun CategoryLimitItemView(category: CategoryLimitModel) {
 
 
 @Composable
-private fun CategoryLimitIconView(category: CategoryLimitModel){
+private fun CategoryLimitIconView(category: CategoryLimitModel) {
     if (category.isDefault) {
         CategoryIconView(
             icon = category.iconName.asIcon(),
