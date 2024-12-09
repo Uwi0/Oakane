@@ -28,10 +28,11 @@ class TransactionViewModel(
     }
 
     fun handleEvent(event: TransactionEvent) {
+        val id = uiState.value.transaction.id
         when (event) {
             is TransactionEvent.DeleteTransaction -> deleteTransactionBy()
-            is TransactionEvent.EditTransaction -> TODO()
-            TransactionEvent.NavigateBack -> TODO()
+            is TransactionEvent.EditTransaction -> emit(TransactionEffect.EditTransactionBy(id))
+            TransactionEvent.NavigateBack -> emit(TransactionEffect.NavigateBack)
         }
     }
 
