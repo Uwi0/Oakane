@@ -34,6 +34,11 @@ SELECT COALESCE(SUM(limitAmount), 0) AS totalLimit
 FROM CategoryLimitTable
 WHERE monthlyBudgetId = ?;
 
+getCategoryLimitBy:
+SELECT * FROM CategoryLimitTable
+WHERE categoryId = ?
+AND monthlyBudgetId = ?;
+
 getCategoryLimits:
 SELECT
     CategoryLimitTable.id AS limitId,
@@ -58,5 +63,4 @@ WHERE id = ?;
 updateSpendAmount:
 UPDATE CategoryLimitTable
 SET spentAmount = spentAmount + ?
-WHERE categoryId = ?
-AND monthlyBudgetId = ?;
+WHERE id = ?;

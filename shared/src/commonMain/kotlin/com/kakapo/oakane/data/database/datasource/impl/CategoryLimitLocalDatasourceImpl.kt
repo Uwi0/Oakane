@@ -39,6 +39,17 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
         }
     }
 
+    override suspend fun getCategoryLimitBy(
+        categoryId: Long,
+        monthlyBudgetId: Long
+    ): Result<CategoryLimitEntity> {
+        return runCatching {
+            categoryLimitQueries.getCategoryLimitBy(categoryId, monthlyBudgetId)
+                .executeAsOne()
+                .toCategoryLimitEntity()
+        }
+    }
+
     override suspend fun update(categoryLimit: CategoryLimitEntity): Result<Unit> {
         return runCatching { 
             categoryLimitQueries.updateCategoryLimit(
@@ -50,16 +61,11 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
         }
     }
 
-    override suspend fun update(
-        spentAmount: Double,
-        categoryId: Long,
-        monthlyBudgetId: Long
-    ): Result<Unit> {
+    override suspend fun update(spentAmount: Double, id: Long): Result<Unit> {
         return runCatching {
             categoryLimitQueries.updateSpendAmount(
                 spentAmount = spentAmount,
-                categoryId = categoryId,
-                monthlyBudgetId = monthlyBudgetId
+                id = id
             )
         }
     }

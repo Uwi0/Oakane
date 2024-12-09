@@ -26,6 +26,14 @@ class CategoryLimitRepositoryImpl(
         return localDatasource.getTotalCategoryLimitBy(monthlyBudgetId)
     }
 
+    override suspend fun loadCategoryLimitBy(
+        categoryId: Long,
+        monthlyBudgetId: Long
+    ): Result<CategoryLimitModel> {
+        return localDatasource.getCategoryLimitBy(categoryId, monthlyBudgetId)
+            .mapCatching(CategoryLimitEntity::toCategoryLimitModel)
+    }
+
     override fun loadCategoryLimitsBy(monthlyBudgetId: Long): Flow<Result<List<CategoryLimitModel>>> = flow {
         val result =  localDatasource.getCategoryLimitsBy(monthlyBudgetId)
             .mapCatching { it.map(CategoryLimitEntity::toCategoryLimitModel) }
@@ -36,5 +44,9 @@ class CategoryLimitRepositoryImpl(
         val currentTimestamp = Clock.System.now().toEpochMilliseconds()
         val categoryLimitEntity = categoryLimit.toEntity().copy(updatedAt = currentTimestamp)
         return localDatasource.update(categoryLimitEntity)
+    }
+
+    override suspend fun update(spentAmount: Double, id: Long): Result<Unit> {
+        return localDatasource.update(spentAmount, id)
     }
 }

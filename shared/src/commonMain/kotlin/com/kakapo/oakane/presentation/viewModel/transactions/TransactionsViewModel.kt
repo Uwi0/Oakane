@@ -38,7 +38,6 @@ class TransactionsViewModel(
     }
 
     fun handleEvent(event: TransactionsEvent) {
-        Logger.d { "event: $event" }
         when (event) {
             is TransactionsEvent.FilterBy -> searchQuery.update { event.query }
             is TransactionsEvent.FilterByType -> {

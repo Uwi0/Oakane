@@ -1,5 +1,6 @@
 package com.kakapo.oakane.data.database.model
 
+import com.kakapo.CategoryLimitTable
 import com.kakapo.GetCategoryLimits
 
 data class CategoryLimitEntity(
@@ -26,5 +27,17 @@ fun GetCategoryLimits.toCategoryLimitEntity(): CategoryLimitEntity {
         categoryId = categoryId,
         limitAmount = limitAmount,
         categoryEntity = categoryEntity
+    )
+}
+
+fun CategoryLimitTable.toCategoryLimitEntity(): CategoryLimitEntity {
+    return CategoryLimitEntity(
+        id = id,
+        categoryId = categoryId,
+        monthlyBudgetId = monthlyBudgetId,
+        limitAmount = limitAmount,
+        spentAmount = spentAmount,
+        createdAt = createdAt,
+        updatedAt = updatedAt
     )
 }

@@ -6,6 +6,7 @@ import co.touchlab.kermit.Logger
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.oakane.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import org.koin.core.component.KoinComponent
 
 class AddTransactionViewModel(
     private val transactionRepository: TransactionRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val saveTransactionUseCase: SaveTransactionUseCase
 ) : ViewModel(), KoinComponent {
 
     val uiState get() = _uiState.asStateFlow()
@@ -87,7 +89,7 @@ class AddTransactionViewModel(
     }
 
     private fun create(transaction: TransactionParam) = viewModelScope.launch {
-        transactionRepository.save(transaction).fold(
+        saveTransactionUseCase.execute(transaction).fold(
             onSuccess = {
                 emit(AddTransactionEffect.NavigateBack)
             },
