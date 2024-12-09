@@ -34,6 +34,11 @@ data class MonthlyBudgetState(
         dialogShown = true
     )
 
+    fun dialog(shown: Boolean): MonthlyBudgetState {
+        return if (shown) copy(dialogShown = shown)
+        else copy(dialogShown = shown, selectedCategoryLimit = null)
+    }
+
 }
 
 sealed class MonthlyBudgetEffect {
