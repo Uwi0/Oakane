@@ -26,7 +26,8 @@ fun GetCategoryLimits.toCategoryLimitEntity(): CategoryLimitEntity {
         id = limitId,
         categoryId = categoryId,
         limitAmount = limitAmount,
-        categoryEntity = categoryEntity
+        categoryEntity = categoryEntity,
+        spentAmount = spentAmount
     )
 }
 

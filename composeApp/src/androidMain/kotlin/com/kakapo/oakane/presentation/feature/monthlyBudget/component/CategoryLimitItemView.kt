@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +22,7 @@ import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.category.CategoryLimitModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
+import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 import com.kakapo.oakane.presentation.ui.model.asIcon
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
@@ -33,41 +33,34 @@ internal fun CategoryLimitItemView(
     category: CategoryLimitModel,
     onEvent: (MonthlyBudgetEvent) -> Unit
 ) {
-    val progress = NumberFormat.getInstance().format(category.progress)
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        shadowElevation = 2.dp,
+    val progress = NumberFormat.getInstance().format(category.progress * 100)
+    RowWrapper(
+        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
         onClick = { onEvent.invoke(MonthlyBudgetEvent.Selected(category)) }) {
-        Row(
-            modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+        CategoryLimitIconView(category)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            CategoryLimitIconView(category)
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        category.name,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        category.limit.toFormatIDRCurrency(),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-                CustomProgressIndicatorView(0.5f)
                 Text(
-                    text = "Spent: ${category.spent.toFormatIDRCurrency()}/${progress}%",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.outline
+                    category.name,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    category.limit.toFormatIDRCurrency(),
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
+            CustomProgressIndicatorView(category.progress)
+            Text(
+                text = "Spent: ${category.spent.toFormatIDRCurrency()}/${progress}%",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.outline
+            )
         }
     }
 }
