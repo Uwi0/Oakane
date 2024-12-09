@@ -55,7 +55,7 @@ internal fun TransactionRoute(
             is OnNavigateToEdit -> navigateToEdit.invoke(event.transactionId)
             OnNavigateBack -> navigateBack.invoke()
             is OnDeletedTransaction -> {
-                viewModel.deleteTransactionBy(event.transactionId)
+                viewModel.deleteTransactionBy()
                 navigateBack.invoke()
             }
         }

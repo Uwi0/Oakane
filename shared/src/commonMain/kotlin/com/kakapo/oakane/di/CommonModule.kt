@@ -20,9 +20,11 @@ import com.kakapo.oakane.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.GoalRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
+import com.kakapo.oakane.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
+import com.kakapo.oakane.domain.usecase.impl.DeleteTransactionUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.SaveTransactionUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.UpdateTransactionUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.ValidateCategoryLimitUseCaseImpl
@@ -67,13 +69,14 @@ object CommonModule {
         factory<ValidateCategoryLimitUseCase> { ValidateCategoryLimitUseCaseImpl(get(), get()) }
         factory<SaveTransactionUseCase> { SaveTransactionUseCaseImpl(get(), get(), get()) }
         factory<UpdateTransactionUseCase> { UpdateTransactionUseCaseImpl(get(), get(), get()) }
+        factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get()) }
     }
 
     val viewModel: Module = module {
         viewModel { AddTransactionViewModel(get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get()) }
         viewModel { TransactionsViewModel(get()) }
-        viewModel { TransactionViewModel(get()) }
+        viewModel { TransactionViewModel(get(), get()) }
         viewModel { CategoriesViewModel(get()) }
         viewModel { AddGoalViewModel(get()) }
         viewModel { GoalViewModel(get()) }

@@ -15,7 +15,7 @@ class TransactionViewModelAdapter(
     }
 
     fun deleteTransactionBy(id: Long) {
-        viewModel.deleteTransactionBy(id)
+        viewModel.deleteTransactionBy()
     }
 
     fun observeData(onStateChange: (TransactionModel) -> Unit) {

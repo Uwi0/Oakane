@@ -26,7 +26,7 @@ data class TransactionParam(
 }
 
 fun TransactionEntity.toModel() = TransactionModel(
-    id = id ?: 0,
+    id = id,
     title = title,
     type = type.asTransactionType(),
     dateCreated = dateCreated,
