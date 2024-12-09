@@ -1,6 +1,7 @@
 package com.kakapo.oakane.presentation
 
-import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.presentation.viewModel.transaction.TransactionEvent
+import com.kakapo.oakane.presentation.viewModel.transaction.TransactionState
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -14,15 +15,15 @@ class TransactionViewModelAdapter(
         viewModel.initializeData(transactionId)
     }
 
-    fun deleteTransactionBy(id: Long) {
-        viewModel.deleteTransactionBy()
-    }
-
-    fun observeData(onStateChange: (TransactionModel) -> Unit) {
+    fun observeData(onStateChange: (TransactionState) -> Unit) {
         scope.launch {
-            viewModel.transaction.collect { transaction ->
+            viewModel.uiState.collect { transaction ->
                 onStateChange.invoke(transaction)
             }
         }
+    }
+
+    fun handle(event: TransactionEvent) {
+        viewModel.handleEvent(event)
     }
 }

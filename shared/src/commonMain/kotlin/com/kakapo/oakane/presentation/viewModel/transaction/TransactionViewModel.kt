@@ -36,7 +36,7 @@ class TransactionViewModel(
         }
     }
 
-    fun deleteTransactionBy() = viewModelScope.launch {
+    private fun deleteTransactionBy() = viewModelScope.launch {
         val transaction = uiState.value.transaction
         deleteTransactionUseCase.execute(transaction).fold(
             onSuccess = { emit(TransactionEffect.NavigateBack) },
