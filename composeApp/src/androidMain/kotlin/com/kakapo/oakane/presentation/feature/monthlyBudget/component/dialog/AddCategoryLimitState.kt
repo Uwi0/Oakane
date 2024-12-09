@@ -30,7 +30,7 @@ class AddCategoryLimitState(
     var filteredOptions = emptyList<CategoryModel>()
 
     val categoryId get() = selectedCategory.id
-    val formattedAmount = limitAmount.asDouble()
+    val formattedAmount get() = limitAmount.asDouble()
 
     private var expenseCategory = expenseCategories
     private var defaultCategory = expenseCategories.first()

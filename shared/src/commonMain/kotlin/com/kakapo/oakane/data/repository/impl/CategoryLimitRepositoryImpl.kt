@@ -14,6 +14,10 @@ class CategoryLimitRepositoryImpl(
     private val localDatasource: CategoryLimitLocalDatasource
 ) : CategoryLimitRepository {
 
+    override suspend fun checkIFExists(categoryId: Long, monthlyBudgetId: Long): Result<Boolean> {
+        return localDatasource.checkIFExists(categoryId, monthlyBudgetId)
+    }
+
     override suspend fun save(categoryLimit: CategoryLimitParam): Result<Unit> {
         return localDatasource.insert(categoryLimit.toEntity())
     }

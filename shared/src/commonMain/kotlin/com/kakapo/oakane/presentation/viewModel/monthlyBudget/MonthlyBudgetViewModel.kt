@@ -44,7 +44,7 @@ class MonthlyBudgetViewModel(
             MonthlyBudgetEvent.Save -> saveBudget()
             is MonthlyBudgetEvent.Changed -> _uiState.update { it.copy(amount = event.amount) }
             is MonthlyBudgetEvent.Dialog -> _uiState.update { it.dialog(event.shown) }
-            is MonthlyBudgetEvent.CreateCategoryLimitBy -> validateCreateCategoryLimit(event)
+            is MonthlyBudgetEvent.CreateCategoryLimitBy -> saveCategoryLimit(event)
             is MonthlyBudgetEvent.Selected -> _uiState.update { it.showDialog(event.categoryLimit) }
         }
     }
@@ -105,37 +105,29 @@ class MonthlyBudgetViewModel(
         )
     }
 
-    private fun validateCreateCategoryLimit(event: CreateCategoryLimit) = viewModelScope.launch {
-        val monthlyBudgetId = uiState.value.id
-        val categoryId = event.categoryId
-        val limitAmount = event.limitAmount
-        val onSuccess: (Boolean) -> Unit = { isValid ->
-            if (isValid) {
-                createCategoryLimitBy(categoryId, limitAmount)
-            } else {
-                emit(MonthlyBudgetEffect.ShowError("Limit amount must be less than total budget"))
-            }
+    private fun saveCategoryLimit(event: CreateCategoryLimit) = viewModelScope.launch {
+        val isEditMode = uiState.value.selectedCategoryLimit != null
+        val categoryLimit = CategoryLimitParam(
+            id = uiState.value.selectedCategoryLimit?.id ?: 0,
+            categoryId = event.categoryId,
+            monthlyBudgetId = uiState.value.id,
+            limitAmount = event.limitAmount
+        )
+
+        val onSuccess: (Unit) -> Unit = { _ ->
+            _uiState.update { it.dialog(shown = false) }
+            loadCategoryLimits()
         }
-        validateCategoryLimitUseCase.execute(monthlyBudgetId, limitAmount).fold(
+
+        validateCategoryLimitUseCase.execute(categoryLimit, isEditMode).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }
 
-    private fun createCategoryLimitBy(categoryId: Long, limitAmount: Double) =
-        viewModelScope.launch {
-            val monthlyBudgetId = uiState.value.id
-            val categoryLimit = CategoryLimitParam(categoryId, monthlyBudgetId, limitAmount)
-            categoryLimitRepository.save(categoryLimit).fold(
-                onSuccess = { _uiState.update { it.copy(dialogShown = false) } },
-                onFailure = ::handleError
-            )
-        }
-
     private fun loadCategoryLimits() = viewModelScope.launch {
         val monthlyBudgetId = uiState.value.id
         val onSuccess: (List<CategoryLimitModel>) -> Unit = { categoryLimits ->
-            Logger.d(messageString = categoryLimits.toString())
             _uiState.update { it.copy(categoryLimits = categoryLimits) }
         }
         categoryLimitRepository.loadCategoryLimitsBy(monthlyBudgetId)

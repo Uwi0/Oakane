@@ -10,6 +10,13 @@ CREATE TABLE CategoryLimitTable (
     FOREIGN KEY (monthlyBudgetId) REFERENCES MonthlyBudgetTable(id) ON DELETE CASCADE
 );
 
+checkCategoryLimitExists:
+SELECT EXISTS (
+    SELECT 1
+    FROM CategoryLimitTable
+    WHERE categoryId = ? AND monthlyBudgetId = ?
+) AS existsFlag;
+
 insertCategoryLimit:
 INSERT OR REPLACE INTO CategoryLimitTable(
     categoryId,

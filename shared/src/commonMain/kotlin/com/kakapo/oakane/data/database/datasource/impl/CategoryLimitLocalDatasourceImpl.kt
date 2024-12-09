@@ -11,6 +11,10 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
 
     private val categoryLimitQueries = Database(sqlDriver).categoryLimitEntityQueries
 
+    override suspend fun checkIFExists(categoryId: Long, monthlyBudgetId: Long): Result<Boolean> {
+        return runCatching { categoryLimitQueries.checkCategoryLimitExists(categoryId, monthlyBudgetId).executeAsOne() }
+    }
+
     override suspend fun insert(categoryLimit: CategoryLimitEntity): Result<Unit> {
         return runCatching {
             categoryLimitQueries.insertCategoryLimit(

@@ -15,6 +15,7 @@ data class CategoryLimitEntity(
 
 fun GetCategoryLimits.toCategoryLimitEntity(): CategoryLimitEntity {
     val categoryEntity = CategoryEntity(
+        id = categoryId,
         name = categoryName,
         icon = categoryIcon,
         color = categoryColor,
