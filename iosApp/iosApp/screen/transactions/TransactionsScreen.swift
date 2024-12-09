@@ -52,6 +52,7 @@ struct TransactionsScreen: View {
             .presentationDetents([.height(bottomSheetSize)])
             .presentationDragIndicator(.visible)
         }
+        .onAppear(perform: viewModel.initData)
         .onChange(of: viewModel.uiEffect, perform: observe(effect:))
     }
     

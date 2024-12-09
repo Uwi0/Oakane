@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation
 
+import com.kakapo.oakane.presentation.viewModel.transaction.TransactionEffect
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionEvent
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionState
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
@@ -15,11 +16,15 @@ class TransactionViewModelAdapter(
         viewModel.initializeData(transactionId)
     }
 
-    fun observeData(onStateChange: (TransactionState) -> Unit) {
-        scope.launch {
-            viewModel.uiState.collect { transaction ->
-                onStateChange.invoke(transaction)
-            }
+    fun observeData(onStateChange: (TransactionState) -> Unit) = scope.launch {
+        viewModel.uiState.collect { transaction ->
+            onStateChange.invoke(transaction)
+        }
+    }
+
+    fun observeEffect(onEffectChange: (TransactionEffect) -> Unit) = scope.launch {
+        viewModel.uiEffect.collect { effect ->
+            onEffectChange.invoke(effect)
         }
     }
 

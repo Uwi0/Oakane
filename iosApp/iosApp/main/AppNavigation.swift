@@ -11,6 +11,7 @@ final class AppNavigation: ObservableObject {
         case addGoal(goalId: Int64)
         case goal(goalId: Int64)
         case goals
+        case monthlyBudget
     }
     
     @Published var navPath = NavigationPath()

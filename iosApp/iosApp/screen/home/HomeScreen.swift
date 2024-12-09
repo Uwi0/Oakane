@@ -58,6 +58,8 @@ struct HomeScreen: View {
                 navigation.navigate(to: .goal(goalId: homeEvent.id))
             case .toGoals:
                 navigation.navigate(to: .goals)
+            case .toMonthlyBudget:
+                navigation.navigate(to: .monthlyBudget)
             }
         }
         viewModel.uiEffects = nil

@@ -26,6 +26,8 @@ struct ContentView: View {
                             GoalScreen(goalId: goalId)
                         case .goals:
                             GoalsScreen()
+                        case .monthlyBudget:
+                            MonthlyBudgetScreen()
                         }
                     }
                 

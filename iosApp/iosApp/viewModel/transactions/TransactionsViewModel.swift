@@ -30,6 +30,10 @@ final class TransactionsViewModel: ObservableObject {
         }
     }
     
+    func initData() {
+        viewModel.initializeData()
+    }
+    
     func handle(event: TransactionsEvent) {
         viewModel.handleEvent(event: event)
     }
