@@ -42,13 +42,14 @@ data class AddTransactionState(
     fun copy(transaction: TransactionModel) = copy(
         transactionId = transaction.id,
         title = transaction.title,
-        transactionAmount = transaction.amount.toString(),
+        transactionAmount = transaction.amount.toInt().toString(),
         transactionType = transaction.type,
         category = transaction.category,
         note = transaction.note
     )
 
     fun asTransactionParam() = TransactionParam(
+        id = transactionId,
         title = title,
         amount = transactionAmount.asDouble(),
         type = transactionType.ordinal.toLong(),

@@ -16,7 +16,6 @@ class TransactionLocalDatasourceImpl(
     override suspend fun insertTransaction(entity: TransactionEntity): Result<Unit> {
         return runCatching {
             transactionDb.insert(
-                id = null,
                 title = entity.title,
                 amount = entity.amount,
                 type = entity.type,
@@ -50,7 +49,7 @@ class TransactionLocalDatasourceImpl(
                 category = entity.category.id,
                 dateCreated = entity.dateCreated,
                 note = entity.note,
-                id = entity.id ?: 0
+                id = entity.id
             )
         }
     }

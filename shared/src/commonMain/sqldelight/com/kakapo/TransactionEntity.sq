@@ -11,7 +11,6 @@ CREATE TABLE TransactionTable (
 
 insert:
 INSERT OR REPLACE INTO TransactionTable (
-    id,
     title,
     amount,
     type,
@@ -20,7 +19,6 @@ INSERT OR REPLACE INTO TransactionTable (
     note
 )
 VALUES (
-    ?,
     ?,
     ?,
     ?,

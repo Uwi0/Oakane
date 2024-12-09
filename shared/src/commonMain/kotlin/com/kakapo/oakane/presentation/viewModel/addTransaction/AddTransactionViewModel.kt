@@ -7,6 +7,7 @@ import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.domain.usecase.base.SaveTransactionUseCase
+import com.kakapo.oakane.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,8 @@ import org.koin.core.component.KoinComponent
 class AddTransactionViewModel(
     private val transactionRepository: TransactionRepository,
     private val categoryRepository: CategoryRepository,
-    private val saveTransactionUseCase: SaveTransactionUseCase
+    private val saveTransactionUseCase: SaveTransactionUseCase,
+    private val updateTransactionUseCase: UpdateTransactionUseCase
 ) : ViewModel(), KoinComponent {
 
     val uiState get() = _uiState.asStateFlow()
@@ -27,6 +29,8 @@ class AddTransactionViewModel(
 
     val uiSideEffect get() = _uiSideEffect.asSharedFlow()
     private val _uiSideEffect = MutableSharedFlow<AddTransactionEffect>()
+
+    private var spentBefore: Double = 0.0
 
     fun initializeData(id: Long) {
         loadCategories().invokeOnCompletion {
@@ -57,16 +61,14 @@ class AddTransactionViewModel(
     private fun onClickButton() {
         val transaction = uiState.value.asTransactionParam()
         val transactionId = uiState.value.transactionId
-        if (transactionId == 0L) {
-            create(transaction)
-        } else {
-            update(transaction, transactionId)
-        }
+        if (transactionId == 0L) create(transaction)
+        else update(transaction)
     }
 
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {
         transactionRepository.loadTransactionBy(id).fold(
             onSuccess = { transaction ->
+                spentBefore = transaction.amount
                 _uiState.update { it.copy(transaction) }
             },
             onFailure = {
@@ -99,11 +101,9 @@ class AddTransactionViewModel(
         )
     }
 
-    private fun update(transaction: TransactionParam, transactionId: Long) = viewModelScope.launch {
-        transactionRepository.update(transaction, transactionId).fold(
-            onSuccess = {
-                emit(AddTransactionEffect.NavigateBack)
-            },
+    private fun update(transaction: TransactionParam) = viewModelScope.launch {
+        updateTransactionUseCase.executed(transaction, spentBefore).fold(
+            onSuccess = { emit(AddTransactionEffect.NavigateBack) },
             onFailure = {
                 Logger.e(throwable = it, messageString = "error update transaction ${it.message}")
             }

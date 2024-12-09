@@ -46,6 +46,10 @@ class CategoryLimitRepositoryImpl(
         return localDatasource.update(categoryLimitEntity)
     }
 
+    override suspend fun updateIncrement(spentAmount: Double, id: Long): Result<Unit> {
+        return localDatasource.updateIncrement(spentAmount, id)
+    }
+
     override suspend fun update(spentAmount: Double, id: Long): Result<Unit> {
         return localDatasource.update(spentAmount, id)
     }

@@ -61,12 +61,15 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
         }
     }
 
+    override suspend fun updateIncrement(spentAmount: Double, id: Long): Result<Unit> {
+        return runCatching {
+            categoryLimitQueries.updateIncrementSpendAmount(spentAmount = spentAmount, id = id)
+        }
+    }
+
     override suspend fun update(spentAmount: Double, id: Long): Result<Unit> {
         return runCatching {
-            categoryLimitQueries.updateSpendAmount(
-                spentAmount = spentAmount,
-                id = id
-            )
+            categoryLimitQueries.updateSpentAmount(spentAmount = spentAmount, id = id)
         }
     }
 }

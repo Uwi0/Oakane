@@ -31,7 +31,7 @@ class TransactionRepositoryImpl(
         return localDatasource.getTransaction(id).mapCatching { it.toModel() }
     }
 
-    override suspend fun update(transaction: TransactionParam, id: Long): Result<Unit> {
-        return localDatasource.updateTransaction(transaction.toEntity(id = id))
+    override suspend fun update(transaction: TransactionParam): Result<Unit> {
+        return localDatasource.updateTransaction(transaction.toEntity())
     }
 }

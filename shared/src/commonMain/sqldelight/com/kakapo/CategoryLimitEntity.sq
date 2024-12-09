@@ -60,7 +60,12 @@ SET categoryId = ?,
     updatedAt = ?
 WHERE id = ?;
 
-updateSpendAmount:
+updateIncrementSpendAmount:
 UPDATE CategoryLimitTable
 SET spentAmount = spentAmount + ?
+WHERE id = ?;
+
+updateSpentAmount:
+UPDATE CategoryLimitTable
+SET spentAmount = ?
 WHERE id = ?;

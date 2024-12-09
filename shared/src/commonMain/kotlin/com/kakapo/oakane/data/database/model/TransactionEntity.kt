@@ -4,7 +4,7 @@ import com.kakapo.GetTransactionBy
 import com.kakapo.GetTransactions
 
 data class TransactionEntity(
-    val id: Long? = null,
+    val id: Long,
     val title: String,
     val amount: Double,
     val type: Long,

@@ -11,5 +11,6 @@ interface CategoryLimitRepository {
     suspend fun loadCategoryLimitBy(categoryId: Long, monthlyBudgetId: Long): Result<CategoryLimitModel>
     fun loadCategoryLimitsBy(monthlyBudgetId: Long): Flow<Result<List<CategoryLimitModel>>>
     suspend fun update(categoryLimit: CategoryLimitParam): Result<Unit>
+    suspend fun updateIncrement(spentAmount: Double, id: Long): Result<Unit>
     suspend fun update(spentAmount: Double, id: Long): Result<Unit>
 }

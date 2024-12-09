@@ -9,5 +9,5 @@ interface TransactionRepository {
     fun loadTransactions(): Flow<Result<List<TransactionModel>>>
     suspend fun deleteTransactionBy(id: Long): Result<Unit>
     suspend fun loadTransactionBy(id: Long): Result<TransactionModel>
-    suspend fun update(transaction: TransactionParam, id: Long): Result<Unit>
+    suspend fun update(transaction: TransactionParam): Result<Unit>
 }

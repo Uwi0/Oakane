@@ -19,7 +19,7 @@ class SaveTransactionUseCaseImpl(
         val categoryLimitId = getCategoryLimit(categoryId, monthlyBudgetId)
         categoryLimitId?.let {
             val spentAmount = transaction.amount
-            categoryLimitRepository.update(spentAmount, categoryLimitId).getOrThrow()
+            categoryLimitRepository.updateIncrement(spentAmount, categoryLimitId).getOrNull()
         }
     }
 
