@@ -6,7 +6,7 @@ struct TransactionNavBarView: View {
         HStack(spacing: 24) {
             IconButtonView(
                 name: "arrow.left",
-                size: 16,
+                width: 16,
                 onClick: onClick
             )
             Text("Transactions")

@@ -7,7 +7,7 @@ struct ToolbarModifier: ViewModifier {
         content
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    IconButtonView(name: "arrow.left", size: 16, onClick: { onAction(.dismiss) })
+                    IconButtonView(name: "arrow.left", width: 16, onClick: { onAction(.dismiss) })
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Text(toolbarContent.title)
@@ -16,10 +16,10 @@ struct ToolbarModifier: ViewModifier {
                 ToolbarItem(placement: .topBarTrailing){
                     HStack(spacing: 16) {
                         if !toolbarContent.action1.isEmpty {
-                            IconButtonView(name: toolbarContent.action1, size: 16, onClick: { onAction(.action1)})
+                            IconButtonView(name: toolbarContent.action1, width: 16, onClick: { onAction(.action1)})
                         }
                         if !toolbarContent.action2.isEmpty {
-                            IconButtonView(name: toolbarContent.action2, size: 16, onClick: { onAction(.action2)})
+                            IconButtonView(name: toolbarContent.action2, width: 16, onClick: { onAction(.action2)})
                         }
                     }
                 }

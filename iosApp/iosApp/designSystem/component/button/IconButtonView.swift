@@ -3,7 +3,7 @@ import SwiftUI
 struct IconButtonView: View {
     
     let name: String
-    let size: CGFloat
+    let width: CGFloat
     let onClick: () -> Void
     var fontWeight: Font.Weight = .regular
     
@@ -13,7 +13,7 @@ struct IconButtonView: View {
             label: {
                 Image(systemName: name)
                     .resizable()
-                    .frame(width: size, height: size)
+                    .frame(width: width, height: width)
                     .fontWeight(fontWeight)
                     .foregroundStyle(ColorTheme.outline)
             }
@@ -22,5 +22,5 @@ struct IconButtonView: View {
 }
 
 #Preview {
-    IconButtonView(name: "pencil", size: 24, onClick: {})
+    IconButtonView(name: "pencil", width: 24, onClick: {})
 }

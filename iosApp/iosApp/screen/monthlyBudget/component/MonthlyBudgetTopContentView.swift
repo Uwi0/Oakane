@@ -1,8 +1,10 @@
 import SwiftUI
+import Shared
 
 struct MonthlyBudgetTopContentView: View {
     
     @State private var budget: Int = 0
+    let onEvent: (MonthlyBudgetEvent) -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -14,7 +16,7 @@ struct MonthlyBudgetTopContentView: View {
             OutlinedCurrencyTextFieldView(
                 value: $budget,
                 leadingIcon: "list.clipboard",
-                onValueChange: { _ in }
+                onValueChange: { budget in onEvent(.Changed(amount: budget)) }
             )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -22,5 +24,5 @@ struct MonthlyBudgetTopContentView: View {
 }
 
 #Preview {
-    MonthlyBudgetTopContentView()
+    MonthlyBudgetTopContentView(onEvent: { _ in })
 }

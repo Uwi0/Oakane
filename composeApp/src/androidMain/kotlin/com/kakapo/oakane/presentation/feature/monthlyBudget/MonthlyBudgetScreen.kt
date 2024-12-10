@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.feature.monthlyBudget
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -89,7 +90,8 @@ private fun MonthlyBudgetScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 24.dp, start = 16.dp, end = 16.dp),
-                onClick = { onEvent.invoke(MonthlyBudgetEvent.Save) }
+                onClick = { onEvent.invoke(MonthlyBudgetEvent.Save) },
+                contentPadding = PaddingValues(16.dp)
             ) {
                 Text("Save Budget")
             }

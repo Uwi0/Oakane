@@ -7,7 +7,7 @@ struct SimplifiedAddGoalView: View {
             Text("Add Goal")
                 .font(Typography.titleMedium)
             Spacer()
-            IconButtonView(name: "plus", size: 24, onClick: onClick).padding(.trailing, 12)
+            IconButtonView(name: "plus", width: 24, onClick: onClick).padding(.trailing, 12)
         }
     }
 }

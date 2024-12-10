@@ -14,7 +14,7 @@ struct AddGoalView: View {
                     .font(Typography.bodyMedium)
             }
             Spacer()
-            IconButtonView(name: "plus", size: imageSize, onClick: onClick)
+            IconButtonView(name: "plus", width: imageSize, onClick: onClick)
                 .padding(.trailing, 12)
         }
         .customBackground(backgroundColor: ColorTheme.surface)

@@ -19,12 +19,19 @@ struct MonthlyBudgetScreen: View {
                     onNavigateBack: { viewModel.handle(event: .NavigateBack())}
                 )
                 VStack(alignment: .leading, spacing: 24) {
-                    MonthlyBudgetTopContentView()
-                    MonthlyBudgetBottomContentView(onEvent: { _ in })
+                    MonthlyBudgetTopContentView(onEvent: viewModel.handle(event:))
+                    MonthlyBudgetBottomContentView(
+                        isEditMode: uiState.isEditMode,
+                        onEvent: viewModel.handle(event:)
+                    )
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, 24)
                 .padding(.horizontal, 16)
+                Spacer()
+                FilledButtonView(text: "Save Budget", onClick: { viewModel.handle(event: .Save())})
+                    .frame(height: 48)
+                    .padding(.horizontal, 16)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }

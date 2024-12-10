@@ -16,7 +16,7 @@ internal struct TopContentView: View {
                     Spacer()
                     IconButtonView(
                         name: "pencil",
-                        size: imageSize,
+                        width: imageSize,
                         onClick: { onEvent(.ToMonthlyBudget())},
                         fontWeight: .bold
                     )
