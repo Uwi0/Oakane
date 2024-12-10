@@ -19,6 +19,10 @@ struct CategoriesScreen: View {
         viewModel.uiState.sheetContent == CategoriesSheetContent.create
     }
     
+    private var searchQuery: String {
+        viewModel.uiState.searchQuery
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -32,7 +36,9 @@ struct CategoriesScreen: View {
                     incomeCategories: viewModel.incomeCategories,
                     onEvent: viewModel.onEvent
                 )
-                .onChange(of: viewModel.uiState.searchQuery, perform: { query in viewModel.onEvent(event: .Search(query: query))})
+                .onChange(of: searchQuery){
+                    viewModel.onEvent(event: .Search(query: searchQuery))
+                }
                 
                 FabButtonView(
                     size: FabConstant.size,

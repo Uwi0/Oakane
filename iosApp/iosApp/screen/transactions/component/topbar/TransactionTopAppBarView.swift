@@ -19,8 +19,8 @@ struct TransactionTopAppBarView: View {
                 TransactionNavBarView(onClick: { onEvent(.NavigateBack())})
                 
                 OutlinedSearchTextFieldView(query: $query, placeHolder: "Search Transactions...")
-                    .onChange(of: query) { newQuery in
-                        onEvent(.FilterBy(query: newQuery))
+                    .onChange(of: query) {
+                        onEvent(.FilterBy(query: query))
                     }
                 
                 FilterSelectorView(

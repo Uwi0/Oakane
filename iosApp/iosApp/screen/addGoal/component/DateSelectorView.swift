@@ -33,7 +33,7 @@ struct DateSelectorView: View {
             .overlay {
                 DatePickerView(date: $currentDate, scaleEffect: 3)
             }
-            .onChange(of: currentDate){ newValue in
+            .onChange(of: currentDate){
                 let convertedDate = currentDate.toInt64()
                 onSelectedDate(convertedDate)
             }

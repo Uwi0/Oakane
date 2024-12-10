@@ -34,8 +34,8 @@ struct SelectionPickerView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .background(RoundedRectangle(cornerRadius: 16).stroke(ColorTheme.outline, lineWidth: 2))
-        .onChange(of: selectedOpion) { newValue in
-            onClick(newValue)
+        .onChange(of: selectedOpion) {
+            onClick(selectedOpion)
         }
     }
 }

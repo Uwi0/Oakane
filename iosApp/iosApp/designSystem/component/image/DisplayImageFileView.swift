@@ -30,9 +30,9 @@ struct DisplayImageFileView: View {
                 loadSavedImage(imageName: fileName)
             }
         }
-        .onChange(of: fileName) { newImage in
-            if !newImage.isEmpty {
-                loadSavedImage(imageName: newImage)
+        .onChange(of: fileName) {
+            if !fileName.isEmpty {
+                loadSavedImage(imageName: fileName)
             }
         }
     }

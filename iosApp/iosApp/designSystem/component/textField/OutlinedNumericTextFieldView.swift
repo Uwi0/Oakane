@@ -36,24 +36,9 @@ struct OutlinedNumericTextFieldView: View {
                     .stroke(borderColor, lineWidth: 2)
             }
             .focused($isFocused)
-            .onChange(of: isFocused) { isEditing in
-                borderColor = isEditing ? ColorTheme.primary : ColorTheme.outline
-                if !isEditing {
-                    // Apply formatting when focus is lost
-                    if let doubleValue = Double(rawValue.filter(\.isNumber)) {
-                        value = doubleValue / 100.0
-                        rawValue = numberFormatter.string(from: NSNumber(value: value!)) ?? ""
-                        onValueChange(value)
-                    } else {
-                        value = nil
-                        rawValue = ""
-                        onValueChange(nil)
-                    }
-                }
-            }
-            .onChange(of: rawValue) { newRawValue in
+            .onChange(of: rawValue) {
                 // Allow typing unformatted value
-                if let doubleValue = Double(newRawValue.filter(\.isNumber)) {
+                if let doubleValue = Double(rawValue.filter(\.isNumber)) {
                     value = doubleValue / 100.0
                 } else {
                     value = nil

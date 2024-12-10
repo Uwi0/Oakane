@@ -47,8 +47,8 @@ struct OutlinedCurrencyTextFieldView: View {
             .overlay(RoundedRectangle(cornerRadius: 16)
             .stroke(borderColor, lineWidth: 2))
             .frame(height: 56)
-            .onChange(of: value) { newValue in
-                onValueChange(String(newValue))
+            .onChange(of: value) {
+                onValueChange(String(value))
             }
         }
         

@@ -100,8 +100,8 @@ private struct CategorySegmentedButtonView: View {
             }
         }
         .pickerStyle(.segmented)
-        .onChange(of: selectedType) { newSelectedType in
-            onEvent(.Selected(type: newSelectedType))
+        .onChange(of: selectedType) {
+            onEvent(.Selected(type: selectedType))
         }
     }
 }
@@ -129,8 +129,8 @@ private struct CategoryColorSeleectionView: View {
                 .background {
                     ColorPicker("CustomColor",selection: $selectedColor)
                         .labelsHidden()
-                        .onChange(of: selectedColor) { newSelectedColor in
-                            let colorHex = newSelectedColor.toHexString() ?? "0xFFFFFF"
+                        .onChange(of: selectedColor) {
+                            let colorHex = selectedColor.toHexString() ?? "0xFFFFFF"
                             onEvent(.SelectedColor(hex: colorHex))
                         }
                 }

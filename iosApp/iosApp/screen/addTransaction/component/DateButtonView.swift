@@ -20,8 +20,8 @@ struct DateButtonView: View {
         .overlay {
             DatePickerView(date: $selectedDate.animation(), scaleEffect: 3)
         }
-        .onChange(of: selectedDate) { newDate in
-            onClick(newDate)
+        .onChange(of: selectedDate) {
+            onClick(selectedDate)
         }
     }
 }

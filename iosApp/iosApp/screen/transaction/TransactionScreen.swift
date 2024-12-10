@@ -37,7 +37,9 @@ struct TransactionScreen: View {
             
         }
         .navigationBarBackButtonHidden(true)
-        .onChange(of: viewModel.uiEffect, perform: observe(effect:))
+        .onChange(of: viewModel.uiEffect){
+            observe(effect:viewModel.uiEffect)
+        }
         .onAppear {
             viewModel.initializeData(transactionId: transactionId)
         }

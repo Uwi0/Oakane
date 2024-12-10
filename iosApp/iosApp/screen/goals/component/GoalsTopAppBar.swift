@@ -19,8 +19,8 @@ struct GoalsTopAppBar: View {
             .padding(.horizontal, 16)
             Divider()
         }
-        .onChange(of: query){ newQuery in
-            onEvent(.FilterBy(query: newQuery))
+        .onChange(of: query){
+            onEvent(.FilterBy(query: query))
         }
     }
 }

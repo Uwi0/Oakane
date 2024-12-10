@@ -67,7 +67,9 @@ struct AddGoalScreen: View {
         }
         .onAppear(perform: { viewModel.initData(goalId: goalId) } )
         .navigationBarBackButtonHidden(true)
-        .onChange(of: viewModel.uiEffect, perform: observeEffect(effect:))
+        .onChange(of: viewModel.uiEffect){
+            observeEffect(effect:viewModel.uiEffect)
+        }
     }
     
     private func onToolbarEvent(_ event: ToolbarEvent) {

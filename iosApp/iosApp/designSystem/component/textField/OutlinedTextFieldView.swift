@@ -42,8 +42,8 @@ struct OutlinedTextFieldView: View {
                         .stroke(borderColor, lineWidth: 2)
                 )
         }
-        .onChange(of: value) { newValue in
-            onValueChange(newValue)
+        .onChange(of: value) {
+            onValueChange(value)
         }
     }
 }

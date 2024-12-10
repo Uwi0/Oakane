@@ -134,9 +134,9 @@ private struct CategoryImagePickerView: View {
                         .stroke(ColorTheme.primary, lineWidth: 3)
                 }
         }
-        .onChange(of: selectedItem){ newItem in
+        .onChange(of: selectedItem){
             Task {
-                if let data = try? await newItem?.loadTransferable(type: Data.self),
+                if let data = try? await selectedItem?.loadTransferable(type: Data.self),
                    let uiImage = UIImage(data: data) {
                     selectedImage = uiImage
                     let savedImage = saveImageToFileSystem(image: uiImage)

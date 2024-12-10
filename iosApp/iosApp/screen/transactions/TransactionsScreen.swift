@@ -53,7 +53,9 @@ struct TransactionsScreen: View {
             .presentationDragIndicator(.visible)
         }
         .onAppear(perform: viewModel.initData)
-        .onChange(of: viewModel.uiEffect, perform: observe(effect:))
+        .onChange(of: viewModel.uiEffect){
+            observe(effect:viewModel.uiEffect)
+        }
     }
     
     private func observe(effect: TransactionsEffect?) {

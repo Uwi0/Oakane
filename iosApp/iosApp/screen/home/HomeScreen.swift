@@ -38,7 +38,9 @@ struct HomeScreen: View {
         .onAppear {
             viewModel.initViewModel()
         }
-        .onChange(of: viewModel.uiEffects, perform: observe(effect:))
+        .onChange(of: viewModel.uiEffects){
+            observe(effect:viewModel.uiEffects)
+        }
     }
     
     private func observe(effect: HomeEffect?) {

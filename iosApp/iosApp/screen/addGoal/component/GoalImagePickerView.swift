@@ -21,8 +21,12 @@ struct GoalImagePickerView: View {
                 selectedImage: selectedImage
             )
         }
-        .onChange(of: selectedItem, perform: displayImage(photoPicker:))
-        .onChange(of: imageUrl, perform: displayImage(url:))
+        .onChange(of: selectedItem){
+            displayImage(photoPicker: selectedItem)
+        }
+        .onChange(of: imageUrl){
+            displayImage(url:imageUrl)
+        }
     }
     
     private func displayImage(photoPicker: PhotosPickerItem?) {
