@@ -16,13 +16,13 @@ class MonthlyBudgetViewModelAdapter(
         viewModel.initializeData()
     }
 
-    fun observeData(onStateChange: (MonthlyBudgetState) -> Unit) = scope.launch {
+    fun observeState(onStateChange: (MonthlyBudgetState) -> Unit) = scope.launch {
         viewModel.uiState.collect { state ->
             onStateChange.invoke(state)
         }
     }
 
-    fun observeState(onEffectChange: (MonthlyBudgetEffect) -> Unit) = scope.launch {
+    fun observeEffect(onEffectChange: (MonthlyBudgetEffect) -> Unit) = scope.launch {
         viewModel.effect.collect { effect ->
             onEffectChange.invoke(effect)
         }

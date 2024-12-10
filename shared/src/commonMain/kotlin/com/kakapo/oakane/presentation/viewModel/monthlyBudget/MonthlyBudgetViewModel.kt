@@ -50,15 +50,16 @@ class MonthlyBudgetViewModel(
     }
 
     private fun checkTableIsNotEmpty() = viewModelScope.launch {
-        monthlyBudgetRepository.tableNotEmpty().fold(
-            onSuccess = { tableNotEmpty ->
-                _uiState.update { it.copy(isEditMode = tableNotEmpty) }
+        val onSuccess: (Boolean) -> Unit = { tableNotEmpty ->
+            _uiState.update { it.copy(isEditMode = tableNotEmpty) }
+            if (tableNotEmpty) {
                 loadMonthlyBudget()
                 loadCategoryLimits()
-            },
-            onFailure = {
-                Logger.e(messageString = it.message.toString())
             }
+        }
+        monthlyBudgetRepository.tableNotEmpty().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 

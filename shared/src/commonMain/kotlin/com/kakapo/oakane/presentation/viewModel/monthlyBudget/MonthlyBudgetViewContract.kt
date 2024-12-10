@@ -16,6 +16,12 @@ data class MonthlyBudgetState(
     val categoryLimits: List<CategoryLimitModel> = emptyList(),
     val selectedCategoryLimit: CategoryLimitModel? = null
 ){
+
+    val realAmount: Int get() {
+        val doubleValue = amount.toDoubleOrNull() ?: 0.0
+        return doubleValue.toInt()
+    }
+
     fun asMonthlyBudgetParam(): MonthlyBudgetParam {
         val currentTime = Clock.System.now().toEpochMilliseconds()
         return MonthlyBudgetParam(
