@@ -1,8 +1,11 @@
 import SwiftUI
 
 class CurrencyUITextField: UITextField {
+    
     private let formatter: NumberFormatter
     var onValueChange: ((Int) -> Void)?
+    var onFocusChange: ((Bool) -> Void) = { _ in }
+    
 
     init(formatter: NumberFormatter) {
         self.formatter = formatter
@@ -13,6 +16,7 @@ class CurrencyUITextField: UITextField {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     
     override func willMove(toSuperview newSuperview: UIView?) {
         addTarget(self, action: #selector(editingChanged), for: .editingChanged)
@@ -27,8 +31,24 @@ class CurrencyUITextField: UITextField {
         sendActions(for: .editingChanged)
     }
     
+    override func becomeFirstResponder() -> Bool {
+        let didBecomeFirstResponder = super.becomeFirstResponder()
+        if didBecomeFirstResponder {
+            onFocusChange(true)
+        }
+        return didBecomeFirstResponder
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        let didResignFirstResponder = super.resignFirstResponder()
+        if didResignFirstResponder {
+            onFocusChange(false)
+        }
+        return didResignFirstResponder
+    }
+    
     private func setupViews() {
-        tintColor = .clear
+        tintColor = UIColor(ColorTheme.primary)
         font = .systemFont(ofSize: 16, weight: .regular)
     }
     

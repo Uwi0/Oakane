@@ -40,7 +40,13 @@ struct OutlinedCurrencyTextFieldView: View {
                         .foregroundColor(ColorTheme.outline)
                         .frame(width: 24, height: 24)
                 }
-                CurrencyTextFieldAdapter(value: $value, formatter: numberFormatter)
+                CurrencyTextFieldAdapter(
+                    value: $value,
+                    formatter: numberFormatter,
+                    onFocusChange: { isFocused in
+                        borderColor = isFocused ? ColorTheme.primary : ColorTheme.outline
+                    }
+                )
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)

@@ -4,6 +4,7 @@ struct CurrencyTextFieldAdapter: UIViewRepresentable {
     
     @Binding var value: Int
     let formatter: NumberFormatter
+    var onFocusChange: ((Bool) -> Void) = { _ in }
 
     func makeUIView(context: Context) -> CurrencyUITextField {
         let textField = CurrencyUITextField(formatter: formatter)
@@ -12,6 +13,7 @@ struct CurrencyTextFieldAdapter: UIViewRepresentable {
                 value = newValue
             }
         }
+        textField.onFocusChange = onFocusChange
         return textField
     }
 
