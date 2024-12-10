@@ -4,23 +4,23 @@ struct ProgressIndicatorView: View {
     @State private var animatedProgress: Float = 0.0
     var value: Float
     
-    private let radius: CGFloat = 12
+    private let radius: CGFloat = 16
     
     var body: some View {
         
         ProgressView(value: animatedProgress, total: 1.0)
             .progressViewStyle(LinearProgressViewStyle())
-            .controlSize(.large)
             .tint(ColorTheme.primary)
             .cornerRadius(radius)
+            .scaleEffect(x: 1, y: 2, anchor: .center)
             .onAppear {
                 withAnimation(.easeInOut(duration: 0.5)) {
                     animatedProgress = value
                 }
             }
-            .onChange(of: value) { newValue in
+            .onChange(of: value) {
                 withAnimation(.easeInOut(duration: 0.5)) {
-                    animatedProgress = newValue
+                    animatedProgress = value
                 }
             }
     }

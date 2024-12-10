@@ -12,4 +12,8 @@ data class CategoryLimitModel(
     val formattedColor: Int get() = category.formattedColor
     val iconName: CategoryIconName get() = category.iconName
     val progress: Float get() = if(spent == 0.0) 0F else spent.toFloat() / limit.toFloat()
+
+    companion object {
+        val EMPTY = CategoryLimitModel(1, category = CategoryModel(), 100_000.0, 50_000.0)
+    }
 }

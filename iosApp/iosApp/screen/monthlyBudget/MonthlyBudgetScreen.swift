@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MonthlyBudgetScreen: View {
-    @State private var searchQuery = ""
+    
     var body: some View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
@@ -9,6 +9,7 @@ struct MonthlyBudgetScreen: View {
                 MonthlyBudgetTopbarView(title: "Monthly Budget", onNavigateBack: {})
                 VStack(alignment: .leading, spacing: 24) {
                     MonthlyBudgetTopContentView()
+                    MonthlyBudgetBottomContentView(onEvent: { _ in })
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, 24)
@@ -28,7 +29,7 @@ private struct MonthlyBudgetTopbarView: View {
     var body: some View {
         VStack {
             NavigationTopAppbar(title: title, navigateBack: onNavigateBack)
-            Divider()
+            HorizontalDivider(width: 1)
         }
     }
 }

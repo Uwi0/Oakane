@@ -2,6 +2,8 @@ package com.kakapo.oakane.presentation.viewModel.addGoal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.oakane.common.asCustomResult
+import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,9 +24,7 @@ class AddGoalViewModel(
 
     fun initData(goalId: Long){
         _uiState.update { it.copy(id = goalId) }
-        if (goalId != 0L){
-            loadGoalBy(goalId)
-        }
+        if (goalId != 0L) loadGoalBy(goalId)
     }
 
     fun handleEvent(event: AddGoalEvent){
@@ -43,14 +43,10 @@ class AddGoalViewModel(
     }
 
     private fun loadGoalBy(id: Long) = viewModelScope.launch {
-        goalRepository.loadGoalBy(id).collect { goal ->
-            goal.fold(
-                onSuccess = { goalResult ->
-                    _uiState.update { it.update(goalResult) }
-                },
-                onFailure = ::handleError
-            )
-        }
+        goalRepository.loadGoalBy(id).asCustomResult().subscribe(
+            onSuccess = { goalResult -> _uiState.update { it.update(goalResult) } },
+            onError = ::handleError
+        )
     }
 
     private fun saveGoal() = viewModelScope.launch {
@@ -62,9 +58,7 @@ class AddGoalViewModel(
     private fun addGoal() = viewModelScope.launch {
         val goal = uiState.value.asGoalModel()
         goalRepository.save(goal).fold(
-            onSuccess = {
-                emit(AddGoalEffect.SuccessSaveGoal)
-            },
+            onSuccess = { emit(AddGoalEffect.SuccessSaveGoal) },
             onFailure = ::handleError
         )
     }
@@ -73,9 +67,7 @@ class AddGoalViewModel(
         val goal = uiState.value.asGoalModel()
         val id = uiState.value.id
         goalRepository.update(goal, id).fold(
-            onSuccess = {
-                emit(AddGoalEffect.SuccessSaveGoal)
-            },
+            onSuccess = { emit(AddGoalEffect.SuccessSaveGoal) },
             onFailure = ::handleError
         )
     }
