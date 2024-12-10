@@ -1,7 +1,9 @@
 import SwiftUI
+import Shared
 
 internal struct TopContentView: View {
     
+    let onEvent: (HomeEvent) -> Void
     private let imageSize: CGFloat = 24
     
     var body: some View {
@@ -15,7 +17,8 @@ internal struct TopContentView: View {
                     IconButtonView(
                         name: "pencil",
                         size: imageSize,
-                        onClick: {}
+                        onClick: { onEvent(.ToMonthlyBudget())},
+                        fontWeight: .bold
                     )
                 }
                 Text("Rp. 0")
@@ -35,5 +38,5 @@ internal struct TopContentView: View {
 }
 
 #Preview {
-    TopContentView().padding()
+    TopContentView(onEvent: { _ in }).padding()
 }

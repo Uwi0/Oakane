@@ -6,37 +6,31 @@ struct HomeContentView: View {
     let uiState: HomeState
     let onEvent: (HomeEvent) -> Void
     
-    
     var body: some View {
-        VStack {
-
-            ScrollView {
-                VStack(alignment: .leading,spacing: 16) {
-                    TotalBalanceView()
-                    MonthlyBudgetView()
-                    Text("RecentTransaction")
-                        .font(Typography.titleMedium)
-                    HomeTransactionsView(transactions: uiState.transactions)
-                    if uiState.transactions.count > 3 {
-                        ShowMoreItemView(onClick: { onEvent(.ToTransactions())})
-                    }
-                    GoalHeaderView(isVisible: true, onClick: { onEvent(.ToCreateGoal()) })
-                    GoalsView(
-                        goals: uiState.goals,
-                        onClick: { goal in
-                            onEvent(.ToGoalWith(id: goal.id))
-                        }
-                    )
-                    ShowMoreItemView(onClick: {})
+        ScrollView {
+            VStack(alignment: .leading,spacing: 16) {
+                TotalBalanceView()
+                MonthlyBudgetView(onEvent: onEvent)
+                Text("RecentTransaction")
+                    .font(Typography.titleMedium)
+                HomeTransactionsView(transactions: uiState.transactions)
+                if uiState.transactions.count > 3 {
+                    ShowMoreItemView(onClick: { onEvent(.ToTransactions())})
                 }
-                .padding(.vertical, 24)
-                .padding(.horizontal, 16)
-                .ignoresSafeArea(.all)
+                GoalHeaderView(isVisible: true, onClick: { onEvent(.ToCreateGoal()) })
+                GoalsView(
+                    goals: uiState.goals,
+                    onClick: { goal in
+                        onEvent(.ToGoalWith(id: goal.id))
+                    }
+                )
+                ShowMoreItemView(onClick: {})
             }
-            .scrollIndicators(.hidden)
+            .padding(.vertical, 24)
+            .padding(.horizontal, 16)
+            .ignoresSafeArea(.all)
         }
-
-        
+        .scrollIndicators(.hidden)
     }
 }
 

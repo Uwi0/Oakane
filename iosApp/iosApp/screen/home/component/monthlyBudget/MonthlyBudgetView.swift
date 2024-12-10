@@ -1,9 +1,13 @@
 import SwiftUI
+import Shared
 
 struct MonthlyBudgetView: View {
+    
+    let onEvent: (HomeEvent) -> Void
+    
     var body: some View {
         VStack(spacing: 16) {
-            TopContentView()
+            TopContentView(onEvent: onEvent)
             HorizontalDivider()
             BottomContentView()
         }
@@ -12,5 +16,5 @@ struct MonthlyBudgetView: View {
 }
 
 #Preview {
-    MonthlyBudgetView()
+    MonthlyBudgetView(onEvent: { _ in })
 }
