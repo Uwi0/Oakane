@@ -19,7 +19,10 @@ struct MonthlyBudgetScreen: View {
                     onNavigateBack: { viewModel.handle(event: .NavigateBack())}
                 )
                 VStack(alignment: .leading, spacing: 24) {
-                    MonthlyBudgetTopContentView(onEvent: viewModel.handle(event:))
+                    MonthlyBudgetTopContentView(
+                        budget: $viewModel.uiState.amount,
+                        onEvent: viewModel.handle(event:)
+                    )
                     MonthlyBudgetBottomContentView(
                         isEditMode: uiState.isEditMode,
                         onEvent: viewModel.handle(event:)

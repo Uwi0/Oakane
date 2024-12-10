@@ -3,8 +3,13 @@ import Shared
 
 struct MonthlyBudgetTopContentView: View {
     
-    @State private var budget: Int = 0
-    let onEvent: (MonthlyBudgetEvent) -> Void
+    @Binding private var budget: Int
+    private let onEvent: (MonthlyBudgetEvent) -> Void
+    
+    init(budget: Binding<Int>, onEvent: @escaping (MonthlyBudgetEvent) -> Void) {
+        self._budget = budget
+        self.onEvent = onEvent
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -24,5 +29,5 @@ struct MonthlyBudgetTopContentView: View {
 }
 
 #Preview {
-    MonthlyBudgetTopContentView(onEvent: { _ in })
+    MonthlyBudgetTopContentView(budget: .constant(0),onEvent: { _ in })
 }
