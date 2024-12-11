@@ -9,25 +9,26 @@ struct CreateCategoryLimitDialogView: View {
     
     private let categories: [CategoryModel]
     private let onEvent: (MonthlyBudgetEvent) -> Void
+    private let categoryLimit: CategoryLimitModel?
     
     @State private var content: CreateCategoryContent = .mainMenu
-    @Binding private var limitAmount: Int
+    @State private var limitAmount: Int
     @State private var category: CategoryModel
     
     init(
         categoryLimit: CategoryLimitModel?,
         categories: [CategoryModel],
-        limitAmount: Binding<Int>,
         onEvent: @escaping (MonthlyBudgetEvent) -> Void
     ){
         self.categories = categories
         self.onEvent = onEvent
+        self.categoryLimit = categoryLimit
         if categoryLimit == nil {
             self.category = categories.first ?? defaultCategoryModel
-            _limitAmount = limitAmount
+            limitAmount = 0
         } else {
             self.category = categoryLimit!.category
-            _limitAmount = Binding.constant(Int(categoryLimit!.limit))
+            limitAmount = Int(categoryLimit!.limit)
         }
     }
     
@@ -37,7 +38,8 @@ struct CreateCategoryLimitDialogView: View {
             category: category,
             limitAmount: $limitAmount,
             content: $content,
-            onEvent: onEvent)
+            onEvent: onEvent
+        )
         case .selectCategoryLimit: SelectCategoryLimitView(
             categories: categories,
             onClick: { category in
@@ -45,7 +47,9 @@ struct CreateCategoryLimitDialogView: View {
                 self.category = category
             })
         }
+            
     }
+        
 }
 
 fileprivate struct MainContentView: View {
@@ -66,11 +70,9 @@ fileprivate struct MainContentView: View {
             MainDialogButton(
                 onPositiveButton: {
                     onEvent(.CreateCategoryLimitBy(categoryId: category.id, limitAmount: Double(limitAmount)))
-                    limitAmount = 0
                 },
                 onNegativeButton: {
                     onEvent(.Dialog(shown: false))
-                    limitAmount = 0
                 }
             )
         }
@@ -133,7 +135,6 @@ fileprivate struct SelectCategoryLimitView: View {
     CreateCategoryLimitDialogView(
         categoryLimit: nil,
         categories: [],
-        limitAmount: .constant(0),
         onEvent: { _ in }
     )
 }

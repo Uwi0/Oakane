@@ -50,7 +50,6 @@ struct MonthlyBudgetScreen: View {
                     CreateCategoryLimitDialogView(
                         categoryLimit: uiState.categoryLimit,
                         categories: uiState.expenseCategories,
-                        limitAmount: $viewModel.uiState.categoryLimitAmount,
                         onEvent: viewModel.handle(event:)
                     )
                 }

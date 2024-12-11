@@ -8,5 +8,4 @@ struct MonthlyBudgetState {
     var categoryLimits: [CategoryLimitModel] = []
     var expenseCategories: [CategoryModel] = []
     var categoryLimit: CategoryLimitModel? = nil
-    var categoryLimitAmount: Int = 0
 }
