@@ -11,21 +11,23 @@ struct CreateCategoryLimitDialogView: View {
     private let onEvent: (MonthlyBudgetEvent) -> Void
     
     @State private var content: CreateCategoryContent = .mainMenu
-    @State private var limitAmount: Int = 0
+    @Binding private var limitAmount: Int
     @State private var category: CategoryModel
     
     init(
         categoryLimit: CategoryLimitModel?,
         categories: [CategoryModel],
+        limitAmount: Binding<Int>,
         onEvent: @escaping (MonthlyBudgetEvent) -> Void
     ){
         self.categories = categories
         self.onEvent = onEvent
         if categoryLimit == nil {
             self.category = categories.first ?? defaultCategoryModel
+            _limitAmount = limitAmount
         } else {
             self.category = categoryLimit!.category
-            self.limitAmount = Int(categoryLimit!.limit)
+            _limitAmount = Binding.constant(Int(categoryLimit!.limit))
         }
     }
     
@@ -64,8 +66,12 @@ fileprivate struct MainContentView: View {
             MainDialogButton(
                 onPositiveButton: {
                     onEvent(.CreateCategoryLimitBy(categoryId: category.id, limitAmount: Double(limitAmount)))
+                    limitAmount = 0
                 },
-                onNegativeButton: { onEvent(.Dialog(shown: false))}
+                onNegativeButton: {
+                    onEvent(.Dialog(shown: false))
+                    limitAmount = 0
+                }
             )
         }
         .padding(24)
@@ -124,5 +130,10 @@ fileprivate struct SelectCategoryLimitView: View {
 }
 
 #Preview {
-    CreateCategoryLimitDialogView(categoryLimit: nil, categories: [], onEvent: { _ in })
+    CreateCategoryLimitDialogView(
+        categoryLimit: nil,
+        categories: [],
+        limitAmount: .constant(0),
+        onEvent: { _ in }
+    )
 }

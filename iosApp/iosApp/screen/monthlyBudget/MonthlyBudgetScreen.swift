@@ -5,6 +5,7 @@ struct MonthlyBudgetScreen: View {
     
     @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel: MonthlyBudgetViewModel = MonthlyBudgetViewModel()
+
     
     private var uiState: MonthlyBudgetState {
         viewModel.uiState
@@ -49,6 +50,7 @@ struct MonthlyBudgetScreen: View {
                     CreateCategoryLimitDialogView(
                         categoryLimit: uiState.categoryLimit,
                         categories: uiState.expenseCategories,
+                        limitAmount: $viewModel.uiState.categoryLimitAmount,
                         onEvent: viewModel.handle(event:)
                     )
                 }
