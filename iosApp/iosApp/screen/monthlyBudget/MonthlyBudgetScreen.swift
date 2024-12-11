@@ -46,7 +46,10 @@ struct MonthlyBudgetScreen: View {
                 PopUpDialog(
                     onDismiss: {_ in viewModel.handle(event: .Dialog(shown: false)) }
                 ){
-                    CreateCategoryLimitDialogView(categories: uiState.expenseCategories)
+                    CreateCategoryLimitDialogView(
+                        categories: uiState.expenseCategories,
+                        onEvent: viewModel.handle(event:)
+                    )
                 }
             }
         }

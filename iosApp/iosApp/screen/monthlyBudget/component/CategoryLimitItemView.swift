@@ -28,7 +28,7 @@ struct CategoryLimitItemView: View {
                     Text(limit)
                         .font(Typography.titleMedium)
                 }
-                ProgressIndicatorView(value: 0.5)
+                ProgressIndicatorView(value: categoryLimit.progress)
                 Text("spent: \(spent) / \(progress)")
                     .font(Typography.labelSmall)
                     .foregroundStyle(ColorTheme.outline)

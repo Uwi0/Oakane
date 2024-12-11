@@ -7,14 +7,16 @@ enum CreateCategoryContent {
 
 struct CreateCategoryLimitDialogView: View {
     
-    let categories: [CategoryModel]
+    private let categories: [CategoryModel]
+    private let onEvent: (MonthlyBudgetEvent) -> Void
     
-    @State var content: CreateCategoryContent = .mainMenu
-    @State var limitAmount: Int = 0
-    @State var category: CategoryModel
+    @State private var content: CreateCategoryContent = .mainMenu
+    @State private var limitAmount: Int = 0
+    @State private var category: CategoryModel
     
-    init(categories: [CategoryModel]){
+    init(categories: [CategoryModel], onEvent: @escaping (MonthlyBudgetEvent) -> Void){
         self.categories = categories
+        self.onEvent = onEvent
         self.category = categories.first ?? defaultCategoryModel
     }
     
@@ -23,7 +25,8 @@ struct CreateCategoryLimitDialogView: View {
         case .mainMenu: MainContentView(
             category: category,
             limitAmount: $limitAmount,
-            content: $content)
+            content: $content,
+            onEvent: onEvent)
         case .selectCategoryLimit: SelectCategoryLimitView(
             categories: categories,
             onClick: { category in
@@ -39,6 +42,7 @@ fileprivate struct MainContentView: View {
     let category: CategoryModel
     @Binding var limitAmount: Int
     @Binding var content: CreateCategoryContent
+    let onEvent: (MonthlyBudgetEvent) -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -48,7 +52,12 @@ fileprivate struct MainContentView: View {
             Spacer().frame(height: 16)
             ButtonSelectCategoryLimitView(category: category, onClick: { content = .selectCategoryLimit})
             Spacer().frame(height: 32)
-            MainDialogButton()
+            MainDialogButton(
+                onPositiveButton: {
+                    onEvent(.CreateCategoryLimitBy(categoryId: category.id, limitAmount: Double(limitAmount)))
+                },
+                onNegativeButton: { onEvent(.Dialog(shown: false))}
+            )
         }
         .padding(24)
     }
@@ -56,15 +65,18 @@ fileprivate struct MainContentView: View {
 
 fileprivate struct MainDialogButton: View {
     
+    let onPositiveButton: () -> Void
+    let onNegativeButton: () -> Void
+    
     var body: some View {
         HStack(spacing: 16) {
             TextButtonView(
                 title: "Cancel",
-                onClick: { }
+                onClick: onNegativeButton
             ).frame(width: 120,height: 48)
             FilledButtonView(
                 text: "Save",
-                onClick: { }
+                onClick: onPositiveButton
             ).frame(width: 120,height: 48)
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -103,5 +115,5 @@ fileprivate struct SelectCategoryLimitView: View {
 }
 
 #Preview {
-    CreateCategoryLimitDialogView(categories: [])
+    CreateCategoryLimitDialogView(categories: [], onEvent: { _ in })
 }
