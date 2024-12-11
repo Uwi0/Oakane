@@ -4,13 +4,14 @@ import Shared
 struct MonthlyBudgetBottomContentView: View {
     
     let isEditMode: Bool
+    let categoryLimits: [CategoryLimitModel]
     let onEvent: (MonthlyBudgetEvent) -> Void
     
     var body: some View {
         VStack {
             if isEditMode {
                 CategoryLimitHeaderView(onClick: { onEvent(.Dialog(shown: true))})
-                CategoryLimitContentView(categoryLimits: [])
+                CategoryLimitContentView(categoryLimits: categoryLimits)
             } else {
                 Text("you may set some expense limits for each category, after adding your budget")
                     .font(Typography.titleMedium)
@@ -50,5 +51,5 @@ private struct CategoryLimitContentView: View {
 }
 
 #Preview {
-    MonthlyBudgetBottomContentView(isEditMode: false,onEvent: { _ in })
+    MonthlyBudgetBottomContentView(isEditMode: false,categoryLimits: [],onEvent: { _ in })
 }

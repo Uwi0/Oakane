@@ -25,6 +25,7 @@ struct MonthlyBudgetScreen: View {
                     )
                     MonthlyBudgetBottomContentView(
                         isEditMode: uiState.isEditMode,
+                        categoryLimits: uiState.categoryLimits,
                         onEvent: viewModel.handle(event:)
                     )
                 }
@@ -32,11 +33,22 @@ struct MonthlyBudgetScreen: View {
                 .padding(.vertical, 24)
                 .padding(.horizontal, 16)
                 Spacer()
-                FilledButtonView(text: "Save Budget", onClick: { viewModel.handle(event: .Save())})
-                    .frame(height: 48)
-                    .padding(.horizontal, 16)
+                FilledButtonView(
+                    text: "Save Budget",
+                    onClick: { viewModel.handle(event: .Save())}
+                )
+                .frame(height: 48)
+                .padding(.horizontal, 16)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            
+            if uiState.isDialogShown {
+                PopUpDialog(
+                    onDismiss: {_ in viewModel.handle(event: .Dialog(shown: false)) }
+                ){
+                    CreateCategoryLimitDialogView(categories: uiState.expenseCategories)
+                }
+            }
         }
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: viewModel.initData)

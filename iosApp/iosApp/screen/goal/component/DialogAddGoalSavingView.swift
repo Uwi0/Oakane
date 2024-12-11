@@ -24,16 +24,14 @@ struct DialogAddGoalSavingView: View {
                 .frame(height: 16)
             
             HStack(spacing: 16) {
-                Button(action: { onEvent(.Dialog(shown: false, content: .updateAmount))}) {
-                    Text("Cancel")
-                        .font(Typography.labelLarge)
-                        .foregroundStyle(ColorTheme.primary)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .frame(width: 120,height: 48)
-                
-                FilledButtonView(text: "Save", onClick: { onEvent(.AddSaving())})
-                    .frame(width: 120,height: 48)
+                TextButtonView(
+                    title: "Cancel",
+                    onClick: { onEvent(.Dialog(shown: false, content: .updateAmount))}
+                ).frame(width: 120,height: 48)
+                FilledButtonView(
+                    text: "Save",
+                    onClick: { onEvent(.AddSaving())}
+                ).frame(width: 120,height: 48)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }

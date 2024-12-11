@@ -20,7 +20,7 @@ struct PopUpDialog<Content: View>: View {
                     }
                 VStack {
                     content
-                        .frame(maxWidth: proxy.size.width * 0.8)
+                        .frame(maxWidth: proxy.size.width * 0.75)
                 }
                 .padding(24)
                 .background(

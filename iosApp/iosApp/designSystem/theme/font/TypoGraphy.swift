@@ -14,7 +14,7 @@ struct Typography {
 
     // Title fonts
     static let titleSmall = Font.custom("Roboto-Regular", size: 14)
-    static let titleMedium = Font.custom("Roboto-Medium", size: 16)
+    static let titleMedium = Font.custom("Roboto-Bold", size: 16)
     static let titleLarge = Font.custom("Roboto-Bold", size: 22)
 
     // Headline fonts

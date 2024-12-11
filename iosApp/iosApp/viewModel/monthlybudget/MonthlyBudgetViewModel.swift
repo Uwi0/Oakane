@@ -12,6 +12,9 @@ final class MonthlyBudgetViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.uiState.isEditMode = state.isEditMode
                 self?.uiState.amount = Int(state.realAmount)
+                self?.uiState.isDialogShown = state.dialogShown
+                self?.uiState.categoryLimits = state.categoryLimits
+                self?.uiState.expenseCategories = state.expenseCategories
             }
         }
         viewModel.observeEffect{ [weak self] effect in
