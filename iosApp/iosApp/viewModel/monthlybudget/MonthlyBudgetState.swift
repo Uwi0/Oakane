@@ -7,4 +7,5 @@ struct MonthlyBudgetState {
     var isDialogShown: Bool = false
     var categoryLimits: [CategoryLimitModel] = []
     var expenseCategories: [CategoryModel] = []
+    var categoryLimit: CategoryLimitModel? = nil
 }

@@ -11,7 +11,10 @@ struct MonthlyBudgetBottomContentView: View {
         VStack {
             if isEditMode {
                 CategoryLimitHeaderView(onClick: { onEvent(.Dialog(shown: true))})
-                CategoryLimitContentView(categoryLimits: categoryLimits)
+                CategoryLimitContentView(
+                    categoryLimits: categoryLimits,
+                    onClick: { categoryLimit in onEvent(.Selected(categoryLimit: categoryLimit))}
+                )
             } else {
                 Text("you may set some expense limits for each category, after adding your budget")
                     .font(Typography.titleMedium)
@@ -40,11 +43,13 @@ private struct CategoryLimitHeaderView: View {
 private struct CategoryLimitContentView: View {
     
     let categoryLimits: [CategoryLimitModel]
+    let onClick: (CategoryLimitModel) -> Void
     
     var body: some View {
         ScrollView {
             ForEach(categoryLimits, id: \.id){ categoryLimit in
                 CategoryLimitItemView(categoryLimit: categoryLimit)
+                    .onTapGesture { onClick(categoryLimit) }
             }
         }
     }

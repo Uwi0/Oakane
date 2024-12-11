@@ -14,10 +14,19 @@ struct CreateCategoryLimitDialogView: View {
     @State private var limitAmount: Int = 0
     @State private var category: CategoryModel
     
-    init(categories: [CategoryModel], onEvent: @escaping (MonthlyBudgetEvent) -> Void){
+    init(
+        categoryLimit: CategoryLimitModel?,
+        categories: [CategoryModel],
+        onEvent: @escaping (MonthlyBudgetEvent) -> Void
+    ){
         self.categories = categories
         self.onEvent = onEvent
-        self.category = categories.first ?? defaultCategoryModel
+        if categoryLimit == nil {
+            self.category = categories.first ?? defaultCategoryModel
+        } else {
+            self.category = categoryLimit!.category
+            self.limitAmount = Int(categoryLimit!.limit)
+        }
     }
     
     var body: some View {
@@ -115,5 +124,5 @@ fileprivate struct SelectCategoryLimitView: View {
 }
 
 #Preview {
-    CreateCategoryLimitDialogView(categories: [], onEvent: { _ in })
+    CreateCategoryLimitDialogView(categoryLimit: nil, categories: [], onEvent: { _ in })
 }

@@ -15,6 +15,7 @@ final class MonthlyBudgetViewModel: ObservableObject {
                 self?.uiState.isDialogShown = state.dialogShown
                 self?.uiState.categoryLimits = state.categoryLimits
                 self?.uiState.expenseCategories = state.expenseCategories
+                self?.uiState.categoryLimit = state.selectedCategoryLimit
             }
         }
         viewModel.observeEffect{ [weak self] effect in
