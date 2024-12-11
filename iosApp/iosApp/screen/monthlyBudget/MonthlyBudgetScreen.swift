@@ -24,6 +24,7 @@ struct MonthlyBudgetScreen: View {
                         budget: $viewModel.uiState.amount,
                         onEvent: viewModel.handle(event:)
                     )
+                    .padding(.horizontal, 16)
                     MonthlyBudgetBottomContentView(
                         isEditMode: uiState.isEditMode,
                         categoryLimits: uiState.categoryLimits,
@@ -32,7 +33,6 @@ struct MonthlyBudgetScreen: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, 24)
-                .padding(.horizontal, 16)
                 Spacer()
                 FilledButtonView(
                     text: "Save Budget",
@@ -83,7 +83,7 @@ private struct MonthlyBudgetTopbarView: View {
     var body: some View {
         VStack {
             NavigationTopAppbar(title: title, navigateBack: onNavigateBack)
-            HorizontalDivider(width: 1)
+            Divider()
         }
     }
 }

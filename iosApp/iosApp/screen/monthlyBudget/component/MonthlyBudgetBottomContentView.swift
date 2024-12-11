@@ -11,6 +11,7 @@ struct MonthlyBudgetBottomContentView: View {
         VStack {
             if isEditMode {
                 CategoryLimitHeaderView(onClick: { onEvent(.Dialog(shown: true))})
+                    .padding(.horizontal, 16)
                 CategoryLimitContentView(
                     categoryLimits: categoryLimits,
                     onClick: { categoryLimit in onEvent(.Selected(categoryLimit: categoryLimit))}
@@ -18,6 +19,7 @@ struct MonthlyBudgetBottomContentView: View {
             } else {
                 Text("you may set some expense limits for each category, after adding your budget")
                     .font(Typography.titleMedium)
+                    .padding(.horizontal, 16)
             }
             
         }
@@ -47,10 +49,14 @@ private struct CategoryLimitContentView: View {
     
     var body: some View {
         ScrollView {
-            ForEach(categoryLimits, id: \.id){ categoryLimit in
-                CategoryLimitItemView(categoryLimit: categoryLimit)
-                    .onTapGesture { onClick(categoryLimit) }
+            VStack(spacing: 8) {
+                ForEach(categoryLimits, id: \.id){ categoryLimit in
+                    CategoryLimitItemView(categoryLimit: categoryLimit)
+                        .onTapGesture { onClick(categoryLimit) }
+                }
             }
+            .padding(.top, 16)
+            .padding(.horizontal, 16)
         }
     }
 }
