@@ -64,7 +64,7 @@ object CommonModule {
     }
 
     val repositoryModule: Module = module {
-        factory<TransactionRepository> { TransactionRepositoryImpl(get()) }
+        factory<TransactionRepository> { TransactionRepositoryImpl(get(), get()) }
         factory<CategoryRepository> { CategoryRepositoryImpl(get()) }
         factory<GoalRepository> { GoalRepositoryImpl(get()) }
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }

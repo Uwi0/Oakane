@@ -16,6 +16,7 @@ class TransactionLocalDatasourceImpl(
     override suspend fun insertTransaction(entity: TransactionEntity): Result<Unit> {
         return runCatching {
             transactionDb.insert(
+                walletId = entity.walletId,
                 title = entity.title,
                 amount = entity.amount,
                 type = entity.type,

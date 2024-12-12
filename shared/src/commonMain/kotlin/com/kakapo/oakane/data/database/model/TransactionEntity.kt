@@ -5,6 +5,7 @@ import com.kakapo.GetTransactions
 
 data class TransactionEntity(
     val id: Long,
+    val walletId: Long = 0,
     val title: String,
     val amount: Double,
     val type: Long,

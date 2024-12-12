@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 actual val platformModule: Module = module {
     single { MySqlDriverFactory(get()).createDriver() }
-    single { OakanePreferenceDataStoreFactory(get())}
+    single { OakanePreferenceDataStoreFactory(get()).dataStore() }
 }

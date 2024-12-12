@@ -1,18 +1,19 @@
 CREATE TABLE TransactionTable (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    walletId INTEGER NOT NULL DEFAULT 0,
     title TEXT NOT NULL,
     amount REAL NOT NULL,
     type INTEGER NOT NULL,
     category INTEGER NOT NULL,
-    wallet INTEGER NOT NULL DEFAULT 0,
     dateCreated INTEGER NOT NULL,
     note Text,
     FOREIGN KEY (category) REFERENCES CategoryTable(id),
-    FOREIGN KEY (wallet) REFERENCES WalletTable(id) ON DELETE CASCADE
+    FOREIGN KEY (walletId) REFERENCES WalletTable(id) ON DELETE CASCADE
 );
 
 insert:
 INSERT OR REPLACE INTO TransactionTable (
+    walletId,
     title,
     amount,
     type,
@@ -21,6 +22,7 @@ INSERT OR REPLACE INTO TransactionTable (
     note
 )
 VALUES (
+    ?,
     ?,
     ?,
     ?,

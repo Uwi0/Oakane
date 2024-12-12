@@ -4,17 +4,23 @@ import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasourc
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.model.toModel
+import com.kakapo.oakane.data.preference.constant.LongKey
+import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.model.transaction.TransactionModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class TransactionRepositoryImpl(
-    private val localDatasource: TransactionLocalDatasource
+    private val localDatasource: TransactionLocalDatasource,
+    private val preferenceDatasource: PreferenceDatasource
 ) : TransactionRepository {
 
     override suspend fun save(transaction: TransactionParam): Result<Unit> {
-        return localDatasource.insertTransaction(transaction.toEntity())
+        val prefWalletId = preferenceDatasource.getLongValue(LongKey.WALLET_ID)
+        val walletId = if (prefWalletId == 0L) 1 else prefWalletId
+        val transactionEntity = transaction.toEntity()
+        return localDatasource.insertTransaction(transactionEntity.copy(walletId = walletId))
     }
 
     override fun loadTransactions(): Flow<Result<List<TransactionModel>>> = flow {
