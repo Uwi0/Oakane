@@ -47,6 +47,7 @@ fun GetTransactionBy.toTransactionEntity(): TransactionEntity {
     )
     val transactionEntity = TransactionEntity(
         id = transactionId,
+        walletId = walletId,
         title = title,
         amount = amount,
         type = transactionType,
