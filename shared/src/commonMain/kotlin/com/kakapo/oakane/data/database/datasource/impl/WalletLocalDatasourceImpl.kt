@@ -10,7 +10,7 @@ class WalletLocalDatasourceImpl(
 
     private val walletTable = Database.invoke(driver).walletEntityQueries
 
-    override suspend fun updateWalletTransaction(
+    override suspend fun update(
         balance: Double,
         updateAt: Long,
         walletId: Long

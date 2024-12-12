@@ -15,9 +15,9 @@ class WalletRepositoryImpl(
         return runCatching { preferenceDatasource.getWalletId() }
     }
 
-    override suspend fun updateWalletTransaction(balance: Double): Result<Unit> {
+    override suspend fun update(balance: Double): Result<Unit> {
         val currentTime = Clock.System.now().toEpochMilliseconds()
         val walletId = preferenceDatasource.getWalletId()
-        return localDatasource.updateWalletTransaction(balance, currentTime, walletId)
+        return localDatasource.update(balance, currentTime, walletId)
     }
 }

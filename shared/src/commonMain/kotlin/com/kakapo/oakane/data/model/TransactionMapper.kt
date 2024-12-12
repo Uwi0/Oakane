@@ -15,7 +15,7 @@ data class TransactionParam(
     val dateCreated: Long,
     val note: String?
 ) {
-    val walletBalance: Double get() {
+    val saveBalance: Double get() {
         return if(type == 0L) amount else -amount
     }
 

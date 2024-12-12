@@ -81,7 +81,7 @@ object CommonModule {
         factory<ValidateCategoryLimitUseCase> { ValidateCategoryLimitUseCaseImpl(get(), get()) }
         factory<SaveTransactionUseCase> { SaveTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<UpdateTransactionUseCase> { UpdateTransactionUseCaseImpl(get(), get(), get()) }
-        factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get()) }
+        factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get(), get()) }
     }
 
     val viewModel: Module = module {

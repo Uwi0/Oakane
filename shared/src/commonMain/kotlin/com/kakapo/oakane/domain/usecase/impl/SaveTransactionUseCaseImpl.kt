@@ -15,7 +15,7 @@ class SaveTransactionUseCaseImpl(
 ) : SaveTransactionUseCase {
 
     override suspend fun execute(transaction: TransactionParam): Result<Unit> = runCatching {
-        val walletId = updateWallet(transaction) ?: return@runCatching
+        val walletId = saveWallet(transaction) ?: return@runCatching
         transactionRepository.save(transaction.copy(walletId = walletId)).getOrThrow()
         val monthlyBudgetId = getMonthlyBudgetId() ?: return@runCatching
         val categoryId = transaction.category.id
@@ -23,9 +23,9 @@ class SaveTransactionUseCaseImpl(
         categoryLimitRepository.updateIncrement(transaction.amount, categoryLimitId).getOrNull()
     }
 
-    private suspend fun updateWallet(transaction: TransactionParam): Long? {
-        val balance = transaction.walletBalance
-        walletRepository.updateWalletTransaction(balance).getOrNull()
+    private suspend fun saveWallet(transaction: TransactionParam): Long? {
+        val balance = transaction.saveBalance
+        walletRepository.update(balance).getOrNull()
         return walletRepository.loadWalletId().getOrNull()
     }
 

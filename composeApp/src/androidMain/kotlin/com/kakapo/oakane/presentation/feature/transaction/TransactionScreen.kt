@@ -112,7 +112,7 @@ private fun TransactionScreen(
 @Composable
 private fun TopContentView(state: TransactionState) {
     val transactionModel = state.transaction
-    RowWrapper {
+    RowWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
         Image(
             painter = painterResource(R.drawable.fubuki_stare),
             contentDescription = null,
