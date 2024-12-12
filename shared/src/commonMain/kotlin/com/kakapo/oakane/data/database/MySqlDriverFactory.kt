@@ -15,4 +15,12 @@ fun addDefaultCategories(driver: SqlDriver) {
     }
 }
 
+fun addDefaultWallet(driver: SqlDriver){
+    val database = Database(driver)
+    val walletTable = database.walletEntityQueries
+    if (walletTable.checkIfExist().executeAsOne() == 0L){
+        walletTable.createDefaultWallet()
+    }
+}
+
 const val DATABASE_NAME = "oakane.db"

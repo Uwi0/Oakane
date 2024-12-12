@@ -1,0 +1,14 @@
+CREATE TABLE  WalletTable (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    balance REAL NOT NULL,
+    createdAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000),
+    updateAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000)
+);
+
+createDefaultWallet:
+INSERT OR REPLACE INTO WalletTable(name, balance)
+VALUES ('My Wallet', 0.0);
+
+checkIfExist:
+SELECT COUNT(*) FROM WalletTable;

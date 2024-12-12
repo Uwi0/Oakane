@@ -9,6 +9,7 @@ actual class MySqlDriverFactory(private val context: Context) {
     actual fun createDriver(): SqlDriver {
         val driver = AndroidSqliteDriver(Database.Schema, context, DATABASE_NAME)
         addDefaultCategories(driver)
+        addDefaultWallet(driver)
         return driver
     }
 }
