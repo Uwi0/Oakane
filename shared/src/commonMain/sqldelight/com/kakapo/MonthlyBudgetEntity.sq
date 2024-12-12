@@ -26,8 +26,9 @@ VALUES (
     ?
 );
 
-countRows:
-SELECT COUNT(*) FROM MonthlyBudgetTable;
+countCurrentRows:
+SELECT COUNT(*) FROM MonthlyBudgetTable
+WHERE :currentTimeStamp BETWEEN startDate AND endDate;
 
 getMonthlyBudget:
 SELECT * FROM MonthlyBudgetTable;

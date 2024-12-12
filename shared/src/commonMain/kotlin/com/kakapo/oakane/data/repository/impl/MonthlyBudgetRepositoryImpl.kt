@@ -5,6 +5,7 @@ import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.data.model.toMonthlyBudgetModel
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.model.MonthlyBudgetModel
+import kotlinx.datetime.Clock
 
 class MonthlyBudgetRepositoryImpl(
     private val localDatasource: MonthlyBudgetLocalDatasource
@@ -14,8 +15,9 @@ class MonthlyBudgetRepositoryImpl(
         return localDatasource.insertMonthlyBudget(monthlyBudget.toEntity())
     }
 
-    override suspend fun tableNotEmpty(): Result<Boolean> {
-        return localDatasource.tableIsNotEmpty()
+    override suspend fun hasCurrentMontlyBudgetAtTheTime(): Result<Boolean> {
+        val currentTime = Clock.System.now().toEpochMilliseconds()
+        return localDatasource.hasCurrentMonthlyBudgetIn(currentTime)
     }
 
     override suspend fun loadMonthlyBudget(): Result<MonthlyBudgetModel> {

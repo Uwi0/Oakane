@@ -57,7 +57,7 @@ class MonthlyBudgetViewModel(
                 loadCategoryLimits()
             }
         }
-        monthlyBudgetRepository.tableNotEmpty().fold(
+        monthlyBudgetRepository.hasCurrentMontlyBudgetAtTheTime().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

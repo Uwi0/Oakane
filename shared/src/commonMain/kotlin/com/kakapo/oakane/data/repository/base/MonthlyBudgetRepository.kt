@@ -5,7 +5,7 @@ import com.kakapo.oakane.model.MonthlyBudgetModel
 
 interface MonthlyBudgetRepository {
     suspend fun add(monthlyBudget: MonthlyBudgetParam): Result<Unit>
-    suspend fun tableNotEmpty(): Result<Boolean>
+    suspend fun hasCurrentMontlyBudgetAtTheTime(): Result<Boolean>
     suspend fun loadMonthlyBudget(): Result<MonthlyBudgetModel>
     suspend fun update(monthlyBudget: MonthlyBudgetParam): Result<Unit>
     suspend fun loadLimit(): Result<Double>
