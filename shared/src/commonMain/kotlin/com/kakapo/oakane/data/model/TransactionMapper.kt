@@ -7,6 +7,7 @@ import com.kakapo.oakane.model.transaction.asTransactionType
 
 data class TransactionParam(
     val id: Long = 0,
+    val walletId: Long = 0,
     val title: String,
     val amount: Double,
     val type: Long,
@@ -14,6 +15,10 @@ data class TransactionParam(
     val dateCreated: Long,
     val note: String?
 ) {
+    val walletBalance: Double get() {
+        return if(type == 0L) amount else -amount
+    }
+
     fun toEntity() = TransactionEntity(
         id = id,
         title = title,

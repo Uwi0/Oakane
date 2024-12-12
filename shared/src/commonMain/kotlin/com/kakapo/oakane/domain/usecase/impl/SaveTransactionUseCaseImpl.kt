@@ -4,23 +4,29 @@ import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.base.SaveTransactionUseCase
 
 class SaveTransactionUseCaseImpl(
     private val transactionRepository: TransactionRepository,
     private val monthlyBudgetRepository: MonthlyBudgetRepository,
-    private val categoryLimitRepository: CategoryLimitRepository
+    private val categoryLimitRepository: CategoryLimitRepository,
+    private val walletRepository: WalletRepository
 ) : SaveTransactionUseCase {
 
     override suspend fun execute(transaction: TransactionParam): Result<Unit> = runCatching {
-        transactionRepository.save(transaction).getOrThrow()
+        val walletId = updateWallet(transaction) ?: return@runCatching
+        transactionRepository.save(transaction.copy(walletId = walletId)).getOrThrow()
         val monthlyBudgetId = getMonthlyBudgetId() ?: return@runCatching
         val categoryId = transaction.category.id
-        val categoryLimitId = getCategoryLimit(categoryId, monthlyBudgetId)
-        categoryLimitId?.let {
-            val spentAmount = transaction.amount
-            categoryLimitRepository.updateIncrement(spentAmount, categoryLimitId).getOrNull()
-        }
+        val categoryLimitId = getCategoryLimit(categoryId, monthlyBudgetId) ?: return@runCatching
+        categoryLimitRepository.updateIncrement(transaction.amount, categoryLimitId).getOrNull()
+    }
+
+    private suspend fun updateWallet(transaction: TransactionParam): Long? {
+        val balance = transaction.walletBalance
+        walletRepository.updateWalletTransaction(balance).getOrNull()
+        return walletRepository.loadWalletId().getOrNull()
     }
 
     private suspend fun getMonthlyBudgetId(): Long? {

@@ -12,3 +12,9 @@ VALUES ('My Wallet', 0.0);
 
 checkIfExist:
 SELECT COUNT(*) FROM WalletTable;
+
+updateWalletTransaction:
+UPDATE WalletTable
+SET balance = balance + ?,
+    updateAt = ?
+WHERE id = ?;
