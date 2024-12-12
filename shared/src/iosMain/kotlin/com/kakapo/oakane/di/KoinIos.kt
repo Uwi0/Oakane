@@ -1,6 +1,7 @@
 package com.kakapo.oakane.di
 
 import com.kakapo.oakane.data.database.MySqlDriverFactory
+import com.kakapo.oakane.data.preference.OakanePreferenceDataStoreFactory
 import com.kakapo.oakane.presentation.AddGoalViewModelAdapter
 import com.kakapo.oakane.presentation.AddTransactionViewModelAdapter
 import com.kakapo.oakane.presentation.CategoriesViewModelAdapter
@@ -49,4 +50,5 @@ fun Koin.get(objCClass: ObjCClass, qualifier: Qualifier?, parameter: Any): Any {
 
 actual val platformModule: Module = module {
     single { MySqlDriverFactory().createDriver() }
+    single { OakanePreferenceDataStoreFactory() }
 }

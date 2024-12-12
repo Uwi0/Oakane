@@ -10,6 +10,8 @@ import com.kakapo.oakane.data.database.datasource.impl.CategoryLocalDatasourceIm
 import com.kakapo.oakane.data.database.datasource.impl.GoalLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
 import com.kakapo.oakane.data.database.datasource.impl.TransactionLocalDatasourceImpl
+import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
+import com.kakapo.oakane.data.preference.datasource.impl.PreferenceDatasourceImpl
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.GoalRepository
@@ -57,6 +59,10 @@ object CommonModule {
         factory<CategoryLimitLocalDatasource> { CategoryLimitLocalDatasourceImpl(get()) }
     }
 
+    val preferenceModule: Module = module {
+        factory<PreferenceDatasource> { PreferenceDatasourceImpl(get()) }
+    }
+
     val repositoryModule: Module = module {
         factory<TransactionRepository> { TransactionRepositoryImpl(get()) }
         factory<CategoryRepository> { CategoryRepositoryImpl(get()) }
@@ -92,6 +98,7 @@ object CommonModule {
 fun initKoin(
     appModule: Module = module {},
     localDatasourceModule: Module = CommonModule.localDatasourceModule,
+    preferenceModule: Module = CommonModule.preferenceModule,
     repositoryModule: Module = CommonModule.repositoryModule,
     domainModules: Module = CommonModule.domainModule,
     viewModel: Module = CommonModule.viewModel,
@@ -100,6 +107,7 @@ fun initKoin(
     modules(
         appModule,
         localDatasourceModule,
+        preferenceModule,
         repositoryModule,
         domainModules,
         viewModel,

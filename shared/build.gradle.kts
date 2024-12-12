@@ -36,6 +36,10 @@ kotlin {
 
             api(project.dependencies.platform(libs.koin.bom))
             api(libs.koin.core)
+
+            implementation(libs.datastore)
+            implementation(libs.datastore.preferences)
+
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 

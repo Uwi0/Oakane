@@ -14,6 +14,7 @@ androidx-test-junit = "1.2.1"
 coil = "2.6.0"
 colorpicker = "1.1.2"
 compose-plugin = "1.6.11"
+datastore = "1.1.1"
 junit = "4.13.2"
 kermit = "2.0.4"
 kotlin = "2.1.0"
@@ -42,6 +43,8 @@ coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpicker" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 koin-android = { module = "io.insert-koin:koin-android" }
