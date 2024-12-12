@@ -21,20 +21,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
+import com.kakapo.oakane.model.WalletModel
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 
 @Composable
-internal fun WalletBalanceView() {
+internal fun WalletBalanceView(walletModel: WalletModel) {
     ColumnWrapper(modifier = Modifier.padding(16.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             WalletIcon(modifier = Modifier)
-            Text(text = "My Wallet", style = MaterialTheme.typography.titleMedium,)
+            Text(text = walletModel.name, style = MaterialTheme.typography.titleMedium,)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -43,7 +44,7 @@ internal fun WalletBalanceView() {
                 style = MaterialTheme.typography.labelMedium
             )
             Text(
-                text = "20.000.000.000",
+                text = walletModel.balance.toString(),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary,
             )
@@ -71,6 +72,6 @@ private fun WalletIcon(modifier: Modifier) {
 @Preview
 private fun WalletBalancePreview() {
     AppTheme {
-        WalletBalanceView()
+        WalletBalanceView(WalletModel())
     }
 }

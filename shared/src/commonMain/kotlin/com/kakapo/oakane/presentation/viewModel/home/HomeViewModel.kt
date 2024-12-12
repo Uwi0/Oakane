@@ -3,9 +3,13 @@ package com.kakapo.oakane.presentation.viewModel.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.oakane.common.asCustomResult
+import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.model.GoalModel
+import com.kakapo.oakane.model.WalletModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +20,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val transactionRepository: TransactionRepository,
-    private val goalRepository: GoalRepository
+    private val goalRepository: GoalRepository,
+    private val walletRepository: WalletRepository
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -28,6 +33,7 @@ class HomeViewModel(
     fun initializeData() {
         loadRecentTransactions()
         loadGoals()
+        loadWalletBalance()
     }
 
     fun handleEvent(event: HomeEvent) {
@@ -46,24 +52,30 @@ class HomeViewModel(
         val onSuccess: (List<TransactionModel>) -> Unit = { transactions ->
             _uiState.update { it.copy(transactions = transactions.take(3)) }
         }
-        transactionRepository.loadTransactions().collect { result ->
-            result.fold(
-                onSuccess = onSuccess,
-                onFailure = ::handleError
-            )
-        }
+        transactionRepository.loadTransactions().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
     }
 
     private fun loadGoals() = viewModelScope.launch {
         val onSuccess: (List<GoalModel>) -> Unit = { goals ->
             _uiState.update { it.copy(goals = goals) }
         }
-        goalRepository.loadGoals().collect { result ->
-            result.fold(
-                onSuccess = onSuccess,
-                onFailure = ::handleError
-            )
+        goalRepository.loadGoals().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
+    private fun loadWalletBalance() = viewModelScope.launch {
+        val onSuccess: (WalletModel) -> Unit = { wallet ->
+            _uiState.update { it.copy(wallet = wallet) }
         }
+        walletRepository.loadWalletById().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
     }
 
     private fun handleError(throwable: Throwable?){

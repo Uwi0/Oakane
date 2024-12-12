@@ -3,6 +3,8 @@ package com.kakapo.oakane.data.database.datasource.impl
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.oakane.data.database.datasource.base.WalletLocalDatasource
+import com.kakapo.oakane.data.database.model.WalletEntity
+import com.kakapo.oakane.data.database.model.toWalletEntity
 
 class WalletLocalDatasourceImpl(
     driver: SqlDriver
@@ -20,5 +22,9 @@ class WalletLocalDatasourceImpl(
             updateAt = updateAt,
             id = walletId
         )
+    }
+
+    override suspend fun getWalletBy(id: Long): Result<WalletEntity> {
+        return runCatching { walletTable.getWalletBy(id).executeAsOne().toWalletEntity() }
     }
 }

@@ -18,3 +18,7 @@ UPDATE WalletTable
 SET balance = balance + ?,
     updateAt = ?
 WHERE id = ?;
+
+getWalletBy:
+SELECT * FROM WalletTable
+WHERE id = ?;

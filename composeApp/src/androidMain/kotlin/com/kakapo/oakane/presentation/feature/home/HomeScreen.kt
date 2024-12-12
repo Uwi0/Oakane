@@ -124,7 +124,7 @@ private fun HomeContentView(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            WalletBalanceView()
+            WalletBalanceView(uiState.wallet)
         }
         item {
             MonthlyBudgetView(onEvent = onEvent)
