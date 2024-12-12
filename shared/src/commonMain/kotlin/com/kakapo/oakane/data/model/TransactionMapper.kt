@@ -21,6 +21,7 @@ data class TransactionParam(
 
     fun toEntity() = TransactionEntity(
         id = id,
+        walletId = walletId,
         title = title,
         amount = amount,
         type = type,
@@ -32,6 +33,7 @@ data class TransactionParam(
 
 fun TransactionEntity.toModel() = TransactionModel(
     id = id,
+    walletId = walletId,
     title = title,
     type = type.asTransactionType(),
     dateCreated = dateCreated,

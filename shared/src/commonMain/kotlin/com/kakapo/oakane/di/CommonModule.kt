@@ -80,7 +80,7 @@ object CommonModule {
     val domainModule: Module = module {
         factory<ValidateCategoryLimitUseCase> { ValidateCategoryLimitUseCaseImpl(get(), get()) }
         factory<SaveTransactionUseCase> { SaveTransactionUseCaseImpl(get(), get(), get(), get()) }
-        factory<UpdateTransactionUseCase> { UpdateTransactionUseCaseImpl(get(), get(), get()) }
+        factory<UpdateTransactionUseCase> { UpdateTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get(), get()) }
     }
 

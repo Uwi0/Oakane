@@ -31,6 +31,7 @@ class AddTransactionViewModel(
     private val _uiSideEffect = MutableSharedFlow<AddTransactionEffect>()
 
     private var spentBefore: Double = 0.0
+    private var walletId: Long = 0
 
     fun initializeData(id: Long) {
         loadCategories().invokeOnCompletion {
@@ -69,6 +70,7 @@ class AddTransactionViewModel(
         transactionRepository.loadTransactionBy(id).fold(
             onSuccess = { transaction ->
                 spentBefore = transaction.amount
+                walletId = transaction.walletId
                 _uiState.update { it.copy(transaction) }
             },
             onFailure = {
@@ -102,7 +104,8 @@ class AddTransactionViewModel(
     }
 
     private fun update(transaction: TransactionParam) = viewModelScope.launch {
-        updateTransactionUseCase.executed(transaction, spentBefore).fold(
+        val transactionParam = transaction.copy(walletId = walletId)
+        updateTransactionUseCase.executed(transactionParam, spentBefore).fold(
             onSuccess = { emit(AddTransactionEffect.NavigateBack) },
             onFailure = {
                 Logger.e(throwable = it, messageString = "error update transaction ${it.message}")

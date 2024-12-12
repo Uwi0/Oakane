@@ -6,6 +6,7 @@ import com.kakapo.oakane.model.category.CategoryModel
 data class TransactionModel(
     val id: Long = 0,
     val title: String = "",
+    val walletId: Long = 0,
     val type: TransactionType = TransactionType.Expense,
     val category: CategoryModel = CategoryModel(),
     val dateCreated: Long = 1729214280000,
@@ -18,7 +19,7 @@ data class TransactionModel(
         }
 
     companion object {
-        const val DATE_FORMAT = "dd MMM yyyy"
+        private const val DATE_FORMAT = "dd MMM yyyy"
     }
 }
 

@@ -20,4 +20,9 @@ class WalletRepositoryImpl(
         val walletId = preferenceDatasource.getWalletId()
         return localDatasource.update(balance, currentTime, walletId)
     }
+
+    override suspend fun update(balance: Double, id: Long): Result<Unit> {
+        val currentTime = Clock.System.now().toEpochMilliseconds()
+        return localDatasource.update(balance, currentTime, id)
+    }
 }
