@@ -15,7 +15,6 @@ import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateTo
 import com.kakapo.oakane.presentation.feature.wallets.navigation.navigateToWallets
 import com.kakapo.oakane.presentation.navigation.DrawerMenuNavigation
 
-
 @Composable
 fun rememberAppState(
     navController: NavHostController = rememberNavController(),

@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.goals.component
+package com.kakapo.oakane.presentation.feature.wallets.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,22 +13,20 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
-import com.kakapo.oakane.presentation.viewModel.goals.GoalsEvent
-import com.kakapo.oakane.presentation.viewModel.goals.GoalsState
 
 @Composable
-internal fun GoalsTopAppbarView(uiState: GoalsState, onEvent: (GoalsEvent) -> Unit) {
+internal fun WalletsTopAppbarView() {
     Column {
         CustomNavigationTopAppBarView(
-            title = "Goals",
+            title = "Wallets",
             shadowElevation = 0.dp,
-            onNavigateBack = { onEvent.invoke(GoalsEvent.NavigateBack)}
+            onNavigateBack = { }
         )
         SearchTextFieldView(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            value = uiState.searchQuery,
-            placeHolder = "Search Goal...",
-            onValueChange = { query -> onEvent.invoke(GoalsEvent.FilterBy(query))}
+            value = "",
+            placeHolder = "Search Wallet...",
+            onValueChange = { query -> }
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         HorizontalDivider()
@@ -37,10 +35,10 @@ internal fun GoalsTopAppbarView(uiState: GoalsState, onEvent: (GoalsEvent) -> Un
 
 @Composable
 @Preview
-private fun GoalsTopAppbarViewPreview() {
+private fun WalletsTopAppbarViewPreview() {
     AppTheme {
         Surface {
-            GoalsTopAppbarView(uiState = GoalsState(), onEvent = {})
+            WalletsTopAppbarView()
         }
     }
 }
