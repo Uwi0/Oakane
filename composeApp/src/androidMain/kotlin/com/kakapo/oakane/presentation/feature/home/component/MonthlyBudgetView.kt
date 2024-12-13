@@ -19,24 +19,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.common.toFormatIDRWithCurrency
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedIconCircleButton
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 import com.kakapo.oakane.presentation.viewModel.home.HomeEvent
+import com.kakapo.oakane.presentation.viewModel.home.HomeState
 
 @Composable
-internal fun MonthlyBudgetView(onEvent: (HomeEvent) -> Unit) {
+internal fun MonthlyBudgetView(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
     ColumnWrapper(modifier = Modifier.padding(12.dp)) {
-        MonthlyBudgetContent(onEvent = onEvent)
+        MonthlyBudgetContent(uiState = uiState, onEvent = onEvent)
         HorizontalDivider()
         IncomeAndExpenseContent()
     }
 }
 
 @Composable
-private fun MonthlyBudgetContent(onEvent: (HomeEvent) -> Unit) {
+private fun MonthlyBudgetContent(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -44,7 +46,10 @@ private fun MonthlyBudgetContent(onEvent: (HomeEvent) -> Unit) {
         CustomOutlinedIconCircleButton(icon = Icons.Outlined.Payments) { }
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             BudgetHeader(onNavigateToAddBudget = { onEvent.invoke(HomeEvent.ToMonthlyBudget) })
-            Text(text = "Rp. 0", style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = uiState.budgetLimit.toFormatIDRWithCurrency(),
+                style = MaterialTheme.typography.titleMedium
+            )
             CustomProgressIndicatorView(value = 0.5f)
             SupportContent(
                 spent = 0.0,

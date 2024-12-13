@@ -6,6 +6,7 @@ import co.touchlab.kermit.Logger
 import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.GoalRepository
+import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.model.GoalModel
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val transactionRepository: TransactionRepository,
     private val goalRepository: GoalRepository,
-    private val walletRepository: WalletRepository
+    private val walletRepository: WalletRepository,
+    private val monthlyBudgetRepository: MonthlyBudgetRepository
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -34,6 +36,7 @@ class HomeViewModel(
         loadRecentTransactions()
         loadGoals()
         loadWalletBalance()
+        loadBudgetLimit()
     }
 
     fun handleEvent(event: HomeEvent) {
@@ -73,6 +76,16 @@ class HomeViewModel(
             _uiState.update { it.copy(wallet = wallet) }
         }
         walletRepository.loadWalletById().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadBudgetLimit() = viewModelScope.launch {
+        val onSuccess: (Double) -> Unit = { limit ->
+            _uiState.update { it.copy(budgetLimit = limit) }
+        }
+        monthlyBudgetRepository.loadLimit().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

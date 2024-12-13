@@ -49,9 +49,9 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver): MonthlyBudgetLocal
         }
     }
 
-    override suspend fun getTotalBudget(): Result<Double> {
+    override suspend fun getTotalBudgetWith(currentTime: Long): Result<Double> {
         return runCatching {
-            monthlyBudgetTable.getTotalBudget().executeAsOne()
+            monthlyBudgetTable.getTotalBudgetWith(currentTime).executeAsOne()
         }
     }
 

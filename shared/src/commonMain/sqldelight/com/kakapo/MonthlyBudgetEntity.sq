@@ -39,9 +39,10 @@ SET totalBudget = ?,
     updatedAt = ?
 WHERE id = ?;
 
-getTotalBudget:
+getTotalBudgetWith:
 SELECT totalBudget
-FROM MonthlyBudgetTable;
+FROM MonthlyBudgetTable
+WHERE :currentTimeStamp BETWEEN startDate AND endDate;
 
 selectActiveMonthlyBudgets:
 SELECT id

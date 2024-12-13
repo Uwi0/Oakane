@@ -7,7 +7,8 @@ import com.kakapo.oakane.model.transaction.TransactionModel
 data class HomeState(
     val wallet: WalletModel = WalletModel(),
     val transactions: List<TransactionModel> = emptyList(),
-    val goals: List<GoalModel> = emptyList()
+    val goals: List<GoalModel> = emptyList(),
+    val budgetLimit: Double = 0.0
 )
 
 sealed class HomeEffect {

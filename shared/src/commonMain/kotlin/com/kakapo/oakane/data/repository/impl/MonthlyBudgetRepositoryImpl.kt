@@ -29,7 +29,8 @@ class MonthlyBudgetRepositoryImpl(
     }
 
     override suspend fun loadLimit(): Result<Double> {
-        return localDatasource.getTotalBudget()
+        val currentTime = Clock.System.now().toEpochMilliseconds()
+        return localDatasource.getTotalBudgetWith(currentTime)
     }
 
     override suspend fun loadActiveMonthlyBudget(): Result<Long> {

@@ -4,4 +4,5 @@ fun Boolean.asLong(): Long {
     return if (this) 1 else 0
 }
 
-expect fun Double.toFormatIDRCurrency(): String
+expect fun Double.toFormatIDRWithCurrency(): String
+expect fun Double.toFormatIDR(): String

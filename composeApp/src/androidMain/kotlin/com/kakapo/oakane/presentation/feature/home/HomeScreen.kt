@@ -127,7 +127,7 @@ private fun HomeContentView(
             WalletBalanceView(uiState.wallet)
         }
         item {
-            MonthlyBudgetView(onEvent = onEvent)
+            MonthlyBudgetView(uiState = uiState,onEvent = onEvent)
         }
         item {
             Text(
