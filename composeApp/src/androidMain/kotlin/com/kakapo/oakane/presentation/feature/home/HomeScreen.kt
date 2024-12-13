@@ -48,7 +48,8 @@ internal fun HomeRoute(
     navigateToAddGoal: () -> Unit,
     navigateToGoals: () -> Unit,
     navigateToGoal: (Long) -> Unit,
-    navigateToMonthlyBudget: () -> Unit
+    navigateToMonthlyBudget: () -> Unit,
+    navigateToWallets: () -> Unit
 ) {
     val context = LocalContext.current
     val viewModel = koinViewModel<HomeViewModel>()
@@ -63,6 +64,7 @@ internal fun HomeRoute(
                 HomeEffect.ToCreateGoal -> navigateToAddGoal.invoke()
                 HomeEffect.ToMonthlyBudget -> navigateToMonthlyBudget.invoke()
                 HomeEffect.ToGoals -> navigateToGoals.invoke()
+                HomeEffect.ToWallets -> navigateToWallets.invoke()
                 is HomeEffect.ToTransaction -> navigateToTransaction.invoke(effect.id)
                 is HomeEffect.ToGoalWith -> navigateToGoal.invoke(effect.id)
                 is HomeEffect.ShowError -> context.showToast(effect.message)
@@ -126,7 +128,7 @@ private fun HomeContentView(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            WalletBalanceView(uiState.wallet)
+            WalletBalanceView(uiState.wallet, onClick = { onEvent(HomeEvent.ToWallets) })
         }
         item {
             MonthlyBudgetView(uiState = uiState, onEvent = onEvent)

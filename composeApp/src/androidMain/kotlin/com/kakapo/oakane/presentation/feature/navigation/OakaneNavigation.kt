@@ -20,6 +20,8 @@ import com.kakapo.oakane.presentation.feature.transaction.navigation.navigateToT
 import com.kakapo.oakane.presentation.feature.transaction.navigation.transactionScreen
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
 import com.kakapo.oakane.presentation.feature.transactions.navigation.transactionsScreen
+import com.kakapo.oakane.presentation.feature.wallets.navigation.navigateToWallets
+import com.kakapo.oakane.presentation.feature.wallets.navigation.walletsScreen
 
 @Composable
 internal fun OakaneNavHost(
@@ -36,7 +38,8 @@ internal fun OakaneNavHost(
             navigateToAddGoal = navController::navigateToAddGoal,
             navigateToGoals = navController::navigateToGoals,
             navigateToGoal = navController::navigateToGoal,
-            navigateToMonthlyBudget = navController::navigateToMonthlyBudget
+            navigateToMonthlyBudget = navController::navigateToMonthlyBudget,
+            navigateToWallets = navController::navigateToWallets
         )
         addTransactionScreen(navigateBack = navController::navigateUp)
         transactionsScreen(
@@ -65,6 +68,6 @@ internal fun OakaneNavHost(
         monthlyBudgetScreen(
             navigateBack = navController::navigateUp
         )
+        walletsScreen()
     }
-
 }

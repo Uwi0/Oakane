@@ -50,6 +50,7 @@ class HomeViewModel(
             HomeEvent.ToCreateGoal -> emit(HomeEffect.ToCreateGoal)
             HomeEvent.ToGoals -> emit(HomeEffect.ToGoals)
             HomeEvent.ToMonthlyBudget -> emit(HomeEffect.ToMonthlyBudget)
+            HomeEvent.ToWallets -> emit(HomeEffect.ToWallets)
         }
     }
 

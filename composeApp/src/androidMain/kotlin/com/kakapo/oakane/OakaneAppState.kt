@@ -12,6 +12,7 @@ import com.kakapo.oakane.presentation.feature.categories.navigation.navigateToCa
 import com.kakapo.oakane.presentation.feature.goals.navigation.navigateToGoals
 import com.kakapo.oakane.presentation.feature.home.navigation.navigateToHome
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
+import com.kakapo.oakane.presentation.feature.wallets.navigation.navigateToWallets
 import com.kakapo.oakane.presentation.navigation.DrawerMenuNavigation
 
 
@@ -42,6 +43,7 @@ class OakaneAppState(val navController: NavHostController) {
             DrawerMenuNavigation.TRANSACTIONS -> navController.navigateToTransactions()
             DrawerMenuNavigation.CATEGORIES -> navController.navigateToCategories()
             DrawerMenuNavigation.Goals -> navController.navigateToGoals()
+            DrawerMenuNavigation.WALLETS -> navController.navigateToWallets()
         }
     }
 

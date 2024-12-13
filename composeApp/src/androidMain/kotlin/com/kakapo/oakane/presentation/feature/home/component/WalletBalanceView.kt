@@ -29,8 +29,8 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 
 @Composable
-internal fun WalletBalanceView(walletModel: WalletModel) {
-    ColumnWrapper(modifier = Modifier.padding(16.dp)) {
+internal fun WalletBalanceView(walletModel: WalletModel, onClick: () -> Unit) {
+    ColumnWrapper(modifier = Modifier.padding(16.dp), onClick = onClick) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -73,6 +73,8 @@ private fun WalletIcon(modifier: Modifier) {
 @Preview
 private fun WalletBalancePreview() {
     AppTheme {
-        WalletBalanceView(WalletModel())
+        WalletBalanceView(WalletModel()){
+
+        }
     }
 }

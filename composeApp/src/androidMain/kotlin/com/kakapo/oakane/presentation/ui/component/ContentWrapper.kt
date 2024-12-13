@@ -19,11 +19,13 @@ fun ColumnWrapper(
     modifier: Modifier = Modifier,
     shapes: Shape = MaterialTheme.shapes.medium,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    onClick: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
     Surface(
         shape = shapes,
         shadowElevation = 2.dp,
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier
