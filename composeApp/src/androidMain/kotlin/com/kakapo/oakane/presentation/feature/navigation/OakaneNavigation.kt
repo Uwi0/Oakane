@@ -32,6 +32,7 @@ internal fun OakaneNavHost(
             openDrawer = openDrawer,
             navigateToAddTransaction = navController::navigateToAddTransaction,
             navigateToTransactions = navController::navigateToTransactions,
+            navigateToTransaction = navController::navigateToTransaction,
             navigateToAddGoal = navController::navigateToAddGoal,
             navigateToGoals = navController::navigateToGoals,
             navigateToGoal = navController::navigateToGoal,

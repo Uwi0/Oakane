@@ -44,6 +44,7 @@ internal fun HomeRoute(
     openDrawer: () -> Unit,
     navigateToAddTransaction: () -> Unit,
     navigateToTransactions: () -> Unit,
+    navigateToTransaction: (Long) -> Unit,
     navigateToAddGoal: () -> Unit,
     navigateToGoals: () -> Unit,
     navigateToGoal: (Long) -> Unit,
@@ -60,10 +61,11 @@ internal fun HomeRoute(
                 HomeEffect.ToTransactions -> navigateToTransactions.invoke()
                 HomeEffect.OpenDrawer -> openDrawer.invoke()
                 HomeEffect.ToCreateGoal -> navigateToAddGoal.invoke()
+                HomeEffect.ToMonthlyBudget -> navigateToMonthlyBudget.invoke()
+                HomeEffect.ToGoals -> navigateToGoals.invoke()
+                is HomeEffect.ToTransaction -> navigateToTransaction.invoke(effect.id)
                 is HomeEffect.ToGoalWith -> navigateToGoal.invoke(effect.id)
                 is HomeEffect.ShowError -> context.showToast(effect.message)
-                HomeEffect.ToGoals -> navigateToGoals.invoke()
-                HomeEffect.ToMonthlyBudget -> navigateToMonthlyBudget.invoke()
             }
         }
     }
@@ -127,7 +129,7 @@ private fun HomeContentView(
             WalletBalanceView(uiState.wallet)
         }
         item {
-            MonthlyBudgetView(uiState = uiState,onEvent = onEvent)
+            MonthlyBudgetView(uiState = uiState, onEvent = onEvent)
         }
         item {
             Text(
@@ -135,8 +137,11 @@ private fun HomeContentView(
                 style = MaterialTheme.typography.titleMedium
             )
         }
-        items(uiState.transactions) { item ->
-            TransactionItemView(item, onClick = {})
+        items(uiState.transactions) { transaction ->
+            TransactionItemView(
+                transaction = transaction,
+                onClick = { onEvent.invoke(HomeEvent.ToTransactionWith(transaction.id)) }
+            )
         }
         item {
             ShowMoreButtonView(
