@@ -6,7 +6,7 @@ import com.kakapo.oakane.data.model.toWalletModel
 import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
 import com.kakapo.oakane.data.preference.datasource.utils.getWalletId
 import com.kakapo.oakane.data.repository.base.WalletRepository
-import com.kakapo.oakane.model.WalletModel
+import com.kakapo.oakane.model.wallet.WalletModel
 import kotlinx.datetime.Clock
 
 class WalletRepositoryImpl(

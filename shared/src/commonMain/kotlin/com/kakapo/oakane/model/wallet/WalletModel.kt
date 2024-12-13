@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model
+package com.kakapo.oakane.model.wallet
 
 import com.kakapo.oakane.model.category.CategoryIconName
 

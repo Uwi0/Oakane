@@ -1,7 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.home
 
 import com.kakapo.oakane.model.GoalModel
-import com.kakapo.oakane.model.WalletModel
+import com.kakapo.oakane.model.wallet.WalletModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 

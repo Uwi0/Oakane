@@ -10,7 +10,7 @@ import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.model.GoalModel
-import com.kakapo.oakane.model.WalletModel
+import com.kakapo.oakane.model.wallet.WalletModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import kotlinx.coroutines.flow.MutableSharedFlow

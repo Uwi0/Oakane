@@ -1,6 +1,6 @@
 package com.kakapo.oakane.data.repository.base
 
-import com.kakapo.oakane.model.WalletModel
+import com.kakapo.oakane.model.wallet.WalletModel
 
 interface WalletRepository {
     suspend fun loadWalletId(): Result<Long>

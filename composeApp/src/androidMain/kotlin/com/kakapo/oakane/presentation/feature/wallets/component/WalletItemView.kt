@@ -32,25 +32,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
 import com.kakapo.oakane.common.toFormatIDR
+import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 
 @Composable
-internal fun WalletItemView() {
+internal fun WalletItemView(wallet: WalletItemModel) {
     ColumnWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        WalletTopContent()
-        Text("Rp. 20.0000.0000", style = MaterialTheme.typography.headlineMedium)
+        WalletTopContent(wallet = wallet)
+        Text(
+            text = "Rp. ${wallet.balance.toFormatIDR()}",
+            style = MaterialTheme.typography.headlineMedium
+        )
         HorizontalDivider()
-        WalletBottomContent()
+        WalletBottomContent(wallet = wallet)
     }
 }
 
 @Composable
-private fun WalletTopContent() {
+private fun WalletTopContent(wallet: WalletItemModel) {
     val imgUrl by remember { mutableStateOf<Uri?>(null) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -63,17 +67,17 @@ private fun WalletTopContent() {
                 .clip(CircleShape),
             placeholder = painterResource(R.drawable.mona_empty_wallet)
         )
-        Text("My Wallet", style = MaterialTheme.typography.titleMedium)
+        Text(text = wallet.name, style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.weight(1f))
         OutlinedCheckmarkRadioButton(
-            selected = true,
+            selected = wallet.isSelected,
             onClick = { },
         )
     }
 }
 
 @Composable
-private fun WalletBottomContent() {
+private fun WalletBottomContent(wallet: WalletItemModel) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -81,13 +85,13 @@ private fun WalletBottomContent() {
         Spacer(Modifier.weight(1f))
         BalanceContent(
             title = "Income This Month",
-            amount = 200000.0,
+            amount = wallet.expense,
             color = MaterialTheme.colorScheme.primary
         )
         VerticalDivider(Modifier.height(40.dp), thickness = 2.dp)
         BalanceContent(
             title = "Expense This Month",
-            amount = 100000.0,
+            amount = wallet.income,
             color = MaterialTheme.colorScheme.error
         )
         Spacer(Modifier.weight(1f))
@@ -138,7 +142,17 @@ fun OutlinedCheckmarkRadioButton(
 @Composable
 private fun WalletItemPreview() {
     AppTheme {
-        WalletItemView()
+        WalletItemView(wallet = WalletItemModel(
+            id = 2486,
+            name = "Alfonso Gibbs",
+            isDefault = false,
+            icon = "fringilla",
+            currency = "ligula",
+            balance = 20_000_000.0,
+            income = 50_000.0,
+            expense = 50_000.0,
+            isSelected = false
+        ))
     }
 
 }

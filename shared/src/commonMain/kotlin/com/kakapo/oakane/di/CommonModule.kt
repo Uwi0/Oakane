@@ -45,6 +45,7 @@ import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetViewModel
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -97,6 +98,7 @@ object CommonModule {
         viewModel { GoalViewModel(get()) }
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
+        viewModel { WalletsViewModel()}
     }
 
     val coroutineScope = module {
