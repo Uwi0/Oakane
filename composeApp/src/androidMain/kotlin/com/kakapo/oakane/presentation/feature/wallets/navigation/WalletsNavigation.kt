@@ -12,8 +12,10 @@ fun NavController.navigateToWallets(navOptions: NavOptions? = null){
     navigate(WALLETS_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.walletsScreen(){
+fun NavGraphBuilder.walletsScreen(
+    navigateBack: () -> Unit
+){
     composable(WALLETS_ROUTE){
-        WalletsRoute()
+        WalletsRoute(navigateBack = navigateBack)
     }
 }

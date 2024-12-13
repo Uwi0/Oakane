@@ -68,6 +68,8 @@ internal fun OakaneNavHost(
         monthlyBudgetScreen(
             navigateBack = navController::navigateUp
         )
-        walletsScreen()
+        walletsScreen(
+            navigateBack = navController::navigateUp
+        )
     }
 }

@@ -11,28 +11,42 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletItemView
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletsTopAppbarView
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEffect
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun WalletsRoute() {
+internal fun WalletsRoute(
+    navigateBack: () -> Unit
+) {
     val viewModel = koinViewModel<WalletsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    WalletsScreen(uiState = uiState)
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when(effect){
+                is WalletsEffect.NavigateBack -> navigateBack.invoke()
+            }
+        }
+    }
+
+    WalletsScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 }
 
 @Composable
-private fun WalletsScreen(uiState: WalletsState) {
+private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit) {
     Scaffold(
         topBar = {
-            WalletsTopAppbarView()
+            WalletsTopAppbarView(uiState, onEvent)
         },
         content = { paddingValues ->
             LazyColumn(

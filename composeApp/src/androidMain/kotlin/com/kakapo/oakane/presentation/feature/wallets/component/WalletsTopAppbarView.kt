@@ -13,20 +13,22 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
 
 @Composable
-internal fun WalletsTopAppbarView() {
+internal fun WalletsTopAppbarView(uiState: WalletsState, event: (WalletsEvent) -> Unit) {
     Column {
         CustomNavigationTopAppBarView(
             title = "Wallets",
             shadowElevation = 0.dp,
-            onNavigateBack = { }
+            onNavigateBack = { event.invoke(WalletsEvent.NavigateBack)}
         )
         SearchTextFieldView(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            value = "",
+            value = uiState.searchQuery,
             placeHolder = "Search Wallet...",
-            onValueChange = { query -> }
+            onValueChange = { query -> event.invoke(WalletsEvent.OnChange(query)) }
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         HorizontalDivider()
@@ -38,7 +40,7 @@ internal fun WalletsTopAppbarView() {
 private fun WalletsTopAppbarViewPreview() {
     AppTheme {
         Surface {
-            WalletsTopAppbarView()
+            WalletsTopAppbarView(uiState = WalletsState(), event = {})
         }
     }
 }
