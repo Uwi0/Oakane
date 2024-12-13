@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.repository.base
 
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
-import com.kakapo.oakane.model.MonthlyBudgetModel
+import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetModel
 
 interface MonthlyBudgetRepository {
     suspend fun add(monthlyBudget: MonthlyBudgetParam): Result<Unit>

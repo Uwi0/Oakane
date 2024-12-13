@@ -58,12 +58,9 @@ SELECT
     CategoryTable.icon AS categoryIcon,
     CategoryTable.color AS categoryColor,
     CategoryTable.isDefault AS defaultCategory
-FROM
-    TransactionTable
-INNER JOIN
-    CategoryTable
-ON
-    TransactionTable.category = CategoryTable.id;
+FROM TransactionTable
+INNER JOIN CategoryTable
+ON TransactionTable.category = CategoryTable.id;
 
 getTransactionBy:
 SELECT
@@ -79,10 +76,12 @@ SELECT
     CategoryTable.icon AS categoryIcon,
     CategoryTable.color AS categoryColor,
     CategoryTable.isDefault AS defaultCategory
-FROM
-    TransactionTable
-INNER JOIN
-    CategoryTable
-ON
-    TransactionTable.category = CategoryTable.id
+FROM TransactionTable
+INNER JOIN CategoryTable
+ON TransactionTable.category = CategoryTable.id
 WHERE transactionId = ?;
+
+getTotalTransactionBaseOn:
+SELECT COALESCE(SUM(amount), 0) AS totalTransaction
+FROM TransactionTable
+WHERE type = ?;

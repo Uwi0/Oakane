@@ -10,4 +10,6 @@ interface TransactionRepository {
     suspend fun deleteTransactionBy(id: Long): Result<Unit>
     suspend fun loadTransactionBy(id: Long): Result<TransactionModel>
     suspend fun update(transaction: TransactionParam): Result<Unit>
+    suspend fun loadTotalExpense(): Result<Double>
+    suspend fun loadTotalIncome(): Result<Double>
 }

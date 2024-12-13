@@ -11,7 +11,7 @@ import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
-import com.kakapo.oakane.model.MonthlyBudgetModel
+import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetModel
 import com.kakapo.oakane.model.category.CategoryLimitModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

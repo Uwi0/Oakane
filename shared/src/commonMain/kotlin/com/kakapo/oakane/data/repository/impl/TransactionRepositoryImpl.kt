@@ -6,6 +6,7 @@ import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.model.toModel
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -33,5 +34,15 @@ class TransactionRepositoryImpl(
 
     override suspend fun update(transaction: TransactionParam): Result<Unit> {
         return localDatasource.updateTransaction(transaction.toEntity())
+    }
+
+    override suspend fun loadTotalExpense(): Result<Double> {
+        val typeExpense = TransactionType.Expense.ordinal.toLong()
+        return localDatasource.loadTotalTransactionBaseOn(typeExpense)
+    }
+
+    override suspend fun loadTotalIncome(): Result<Double> {
+        val typeIncome = TransactionType.Income.ordinal.toLong()
+        return localDatasource.loadTotalTransactionBaseOn(typeIncome)
     }
 }

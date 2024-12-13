@@ -4,7 +4,7 @@ import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasou
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.data.model.toMonthlyBudgetModel
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
-import com.kakapo.oakane.model.MonthlyBudgetModel
+import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetModel
 import kotlinx.datetime.Clock
 
 class MonthlyBudgetRepositoryImpl(

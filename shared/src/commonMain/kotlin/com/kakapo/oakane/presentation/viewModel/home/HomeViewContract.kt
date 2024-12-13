@@ -2,13 +2,14 @@ package com.kakapo.oakane.presentation.viewModel.home
 
 import com.kakapo.oakane.model.GoalModel
 import com.kakapo.oakane.model.WalletModel
+import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 
 data class HomeState(
     val wallet: WalletModel = WalletModel(),
     val transactions: List<TransactionModel> = emptyList(),
     val goals: List<GoalModel> = emptyList(),
-    val budgetLimit: Double = 0.0
+    val monthlyBudgetOverView: MonthlyBudgetOverViewModel = MonthlyBudgetOverViewModel(),
 )
 
 sealed class HomeEffect {

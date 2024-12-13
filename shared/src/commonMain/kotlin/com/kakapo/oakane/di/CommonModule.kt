@@ -27,10 +27,12 @@ import com.kakapo.oakane.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.WalletRepositoryImpl
 import com.kakapo.oakane.domain.usecase.base.DeleteTransactionUseCase
+import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
 import com.kakapo.oakane.domain.usecase.impl.DeleteTransactionUseCaseImpl
+import com.kakapo.oakane.domain.usecase.impl.GetMonthlyBudgetOverviewUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.SaveTransactionUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.UpdateTransactionUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.ValidateCategoryLimitUseCaseImpl
@@ -82,6 +84,7 @@ object CommonModule {
         factory<SaveTransactionUseCase> { SaveTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<UpdateTransactionUseCase> { UpdateTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get(), get()) }
+        factory<GetMonthlyBudgetOverviewUseCase> { GetMonthlyBudgetOverviewUseCaseImpl(get(), get()) }
     }
 
     val viewModel: Module = module {

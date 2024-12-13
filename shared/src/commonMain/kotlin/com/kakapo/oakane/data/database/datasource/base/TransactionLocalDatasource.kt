@@ -8,4 +8,5 @@ interface TransactionLocalDatasource {
     suspend fun getTransaction(id: Long): Result<TransactionEntity>
     suspend fun updateTransaction(entity: TransactionEntity): Result<Unit>
     suspend fun deleteTransaction(id: Long): Result<Unit>
+    suspend fun loadTotalTransactionBaseOn(type: Long): Result<Double>
 }

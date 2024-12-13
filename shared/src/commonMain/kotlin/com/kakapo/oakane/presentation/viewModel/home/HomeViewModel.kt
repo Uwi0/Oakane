@@ -6,11 +6,12 @@ import co.touchlab.kermit.Logger
 import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.GoalRepository
-import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
+import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.model.GoalModel
 import com.kakapo.oakane.model.WalletModel
+import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,7 @@ class HomeViewModel(
     private val transactionRepository: TransactionRepository,
     private val goalRepository: GoalRepository,
     private val walletRepository: WalletRepository,
-    private val monthlyBudgetRepository: MonthlyBudgetRepository
+    private val monthlyBudgetOverviewUseCase: GetMonthlyBudgetOverviewUseCase
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -36,7 +37,7 @@ class HomeViewModel(
         loadRecentTransactions()
         loadGoals()
         loadWalletBalance()
-        loadBudgetLimit()
+        loadBudgetOverView()
     }
 
     fun handleEvent(event: HomeEvent) {
@@ -81,11 +82,12 @@ class HomeViewModel(
         )
     }
 
-    private fun loadBudgetLimit() = viewModelScope.launch {
-        val onSuccess: (Double) -> Unit = { limit ->
-            _uiState.update { it.copy(budgetLimit = limit) }
+    private fun loadBudgetOverView() = viewModelScope.launch {
+        val onSuccess: (MonthlyBudgetOverViewModel) -> Unit = { monthlyBudget ->
+            Logger.d { "monthlyBudget: $monthlyBudget" }
+            _uiState.update { it.copy(monthlyBudgetOverView = monthlyBudget) }
         }
-        monthlyBudgetRepository.loadLimit().fold(
+        monthlyBudgetOverviewUseCase.execute().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

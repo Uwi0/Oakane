@@ -19,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.common.toFormatIDR
 import com.kakapo.oakane.common.toFormatIDRWithCurrency
+import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedIconCircleButton
@@ -31,14 +33,17 @@ import com.kakapo.oakane.presentation.viewModel.home.HomeState
 @Composable
 internal fun MonthlyBudgetView(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
     ColumnWrapper(modifier = Modifier.padding(12.dp)) {
-        MonthlyBudgetContent(uiState = uiState, onEvent = onEvent)
+        MonthlyBudgetContent(overView = uiState.monthlyBudgetOverView, onEvent = onEvent)
         HorizontalDivider()
-        IncomeAndExpenseContent()
+        IncomeAndExpenseContent(overView = uiState.monthlyBudgetOverView)
     }
 }
 
 @Composable
-private fun MonthlyBudgetContent(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
+private fun MonthlyBudgetContent(
+    overView: MonthlyBudgetOverViewModel,
+    onEvent: (HomeEvent) -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -47,13 +52,13 @@ private fun MonthlyBudgetContent(uiState: HomeState, onEvent: (HomeEvent) -> Uni
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             BudgetHeader(onNavigateToAddBudget = { onEvent.invoke(HomeEvent.ToMonthlyBudget) })
             Text(
-                text = uiState.budgetLimit.toFormatIDRWithCurrency(),
+                text = overView.limit.toFormatIDRWithCurrency(),
                 style = MaterialTheme.typography.titleMedium
             )
-            CustomProgressIndicatorView(value = 0.5f)
+            CustomProgressIndicatorView(value = overView.progress)
             SupportContent(
-                spent = 0.0,
-                left = 0.0
+                spent = overView.spent,
+                left = overView.left
             )
         }
     }
@@ -80,7 +85,7 @@ private fun BudgetHeader(onNavigateToAddBudget: () -> Unit) {
 
 
 @Composable
-private fun IncomeAndExpenseContent() {
+private fun IncomeAndExpenseContent(overView: MonthlyBudgetOverViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -92,7 +97,7 @@ private fun IncomeAndExpenseContent() {
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight(),
-            balance = 0.0,
+            balance = overView.totalIncome,
             type = TransactionType.Income
         )
         HorizontalDivider(
@@ -105,7 +110,7 @@ private fun IncomeAndExpenseContent() {
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight(),
-            balance = 0.0,
+            balance = overView.totalExpense,
             type = TransactionType.Expense
         )
     }
@@ -118,11 +123,11 @@ private fun SupportContent(spent: Double, left: Double) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Spent Rp.0",
+            text = "Spent Rp ${spent.toFormatIDR()}",
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = "Left Rp.0",
+            text = "Left Rp ${left.toFormatIDR()}",
             style = MaterialTheme.typography.bodyMedium
         )
     }
