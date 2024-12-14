@@ -6,8 +6,8 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import com.kakapo.oakane.presentation.feature.categories.component.sheet.CreateCategoryContentView
-import com.kakapo.oakane.presentation.feature.categories.component.sheet.SelectCategoryColorView
 import com.kakapo.oakane.presentation.feature.categories.component.sheet.SelectCategoryIconView
+import com.kakapo.oakane.presentation.ui.component.SelectColorView
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
@@ -34,7 +34,11 @@ fun CategoriesSheetView(
         ) { content ->
             when (content) {
                 CategoriesSheetContent.Create -> CreateCategoryContentView(uiState, onEvent)
-                CategoriesSheetContent.SelectColor -> SelectCategoryColorView(uiState, onEvent)
+                CategoriesSheetContent.SelectColor -> SelectColorView(
+                    defaultColor = uiState.defaultSelectedColor,
+                    onSelectedColor = { hex -> onEvent.invoke(CategoriesEvent.SelectedColor(hex)) }
+                )
+
                 CategoriesSheetContent.SelectIcon -> SelectCategoryIconView(uiState, onEvent)
             }
         }

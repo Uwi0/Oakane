@@ -6,6 +6,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import com.kakapo.oakane.presentation.feature.wallets.component.sheet.content.CreateWalletContentView
 import com.kakapo.oakane.presentation.model.WalletSheetContent
+import com.kakapo.oakane.presentation.ui.component.SelectColorView
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
 
@@ -23,7 +24,10 @@ internal fun WalletsSheet(
         when (uiState.sheetContent) {
             WalletSheetContent.Create -> CreateWalletContentView(uiState = uiState)
             WalletSheetContent.SelectIcon -> TODO()
-            WalletSheetContent.SelectColor -> TODO()
+            WalletSheetContent.SelectColor -> SelectColorView(
+                defaultColor = uiState.defaultColor,
+                onSelectedColor = { hex ->}
+            )
             WalletSheetContent.SelectCurrency -> TODO()
         }
     }

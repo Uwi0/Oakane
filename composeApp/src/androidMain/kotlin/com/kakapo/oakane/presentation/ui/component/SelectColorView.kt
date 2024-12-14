@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.categories.component.sheet
+package com.kakapo.oakane.presentation.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,11 +25,9 @@ import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.drawColorIndicator
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
-import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
-import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 
 @Composable
-internal fun SelectCategoryColorView(uiState: CategoriesState, onEvent: (CategoriesEvent) -> Unit) {
+internal fun SelectColorView(defaultColor: Int, onSelectedColor: (String) -> Unit) {
     val controller = rememberColorPickerController()
     var hexCode by remember { mutableStateOf("") }
     var textColor by remember { mutableStateOf(Color.Transparent) }
@@ -53,7 +51,7 @@ internal fun SelectCategoryColorView(uiState: CategoriesState, onEvent: (Categor
                 hexCode = colorEnvelope.hexCode
                 textColor = colorEnvelope.color
             },
-            initialColor = Color(uiState.defaultSelectedColor)
+            initialColor = Color(defaultColor)
         )
 
         AlphaSlider(
@@ -96,7 +94,7 @@ internal fun SelectCategoryColorView(uiState: CategoriesState, onEvent: (Categor
             text = { Text(text = "Select Color") },
             onClick = {
                 val hex = "0x$hexCode"
-                onEvent.invoke(CategoriesEvent.SelectedColor(hex))
+                onSelectedColor.invoke(hex)
             }
         )
     }
