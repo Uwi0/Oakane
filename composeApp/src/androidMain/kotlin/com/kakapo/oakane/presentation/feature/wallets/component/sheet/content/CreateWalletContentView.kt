@@ -52,7 +52,7 @@ internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEve
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         CreateWalletContent(uiState = uiState, onEvent = onEvent)
-        StartBalanceContent()
+        StartBalanceContent(uiState = uiState, onEvent = onEvent)
         CurrencyContent(onEvent = onEvent)
         ColorContent(uiState = uiState, onEvent = onEvent)
         Spacer(Modifier.size(48.dp))
@@ -60,7 +60,7 @@ internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEve
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
             onClick = {},
-            content = { Text("Save Wallet")}
+            content = { Text("Save Wallet") }
         )
     }
 }
@@ -92,9 +92,12 @@ private fun CreateWalletContent(uiState: WalletsState, onEvent: (WalletsEvent) -
 }
 
 @Composable
-private fun StartBalanceContent() {
+private fun StartBalanceContent(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit) {
     ColumnContent(title = "Start Balance") {
-        StartBalanceTextField(value = "", onValueChange = {})
+        StartBalanceTextField(
+            value = uiState.startBalance,
+            onValueChange = { balance -> onEvent.invoke(WalletsEvent.ChangeStart(balance)) }
+        )
     }
 }
 
@@ -120,7 +123,7 @@ private fun CurrencyContent(onEvent: (WalletsEvent) -> Unit) {
 }
 
 @Composable
-private fun ColorContent(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit){
+private fun ColorContent(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit) {
     val colorSelector = ColorSelector(
         defaultColor = uiState.defaultColor,
         colorsHex = uiState.colors
@@ -128,7 +131,7 @@ private fun ColorContent(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit)
     ColumnContent(title = "Wallet Color") {
         HorizontalColorSelectorView(
             colorSelector = colorSelector,
-            onClickBrush = { onEvent.invoke(WalletsEvent.SelectedSheet(WalletSheetContent.SelectColor))},
+            onClickBrush = { onEvent.invoke(WalletsEvent.SelectedSheet(WalletSheetContent.SelectColor)) },
             onClickColor = { colorHex -> onEvent.invoke(WalletsEvent.SelectWallet(colorHex)) }
         )
     }

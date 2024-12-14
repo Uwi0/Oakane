@@ -12,7 +12,8 @@ data class WalletsState(
     val isSheetShown: Boolean = false,
     val colors: List<String> = listcolor,
     val walletName: String = "",
-    val selectedColor: String = ""
+    val selectedColor: String = "",
+    val startBalance: String = ""
 ){
     val defaultColor: Int get(){
         val color = selectedColor.ifEmpty { colors.first() }
@@ -39,4 +40,5 @@ sealed class WalletsEvent{
     data object FeatureNotAvailable: WalletsEvent()
     data class SelectWallet(val color: String): WalletsEvent()
     data class OnChangeWallet(val name: String): WalletsEvent()
+    data class ChangeStart(val balance: String): WalletsEvent()
 }
