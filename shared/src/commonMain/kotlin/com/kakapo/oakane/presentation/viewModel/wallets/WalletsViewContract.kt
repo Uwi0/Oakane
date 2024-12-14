@@ -11,6 +11,7 @@ data class WalletsState(
     val sheetContent: WalletSheetContent = WalletSheetContent.Create,
     val isSheetShown: Boolean = false,
     val colors: List<String> = listcolor,
+    val walletName: String = "",
     val selectedColor: String = ""
 ){
     val defaultColor: Int get(){
@@ -37,4 +38,5 @@ sealed class WalletsEvent{
     data class SelectedSheet(val content: WalletSheetContent): WalletsEvent()
     data object FeatureNotAvailable: WalletsEvent()
     data class SelectWallet(val color: String): WalletsEvent()
+    data class OnChangeWallet(val name: String): WalletsEvent()
 }

@@ -25,6 +25,7 @@ class WalletsViewModel(): ViewModel() {
             is WalletsEvent.SelectedSheet -> _uiState.update { it.copy(sheetContent = event.content) }
             WalletsEvent.FeatureNotAvailable -> emit(WalletsEffect.ShowError("Feature not available yet"))
             is WalletsEvent.SelectWallet -> _uiState.update { it.selectedWallet(event.color) }
+            is WalletsEvent.OnChangeWallet -> _uiState.update { it.copy(walletName = event.name) }
         }
     }
 

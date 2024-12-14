@@ -51,7 +51,7 @@ internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEve
             .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        CreateWalletContent()
+        CreateWalletContent(uiState = uiState, onEvent = onEvent)
         StartBalanceContent()
         CurrencyContent(onEvent = onEvent)
         ColorContent(uiState = uiState, onEvent = onEvent)
@@ -66,7 +66,7 @@ internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEve
 }
 
 @Composable
-private fun CreateWalletContent() {
+private fun CreateWalletContent(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit) {
     val imageUrls by remember { mutableStateOf<Uri?>(null) }
     ColumnContent(title = "Create Wallet") {
         Row(
@@ -82,8 +82,8 @@ private fun CreateWalletContent() {
             )
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
-                value = "",
-                onValueChange = {},
+                value = uiState.walletName,
+                onValueChange = { name -> onEvent.invoke(WalletsEvent.OnChangeWallet(name)) },
                 shape = MaterialTheme.shapes.medium,
                 placeholder = { Text(text = "Wallet Name") }
             )
