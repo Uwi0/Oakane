@@ -21,6 +21,7 @@ class WalletsViewModel(): ViewModel() {
         when(event){
             is WalletsEvent.NavigateBack -> emit(WalletsEffect.NavigateBack)
             is WalletsEvent.OnChange -> _uiState.update { it.copy(searchQuery = event.query) }
+            is WalletsEvent.Sheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
         }
     }
 

@@ -7,9 +7,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,28 +20,43 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletItemView
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletsTopAppbarView
+import com.kakapo.oakane.presentation.feature.wallets.component.sheet.WalletsSheet
+import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEffect
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WalletsRoute(
     navigateBack: () -> Unit
 ) {
     val viewModel = koinViewModel<WalletsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { uiState.sheetContent == WalletSheetContent.Create }
+    )
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when(effect){
+            when (effect) {
                 is WalletsEffect.NavigateBack -> navigateBack.invoke()
             }
         }
     }
 
     WalletsScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+
+    if (uiState.isSheetShown) {
+        WalletsSheet(
+            sheetState = sheetState,
+            uiState = uiState,
+            onEvent = viewModel::handleEvent
+        )
+    }
 }
 
 @Composable
@@ -54,13 +71,13 @@ private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit
                 contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(uiState.wallets){ wallet ->
+                items(uiState.wallets) { wallet ->
                     WalletItemView(wallet)
                 }
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = { onEvent.invoke(WalletsEvent.Sheet(shown = true)) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null

@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation.feature.categories.component.sheet
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -28,14 +25,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.R
-import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
-import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
+import com.kakapo.oakane.presentation.ui.component.ColorSelector
+import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
+import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 import com.kakapo.oakane.presentation.ui.model.asIcon
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
@@ -46,6 +43,10 @@ fun CreateCategoryContentView(
     uiState: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit
 ) {
+    val colorSelector = ColorSelector(
+        defaultColor = uiState.defaultSelectedColor,
+        colorsHex = uiState.categoriesColor
+    )
     Column(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -55,7 +56,15 @@ fun CreateCategoryContentView(
         TitleView(text = "Category Type")
         SegmentTransactionTypeView(uiState, onEvent)
         TitleView(text = "Category Color")
-        CategoryColorSelectionView(uiState, onEvent)
+        HorizontalColorSelectorView(
+            colorSelector = colorSelector,
+            onClickBrush = {
+                onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectColor))
+            },
+            onClickColor = { hex ->
+                onEvent.invoke(CategoriesEvent.SelectedColor(hex))
+            }
+        )
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
             text = { Text(text = "Save Category") },
@@ -143,28 +152,3 @@ private fun SegmentTransactionTypeView(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun CategoryColorSelectionView(
-    uiState: CategoriesState,
-    onEvent: (CategoriesEvent) -> Unit
-) {
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        stickyHeader {
-            CategoryIconView(
-                icon = R.drawable.ic_rounded_brush,
-                color = Color(uiState.defaultSelectedColor),
-                onClick = {
-                    onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectColor))
-                }
-            )
-        }
-        items(uiState.categoriesColor) { hex ->
-            CategoryIconView(
-                icon = R.drawable.ic_empty,
-                color = Color(hex.toColorInt()),
-                onClick = { onEvent.invoke(CategoriesEvent.SelectedColor(hex)) }
-            )
-        }
-    }
-}
