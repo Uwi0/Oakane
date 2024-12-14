@@ -35,14 +35,16 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
+import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
 import java.text.NumberFormat
 import java.util.Locale
 
 @Composable
-internal fun CreateWalletContentView(uiState: WalletsState) {
+internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,8 +53,8 @@ internal fun CreateWalletContentView(uiState: WalletsState) {
     ) {
         CreateWalletContent()
         StartBalanceContent()
-        CurrencyContent()
-        ColorContent(uiState = uiState)
+        CurrencyContent(onEvent = onEvent)
+        ColorContent(uiState = uiState, onEvent = onEvent)
         Spacer(Modifier.size(48.dp))
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
@@ -97,11 +99,12 @@ private fun StartBalanceContent() {
 }
 
 @Composable
-private fun CurrencyContent() {
+private fun CurrencyContent(onEvent: (WalletsEvent) -> Unit) {
     ColumnContent(title = "Currency") {
         Surface(
             shape = MaterialTheme.shapes.medium,
-            border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.outline)
+            border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.outline),
+            onClick = { onEvent.invoke(WalletsEvent.FeatureNotAvailable) }
         ) {
             Row(
                 modifier = Modifier
@@ -117,13 +120,16 @@ private fun CurrencyContent() {
 }
 
 @Composable
-private fun ColorContent(uiState: WalletsState){
-    val colorSelector = ColorSelector(defaultColor = uiState.defaultColor, colorsHex = uiState.colors)
+private fun ColorContent(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit){
+    val colorSelector = ColorSelector(
+        defaultColor = uiState.defaultColor,
+        colorsHex = uiState.colors
+    )
     ColumnContent(title = "Wallet Color") {
         HorizontalColorSelectorView(
             colorSelector = colorSelector,
-            onClickBrush = {},
-            onClickColor = {}
+            onClickBrush = { onEvent.invoke(WalletsEvent.SelectedSheet(WalletSheetContent.SelectColor))},
+            onClickColor = { colorHex -> onEvent.invoke(WalletsEvent.SelectWallet(colorHex)) }
         )
     }
 }

@@ -11,16 +11,30 @@ data class WalletsState(
     val sheetContent: WalletSheetContent = WalletSheetContent.Create,
     val isSheetShown: Boolean = false,
     val colors: List<String> = listcolor,
+    val selectedColor: String = ""
 ){
-    val defaultColor: Int get() = colors.first().toColorInt()
+    val defaultColor: Int get(){
+        val color = selectedColor.ifEmpty { colors.first() }
+        return color.toColorInt()
+    }
+
+    fun selectedWallet(color: String) = copy(
+        selectedColor = color,
+        sheetContent = WalletSheetContent.Create
+    )
 }
 
 sealed class WalletsEffect{
     data object NavigateBack: WalletsEffect()
+    data class ShowError(val message: String): WalletsEffect()
+    data object DismissBottomSheet: WalletsEffect()
 }
 
 sealed class WalletsEvent{
     data object NavigateBack: WalletsEvent()
-    data class OnChange(val query: String): WalletsEvent()
-    data class Sheet(val shown: Boolean): WalletsEvent()
+    data class OnSearchBy(val query: String): WalletsEvent()
+    data class IsSheet(val shown: Boolean): WalletsEvent()
+    data class SelectedSheet(val content: WalletSheetContent): WalletsEvent()
+    data object FeatureNotAvailable: WalletsEvent()
+    data class SelectWallet(val color: String): WalletsEvent()
 }

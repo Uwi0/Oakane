@@ -16,8 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletItemView
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletsTopAppbarView
 import com.kakapo.oakane.presentation.feature.wallets.component.sheet.WalletsSheet
@@ -33,6 +35,7 @@ import org.koin.androidx.compose.koinViewModel
 internal fun WalletsRoute(
     navigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<WalletsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(
@@ -44,6 +47,8 @@ internal fun WalletsRoute(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is WalletsEffect.NavigateBack -> navigateBack.invoke()
+                WalletsEffect.DismissBottomSheet -> sheetState.hide()
+                is WalletsEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
@@ -77,7 +82,7 @@ private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onEvent.invoke(WalletsEvent.Sheet(shown = true)) }) {
+            FloatingActionButton(onClick = { onEvent.invoke(WalletsEvent.IsSheet(shown = true)) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null

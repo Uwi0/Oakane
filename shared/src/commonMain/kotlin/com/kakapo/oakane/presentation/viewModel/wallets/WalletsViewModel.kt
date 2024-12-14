@@ -20,8 +20,18 @@ class WalletsViewModel(): ViewModel() {
     fun handleEvent(event: WalletsEvent){
         when(event){
             is WalletsEvent.NavigateBack -> emit(WalletsEffect.NavigateBack)
-            is WalletsEvent.OnChange -> _uiState.update { it.copy(searchQuery = event.query) }
-            is WalletsEvent.Sheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
+            is WalletsEvent.OnSearchBy -> _uiState.update { it.copy(searchQuery = event.query) }
+            is WalletsEvent.IsSheet -> showSheet(event.shown)
+            is WalletsEvent.SelectedSheet -> _uiState.update { it.copy(sheetContent = event.content) }
+            WalletsEvent.FeatureNotAvailable -> emit(WalletsEffect.ShowError("Feature not available yet"))
+            is WalletsEvent.SelectWallet -> _uiState.update { it.selectedWallet(event.color) }
+        }
+    }
+
+    private fun showSheet(shown: Boolean){
+        _uiState.update { it.copy(isSheetShown = shown) }
+        if (!shown){
+            emit(WalletsEffect.DismissBottomSheet)
         }
     }
 
