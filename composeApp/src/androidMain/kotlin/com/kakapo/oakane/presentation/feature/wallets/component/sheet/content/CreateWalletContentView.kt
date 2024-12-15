@@ -1,8 +1,6 @@
 package com.kakapo.oakane.presentation.feature.wallets.component.sheet.content
 
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
@@ -29,16 +26,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
-import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
+import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
+import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
 import java.text.NumberFormat
@@ -68,19 +63,19 @@ internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEve
 
 @Composable
 private fun CreateWalletContent(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit) {
-    val imageUrls by remember { mutableStateOf<Uri?>(null) }
+    val selectedIcon = SelectedIconModel(
+        imageFile = uiState.imageFile,
+        defaultIcon = uiState.selectedIcon,
+        defaultColor = uiState.defaultColor
+    )
     ColumnContent(title = "Create Wallet") {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CustomDynamicAsyncImage(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .clickable { onEvent.invoke(WalletsEvent.SelectedSheet(WalletSheetContent.SelectIcon)) },
-                imageUrl = imageUrls,
-                placeholder = painterResource(R.drawable.mona_empty_wallet)
+            SelectedIconView(
+                selectedIcon = selectedIcon,
+                onClick = { onEvent.invoke(WalletsEvent.SelectedSheet(WalletSheetContent.SelectIcon)) }
             )
             OutlinedTextField(
                 modifier = Modifier.weight(1f),

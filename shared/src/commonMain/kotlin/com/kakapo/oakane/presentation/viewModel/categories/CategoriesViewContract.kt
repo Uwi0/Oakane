@@ -32,7 +32,7 @@ data class CategoriesState(
             else selectedIcon
         }
 
-    val defaultSelectedColor: Int
+    val defaultColor: Int
         get() {
             return if (selectedColor == "") categories[0].formattedColor
             else selectedColor.toColorInt()

@@ -35,12 +35,12 @@ fun CategoriesSheetView(
             when (content) {
                 CategoriesSheetContent.Create -> CreateCategoryContentView(uiState, onEvent)
                 CategoriesSheetContent.SelectColor -> SelectColorView(
-                    defaultColor = uiState.defaultSelectedColor,
+                    defaultColor = uiState.defaultColor,
                     onSelectedColor = { hex -> onEvent.invoke(CategoriesEvent.SelectedColor(hex)) }
                 )
 
                 CategoriesSheetContent.SelectIcon -> SelectIconView(
-                    defaultColor = uiState.defaultSelectedColor,
+                    defaultColor = uiState.defaultColor,
                     selectionIcon = uiState.selectedIcon,
                     onSelectedIcon = { iconName -> onEvent.invoke(CategoriesEvent.SelectedIcon(iconName))},
                     onPickImage = { file -> onEvent.invoke(CategoriesEvent.PickImage(file)) },

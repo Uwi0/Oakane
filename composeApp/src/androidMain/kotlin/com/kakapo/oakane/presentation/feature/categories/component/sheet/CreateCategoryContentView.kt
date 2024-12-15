@@ -1,7 +1,5 @@
 package com.kakapo.oakane.presentation.feature.categories.component.sheet
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -20,20 +17,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
-import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
-import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
-import com.kakapo.oakane.presentation.ui.model.asIcon
+import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
+import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 
@@ -44,7 +35,7 @@ fun CreateCategoryContentView(
     onEvent: (CategoriesEvent) -> Unit
 ) {
     val colorSelector = ColorSelector(
-        defaultColor = uiState.defaultSelectedColor,
+        defaultColor = uiState.defaultColor,
         colorsHex = uiState.categoriesColor
     )
     Column(
@@ -84,11 +75,22 @@ private fun CategoryNameFieldView(
     uiState: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit
 ) {
+    val selectedIcon = SelectedIconModel(
+        imageFile = uiState.fileName,
+        defaultIcon = uiState.selectedIcon,
+        defaultColor = uiState.defaultColor
+    )
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SelectedIconView(uiState = uiState, onEvent = onEvent)
+        SelectedIconView(
+            selectedIcon = selectedIcon,
+            onClick = {
+                onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectIcon))
+            }
+        )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = uiState.categoryName,
@@ -97,37 +99,6 @@ private fun CategoryNameFieldView(
             },
             shape = MaterialTheme.shapes.medium,
             placeholder = { Text(text = "Category Name") }
-        )
-    }
-}
-
-@Composable
-private fun SelectedIconView(uiState: CategoriesState, onEvent: (CategoriesEvent) -> Unit) {
-    if (uiState.fileName.isEmpty()) {
-        CategoryIconView(
-            icon = uiState.defaultIcon.asIcon(),
-            color = Color(uiState.defaultSelectedColor),
-            onClick = {
-                onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectIcon))
-            }
-        )
-    } else {
-        val context = LocalContext.current
-        val uri = context.getSavedImageUri(uiState.fileName).getOrNull()
-        CustomDynamicAsyncImage(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .border(
-                    color = Color(uiState.defaultSelectedColor),
-                    width = 3.dp,
-                    shape = CircleShape
-                )
-                .clickable {
-                    onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectIcon))
-                },
-            imageUrl = uri,
-            contentScale = ContentScale.FillBounds
         )
     }
 }
