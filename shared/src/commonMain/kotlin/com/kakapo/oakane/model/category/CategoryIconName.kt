@@ -10,6 +10,7 @@ enum class CategoryIconName(val displayName: String, val parentCategory: ParentC
     INTEREST("Interest", ParentCategory.INCOME),
     DIVIDENDS("Dividends", ParentCategory.INCOME),
     GIFTS("Gifts", ParentCategory.INCOME),
+    WALLET("Wallet", ParentCategory.INCOME),
 
     // HOUSING
     RENT_MORTGAGE("Rent/Mortgage", ParentCategory.HOUSING),
@@ -101,7 +102,8 @@ val categoryMap: Map<ParentCategory, List<CategoryIconName>> = mapOf(
         CategoryIconName.RENTAL_INCOME,
         CategoryIconName.INTEREST,
         CategoryIconName.DIVIDENDS,
-        CategoryIconName.GIFTS
+        CategoryIconName.GIFTS,
+        CategoryIconName.WALLET
     ),
     ParentCategory.HOUSING to listOf(
         CategoryIconName.RENT_MORTGAGE,

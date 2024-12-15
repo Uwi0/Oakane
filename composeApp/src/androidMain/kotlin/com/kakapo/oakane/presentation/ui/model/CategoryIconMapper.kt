@@ -13,6 +13,7 @@ fun CategoryIconName.asIcon(): Int {
         CategoryIconName.INTEREST -> R.drawable.ic_round_attach_money
         CategoryIconName.DIVIDENDS -> R.drawable.ic_rounded_show_chart
         CategoryIconName.GIFTS -> R.drawable.ic_outline_card_giftcard
+        CategoryIconName.WALLET -> R.drawable.ic_outline_account_balance_wallet
 
         // HOUSING
         CategoryIconName.RENT_MORTGAGE -> R.drawable.ic_rounded_real_estate_agent
@@ -73,5 +74,6 @@ fun CategoryIconName.asIcon(): Int {
 
         //Default
         CategoryIconName.DEFAULT -> R.drawable.ic_outline_account_balance_wallet
+
     }
 }

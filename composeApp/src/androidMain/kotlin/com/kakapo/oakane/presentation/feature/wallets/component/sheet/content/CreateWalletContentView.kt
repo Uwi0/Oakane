@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.feature.wallets.component.sheet.content
 
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -76,7 +77,8 @@ private fun CreateWalletContent(uiState: WalletsState, onEvent: (WalletsEvent) -
             CustomDynamicAsyncImage(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .clickable { onEvent.invoke(WalletsEvent.SelectedSheet(WalletSheetContent.SelectIcon)) },
                 imageUrl = imageUrls,
                 placeholder = painterResource(R.drawable.mona_empty_wallet)
             )

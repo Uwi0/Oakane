@@ -7,7 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.kakapo.oakane.presentation.feature.wallets.component.sheet.content.CreateWalletContentView
 import com.kakapo.oakane.presentation.model.WalletSheetContent
-import com.kakapo.oakane.presentation.ui.component.SelectColorView
+import com.kakapo.oakane.presentation.ui.component.sheet.SelectColorView
+import com.kakapo.oakane.presentation.ui.component.sheet.SelectIconView
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
 
@@ -28,7 +29,13 @@ internal fun WalletsSheet(
                 onEvent = onEvent
             )
 
-            WalletSheetContent.SelectIcon -> { Text("Hello world")}
+            WalletSheetContent.SelectIcon -> SelectIconView(
+                defaultColor = uiState.defaultColor,
+                selectionIcon = uiState.selectedIcon,
+                onSelectedIcon = { iconName -> onEvent.invoke(WalletsEvent.SelectedIcon(iconName)) },
+                onPickImage = { file -> onEvent.invoke(WalletsEvent.SelectedImage(file)) },
+                onConfirm = { onEvent.invoke(WalletsEvent.ConfirmIcon) }
+            )
             WalletSheetContent.SelectCurrency -> { Text("Hello world")}
             WalletSheetContent.SelectColor -> SelectColorView(
                 defaultColor = uiState.defaultColor,

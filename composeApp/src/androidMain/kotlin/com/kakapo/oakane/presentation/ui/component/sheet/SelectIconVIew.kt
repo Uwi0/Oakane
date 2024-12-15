@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.categories.component.sheet
+package com.kakapo.oakane.presentation.ui.component.sheet
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.common.utils.saveImageUri
 import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.model.category.CategoryIconName
@@ -35,13 +36,14 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlin
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 import com.kakapo.oakane.presentation.ui.model.asIcon
-import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
-import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 
 @Composable
-internal fun SelectCategoryIconView(
-    uiState: CategoriesState,
-    onEvent: (CategoriesEvent) -> Unit
+internal fun SelectIconView(
+    defaultColor: Int,
+    selectionIcon: CategoryIconName,
+    onSelectedIcon: (CategoryIconName) -> Unit,
+    onPickImage: (String) -> Unit,
+    onConfirm: () -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -52,7 +54,7 @@ internal fun SelectCategoryIconView(
             uri?.let {
                 context.saveImageUri(it).fold(
                     onSuccess = { file ->
-                        onEvent.invoke(CategoriesEvent.PickImage(file))
+                        onPickImage.invoke(file)
                     },
                     onFailure = {
                         context.showToast("Failed to save image")
@@ -79,12 +81,14 @@ internal fun SelectCategoryIconView(
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(categoryMap.keys.toList(), key = { it.name }) { parentCategory ->
-                    SelectionIconItemView(
-                        uiState = uiState,
+                    val categoryContent = CategoryContentModel(
                         parentCategory = parentCategory,
-                        onEvent = { iconName ->
-                            onEvent.invoke(CategoriesEvent.SelectedIcon(iconName))
-                        }
+                        defaultColor = defaultColor,
+                        selectedIcon = selectionIcon,
+                    )
+                    SelectionIconItemView(
+                        categoryContent = categoryContent,
+                        onSelectedIcon = onSelectedIcon
                     )
                 }
             }
@@ -105,7 +109,7 @@ internal fun SelectCategoryIconView(
                 }
                 CustomButton(
                     modifier = Modifier.weight(1f),
-                    onClick = { onEvent.invoke(CategoriesEvent.ConfirmIcon) }
+                    onClick = { onConfirm.invoke() }
                 ) {
                     Text(text = "Select Image")
                 }
@@ -114,18 +118,22 @@ internal fun SelectCategoryIconView(
     )
 }
 
+data class CategoryContentModel(
+    val parentCategory: ParentCategory,
+    val defaultColor: Int,
+    val selectedIcon: CategoryIconName,
+)
+
 @Composable
 private fun SelectionIconItemView(
-    uiState: CategoriesState,
-    parentCategory: ParentCategory,
-    onEvent: (CategoryIconName) -> Unit
+    categoryContent: CategoryContentModel,
+    onSelectedIcon: (CategoryIconName) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        SelectionHeaderView(parentCategory)
+        SelectionHeaderView(categoryContent.parentCategory)
         ContentItemView(
-            uiState = uiState,
-            parentCategory = parentCategory,
-            onEvent = onEvent
+            categoryContent = categoryContent,
+            onSelectedIcon = onSelectedIcon
         )
     }
 }
@@ -153,37 +161,46 @@ private fun SelectionHeaderView(parentCategory: ParentCategory) {
 @Composable
 @OptIn(ExperimentalLayoutApi::class)
 private fun ContentItemView(
-    uiState: CategoriesState,
-    parentCategory: ParentCategory,
-    onEvent: (CategoryIconName) -> Unit
+    categoryContent: CategoryContentModel,
+    onSelectedIcon: (CategoryIconName) -> Unit
 ) {
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        categoryMap[parentCategory]?.forEach { category ->
-            SelectionIconView(uiState = uiState, category, onEvent = onEvent)
+        categoryMap[categoryContent.parentCategory]?.forEach { category ->
+            val isSelected = categoryContent.selectedIcon == category
+            val selectionIcon = SelectionIconModel(
+                icon = category,
+                isSelected = isSelected,
+                defaultColor = categoryContent.defaultColor
+            )
+            SelectionIconView(selectionIcon = selectionIcon, onSelectedIcon = onSelectedIcon)
         }
     }
 }
 
+data class SelectionIconModel(
+    val icon: CategoryIconName,
+    val isSelected: Boolean,
+    val defaultColor: Int
+)
+
 @Composable
 private fun SelectionIconView(
-    uiState: CategoriesState,
-    category: CategoryIconName,
-    onEvent: (CategoryIconName) -> Unit
+    selectionIcon: SelectionIconModel,
+    onSelectedIcon: (CategoryIconName) -> Unit
 ) {
-    val isSelected = uiState.defaultIcon == category
-    val color: Color = if (isSelected) {
-        Color(uiState.defaultSelectedColor)
+    val color: Color = if (selectionIcon.isSelected) {
+        Color(selectionIcon.defaultColor)
     } else {
         MaterialTheme.colorScheme.outline
     }
-    val icon = category.asIcon()
+    val icon = selectionIcon.icon.asIcon()
     CategoryIconView(
         icon = icon,
         color = color,
-        onClick = { onEvent.invoke(category) }
+        onClick = { onSelectedIcon.invoke(selectionIcon.icon) }
     )
 }
 
@@ -193,9 +210,13 @@ private fun SelectionIconView(
 private fun SelectCategoryIconViewPrev() {
     AppTheme {
         Surface {
-            SelectCategoryIconView(uiState = CategoriesState()) {
-
-            }
+            SelectIconView(
+                defaultColor = "0xFF4CAF50".toColorInt(),
+                selectionIcon = CategoryIconName.SALARY,
+                onSelectedIcon = {},
+                onPickImage = {},
+                onConfirm = {}
+            )
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.wallets
 
 import com.kakapo.oakane.common.toColorInt
+import com.kakapo.oakane.model.category.CategoryIconName
 import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.model.listcolor
@@ -13,8 +14,11 @@ data class WalletsState(
     val colors: List<String> = listcolor,
     val walletName: String = "",
     val selectedColor: String = "",
-    val startBalance: String = ""
+    val startBalance: String = "",
+    val selectedIcon: CategoryIconName = CategoryIconName.WALLET,
+    val imageFile: String = ""
 ){
+
     val defaultColor: Int get(){
         val color = selectedColor.ifEmpty { colors.first() }
         return color.toColorInt()
@@ -22,6 +26,11 @@ data class WalletsState(
 
     fun selectedWallet(color: String) = copy(
         selectedColor = color,
+        sheetContent = WalletSheetContent.Create
+    )
+
+    fun updateImage(file: String): WalletsState = copy(
+        imageFile = file,
         sheetContent = WalletSheetContent.Create
     )
 }
@@ -41,4 +50,7 @@ sealed class WalletsEvent{
     data class SelectWallet(val color: String): WalletsEvent()
     data class OnChangeWallet(val name: String): WalletsEvent()
     data class ChangeStart(val balance: String): WalletsEvent()
+    data class SelectedIcon(val name: CategoryIconName): WalletsEvent()
+    data class SelectedImage(val file: String): WalletsEvent()
+    data object ConfirmIcon: WalletsEvent()
 }

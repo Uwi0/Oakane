@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.ui.component
+package com.kakapo.oakane.presentation.ui.component.sheet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +27,7 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 
 @Composable
-internal fun SelectColorView(defaultColor: Int, onSelectedColor: (String) -> Unit) {
+fun SelectColorView(defaultColor: Int, onSelectedColor: (String) -> Unit) {
     val controller = rememberColorPickerController()
     var hexCode by remember { mutableStateOf("") }
     var textColor by remember { mutableStateOf(Color.Transparent) }
