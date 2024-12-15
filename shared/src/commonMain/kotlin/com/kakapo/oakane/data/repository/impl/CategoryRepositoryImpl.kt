@@ -30,6 +30,11 @@ class CategoryRepositoryImpl(
         emit(result)
     }
 
+    override fun loadCategoryColors(): Flow<Result<List<String>>> = flow {
+        val result = localDatasource.getCategoryColors()
+        emit(result)
+    }
+
     override suspend fun save(category: CategoryModel): Result<Unit> {
         val entity = category.toCategoryEntity()
         return localDatasource.insertCategory(entity)

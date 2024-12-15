@@ -98,7 +98,7 @@ object CommonModule {
         viewModel { GoalViewModel(get()) }
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
-        viewModel { WalletsViewModel()}
+        viewModel { WalletsViewModel(get())}
     }
 
     val coroutineScope = module {

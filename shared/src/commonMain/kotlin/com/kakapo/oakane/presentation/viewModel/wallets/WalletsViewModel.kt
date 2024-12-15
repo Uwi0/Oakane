@@ -2,6 +2,9 @@ package com.kakapo.oakane.presentation.viewModel.wallets
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.oakane.common.asCustomResult
+import com.kakapo.oakane.common.subscribe
+import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,13 +13,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class WalletsViewModel() : ViewModel() {
+class WalletsViewModel(
+    private val categoryRepository: CategoryRepository
+) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(WalletsState())
 
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<WalletsEffect>()
+
+    fun initializeData(){
+        loadColors()
+    }
 
     fun handleEvent(event: WalletsEvent) {
         when (event) {
@@ -34,11 +43,26 @@ class WalletsViewModel() : ViewModel() {
         }
     }
 
+    private fun loadColors() = viewModelScope.launch {
+        val onSuccess: (List<String>) -> Unit = { colors ->
+            _uiState.update { it.copy(colors = colors) }
+        }
+        categoryRepository.loadCategoryColors().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
     private fun showSheet(shown: Boolean) {
         _uiState.update { it.copy(isSheetShown = shown) }
         if (!shown) {
             emit(WalletsEffect.DismissBottomSheet)
         }
+    }
+
+    private fun handleError(throwable: Throwable?) {
+        val message = throwable?.message ?: "Unknown error"
+        emit(WalletsEffect.ShowError(message))
     }
 
     private fun emit(effect: WalletsEffect) = viewModelScope.launch {

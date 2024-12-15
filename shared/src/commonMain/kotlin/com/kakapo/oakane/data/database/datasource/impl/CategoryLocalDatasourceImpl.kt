@@ -57,4 +57,8 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
     override suspend fun deleteCategoryBy(id: Long): Result<Unit> {
         return runCatching { categoryDb.deleteCategory(id) }
     }
+
+    override suspend fun getCategoryColors(): Result<List<String>> {
+        return runCatching { categoryDb.getCategoryColors().executeAsList() }
+    }
 }

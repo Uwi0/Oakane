@@ -18,6 +18,9 @@ SELECT *
 FROM CategoryTable
 WHERE id = ?;
 
+getCategoryColors:
+SELECT color FROM CategoryTable;
+
 updateCategory:
 UPDATE CategoryTable
 SET name = ?,

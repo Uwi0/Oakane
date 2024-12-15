@@ -9,4 +9,5 @@ interface CategoryLocalDatasource {
     suspend fun updateCategory(entity: CategoryEntity): Result<Unit>
     suspend fun insertCategory(category: CategoryEntity): Result<Unit>
     suspend fun deleteCategoryBy(id: Long): Result<Unit>
+    suspend fun getCategoryColors(): Result<List<String>>
 }

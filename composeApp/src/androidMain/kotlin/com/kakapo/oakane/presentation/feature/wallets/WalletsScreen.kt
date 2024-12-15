@@ -44,6 +44,10 @@ internal fun WalletsRoute(
     )
 
     LaunchedEffect(Unit) {
+        viewModel.initializeData()
+    }
+
+    LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is WalletsEffect.NavigateBack -> navigateBack.invoke()

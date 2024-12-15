@@ -4,14 +4,13 @@ import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.model.category.CategoryIconName
 import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
-import com.kakapo.oakane.presentation.model.listcolor
 
 data class WalletsState(
     val wallets: List<WalletItemModel> = emptyList(),
     val searchQuery: String = "",
     val sheetContent: WalletSheetContent = WalletSheetContent.Create,
     val isSheetShown: Boolean = false,
-    val colors: List<String> = listcolor,
+    val colors: List<String> = emptyList(),
     val walletName: String = "",
     val selectedColor: String = "",
     val startBalance: String = "",
