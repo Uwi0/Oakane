@@ -2,13 +2,16 @@ CREATE TABLE  WalletTable (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     balance REAL NOT NULL,
+    color TEXT NOT NULL,
+    icon TEXT NOT NULL,
+    isDefaultIcon INTEGER NOT NULL,
     createdAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000),
     updateAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000)
 );
 
 createDefaultWallet:
-INSERT OR REPLACE INTO WalletTable(name, balance)
-VALUES ('My Wallet', 0.0);
+INSERT OR REPLACE INTO WalletTable(name, balance, color, icon, isDefaultIcon)
+VALUES ('My Wallet', 0.0, '0xFF4CAF50', 'Wallet', 1);
 
 checkIfExist:
 SELECT COUNT(*) FROM WalletTable;
@@ -22,3 +25,7 @@ WHERE id = ?;
 getWalletBy:
 SELECT * FROM WalletTable
 WHERE id = ?;
+
+insertWallet:
+INSERT OR REPLACE INTO WalletTable(name, balance, color, icon, isDefaultIcon)
+VALUES (?, ?, ?, ?, ?);

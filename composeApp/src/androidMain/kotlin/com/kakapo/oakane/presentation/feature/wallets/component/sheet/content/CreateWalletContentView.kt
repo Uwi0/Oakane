@@ -55,7 +55,7 @@ internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEve
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
-            onClick = {},
+            onClick = { onEvent.invoke(WalletsEvent.SaveWallet) },
             content = { Text("Save Wallet") }
         )
     }

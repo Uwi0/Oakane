@@ -27,4 +27,16 @@ class WalletLocalDatasourceImpl(
     override suspend fun getWalletBy(id: Long): Result<WalletEntity> {
         return runCatching { walletTable.getWalletBy(id).executeAsOne().toWalletEntity() }
     }
+
+    override suspend fun insert(wallet: WalletEntity): Result<Unit> {
+        return runCatching {
+            walletTable.insertWallet(
+                name = wallet.name,
+                balance = wallet.balance,
+                color = wallet.color,
+                icon = wallet.icon,
+                isDefaultIcon = wallet.isDefaultIcon
+            )
+        }
+    }
 }

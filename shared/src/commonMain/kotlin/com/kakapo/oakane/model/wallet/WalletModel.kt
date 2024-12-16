@@ -7,12 +7,13 @@ data class WalletModel(
     val currency: String = "",
     val balance: Double = 0.0,
     val name: String = "",
-    val isDefault: Boolean = false,
+    val isDefaultIcon: Boolean = false,
     val icon: String = "",
+    val color: String = ""
 ){
     val iconName: CategoryIconName
         get() {
-            return if (isDefault) CategoryIconName.fromString(icon)
+            return if (isDefaultIcon) CategoryIconName.fromString(icon)
             else CategoryIconName.SALARY
         }
 }

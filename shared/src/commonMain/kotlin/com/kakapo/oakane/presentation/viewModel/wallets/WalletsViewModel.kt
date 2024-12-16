@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.CategoryRepository
+import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WalletsViewModel(
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val walletRepository: WalletRepository
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -40,6 +42,7 @@ class WalletsViewModel(
             is WalletsEvent.SelectedImage -> _uiState.update { it.updateImage(event.file) }
             WalletsEvent.FeatureNotAvailable -> emit(WalletsEffect.ShowError("Feature not available yet"))
             WalletsEvent.ConfirmIcon -> _uiState.update { it.copy(sheetContent = WalletSheetContent.Create) }
+            WalletsEvent.SaveWallet -> saveWallet()
         }
     }
 
@@ -50,6 +53,14 @@ class WalletsViewModel(
         categoryRepository.loadCategoryColors().asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
+        )
+    }
+
+    private fun saveWallet() = viewModelScope.launch {
+        val walletModel = uiState.value.toWalletModel()
+        walletRepository.save(walletModel).fold(
+            onSuccess = { _uiState.update { it.resetWalletsSheet() } },
+            onFailure = ::handleError
         )
     }
 

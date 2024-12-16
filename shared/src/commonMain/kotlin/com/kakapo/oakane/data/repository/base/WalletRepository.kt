@@ -7,4 +7,5 @@ interface WalletRepository {
     suspend fun update(balance: Double): Result<Unit>
     suspend fun update(balance: Double, id: Long): Result<Unit>
     suspend fun loadWalletById(): Result<WalletModel>
+    suspend fun save(wallet: WalletModel): Result<Unit>
 }
