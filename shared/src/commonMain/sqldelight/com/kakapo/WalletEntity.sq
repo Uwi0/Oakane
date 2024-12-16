@@ -29,3 +29,19 @@ WHERE id = ?;
 insertWallet:
 INSERT OR REPLACE INTO WalletTable(name, balance, color, icon, isDefaultIcon)
 VALUES (?, ?, ?, ?, ?);
+
+getWallets:
+SELECT
+    w.id AS walletId,
+    w.name AS walletName,
+    w.balance AS walletBalance,
+    w.color AS walletColor,
+    w.icon AS walletIcon,
+    w.isDefaultIcon AS walletIsDefaultIcon,
+    w.createdAt AS walletCreatedAt,
+    w.updateAt AS walletUpdateAt,
+    SUM(CASE WHEN t.type = 1 THEN t.amount ELSE 0 END) AS totalIncome,
+    SUM(CASE WHEN t.type = 0 THEN t.amount ELSE 0 END) AS totalExpense
+FROM WalletTable w
+LEFT JOIN TransactionTable t ON w.id = t.walletId
+GROUP BY w.id;

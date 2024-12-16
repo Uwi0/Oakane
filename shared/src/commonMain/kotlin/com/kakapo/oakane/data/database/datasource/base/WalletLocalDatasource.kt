@@ -6,4 +6,5 @@ interface WalletLocalDatasource {
     suspend fun update(balance: Double, updateAt: Long, walletId: Long): Result<Unit>
     suspend fun getWalletBy(id: Long): Result<WalletEntity>
     suspend fun insert(wallet: WalletEntity): Result<Unit>
+    suspend fun getWallets(): Result<List<WalletEntity>>
 }

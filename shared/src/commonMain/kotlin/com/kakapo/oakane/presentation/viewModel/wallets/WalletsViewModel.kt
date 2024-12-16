@@ -6,6 +6,7 @@ import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
+import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ class WalletsViewModel(
     private val _uiEffect = MutableSharedFlow<WalletsEffect>()
 
     fun initializeData(){
+        loadWallets()
         loadColors()
     }
 
@@ -44,6 +46,16 @@ class WalletsViewModel(
             WalletsEvent.ConfirmIcon -> _uiState.update { it.copy(sheetContent = WalletSheetContent.Create) }
             WalletsEvent.SaveWallet -> saveWallet()
         }
+    }
+
+    private fun loadWallets() = viewModelScope.launch {
+        val onSuccess: (List<WalletItemModel>) -> Unit = { wallets ->
+            _uiState.update { it.copy(wallets = wallets) }
+        }
+        walletRepository.loadWallets().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
     }
 
     private fun loadColors() = viewModelScope.launch {

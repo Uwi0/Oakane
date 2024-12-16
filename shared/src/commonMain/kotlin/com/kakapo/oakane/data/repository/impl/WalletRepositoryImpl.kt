@@ -3,11 +3,15 @@ package com.kakapo.oakane.data.repository.impl
 import com.kakapo.oakane.data.database.datasource.base.WalletLocalDatasource
 import com.kakapo.oakane.data.database.model.WalletEntity
 import com.kakapo.oakane.data.model.toWalletEntity
+import com.kakapo.oakane.data.model.toWalletItemModel
 import com.kakapo.oakane.data.model.toWalletModel
 import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
 import com.kakapo.oakane.data.preference.datasource.utils.getWalletId
 import com.kakapo.oakane.data.repository.base.WalletRepository
+import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.model.wallet.WalletModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Clock
 
 class WalletRepositoryImpl(
@@ -39,5 +43,12 @@ class WalletRepositoryImpl(
         val currentTime = Clock.System.now().toEpochMilliseconds()
         val walletEntity = wallet.toWalletEntity(currentTime)
         return localDatasource.insert(walletEntity)
+    }
+
+    override fun loadWallets(): Flow<Result<List<WalletItemModel>>> = flow {
+        val walletId = preferenceDatasource.getWalletId()
+        val toWalletItem: (WalletEntity) -> WalletItemModel = { it.toWalletItemModel(walletId) }
+        val result = localDatasource.getWallets().mapCatching { it.map(toWalletItem) }
+        emit(result)
     }
 }

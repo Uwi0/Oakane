@@ -2,6 +2,7 @@ package com.kakapo.oakane.data.database.datasource.impl
 
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
+import com.kakapo.GetWallets
 import com.kakapo.oakane.data.database.datasource.base.WalletLocalDatasource
 import com.kakapo.oakane.data.database.model.WalletEntity
 import com.kakapo.oakane.data.database.model.toWalletEntity
@@ -38,5 +39,9 @@ class WalletLocalDatasourceImpl(
                 isDefaultIcon = wallet.isDefaultIcon
             )
         }
+    }
+
+    override suspend fun getWallets(): Result<List<WalletEntity>> {
+        return runCatching { walletTable.getWallets().executeAsList().map(GetWallets::toWalletEntity) }
     }
 }

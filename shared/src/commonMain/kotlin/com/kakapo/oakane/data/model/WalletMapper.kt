@@ -2,6 +2,7 @@ package com.kakapo.oakane.data.model
 
 import com.kakapo.oakane.common.asLong
 import com.kakapo.oakane.data.database.model.WalletEntity
+import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.model.wallet.WalletModel
 
 fun WalletEntity.toWalletModel(): WalletModel {
@@ -12,6 +13,20 @@ fun WalletEntity.toWalletModel(): WalletModel {
         name = name,
         isDefaultIcon = false,
         icon = "quas"
+    )
+}
+
+fun WalletEntity.toWalletItemModel(walletId: Long): WalletItemModel{
+    return WalletItemModel(
+        id = id,
+        name = name,
+        isDefault = isDefaultIcon == 1L,
+        icon = icon,
+        currency = "IDR",
+        balance = balance,
+        income = income,
+        expense = expense,
+        isSelected = walletId == id
     )
 }
 
