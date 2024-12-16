@@ -22,6 +22,7 @@ fun WalletEntity.toWalletItemModel(walletId: Long): WalletItemModel{
         name = name,
         isDefault = isDefaultIcon == 1L,
         icon = icon,
+        color = color,
         currency = "IDR",
         balance = balance,
         income = income,

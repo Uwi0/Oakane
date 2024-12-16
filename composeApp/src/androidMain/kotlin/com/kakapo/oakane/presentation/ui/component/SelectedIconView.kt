@@ -10,7 +10,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.R
 import com.kakapo.oakane.common.utils.getSavedImageUri
 import com.kakapo.oakane.model.category.CategoryIconName
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
@@ -23,9 +25,11 @@ data class SelectedIconModel(
     val defaultColor: Int
 )
 
+const val FORMAT_IMAGE = ".jpg"
+
 @Composable
 fun SelectedIconView(selectedIcon: SelectedIconModel, onClick: () -> Unit) {
-    if (selectedIcon.imageFile.isEmpty()) {
+    if (!selectedIcon.imageFile.contains(FORMAT_IMAGE)) {
         CategoryIconView(
             icon = selectedIcon.defaultIcon.asIcon(),
             color = Color(selectedIcon.defaultColor),
@@ -45,7 +49,8 @@ fun SelectedIconView(selectedIcon: SelectedIconModel, onClick: () -> Unit) {
                 )
                 .clickable(onClick = onClick),
             imageUrl = uri,
-            contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.FillBounds,
+            placeholder = painterResource(R.drawable.fubuki_stare)
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation.feature.wallets.component
 
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,22 +19,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.R
+import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.common.toFormatIDR
 import com.kakapo.oakane.model.wallet.WalletItemModel
-import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
+import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
+import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 
 @Composable
@@ -56,18 +51,16 @@ internal fun WalletItemView(wallet: WalletItemModel, onEvent: (WalletsEvent) -> 
 
 @Composable
 private fun WalletTopContent(wallet: WalletItemModel, onEvent: (WalletsEvent) -> Unit) {
-    val imgUrl by remember { mutableStateOf<Uri?>(null) }
+    val selectedIcon = SelectedIconModel(
+        imageFile = wallet.icon,
+        defaultIcon = wallet.iconName,
+        defaultColor = wallet.color.toColorInt()
+    )
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        CustomDynamicAsyncImage(
-            imageUrl = imgUrl,
-            modifier = Modifier
-                .size(30.dp)
-                .clip(CircleShape),
-            placeholder = painterResource(R.drawable.mona_empty_wallet)
-        )
+        SelectedIconView(selectedIcon = selectedIcon, onClick = {})
         Text(text = wallet.name, style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.weight(1f))
         OutlinedCheckmarkRadioButton(

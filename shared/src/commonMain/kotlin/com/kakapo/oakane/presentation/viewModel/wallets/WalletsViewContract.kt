@@ -50,7 +50,7 @@ data class WalletsState(
             currency = "IDR",
             balance = startBalance.toDouble(),
             name = walletName,
-            isDefaultIcon = imageFile.isNotEmpty(),
+            isDefaultIcon = imageFile.isEmpty(),
             icon = icon,
             color = selectedColor
         )

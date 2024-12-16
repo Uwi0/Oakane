@@ -9,6 +9,7 @@ data class WalletItemModel(
     val icon: String = "",
     val currency: String = "",
     val balance: Double = 0.0,
+    val color: String = "",
     val income: Double,
     val expense: Double,
     val isSelected: Boolean
