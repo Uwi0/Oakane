@@ -36,14 +36,15 @@ import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 
 @Composable
-internal fun WalletItemView(wallet: WalletItemModel) {
+internal fun WalletItemView(wallet: WalletItemModel, onEvent: (WalletsEvent) -> Unit) {
     ColumnWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        WalletTopContent(wallet = wallet)
+        WalletTopContent(wallet = wallet, onEvent = onEvent)
         Text(
             text = "Rp. ${wallet.balance.toFormatIDR()}",
             style = MaterialTheme.typography.headlineMedium
@@ -54,7 +55,7 @@ internal fun WalletItemView(wallet: WalletItemModel) {
 }
 
 @Composable
-private fun WalletTopContent(wallet: WalletItemModel) {
+private fun WalletTopContent(wallet: WalletItemModel, onEvent: (WalletsEvent) -> Unit) {
     val imgUrl by remember { mutableStateOf<Uri?>(null) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -71,7 +72,7 @@ private fun WalletTopContent(wallet: WalletItemModel) {
         Spacer(modifier = Modifier.weight(1f))
         OutlinedCheckmarkRadioButton(
             selected = wallet.isSelected,
-            onClick = { },
+            onClick = { onEvent.invoke(WalletsEvent.SelectWalletBy(wallet.id)) },
         )
     }
 }
@@ -152,7 +153,9 @@ private fun WalletItemPreview() {
             income = 50_000.0,
             expense = 50_000.0,
             isSelected = false
-        ))
+        )){
+
+        }
     }
 
 }

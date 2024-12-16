@@ -5,6 +5,7 @@ import com.kakapo.oakane.model.wallet.WalletModel
 import kotlinx.coroutines.flow.Flow
 
 interface WalletRepository {
+    suspend fun saveWallet(id: Long): Result<Unit>
     suspend fun loadWalletId(): Result<Long>
     suspend fun update(balance: Double): Result<Unit>
     suspend fun update(balance: Double, id: Long): Result<Unit>

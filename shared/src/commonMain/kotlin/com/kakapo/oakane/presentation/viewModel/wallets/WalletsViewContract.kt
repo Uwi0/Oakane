@@ -76,4 +76,5 @@ sealed class WalletsEvent{
     data class SelectedImage(val file: String): WalletsEvent()
     data object ConfirmIcon: WalletsEvent()
     data object SaveWallet: WalletsEvent()
+    data class SelectWalletBy(val id: Long): WalletsEvent()
 }

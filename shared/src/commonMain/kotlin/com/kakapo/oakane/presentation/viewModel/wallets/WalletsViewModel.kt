@@ -6,6 +6,7 @@ import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
+import com.kakapo.oakane.domain.usecase.selectedWalletUseCase
 import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -45,6 +46,7 @@ class WalletsViewModel(
             WalletsEvent.FeatureNotAvailable -> emit(WalletsEffect.ShowError("Feature not available yet"))
             WalletsEvent.ConfirmIcon -> _uiState.update { it.copy(sheetContent = WalletSheetContent.Create) }
             WalletsEvent.SaveWallet -> saveWallet()
+            is WalletsEvent.SelectWalletBy -> selectWalletBy(event.id)
         }
     }
 
@@ -72,6 +74,14 @@ class WalletsViewModel(
         val walletModel = uiState.value.toWalletModel()
         walletRepository.save(walletModel).fold(
             onSuccess = { _uiState.update { it.resetWalletsSheet() } },
+            onFailure = ::handleError
+        )
+    }
+
+    private fun selectWalletBy(id: Long) = viewModelScope.launch {
+        val wallets = uiState.value.wallets.selectedWalletUseCase(id)
+        walletRepository.saveWallet(id).fold(
+            onSuccess = { _uiState.update { it.copy(wallets = wallets) } },
             onFailure = ::handleError
         )
     }

@@ -81,7 +81,7 @@ private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(uiState.wallets) { wallet ->
-                    WalletItemView(wallet)
+                    WalletItemView(wallet, onEvent)
                 }
             }
         },
