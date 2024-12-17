@@ -37,7 +37,8 @@ import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 internal fun WalletItemView(wallet: WalletItemModel, onEvent: (WalletsEvent) -> Unit) {
     ColumnWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        onClick = { onEvent.invoke(WalletsEvent.ClickedItem(wallet)) }
     ) {
         WalletTopContent(wallet = wallet, onEvent = onEvent)
         Text(
@@ -136,17 +137,19 @@ fun OutlinedCheckmarkRadioButton(
 @Composable
 private fun WalletItemPreview() {
     AppTheme {
-        WalletItemView(wallet = WalletItemModel(
-            id = 2486,
-            name = "Alfonso Gibbs",
-            isDefault = false,
-            icon = "fringilla",
-            currency = "ligula",
-            balance = 20_000_000.0,
-            income = 50_000.0,
-            expense = 50_000.0,
-            isSelected = false
-        )){
+        WalletItemView(
+            wallet = WalletItemModel(
+                id = 2486,
+                name = "Alfonso Gibbs",
+                isDefault = false,
+                icon = "fringilla",
+                currency = "ligula",
+                balance = 20_000_000.0,
+                income = 50_000.0,
+                expense = 50_000.0,
+                isSelected = false
+            )
+        ) {
 
         }
     }

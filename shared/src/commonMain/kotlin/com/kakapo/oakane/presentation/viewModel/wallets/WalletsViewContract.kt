@@ -7,6 +7,7 @@ import com.kakapo.oakane.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 
 data class WalletsState(
+    val walletId: Long = 0,
     val wallets: List<WalletItemModel> = emptyList(),
     val searchQuery: String = "",
     val sheetContent: WalletSheetContent = WalletSheetContent.Create,
@@ -43,10 +44,20 @@ data class WalletsState(
         isSheetShown = false,
     )
 
+    fun onClickedItem(wallet: WalletItemModel): WalletsState = copy(
+        walletId = wallet.id,
+        walletName = wallet.name,
+        selectedColor = wallet.color,
+        startBalance = wallet.balance.toString(),
+        selectedIcon = wallet.iconName,
+        imageFile = wallet.icon,
+        isSheetShown = true
+    )
+
     fun toWalletModel(): WalletModel {
         val icon = imageFile.ifEmpty { selectedIcon.displayName }
         return WalletModel(
-            id = 0,
+            id = walletId,
             currency = "IDR",
             balance = startBalance.toDouble(),
             name = walletName,
@@ -77,4 +88,7 @@ sealed class WalletsEvent{
     data object ConfirmIcon: WalletsEvent()
     data object SaveWallet: WalletsEvent()
     data class SelectWalletBy(val id: Long): WalletsEvent()
+    data class ClickedItem(val wallet: WalletItemModel): WalletsEvent()
+    data object UpdateWallet: WalletsEvent()
+    data object DeleteDialog: WalletsEvent()
 }

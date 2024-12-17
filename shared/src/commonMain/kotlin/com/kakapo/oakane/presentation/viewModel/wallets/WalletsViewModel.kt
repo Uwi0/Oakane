@@ -47,6 +47,9 @@ class WalletsViewModel(
             WalletsEvent.ConfirmIcon -> _uiState.update { it.copy(sheetContent = WalletSheetContent.Create) }
             WalletsEvent.SaveWallet -> saveWallet()
             is WalletsEvent.SelectWalletBy -> selectWalletBy(event.id)
+            is WalletsEvent.ClickedItem -> _uiState.update { it.onClickedItem(event.wallet) }
+            WalletsEvent.DeleteDialog -> {}
+            WalletsEvent.UpdateWallet -> {}
         }
     }
 
