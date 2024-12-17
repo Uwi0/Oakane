@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.common.utils.showToast
+import com.kakapo.oakane.presentation.feature.wallets.component.ConfirmDeleteWalletDialogView
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletItemView
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletsTopAppbarView
 import com.kakapo.oakane.presentation.feature.wallets.component.sheet.WalletsSheet
@@ -65,6 +66,10 @@ internal fun WalletsRoute(
             uiState = uiState,
             onEvent = viewModel::handleEvent
         )
+    }
+
+    if (uiState.dialogShown){
+        ConfirmDeleteWalletDialogView(onEvent = viewModel::handleEvent)
     }
 }
 

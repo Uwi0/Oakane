@@ -82,25 +82,29 @@ class WalletsViewModel(
 
     private fun add(wallet: WalletModel) = viewModelScope.launch {
         walletRepository.save(wallet).fold(
-            onSuccess = { _uiState.update { it.resetWalletsSheet() } },
+            onSuccess = ::handleWalletEvent,
             onFailure = ::handleError
         )
     }
 
     private fun update(wallet: WalletModel) = viewModelScope.launch {
         walletRepository.update(wallet).fold(
-            onSuccess = { _uiState.update { it.resetWalletsSheet() } },
+            onSuccess = ::handleWalletEvent,
             onFailure = ::handleError
         )
-        loadWallets()
     }
 
     private fun deleteWallet() = viewModelScope.launch {
         val walletId = uiState.value.walletId
         walletRepository.deleteWalletBy(walletId).fold(
-            onSuccess = { _uiState.update { it.resetWalletsSheet() } },
+            onSuccess = ::handleWalletEvent,
             onFailure = ::handleError
         )
+    }
+
+    private fun handleWalletEvent(param: Unit){
+        _uiState.update { it.resetWalletsSheet() }
+        loadWallets()
     }
 
     private fun selectWalletBy(id: Long) = viewModelScope.launch {

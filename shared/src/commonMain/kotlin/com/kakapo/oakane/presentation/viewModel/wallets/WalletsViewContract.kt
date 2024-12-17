@@ -44,6 +44,7 @@ data class WalletsState(
         selectedIcon = CategoryIconName.WALLET,
         imageFile = "",
         isSheetShown = false,
+        dialogShown = false
     )
 
     fun onClickedItem(wallet: WalletItemModel): WalletsState = copy(
