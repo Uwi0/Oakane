@@ -44,4 +44,22 @@ class WalletLocalDatasourceImpl(
     override suspend fun getWallets(): Result<List<WalletEntity>> {
         return runCatching { walletTable.getWallets().executeAsList().map(GetWallets::toWalletEntity) }
     }
+
+    override suspend fun update(wallet: WalletEntity): Result<Unit> {
+        return runCatching {
+            walletTable.updateWallet(
+                name = wallet.name,
+                balance = wallet.balance,
+                color = wallet.color,
+                icon = wallet.icon,
+                isDefaultIcon = wallet.isDefaultIcon,
+                updateAt = wallet.updateAt,
+                id = wallet.id
+            )
+        }
+    }
+
+    override suspend fun deleteWalletBy(id: Long): Result<Unit> {
+        return runCatching { walletTable.deleteWallet(id) }
+    }
 }

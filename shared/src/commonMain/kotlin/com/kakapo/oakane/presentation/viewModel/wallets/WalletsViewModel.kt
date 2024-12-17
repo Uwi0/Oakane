@@ -8,6 +8,7 @@ import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.selectedWalletUseCase
 import com.kakapo.oakane.model.wallet.WalletItemModel
+import com.kakapo.oakane.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -73,12 +74,25 @@ class WalletsViewModel(
         )
     }
 
-    private fun saveWallet() = viewModelScope.launch {
+    private fun saveWallet() {
         val walletModel = uiState.value.toWalletModel()
-        walletRepository.save(walletModel).fold(
+        if (walletModel.id == 0L) add(walletModel)
+        else update(walletModel)
+    }
+
+    private fun add(wallet: WalletModel) = viewModelScope.launch {
+        walletRepository.save(wallet).fold(
             onSuccess = { _uiState.update { it.resetWalletsSheet() } },
             onFailure = ::handleError
         )
+    }
+
+    private fun update(wallet: WalletModel) = viewModelScope.launch {
+        walletRepository.update(wallet).fold(
+            onSuccess = { _uiState.update { it.resetWalletsSheet() } },
+            onFailure = ::handleError
+        )
+        loadWallets()
     }
 
     private fun selectWalletBy(id: Long) = viewModelScope.launch {

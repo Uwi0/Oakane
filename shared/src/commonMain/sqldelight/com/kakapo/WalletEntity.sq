@@ -45,3 +45,16 @@ SELECT
 FROM WalletTable w
 LEFT JOIN TransactionTable t ON w.id = t.walletId
 GROUP BY w.id;
+
+updateWallet:
+UPDATE WalletTable
+SET name = ?,
+    balance = ?,
+    color = ?,
+    icon = ?,
+    isDefaultIcon = ?,
+    updateAt = ?
+WHERE id = ?;
+
+deleteWallet:
+DELETE FROM WalletTable WHERE id = ?;

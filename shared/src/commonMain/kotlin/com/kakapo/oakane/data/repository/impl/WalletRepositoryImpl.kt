@@ -58,4 +58,13 @@ class WalletRepositoryImpl(
         val result = localDatasource.getWallets().mapCatching { it.map(toWalletItem) }
         emit(result)
     }
+
+    override suspend fun update(wallet: WalletModel): Result<Unit> {
+        val currentTime = Clock.System.now().toEpochMilliseconds()
+        return localDatasource.update(wallet.toWalletEntity(currentTime))
+    }
+
+    override suspend fun deleteWalletBy(id: Long): Result<Unit> {
+        return localDatasource.deleteWalletBy(id)
+    }
 }

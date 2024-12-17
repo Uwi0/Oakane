@@ -12,4 +12,6 @@ interface WalletRepository {
     suspend fun loadWalletById(): Result<WalletModel>
     suspend fun save(wallet: WalletModel): Result<Unit>
     fun loadWallets(): Flow<Result<List<WalletItemModel>>>
+    suspend fun update(wallet: WalletModel): Result<Unit>
+    suspend fun deleteWalletBy(id: Long): Result<Unit>
 }

@@ -7,4 +7,6 @@ interface WalletLocalDatasource {
     suspend fun getWalletBy(id: Long): Result<WalletEntity>
     suspend fun insert(wallet: WalletEntity): Result<Unit>
     suspend fun getWallets(): Result<List<WalletEntity>>
+    suspend fun update(wallet: WalletEntity): Result<Unit>
+    suspend fun deleteWalletBy(id: Long): Result<Unit>
 }

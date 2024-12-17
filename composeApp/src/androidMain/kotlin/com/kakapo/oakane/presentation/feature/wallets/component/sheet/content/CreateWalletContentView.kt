@@ -148,11 +148,14 @@ internal fun StartBalanceTextField(value: String, onValueChange: (String) -> Uni
     var formattedValue by remember { mutableStateOf(value) }
 
     LaunchedEffect(value) {
-        val unformattedValue = value.filter { it.isDigit() }
-        formattedValue = if (unformattedValue.isNotEmpty()) {
-            val number = unformattedValue.toLongOrNull() ?: 0L
-            NumberFormat.getInstance(Locale("in", "ID")).format(number)
-        } else {
+        formattedValue = try {
+            if (value.isNotEmpty()) {
+                val number = value.toDoubleOrNull() ?: 0.0
+                NumberFormat.getInstance(Locale("in", "ID")).format(number)
+            } else {
+                ""
+            }
+        } catch (e: Exception) {
             ""
         }
     }
@@ -161,15 +164,10 @@ internal fun StartBalanceTextField(value: String, onValueChange: (String) -> Uni
         modifier = Modifier.fillMaxWidth(),
         value = formattedValue,
         onValueChange = { newValue ->
-            val unformattedValue = newValue.filter { it.isDigit() }
-            val formattedText = if (unformattedValue.isNotEmpty()) {
-                val number = unformattedValue.toLongOrNull() ?: 0L
-                NumberFormat.getInstance(Locale("in", "ID")).format(number)
-            } else {
-                ""
-            }
-            formattedValue = formattedText
-            onValueChange(unformattedValue)
+            val cleanValue = newValue.replace(Regex("[^\\d,.]"), "")
+            val doubleValue = cleanValue.toDoubleOrNull() ?: 0.0
+            formattedValue = NumberFormat.getInstance(Locale("in", "ID")).format(doubleValue)
+            onValueChange(cleanValue)
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         placeholder = {
