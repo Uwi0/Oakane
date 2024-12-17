@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
@@ -52,11 +53,9 @@ internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEve
         CurrencyContent(onEvent = onEvent)
         ColorContent(uiState = uiState, onEvent = onEvent)
         Spacer(Modifier.size(48.dp))
-        CustomButton(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-            onClick = { onEvent.invoke(WalletsEvent.SaveWallet) },
-            content = { Text("Save Wallet") }
+        ConfirmButtonView(
+            isEditMode = uiState.walletId != 0L,
+            onEvent = onEvent
         )
     }
 }
@@ -178,4 +177,30 @@ internal fun StartBalanceTextField(value: String, onValueChange: (String) -> Uni
         },
         shape = MaterialTheme.shapes.medium,
     )
+}
+
+@Composable
+private fun ConfirmButtonView(isEditMode: Boolean, onEvent: (WalletsEvent) -> Unit) {
+    val title = if (isEditMode) "Update" else "Create"
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (isEditMode) {
+            CustomOutlinedButton(
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(16.dp),
+                onClick = {onEvent.invoke(WalletsEvent.Dialog(shown = true))},
+                content = { Text("Delete") },
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+        CustomButton(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(16.dp),
+            onClick = { onEvent.invoke(WalletsEvent.SaveWallet) },
+            content = { Text(title) }
+        )
+    }
 }

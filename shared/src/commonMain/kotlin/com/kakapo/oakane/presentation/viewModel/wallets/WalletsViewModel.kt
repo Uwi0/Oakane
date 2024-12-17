@@ -44,13 +44,13 @@ class WalletsViewModel(
             is WalletsEvent.ChangeStart -> _uiState.update { it.copy(startBalance = event.balance) }
             is WalletsEvent.SelectedIcon -> _uiState.update { it.copy(selectedIcon = event.name) }
             is WalletsEvent.SelectedImage -> _uiState.update { it.updateImage(event.file) }
+            is WalletsEvent.SelectWalletBy -> selectWalletBy(event.id)
+            is WalletsEvent.ClickedItem -> _uiState.update { it.onClickedItem(event.wallet) }
+            is WalletsEvent.Dialog -> _uiState.update { it.copy(dialogShown = event.shown) }
             WalletsEvent.FeatureNotAvailable -> emit(WalletsEffect.ShowError("Feature not available yet"))
             WalletsEvent.ConfirmIcon -> _uiState.update { it.copy(sheetContent = WalletSheetContent.Create) }
             WalletsEvent.SaveWallet -> saveWallet()
-            is WalletsEvent.SelectWalletBy -> selectWalletBy(event.id)
-            is WalletsEvent.ClickedItem -> _uiState.update { it.onClickedItem(event.wallet) }
-            WalletsEvent.DeleteDialog -> {}
-            WalletsEvent.UpdateWallet -> {}
+            WalletsEvent.ConfirmDelete -> deleteWallet()
         }
     }
 
@@ -95,6 +95,14 @@ class WalletsViewModel(
         loadWallets()
     }
 
+    private fun deleteWallet() = viewModelScope.launch {
+        val walletId = uiState.value.walletId
+        walletRepository.deleteWalletBy(walletId).fold(
+            onSuccess = { _uiState.update { it.resetWalletsSheet() } },
+            onFailure = ::handleError
+        )
+    }
+
     private fun selectWalletBy(id: Long) = viewModelScope.launch {
         val wallets = uiState.value.wallets.selectedWalletUseCase(id)
         walletRepository.saveWallet(id).fold(
@@ -105,7 +113,11 @@ class WalletsViewModel(
 
     private fun showSheet(shown: Boolean) {
         _uiState.update { it.copy(isSheetShown = shown) }
+        val isEditMode = uiState.value.walletId != 0L
         if (!shown) {
+            if (isEditMode){
+                _uiState.update { it.resetWalletsSheet() }
+            }
             emit(WalletsEffect.DismissBottomSheet)
         }
     }

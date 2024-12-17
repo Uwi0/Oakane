@@ -17,7 +17,8 @@ data class WalletsState(
     val selectedColor: String = "",
     val startBalance: String = "",
     val selectedIcon: CategoryIconName = CategoryIconName.WALLET,
-    val imageFile: String = ""
+    val imageFile: String = "",
+    val dialogShown: Boolean = false
 ){
 
     val defaultColor: Int get(){
@@ -36,6 +37,7 @@ data class WalletsState(
     )
 
     fun resetWalletsSheet(): WalletsState = copy(
+        walletId = 0,
         walletName = "",
         selectedColor = "",
         startBalance = "",
@@ -89,6 +91,6 @@ sealed class WalletsEvent{
     data object SaveWallet: WalletsEvent()
     data class SelectWalletBy(val id: Long): WalletsEvent()
     data class ClickedItem(val wallet: WalletItemModel): WalletsEvent()
-    data object UpdateWallet: WalletsEvent()
-    data object DeleteDialog: WalletsEvent()
+    data class Dialog(val shown: Boolean): WalletsEvent()
+    data object ConfirmDelete: WalletsEvent()
 }

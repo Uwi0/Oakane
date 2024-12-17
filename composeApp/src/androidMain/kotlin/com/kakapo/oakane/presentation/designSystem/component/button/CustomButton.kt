@@ -109,6 +109,7 @@ fun CustomOutlinedButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    color: Color = MaterialTheme.colorScheme.primary,
     content: @Composable RowScope.() -> Unit,
 ) {
     OutlinedButton(
@@ -117,12 +118,12 @@ fun CustomOutlinedButton(
         enabled = enabled,
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.primary,
+            contentColor = color,
         ),
         border = BorderStroke(
             width = CustomButtonDefaults.OutlinedButtonBorderWidth,
             color = if (enabled) {
-                MaterialTheme.colorScheme.primary
+                color
             } else {
                 MaterialTheme.colorScheme.onSurface.copy(
                     alpha = CustomButtonDefaults.DisabledOutlinedButtonBorderAlpha,
@@ -197,7 +198,7 @@ private fun CustomButtonContent(
 
 object CustomButtonDefaults {
     const val DisabledOutlinedButtonBorderAlpha = 0.12f
-    val OutlinedButtonBorderWidth = 1.dp
+    val OutlinedButtonBorderWidth = 2.dp
 }
 
 
