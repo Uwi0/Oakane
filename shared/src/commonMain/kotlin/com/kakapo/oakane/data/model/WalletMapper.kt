@@ -12,7 +12,7 @@ fun WalletEntity.toWalletModel(): WalletModel {
         balance = balance,
         name = name,
         isDefaultIcon = false,
-        icon = "quas"
+        icon = icon
     )
 }
 

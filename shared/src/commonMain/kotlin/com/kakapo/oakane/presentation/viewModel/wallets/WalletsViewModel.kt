@@ -119,9 +119,7 @@ class WalletsViewModel(
         _uiState.update { it.copy(isSheetShown = shown) }
         val isEditMode = uiState.value.walletId != 0L
         if (!shown) {
-            if (isEditMode){
-                _uiState.update { it.resetWalletsSheet() }
-            }
+            if (isEditMode) _uiState.update { it.resetWalletsSheet() }
             emit(WalletsEffect.DismissBottomSheet)
         }
     }
