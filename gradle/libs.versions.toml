@@ -17,9 +17,11 @@ compose-plugin = "1.6.11"
 datastore = "1.1.1"
 junit = "4.13.2"
 kermit = "2.0.4"
+kmp-nativecoroutines = "1.0.0-ALPHA-38"
 kotlin = "2.1.0"
 kotlinx-datetime = "0.6.1"
 koin-bom = "4.0.0"
+ksp = "2.1.0-1.0.29"
 skie = "0.10.0"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.6"
@@ -59,10 +61,12 @@ sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", vers
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 
 [plugins]
+appCash-sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
-jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmp-nativecoroutines"}
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-appCash-sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 touchlab-skie = { id = "co.touchlab.skie", version.ref = "skie" }

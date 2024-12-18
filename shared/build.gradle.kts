@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -6,11 +5,12 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.appCash.sqlDelight)
     alias(libs.plugins.touchlab.skie)
+    alias(libs.plugins.kmp.nativecoroutines)
+    alias(libs.plugins.devtools.ksp)
 }
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
