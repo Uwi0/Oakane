@@ -7,7 +7,38 @@ struct WalletsScreen: View {
     private var uiState: WalletsState { walletsViewModel.uiState }
     
     var body: some View {
-        Text("WalletsScreen \(uiState.wallets.count)")
+        GeometryReader { proxy in
+            ColorTheme.surface.ignoresSafeArea()
+            VStack {
+                WalletsTopAppBar()
+                VStack {
+                    Text("Hello world")
+                    Spacer()
+                }
+            }
+            
+            FabButtonView(
+                size: FabConstant.size,
+                xPos: proxy.size.width - FabConstant.xOffset,
+                yPos: proxy.size.height - FabConstant.yOffset,
+                onClick: {}
+            )
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+struct WalletsTopAppBar: View{
+    
+    @State private var searchQuery: String = ""
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            NavigationTopAppbar(title: "Wallets", navigateBack: {})
+            OutlinedSearchTextFieldView(query: $searchQuery, placeHolder: "Search Wallet...")
+                .padding(.horizontal, 16)
+            Divider()
+        }
     }
 }
 
