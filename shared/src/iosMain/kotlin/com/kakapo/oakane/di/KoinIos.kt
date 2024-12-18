@@ -50,5 +50,5 @@ fun Koin.get(objCClass: ObjCClass, qualifier: Qualifier?, parameter: Any): Any {
 
 actual val platformModule: Module = module {
     single { MySqlDriverFactory().createDriver() }
-    single { OakanePreferenceDataStoreFactory() }
+    single { OakanePreferenceDataStoreFactory().dataStore() }
 }
