@@ -4,7 +4,7 @@ import Shared
 final class AddTransactionViewModel: ObservableObject {
     
     @Published var uiState: AddTransactionState = AddTransactionState()
-    private let viewModel: AddTransactionViewModelAdapter = Koin.instance.get()
+    private let viewModel: AddTransactionViewModelAdapter = Koin.shared.get()
     
     init() {
         viewModel.observeState(onStateChange: { [weak self] state in

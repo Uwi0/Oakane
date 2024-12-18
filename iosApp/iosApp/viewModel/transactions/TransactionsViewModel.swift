@@ -7,7 +7,7 @@ final class TransactionsViewModel: ObservableObject {
     @Published var uiState: TransactionsState = TransactionsState()
     @Published var uiEffect: TransactionsEffect? = nil
     
-    private var viewModel: TransactionsViewModelAdapter = Koin.instance.get()
+    private var viewModel: TransactionsViewModelAdapter = Koin.shared.get()
     
     init () {
         viewModel.observeState { [weak self] state in

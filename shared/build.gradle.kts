@@ -74,3 +74,7 @@ sqldelight {
         }
     }
 }
+
+kotlin.sourceSets.all {
+    languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
+}

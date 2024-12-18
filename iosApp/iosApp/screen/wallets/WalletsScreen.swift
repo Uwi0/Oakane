@@ -1,8 +1,13 @@
 import SwiftUI
 
 struct WalletsScreen: View {
+    
+    @StateObject var walletsViewModel: WalletsViewModel = WalletsViewModel()
+    
+    private var uiState: WalletsState { walletsViewModel.uiState }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("WalletsScreen \(uiState.wallets.count)")
     }
 }
 

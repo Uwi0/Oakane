@@ -6,7 +6,7 @@ final class HomeViewModel: ObservableObject {
     @Published var uiState: HomeState = HomeState()
     @Published var uiEffects: HomeEffect? = nil
     
-    private var viewModel: HomeViewModelAdapter = Koin.instance.get()
+    private var viewModel: HomeViewModelAdapter = Koin.shared.get()
     
     init(){
         self.viewModel.observeState { [weak self] state in
