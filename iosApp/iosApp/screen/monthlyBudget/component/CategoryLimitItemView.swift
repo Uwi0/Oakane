@@ -6,7 +6,7 @@ struct CategoryLimitItemView: View {
     let categoryLimit: CategoryLimitModel
     
     private var limit: String {
-        categoryLimit.limit.toFormatIDRCurrency()
+        categoryLimit.limit.toFormatIDRWithCurrency()
     }
     
     private var progress: String {
@@ -14,7 +14,7 @@ struct CategoryLimitItemView: View {
     }
     
     private var spent: String {
-        categoryLimit.spent.toFormatIDRCurrency()
+        categoryLimit.spent.toFormatIDRWithCurrency()
     }
     
     var body: some View {

@@ -62,6 +62,10 @@ struct HomeScreen: View {
                 navigation.navigate(to: .goals)
             case .toMonthlyBudget:
                 navigation.navigate(to: .monthlyBudget)
+            case .toTransaction(let effect):
+                navigation.navigate(to: .transaction(transactionId: effect.id))
+            case .toWallets:
+                navigation.navigate(to: .wallets)
             }
         }
         viewModel.uiEffects = nil

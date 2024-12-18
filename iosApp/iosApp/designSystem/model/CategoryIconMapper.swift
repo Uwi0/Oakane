@@ -18,6 +18,8 @@ extension CategoryIconName {
             return IconConstant.ChartLineUptrendXYAxis
         case .gifts:
             return IconConstant.GiftFill
+        case .wallet:
+            return IconConstant.WalletBiffold
             
         case .rentMortgage:
             return IconConstant.BuildingColumnsFill

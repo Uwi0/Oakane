@@ -21,7 +21,7 @@ final class CategoriesViewModel: ObservableObject {
                 self?.uiState.categories = uiState.filteredCategories
                 self?.uiState.sheetContent = uiState.sheetContent
                 self?.uiState.categoryName = uiState.categoryName
-                self?.uiState.selectedColor = uiState.defaultSelectedColor
+                self?.uiState.selectedColor = uiState.defaultColor
                 self?.uiState.defaultColors = uiState.categoriesColor
                 self?.uiState.selectedIcon = uiState.defaultIcon
                 self?.uiState.showSheet = uiState.showSheet

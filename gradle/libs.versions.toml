@@ -24,7 +24,6 @@ skie = "0.10.0"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.6"
 
-
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
