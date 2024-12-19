@@ -12,17 +12,17 @@ struct CreateWalletSheetView: View {
                 imageName: uiState.imageFile,
                 icon: uiState.selectedIcon,
                 color: uiState.selectedColor,
-                onClickImage: { onEvent(.SelectedSheet(content: .selectIcon))}
+                onEvent: onEvent
             )
-            StartWithBalanceContentView()
+            StartWithBalanceContentView(onEvent: onEvent)
             CurrencyContentView()
             HorizontalColorSelectorView(
                 selectedColor: Color(hex: uiState.selectedColor),
                 colors: uiState.colors,
-                onSelectedColor: { hex in }
+                onSelectedColor: { hex in onEvent(.SelectWallet(color: hex))}
             )
             Spacer()
-            FilledButtonView(text: "Add Wallet", onClick: {})
+            FilledButtonView(text: "Add Wallet", onClick: { onEvent(.SaveWallet())})
                 .frame(height: 48)
         }
         .padding(.horizontal, 16)
@@ -34,7 +34,7 @@ fileprivate struct NameAndIconContentView: View {
     let imageName: String
     let icon: CategoryIconName
     let color: Int32
-    let onClickImage: () -> Void
+    let onEvent: (WalletsEvent) -> Void
     
     @State private var walletName: String = ""
     
@@ -44,12 +44,12 @@ fileprivate struct NameAndIconContentView: View {
                 .font(Typography.titleMedium)
             HStack(alignment: .center, spacing: 8) {
                 SelectedIconView(imageName: imageName, icon: icon, color: color)
-                    .onTapGesture { onClickImage() }
+                    .onTapGesture { onEvent(.SelectedSheet(content: .selectIcon)) }
                 OutlinedTextFieldView(
                     value: $walletName,
                     placeHolder: "Wallet Name",
                     showLabel: false,
-                    onValueChange: { value in }
+                    onValueChange: { value in onEvent(.OnChangeWallet(name: value))}
                 )
             }
         }
@@ -58,13 +58,17 @@ fileprivate struct NameAndIconContentView: View {
 
 fileprivate struct StartWithBalanceContentView: View {
     
+    let onEvent: (WalletsEvent) -> Void
     @State private var value: Int = 0
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Start Balance")
                 .font(Typography.titleMedium)
-            OutlinedCurrencyTextFieldView(value: $value, onValueChange: { value in })
+            OutlinedCurrencyTextFieldView(
+                value: $value,
+                onValueChange: { value in onEvent(.ChangeStart(balance: value))}
+            )
         }
     }
 }

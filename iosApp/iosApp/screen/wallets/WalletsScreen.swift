@@ -34,9 +34,9 @@ struct WalletsScreen: View {
                     case .selectIcon: SelectIconView(
                         selectedIcon: uiState.selectedIcon,
                         selectedColor: uiState.selectedColor,
-                        onPickIcon: { incon in },
-                        onTakImage: { Image in },
-                        onConfirm: {}
+                        onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon)) },
+                        onTakImage: { file in viewModel.handle(event: .SelectedImage(file: file)) },
+                        onConfirm: { viewModel.handle(event: .ConfirmIcon()) }
                     )
                     }
                 }
