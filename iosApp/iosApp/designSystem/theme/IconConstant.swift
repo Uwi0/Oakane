@@ -5,7 +5,7 @@ struct IconConstant {
     static let Person3 = "person.3"
     static let DollarsignCircle = "dollarsign.circle"
     static let BriefcaseFill = "briefcase.fill"
-    static let WalletBiffold = "wallet.biffold"
+    static let WalletBifold = "wallet.bifold"
     
     //freelance
     static let PersonCropCircleBadgeCheckmark = "person.crop.circle.badge.checkmark"

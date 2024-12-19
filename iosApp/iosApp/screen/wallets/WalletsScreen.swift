@@ -11,10 +11,7 @@ struct WalletsScreen: View {
             ColorTheme.surface.ignoresSafeArea()
             VStack {
                 WalletsTopAppBar()
-                VStack {
-                    Text("Hello world")
-                    Spacer()
-                }
+                WalletsContentView(walletItems: uiState.wallets)
             }
             
             FabButtonView(

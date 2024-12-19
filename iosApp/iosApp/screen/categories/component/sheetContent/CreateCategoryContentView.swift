@@ -43,7 +43,11 @@ private struct CategoryNameFieldView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            SelectedCategoryIconView(uiState: uiState)
+            SelectedIconView(
+                imageName: uiState.imageName,
+                icon: uiState.selectedIcon,
+                color: uiState.selectedColor
+            )
             .onTapGesture {
                 onEvent(.ChangeSheet(content: .selectIcon))
             }
@@ -56,33 +60,6 @@ private struct CategoryNameFieldView: View {
             )
         }
         
-    }
-}
-
-private struct SelectedCategoryIconView: View {
-    
-    let uiState: CategoriesState
-    
-    private var icon: String {
-        uiState.selectedIcon.asIconCategory()
-    }
-    
-    private var color: Color {
-        Color(hex: uiState.selectedColor)
-    }
-    
-    var body: some View {
-        VStack{
-            if uiState.imageName.isEmpty {
-                CategoryIconView(icon: icon, color: color)
-            } else {
-                DisplayImageFileView(fileName: uiState.imageName, width: 48, height: 48)
-                    .overlay{
-                        Circle()
-                            .stroke(color, lineWidth: 3)
-                    }
-            }
-        }
     }
 }
 

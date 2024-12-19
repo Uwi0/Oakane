@@ -3,6 +3,8 @@ import SwiftUI
 struct CategoryIconView: View {
     let icon: String
     let color: Color
+    var size: CGFloat = 48
+    var padding: CGFloat = 12
     
     private var contentColor: Color {
         let uiColor = UIColor(color)
@@ -18,10 +20,10 @@ struct CategoryIconView: View {
                 Image(systemName: icon)
                     .resizable()
                     .scaledToFit()
-                    .padding(12)
+                    .padding(padding)
                     .foregroundColor(contentColor)
             )
-            .frame(width: 48, height: 48)
+            .frame(width: size, height: size)
     }
 }
 
