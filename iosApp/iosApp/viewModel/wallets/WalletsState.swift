@@ -9,6 +9,7 @@ struct WalletsState {
     var imageFile: String = ""
     var selectedIcon: CategoryIconName = .wallet
     var selectedColor: Int32 = 0
+    var colors: [String] = []
     
     init(){}
     
@@ -20,5 +21,6 @@ struct WalletsState {
         self.imageFile = walletsState.imageFile
         self.selectedIcon = walletsState.selectedIcon
         self.selectedColor = walletsState.defaultColor
+        self.colors = walletsState.colors
     }
 }

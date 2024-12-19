@@ -12,6 +12,11 @@ struct CreateWalletSheetView: View {
             )
             StartWithBalanceContentView()
             CurrencyContentView()
+            HorizontalColorSelectorView(
+                selectedColor: Color(hex: uiState.selectedColor),
+                colors: uiState.colors,
+                onSelectedColor: { hex in }
+            )
             Spacer()
             FilledButtonView(text: "Add Wallet", onClick: {})
                 .frame(height: 48)

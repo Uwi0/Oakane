@@ -14,7 +14,11 @@ struct CreateCategoryContentView: View {
             TitleView(title: "Category Type")
             CategorySegmentedButtonView(onEvent: onEvent)
             TitleView(title: "Category Color")
-            CategoryColorSeleectionView(uiState: uiState, onEvent: onEvent)
+            HorizontalColorSelectorView(
+                selectedColor: Color(hex: uiState.selectedColor),
+                colors: uiState.defaultColors,
+                onSelectedColor: { hex in onEvent(.SelectedColor(hex: hex)) }
+            )
             Spacer()
             CreateCategoryButtonView(uiState: uiState, onEvent: onEvent)
         }
@@ -80,50 +84,6 @@ private struct CategorySegmentedButtonView: View {
         .onChange(of: selectedType) {
             onEvent(.Selected(type: selectedType))
         }
-    }
-}
-
-private struct CategoryColorSeleectionView: View {
-    
-    let uiState: CategoriesState
-    let onEvent: (CategoriesEvent) -> Void
-    @State private var selectedColor: Color
-    
-    init(uiState: CategoriesState, onEvent: @escaping (CategoriesEvent) -> Void) {
-        self.uiState = uiState
-        self.onEvent = onEvent
-        self.selectedColor = Color(hex: uiState.selectedColor)
-    }
-    
-    var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 16) {
-                CategoryIconView(
-                    icon: IconConstant.Paintbrush,
-                    color: Color(hex:uiState.selectedColor)
-                )
-                .allowsHitTesting(false)
-                .background {
-                    ColorPicker("CustomColor",selection: $selectedColor)
-                        .labelsHidden()
-                        .onChange(of: selectedColor) {
-                            let colorHex = selectedColor.toHexString() ?? "0xFFFFFF"
-                            onEvent(.SelectedColor(hex: colorHex))
-                        }
-                }
-                ForEach(uiState.defaultColors, id: \.self) { hex in
-                    let colorHex = hex.toColorInt()
-                    let color = Color(hex: colorHex)
-                    Circle()
-                        .fill(color)
-                        .frame(width: 48, height: 48)
-                        .onTapGesture {
-                            onEvent(.SelectedColor(hex: hex))
-                        }
-                }
-            }
-        }
-        .scrollIndicators(.hidden)
     }
 }
 
