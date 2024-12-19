@@ -5,15 +5,16 @@ struct WalletItemView: View {
     
     let wallet: WalletItemModel
     
+    private var formattedBalance: String {
+        wallet.balance.toFormatIDR()
+    }
+    
     var body: some View {
         VStack {
             TopContentView(wallet: wallet)
-            Text("Rp 20.000.000")
-                .font(Typography.headlineMedium)
-            Divider()
-            HStack{
-                
-            }
+            Text("Rp \(formattedBalance)").font(Typography.headlineMedium)
+            Divider().scaleEffect(y: 2.5)
+            BottomContentView(wallet: wallet)
         }
         .customBackground(backgroundColor: ColorTheme.surface)
     }
@@ -68,3 +69,45 @@ fileprivate struct OutlinedCheckmarkRadioButton: View {
     }
 }
 
+fileprivate struct BottomContentView: View {
+    
+    let wallet: WalletItemModel
+    
+    var body: some View {
+        HStack(spacing: 10) {
+            BalanceContent(
+                title: "Expense this month",
+                amount: wallet.expense,
+                color: ColorTheme.error
+            )
+            Divider().scaleEffect(x: 2.5)
+            BalanceContent(
+                title: "Income this month",
+                amount: wallet.income,
+                color: ColorTheme.primary
+            )
+        }
+        .padding(.top, 8)
+    }
+}
+
+fileprivate struct BalanceContent: View {
+    
+    let title: String
+    let amount: Double
+    let color: Color
+    
+    private var formattedAmount: String {
+        amount.toIDRCurrency()
+    }
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: 8) {
+            Text(title)
+                .foregroundStyle(color)
+                .font(Typography.labelMedium)
+            Text("Rp \(formattedAmount)")
+        }
+        .frame(minWidth: 120)
+    }
+}
