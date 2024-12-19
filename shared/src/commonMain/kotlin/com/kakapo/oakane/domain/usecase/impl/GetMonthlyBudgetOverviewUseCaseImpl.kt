@@ -25,6 +25,7 @@ class GetMonthlyBudgetOverviewUseCaseImpl(
             MonthlyBudgetOverViewModel(
                 totalIncome = totalIncome,
                 totalExpense = totalExpense,
+                spent = totalExpense,
                 left = limit - totalExpense,
                 limit = limit,
                 progress = (totalExpense / limit).toFloat()
