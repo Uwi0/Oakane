@@ -11,6 +11,7 @@ struct CreateWalletSheetView: View {
                 color: uiState.selectedColor
             )
             StartWithBalanceContentView()
+            CurrencyContentView()
             Spacer()
             FilledButtonView(text: "Add Wallet", onClick: {})
                 .frame(height: 48)
@@ -53,6 +54,28 @@ fileprivate struct StartWithBalanceContentView: View {
             Text("Start Balance")
                 .font(Typography.titleMedium)
             OutlinedCurrencyTextFieldView(value: $value, onValueChange: { value in })
+        }
+    }
+}
+
+fileprivate struct CurrencyContentView: View {
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Currency")
+                .font(Typography.titleMedium)
+            Button(action: {}){
+                HStack {
+                    Text("IDR")
+                        .font(Typography.bodyLarge)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity)
+                .background(RoundedRectangle(cornerRadius: 16).stroke(ColorTheme.outline, lineWidth: 2))
+            }
+            .buttonStyle(PlainButtonStyle())
         }
     }
 }

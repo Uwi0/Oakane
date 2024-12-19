@@ -8,7 +8,7 @@ struct WalletsScreen: View {
     
     private var bottomSheetSize: PresentationDetent {
         switch uiState.sheetContent {
-        case .create: return .fraction(0.6)
+        case .create: return .fraction(0.7)
         case .selectIcon: return .fraction(0.9)
         case .selectColor: return .large
         case .selectCurrency: return .large
