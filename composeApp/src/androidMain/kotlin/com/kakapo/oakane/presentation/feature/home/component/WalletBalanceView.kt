@@ -39,9 +39,12 @@ internal fun WalletBalanceView(walletModel: WalletModel, onClick: () -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             WalletIcon(walletModel)
-            Text(text = walletModel.name, style = MaterialTheme.typography.titleMedium,)
+            Text(text = walletModel.name, style = MaterialTheme.typography.titleMedium)
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 modifier = Modifier.align(Alignment.Top),
                 text = "Rp",
@@ -62,7 +65,7 @@ internal fun WalletBalanceView(walletModel: WalletModel, onClick: () -> Unit) {
 
 @Composable
 private fun WalletIcon(walletModel: WalletModel) {
-    if (walletModel.icon.contains("jpg")){
+    if (walletModel.icon.contains("jpg")) {
         val context = LocalContext.current
         val imageUri = context.getSavedImageUri(walletModel.icon).getOrNull()
         val imageUrl by remember { mutableStateOf(imageUri) }
@@ -73,7 +76,7 @@ private fun WalletIcon(walletModel: WalletModel) {
                 .clip(CircleShape),
             placeholder = painterResource(R.drawable.mona_empty_wallet)
         )
-    }else {
+    } else {
         CategoryIconView(
             icon = walletModel.iconName.asIcon(),
             color = MaterialTheme.colorScheme.primary,
@@ -87,7 +90,7 @@ private fun WalletIcon(walletModel: WalletModel) {
 @Preview
 private fun WalletBalancePreview() {
     AppTheme {
-        WalletBalanceView(WalletModel()){
+        WalletBalanceView(WalletModel()) {
 
         }
     }

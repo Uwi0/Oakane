@@ -3,13 +3,14 @@ import Shared
 
 struct MonthlyBudgetView: View {
     
+    let monthlyBudgetOverView: MonthlyBudgetOverViewModel
     let onEvent: (HomeEvent) -> Void
     
     var body: some View {
         VStack(spacing: 16) {
-            TopContentView(onEvent: onEvent)
+            TopContentView(overview: monthlyBudgetOverView, onEvent: onEvent)
             HorizontalDivider()
-            BottomContentView()
+            BottomContentView(overview: monthlyBudgetOverView)
         }
         .customBackground(backgroundColor: ColorTheme.surface)
     }
@@ -17,8 +18,21 @@ struct MonthlyBudgetView: View {
 
 fileprivate struct TopContentView: View {
     
+    let overview: MonthlyBudgetOverViewModel
     let onEvent: (HomeEvent) -> Void
     private let imageSize: CGFloat = 24
+    
+    private var formattedLimit: String {
+        overview.limit.toIDRCurrency()
+    }
+    
+    private var formattedSpent: String {
+        overview.spent.toIDRCurrency()
+    }
+    
+    private var formattedLeft: String {
+        overview.left.toIDRCurrency()
+    }
     
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
@@ -35,15 +49,15 @@ fileprivate struct TopContentView: View {
                         fontWeight: .bold
                     )
                 }
-                Text("Rp. 0")
+                Text(formattedLimit)
                     .font(.title3)
                     .fontWeight(.semibold)
-                ProgressIndicatorView(value: 0.5)
+                ProgressIndicatorView(value: overview.progress)
                 HStack{
-                    Text("Spent Rp. 0")
+                    Text("Spent \(formattedSpent)")
                         .font(Typography.bodyMedium)
                     Spacer()
-                    Text("Left Rp. 0")
+                    Text("Left \(formattedLeft)")
                         .font(Typography.bodyMedium)
                 }
             }
@@ -52,17 +66,19 @@ fileprivate struct TopContentView: View {
 }
 
 fileprivate struct BottomContentView: View {
+    let overview: MonthlyBudgetOverViewModel
     var body: some View {
         HStack(spacing: 16) {
-            BalanceItemView(isIncome: true)
+            BalanceItemView(value: overview.totalIncome,isIncome: true)
             Spacer()
-            BalanceItemView(isIncome: false)
+            BalanceItemView(value: overview.totalExpense,isIncome: false)
         }
     }
 }
 
 fileprivate struct BalanceItemView: View {
     
+    let value: Double
     let isIncome: Bool
     
     private var imageName: String {
@@ -71,6 +87,10 @@ fileprivate struct BalanceItemView: View {
     
     private var text: LocalizedStringKey {
         isIncome ? "Total Income" : "Total Expenses"
+    }
+    
+    private var formattedValue: String {
+        value.toIDRCurrency()
     }
     
     var body: some View {
@@ -82,13 +102,8 @@ fileprivate struct BalanceItemView: View {
             Text(text)
                 .foregroundStyle(ColorTheme.outline)
                 .font(Typography.bodyMedium)
-            Text("Rp. 0")
+            Text(formattedValue)
                 .font(Typography.titleMedium)
         }
     }
-}
-
-
-#Preview {
-    MonthlyBudgetView(onEvent: { _ in })
 }

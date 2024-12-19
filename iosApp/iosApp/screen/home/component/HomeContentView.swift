@@ -9,8 +9,8 @@ struct HomeContentView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading,spacing: 16) {
-                TotalBalanceView()
-                MonthlyBudgetView(onEvent: onEvent)
+                WalletBalanceView(wallet: uiState.wallet)
+                MonthlyBudgetView(monthlyBudgetOverView: uiState.monthlyOverview, onEvent: onEvent)
                 Text("RecentTransaction")
                     .font(Typography.titleMedium)
                 HomeTransactionsView(transactions: uiState.transactions)

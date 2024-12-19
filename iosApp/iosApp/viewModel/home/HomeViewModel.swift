@@ -13,6 +13,8 @@ final class HomeViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.uiState.transactions = state.transactions
                 self?.uiState.goals = state.goals
+                self?.uiState.monthlyOverview = state.monthlyBudgetOverView
+                self?.uiState.wallet = state.wallet
             }
         }
         self.viewModel.observeEffect { [weak self] effects in
