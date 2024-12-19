@@ -28,10 +28,16 @@ struct WalletsScreen: View {
             ){
                 VStack {
                     switch uiState.sheetContent {
-                    case .create: CreateWalletSheetView(uiState: uiState)
+                    case .create: CreateWalletSheetView(uiState: uiState, onEvent: viewModel.handle(event:))
                     case .selectColor: Text("Select Color")
                     case .selectCurrency: Text("Select Currency")
-                    case .selectIcon: Text("Select Icon")
+                    case .selectIcon: SelectIconView(
+                        selectedIcon: uiState.selectedIcon,
+                        selectedColor: uiState.selectedColor,
+                        onPickIcon: { incon in },
+                        onTakImage: { Image in },
+                        onConfirm: {}
+                    )
                     }
                 }
                 .presentationDetents([bottomSheetSize])

@@ -12,7 +12,7 @@ struct WalletItemView: View {
     var body: some View {
         VStack {
             TopContentView(wallet: wallet)
-            Text("Rp \(formattedBalance)").font(Typography.headlineMedium)
+            Text(formattedBalance).font(Typography.headlineMedium)
             Divider().scaleEffect(y: 2.5)
             BottomContentView(wallet: wallet)
         }

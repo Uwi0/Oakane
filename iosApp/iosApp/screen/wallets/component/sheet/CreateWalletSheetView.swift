@@ -2,13 +2,17 @@ import SwiftUI
 import Shared
 
 struct CreateWalletSheetView: View {
+    
     let uiState: WalletsState
+    let onEvent: (WalletsEvent) -> Void
+    
     var body: some View {
         VStack(spacing: 16) {
             NameAndIconContentView(
                 imageName: uiState.imageFile,
                 icon: uiState.selectedIcon,
-                color: uiState.selectedColor
+                color: uiState.selectedColor,
+                onClickImage: { onEvent(.SelectedSheet(content: .selectIcon))}
             )
             StartWithBalanceContentView()
             CurrencyContentView()
@@ -30,6 +34,7 @@ fileprivate struct NameAndIconContentView: View {
     let imageName: String
     let icon: CategoryIconName
     let color: Int32
+    let onClickImage: () -> Void
     
     @State private var walletName: String = ""
     
@@ -39,6 +44,7 @@ fileprivate struct NameAndIconContentView: View {
                 .font(Typography.titleMedium)
             HStack(alignment: .center, spacing: 8) {
                 SelectedIconView(imageName: imageName, icon: icon, color: color)
+                    .onTapGesture { onClickImage() }
                 OutlinedTextFieldView(
                     value: $walletName,
                     placeHolder: "Wallet Name",

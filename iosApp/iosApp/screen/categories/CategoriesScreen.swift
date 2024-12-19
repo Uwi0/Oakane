@@ -23,6 +23,10 @@ struct CategoriesScreen: View {
         viewModel.uiState.searchQuery
     }
     
+    private var uiState: CategoriesState {
+        viewModel.uiState
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -34,35 +38,35 @@ struct CategoriesScreen: View {
                     tabBars: viewModel.tabBars,
                     expenseCategories: viewModel.expenseCategories,
                     incomeCategories: viewModel.incomeCategories,
-                    onEvent: viewModel.onEvent
+                    onEvent: viewModel.handle
                 )
                 .onChange(of: searchQuery){
-                    viewModel.onEvent(event: .Search(query: searchQuery))
+                    viewModel.handle(event: .Search(query: searchQuery))
                 }
                 
                 FabButtonView(
                     size: FabConstant.size,
                     xPos: geometry.size.width - FabConstant.xOffset,
                     yPos: geometry.size.height - FabConstant.yOffset,
-                    onClick: { viewModel.onEvent(event: .ShowSheet(visibility: true)) }
+                    onClick: { viewModel.handle(event: .ShowSheet(visibility: true)) }
                 )
             }
             .navigationBarBackButtonHidden(true)
             .customToolbar(content: toolbarContent, onEvent: onToolbarEvent(toolbarEvent:))
             .sheet(isPresented: $viewModel.uiState.showSheet) {
                 VStack {
-                    switch viewModel.uiState.sheetContent {
+                    switch uiState.sheetContent {
                     case .create:
-                        CreateCategoryContentView(uiState: viewModel.uiState, onEvent: viewModel.onEvent)
+                        CreateCategoryContentView(uiState: viewModel.uiState, onEvent: viewModel.handle)
                     case .selectColor:
                         Text("Select Color")
                     case .selectIcon:
-                        SelectCategoryIconView(
-                            uiState: viewModel.uiState,
-                            onEvent: viewModel.onEvent,
-                            onClickedFromGallery: {
-                                
-                            }
+                        SelectIconView(
+                            selectedIcon: uiState.selectedIcon,
+                            selectedColor: uiState.selectedColor,
+                            onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon))},
+                            onTakImage: { image in viewModel.handle(event: .PickImage(file: image))},
+                            onConfirm: { viewModel.handle(event: .ConfirmIcon())}
                         )
                     }
                 }

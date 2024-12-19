@@ -32,7 +32,7 @@ final class CategoriesViewModel: ObservableObject {
         }
     }
     
-    func onEvent(event: CategoriesEvent) {
+    func handle(event: CategoriesEvent) {
         viewModel.handleEvent(event: event)
     }
     
