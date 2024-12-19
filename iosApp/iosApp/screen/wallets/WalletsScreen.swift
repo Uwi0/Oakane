@@ -28,7 +28,7 @@ struct WalletsScreen: View {
             ){
                 VStack {
                     switch uiState.sheetContent {
-                    case .create: Text("Create")
+                    case .create: CreateWalletSheetView(uiState: uiState)
                     case .selectColor: Text("Select Color")
                     case .selectCurrency: Text("Select Currency")
                     case .selectIcon: Text("Select Icon")
