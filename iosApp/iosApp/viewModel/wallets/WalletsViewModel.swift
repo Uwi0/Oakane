@@ -24,6 +24,10 @@ final class WalletsViewModel: ObservableObject {
         }
     }
     
+    func handle(event: WalletsEvent){
+        viewModel.handleEvent(event: event)
+    }
+    
     deinit {
         cancellable?.cancel()
     }
