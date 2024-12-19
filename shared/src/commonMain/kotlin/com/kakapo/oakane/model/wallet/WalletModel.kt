@@ -17,3 +17,5 @@ data class WalletModel(
             else CategoryIconName.SALARY
         }
 }
+
+val defaultWallet = WalletModel()

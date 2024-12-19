@@ -8,3 +8,5 @@ data class MonthlyBudgetOverViewModel(
     val totalExpense: Double = 0.0,
     val progress: Float = 0f
 )
+
+val defaultMonthlyBudgetOverView = MonthlyBudgetOverViewModel()

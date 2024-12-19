@@ -13,7 +13,7 @@ final class CategoriesViewModel: ObservableObject {
         CategoryModelKt.swiftFilterBy(uiState.categories, type: .income)
     }
     
-    private var viewModel: CategoriesViewModelAdapter = Koin.instance.get()
+    private var viewModel: CategoriesViewModelAdapter = Koin.shared.get()
     
     init() {
         viewModel.observeData { [weak self] uiState in
@@ -32,7 +32,7 @@ final class CategoriesViewModel: ObservableObject {
         }
     }
     
-    func onEvent(event: CategoriesEvent) {
+    func handle(event: CategoriesEvent) {
         viewModel.handleEvent(event: event)
     }
     

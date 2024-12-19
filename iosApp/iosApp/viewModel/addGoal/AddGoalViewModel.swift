@@ -6,7 +6,7 @@ final class AddGoalViewModel: ObservableObject {
     @Published var uiState: AddGoalState = AddGoalState()
     @Published var uiEffect: AddGoalEffect? = nil
     
-    private let viewModel: AddGoalViewModelAdapter = Koin.instance.get()
+    private let viewModel: AddGoalViewModelAdapter = Koin.shared.get()
     
     init() {
         viewModel.observeState { [weak self] uiState in

@@ -5,7 +5,7 @@ final class MonthlyBudgetViewModel: ObservableObject {
     @Published var uiState: MonthlyBudgetState = MonthlyBudgetState()
     @Published var uiEffect: MonthlyBudgetEffect? = nil
     
-    private let viewModel: MonthlyBudgetViewModelAdapter = Koin.instance.get()
+    private let viewModel: MonthlyBudgetViewModelAdapter = Koin.shared.get()
     
     init() {
         viewModel.observeState{ [weak self] state in

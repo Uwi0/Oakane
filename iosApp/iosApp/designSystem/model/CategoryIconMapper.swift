@@ -19,7 +19,7 @@ extension CategoryIconName {
         case .gifts:
             return IconConstant.GiftFill
         case .wallet:
-            return IconConstant.WalletBiffold
+            return IconConstant.WalletBifold
             
         case .rentMortgage:
             return IconConstant.BuildingColumnsFill

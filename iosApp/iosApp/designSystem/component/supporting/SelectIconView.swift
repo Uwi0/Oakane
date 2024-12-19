@@ -2,11 +2,13 @@ import SwiftUI
 import Shared
 import PhotosUI
 
-struct SelectCategoryIconView: View {
-    let uiState: CategoriesState
-    let onEvent: (CategoriesEvent) -> Void
-    let onClickedFromGallery: () -> Void
-    
+struct SelectIconView: View {
+    let selectedIcon: CategoryIconName
+    let selectedColor: Int32
+    let onPickIcon: (CategoryIconName) -> Void
+    let onTakImage: (String) -> Void
+    let onConfirm: () -> Void
+
     var body: some View {
         VStack{
             Text("Chose Icon")
@@ -15,25 +17,22 @@ struct SelectCategoryIconView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     ForEach(parentCategories, id: \.name){ parentCategory in
                         SelectionIconItemView(
-                            uiState: uiState,
+                            selectedIcon: selectedIcon,
+                            selectedColor: selectedColor,
                             parentCategory: parentCategory,
-                            onEvent: { iconName in
-                                onEvent(.SelectedIcon(name: iconName))
-                            }
+                            onPickIcon: onPickIcon
                         )
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            .accessibilityHidden(true)
+            .scrollIndicators(.hidden)
             
             HStack(spacing: 16) {
-                CategoryImagePickerView(onEvent: onEvent)
+                CategoryImagePickerView(onTakeImage: onTakImage)
                 FilledButtonView(
                     text: "Select Icon",
-                    onClick: {
-                        onEvent(.ConfirmIcon())
-                    }
+                    onClick: onConfirm
                 )
             }
             .frame(height: 48)
@@ -43,17 +42,19 @@ struct SelectCategoryIconView: View {
 }
 
 private struct SelectionIconItemView: View {
-    let uiState: CategoriesState
+    let selectedIcon: CategoryIconName
+    let selectedColor: Int32
     let parentCategory: ParentCategory
-    let onEvent: (CategoryIconName) -> Void
+    let onPickIcon: (CategoryIconName) -> Void
     
     var body: some View {
         VStack(spacing: 8) {
             SelectionHeaderView(parentCategory: parentCategory)
             CategoryIconContentView(
-                uiState: uiState,
+                selectedIcon: selectedIcon,
+                selectedColor: selectedColor,
                 parentCategory: parentCategory,
-                onEvent: onEvent
+                onPickIcon: onPickIcon
             )
         }
     }
@@ -75,28 +76,35 @@ private struct SelectionHeaderView: View {
 }
 
 private struct CategoryIconContentView: View {
-    let uiState: CategoriesState
+    let selectedIcon: CategoryIconName
+    let selectedColor: Int32
     let parentCategory: ParentCategory
-    let onEvent: (CategoryIconName) -> Void
+    let onPickIcon: (CategoryIconName) -> Void
     private let column: [GridItem] = [.init(.adaptive(minimum: 48, maximum: 48))]
     
     var body: some View {
         LazyVGrid(columns: column, alignment: .leading) {
             let categories = categoriesName(parentCategory: parentCategory)
             ForEach(categories, id: \.self) { category in
-                SelectionIconView(uiState: uiState,category: category, onEvent: onEvent)
+                SelectionIconView(
+                    selectedColor:selectedColor,
+                    selectedIcon: selectedIcon,
+                    category: category,
+                    onPickIcon: onPickIcon
+                )
             }
         }
     }
 }
 
 struct SelectionIconView: View {
-    let uiState: CategoriesState
+    let selectedColor: Int32
+    let selectedIcon: CategoryIconName
     let category: CategoryIconName
-    let onEvent: (CategoryIconName) -> Void
+    let onPickIcon: (CategoryIconName) -> Void
     
     private var color: Color {
-        uiState.selectedIcon == category ? Color(hex: uiState.selectedColor) : ColorTheme.outline
+        selectedIcon == category ? Color(hex: selectedColor) : ColorTheme.outline
     }
     
     private var iconName: String {
@@ -106,14 +114,14 @@ struct SelectionIconView: View {
     var body: some View {
         CategoryIconView(icon: iconName, color: color)
             .onTapGesture {
-                onEvent(category)
+                onPickIcon(category)
             }
     }
 }
 
 private struct CategoryImagePickerView: View {
     
-    let onEvent: (CategoriesEvent) -> Void
+    let onTakeImage: (String) -> Void
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
     
@@ -124,10 +132,9 @@ private struct CategoryImagePickerView: View {
             photoLibrary: .shared()
         ){
             Text("From Gallery")
-                .font(.headline)
+                .font(Typography.labelLarge)
                 .foregroundStyle(ColorTheme.primary)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 16)
+                .padding()
                 .frame(maxWidth: .infinity)
                 .overlay {
                     RoundedRectangle(cornerRadius: 16)
@@ -142,7 +149,7 @@ private struct CategoryImagePickerView: View {
                     let savedImage = saveImageToFileSystem(image: uiImage)
                     switch savedImage {
                     case .success(let imageName):
-                        onEvent(.PickImage(file: imageName))
+                        onTakeImage(imageName)
                     case .failure(let error):
                         print(error)
                     }
@@ -150,12 +157,4 @@ private struct CategoryImagePickerView: View {
             }
         }
     }
-}
-
-#Preview {
-    SelectCategoryIconView(
-        uiState: CategoriesState(),
-        onEvent: {_ in },
-        onClickedFromGallery: { }
-    )
 }

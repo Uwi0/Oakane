@@ -5,7 +5,9 @@ import com.kakapo.oakane.model.category.CategoryIconName
 import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
+import kotlin.native.ObjCName
 
+@ObjCName("WalletsStateKt")
 data class WalletsState(
     val walletId: Long = 0,
     val wallets: List<WalletItemModel> = emptyList(),
@@ -25,6 +27,8 @@ data class WalletsState(
         val color = selectedColor.ifEmpty { colors.first() }
         return color.toColorInt()
     }
+
+    val startBalanceValue: Int get() = startBalance.toIntOrNull() ?: 0
 
     fun selectedWallet(color: String) = copy(
         selectedColor = color,

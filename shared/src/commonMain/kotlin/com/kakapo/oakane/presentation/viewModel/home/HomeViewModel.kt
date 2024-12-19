@@ -10,9 +10,11 @@ import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.model.GoalModel
-import com.kakapo.oakane.model.wallet.WalletModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.model.wallet.WalletModel
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -27,9 +29,11 @@ class HomeViewModel(
     private val monthlyBudgetOverviewUseCase: GetMonthlyBudgetOverviewUseCase
 ) : ViewModel() {
 
+    @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(HomeState())
 
+    @NativeCoroutines
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<HomeEffect>()
 
@@ -86,7 +90,6 @@ class HomeViewModel(
 
     private fun loadBudgetOverView() = viewModelScope.launch {
         val onSuccess: (MonthlyBudgetOverViewModel) -> Unit = { monthlyBudget ->
-            Logger.d { "monthlyBudget: $monthlyBudget" }
             _uiState.update { it.copy(monthlyBudgetOverView = monthlyBudget) }
         }
         monthlyBudgetOverviewUseCase.execute().fold(

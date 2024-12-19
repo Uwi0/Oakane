@@ -59,6 +59,6 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
     }
 
     override suspend fun getCategoryColors(): Result<List<String>> {
-        return runCatching { categoryDb.getCategoryColors().executeAsList() }
+        return runCatching { categoryDb.getCategoryColors().executeAsList().distinct() }
     }
 }
