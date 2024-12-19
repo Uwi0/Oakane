@@ -132,10 +132,9 @@ private struct CategoryImagePickerView: View {
             photoLibrary: .shared()
         ){
             Text("From Gallery")
-                .font(.headline)
+                .font(Typography.labelLarge)
                 .foregroundStyle(ColorTheme.primary)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 16)
+                .padding()
                 .frame(maxWidth: .infinity)
                 .overlay {
                     RoundedRectangle(cornerRadius: 16)

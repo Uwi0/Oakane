@@ -4,6 +4,7 @@ import Shared
 struct WalletItemView: View {
     
     let wallet: WalletItemModel
+    let onSelectWallet: () -> Void
     
     private var formattedBalance: String {
         wallet.balance.toFormatIDR()
@@ -11,7 +12,7 @@ struct WalletItemView: View {
     
     var body: some View {
         VStack {
-            TopContentView(wallet: wallet)
+            TopContentView(wallet: wallet, onSelectWalled: onSelectWallet)
             Text(formattedBalance).font(Typography.headlineMedium)
             Divider().scaleEffect(y: 2.5)
             BottomContentView(wallet: wallet)
@@ -23,6 +24,7 @@ struct WalletItemView: View {
 fileprivate struct TopContentView: View {
     
     let wallet: WalletItemModel
+    let onSelectWalled: () -> Void
     private let size: CGFloat = 30
     
     var body: some View {
@@ -37,7 +39,7 @@ fileprivate struct TopContentView: View {
             Text(wallet.name)
                 .font(Typography.bodyMedium)
             Spacer()
-            OutlinedCheckmarkRadioButton(selected: wallet.isSelected, onClick: {})
+            OutlinedCheckmarkRadioButton(selected: wallet.isSelected, onClick: onSelectWalled)
         }
     }
 }

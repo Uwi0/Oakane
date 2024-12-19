@@ -1,14 +1,16 @@
 import SwiftUI
+import Shared
 
 struct WalletsScreen: View {
     
     @StateObject var viewModel: WalletsViewModel = WalletsViewModel()
+    @EnvironmentObject private var navigation: AppNavigation
     
     private var uiState: WalletsState { viewModel.uiState }
     
     private var bottomSheetSize: PresentationDetent {
         switch uiState.sheetContent {
-        case .create: return .fraction(0.7)
+        case .create: return .fraction(0.65)
         case .selectIcon: return .fraction(0.9)
         case .selectColor: return .large
         case .selectCurrency: return .large
@@ -19,8 +21,8 @@ struct WalletsScreen: View {
         GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
             VStack {
-                WalletsTopAppBar()
-                WalletsContentView(walletItems: uiState.wallets)
+                WalletsTopAppBar(onNavigateBack: {viewModel.handle(event: .NavigateBack())})
+                WalletsContentView(walletItems: uiState.wallets, onEvent: viewModel.handle(event:))
             }
             .sheet(
                 isPresented: $viewModel.uiState.sheetShown,
@@ -52,16 +54,34 @@ struct WalletsScreen: View {
             )
         }
         .navigationBarBackButtonHidden(true)
+        .onChange(of: viewModel.uiEffect) {
+            observe(effect: viewModel.uiEffect)
+        }
+    }
+    
+    private func observe(effect: WalletsEffect?){
+        if let safeEffect = effect {
+            switch onEnum(of: safeEffect){
+            case .dismissBottomSheet:
+                print("dismiss")
+            case .navigateBack:
+                navigation.navigateBack()
+            case .showError(let effect):
+                print("error \(effect.message)")
+            }
+        }
+        viewModel.uiEffect = nil
     }
 }
 
 struct WalletsTopAppBar: View{
     
+    let onNavigateBack: () -> Void
     @State private var searchQuery: String = ""
     
     var body: some View {
         VStack(spacing: 16) {
-            NavigationTopAppbar(title: "Wallets", navigateBack: {})
+            NavigationTopAppbar(title: "Wallets", navigateBack: onNavigateBack)
             OutlinedSearchTextFieldView(query: $searchQuery, placeHolder: "Search Wallet...")
                 .padding(.horizontal, 16)
             Divider()

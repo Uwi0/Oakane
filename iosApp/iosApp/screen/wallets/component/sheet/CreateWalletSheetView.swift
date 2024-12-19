@@ -12,9 +12,10 @@ struct CreateWalletSheetView: View {
                 imageName: uiState.imageFile,
                 icon: uiState.selectedIcon,
                 color: uiState.selectedColor,
+                walletName: uiState.walletName,
                 onEvent: onEvent
             )
-            StartWithBalanceContentView(onEvent: onEvent)
+            StartWithBalanceContentView(value: uiState.startBalance, onEvent: onEvent)
             CurrencyContentView()
             HorizontalColorSelectorView(
                 selectedColor: Color(hex: uiState.selectedColor),
@@ -35,8 +36,17 @@ fileprivate struct NameAndIconContentView: View {
     let icon: CategoryIconName
     let color: Int32
     let onEvent: (WalletsEvent) -> Void
-    
     @State private var walletName: String = ""
+    
+    init(imageName: String, icon: CategoryIconName, color: Int32,walletName: String, onEvent: @escaping (WalletsEvent) -> Void) {
+        self.imageName = imageName
+        self.icon = icon
+        self.color = color
+        self.onEvent = onEvent
+        self.walletName = walletName
+    }
+    
+    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -60,6 +70,11 @@ fileprivate struct StartWithBalanceContentView: View {
     
     let onEvent: (WalletsEvent) -> Void
     @State private var value: Int = 0
+    
+    init(value: Int, onEvent: @escaping (WalletsEvent) -> Void) {
+        self.onEvent = onEvent
+        self.value = value
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

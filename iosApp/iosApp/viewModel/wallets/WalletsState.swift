@@ -10,6 +10,7 @@ struct WalletsState {
     var selectedIcon: CategoryIconName = .wallet
     var selectedColor: Int32 = 0
     var colors: [String] = []
+    var startBalance: Int = 0
     
     init(){}
     
@@ -22,5 +23,6 @@ struct WalletsState {
         self.selectedIcon = walletsState.selectedIcon
         self.selectedColor = walletsState.defaultColor
         self.colors = walletsState.colors
+        self.startBalance = Int(walletsState.startBalanceValue)
     }
 }

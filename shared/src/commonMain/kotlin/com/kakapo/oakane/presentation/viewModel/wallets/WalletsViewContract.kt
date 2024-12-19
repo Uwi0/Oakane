@@ -28,6 +28,8 @@ data class WalletsState(
         return color.toColorInt()
     }
 
+    val startBalanceValue: Int get() = startBalance.toIntOrNull() ?: 0
+
     fun selectedWallet(color: String) = copy(
         selectedColor = color,
         sheetContent = WalletSheetContent.Create

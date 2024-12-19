@@ -6,6 +6,9 @@ struct TransactionItemView: View {
     
     let transaction: TransactionModel
     private let imageSize: CGFloat = 48
+    private var color: Color {
+        transaction.type == .income ? ColorTheme.primary : ColorTheme.error
+    }
     
     var body: some View {
         HStack(spacing: 16) {
@@ -21,7 +24,7 @@ struct TransactionItemView: View {
             Spacer()
             VStack(alignment: .trailing, spacing: 8) {
                 Text("Rp. \(transaction.amount.formatted())")
-                    .foregroundStyle(ColorTheme.error)
+                    .foregroundStyle(color)
                     .font(Typography.titleSmall)
                 Text("\(transaction.dateCreated.formatDateWith(pattern: "dd MMM yyyy"))")
             }.minimumScaleFactor(1)
