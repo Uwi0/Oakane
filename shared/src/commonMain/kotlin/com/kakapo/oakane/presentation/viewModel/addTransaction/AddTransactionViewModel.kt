@@ -9,24 +9,29 @@ import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.oakane.model.transaction.TransactionType
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
+import kotlin.native.ObjCName
 
+@ObjCName("AddTransactionViewModelKt")
 class AddTransactionViewModel(
     private val transactionRepository: TransactionRepository,
     private val categoryRepository: CategoryRepository,
     private val saveTransactionUseCase: SaveTransactionUseCase,
     private val updateTransactionUseCase: UpdateTransactionUseCase
-) : ViewModel(), KoinComponent {
+) : ViewModel(){
 
+    @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(AddTransactionState())
 
+    @NativeCoroutines
     val uiSideEffect get() = _uiSideEffect.asSharedFlow()
     private val _uiSideEffect = MutableSharedFlow<AddTransactionEffect>()
 

@@ -6,7 +6,9 @@ import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.datetime.Clock
+import kotlin.native.ObjCName
 
+@ObjCName("AddTransactionStateKt")
 data class AddTransactionState(
     val transactionId: Long = 0,
     val title: String = "",

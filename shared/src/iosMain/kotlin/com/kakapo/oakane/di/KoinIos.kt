@@ -3,7 +3,6 @@ package com.kakapo.oakane.di
 import com.kakapo.oakane.data.database.MySqlDriverFactory
 import com.kakapo.oakane.data.preference.OakanePreferenceDataStoreFactory
 import com.kakapo.oakane.presentation.AddGoalViewModelAdapter
-import com.kakapo.oakane.presentation.AddTransactionViewModelAdapter
 import com.kakapo.oakane.presentation.CategoriesViewModelAdapter
 import com.kakapo.oakane.presentation.GoalViewModelAdapter
 import com.kakapo.oakane.presentation.GoalsViewModelAdapter
@@ -24,7 +23,6 @@ object KoinIos {
         appModule = module {
             factory { TransactionsViewModelAdapter(get(), get()) }
             factory { TransactionViewModelAdapter(get(), get()) }
-            factory { AddTransactionViewModelAdapter(get(), get()) }
             factory { CategoriesViewModelAdapter(get(), get()) }
             factory { AddGoalViewModelAdapter(get(), get()) }
             factory { GoalViewModelAdapter(get(), get()) }
