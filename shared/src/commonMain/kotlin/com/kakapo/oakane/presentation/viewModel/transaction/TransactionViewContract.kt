@@ -1,7 +1,9 @@
 package com.kakapo.oakane.presentation.viewModel.transaction
 
 import com.kakapo.oakane.model.transaction.TransactionModel
+import kotlin.native.ObjCName
 
+@ObjCName("TransactionStateKt")
 data class TransactionState(
     val transaction: TransactionModel = TransactionModel(),
 )

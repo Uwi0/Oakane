@@ -41,7 +41,9 @@ final class TransactionsViewModel: ObservableObject {
         uiEffectCancellable = publisher.sink { completion in
             print("completion \(completion)")
         } receiveValue: { effect in
-            self.uiEffect = effect
+            DispatchQueue.main.async {
+                self.uiEffect = effect
+            }
         }
     }
     
