@@ -1,33 +1,20 @@
 import Foundation
 import Shared
-
+import Combine
+import KMPNativeCoroutinesCombine
 
 final class TransactionsViewModel: ObservableObject {
     
     @Published var uiState: TransactionsState = TransactionsState()
     @Published var uiEffect: TransactionsEffect? = nil
     
-    private var viewModel: TransactionsViewModelAdapter = Koin.shared.get()
+    private var viewModel: TransactionsViewModelKt = Koin.shared.get()
+    private var uiStateCancellable: AnyCancellable?
+    private var uiEffectCancellable: AnyCancellable?
     
     init () {
-        viewModel.observeState { [weak self] state in
-            DispatchQueue.main.async {
-                self?.uiState.transactions = state.filteredTransactions
-                self?.uiState.categories = state.categories
-                self?.uiState.searchQuery = state.searchQuery
-                self?.uiState.selectedType = state.selectedType
-                self?.uiState.selectedDate = state.selectedDate
-                self?.uiState.selectedCategory = state.selectedCategory
-                self?.uiState.sheetSown = state.sheetShown
-                self?.uiState.sheetContent = state.sheetContent
-            }
-        }
-        
-        viewModel.observeEffect { [weak self] effect in
-            DispatchQueue.main.async {
-                self?.uiEffect = effect
-            }
-        }
+        observeUIState()
+        observeUIEffect()
     }
     
     func initData() {
@@ -38,4 +25,28 @@ final class TransactionsViewModel: ObservableObject {
         viewModel.handleEvent(event: event)
     }
     
+    private func observeUIState() {
+        let publisher = createPublisher(for: viewModel.uiStateFlow)
+        uiStateCancellable = publisher.sink { completion in
+            print("completion \(completion)")
+        } receiveValue: { state in
+            DispatchQueue.main.async {
+                self.uiState = TransactionsState(state: state)
+            }
+        }
+    }
+    
+    private func observeUIEffect() {
+        let publisher = createPublisher(for: viewModel.uiEffect)
+        uiEffectCancellable = publisher.sink { completion in
+            print("completion \(completion)")
+        } receiveValue: { effect in
+            self.uiEffect = effect
+        }
+    }
+    
+    deinit {
+        uiEffectCancellable?.cancel()
+        uiStateCancellable?.cancel()
+    }
 }

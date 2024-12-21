@@ -8,7 +8,6 @@ import com.kakapo.oakane.presentation.GoalViewModelAdapter
 import com.kakapo.oakane.presentation.GoalsViewModelAdapter
 import com.kakapo.oakane.presentation.MonthlyBudgetViewModelAdapter
 import com.kakapo.oakane.presentation.TransactionViewModelAdapter
-import com.kakapo.oakane.presentation.TransactionsViewModelAdapter
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
 import org.koin.core.Koin
@@ -21,7 +20,6 @@ import org.koin.dsl.module
 object KoinIos {
     fun initialize(): KoinApplication = initKoin(
         appModule = module {
-            factory { TransactionsViewModelAdapter(get(), get()) }
             factory { TransactionViewModelAdapter(get(), get()) }
             factory { CategoriesViewModelAdapter(get(), get()) }
             factory { AddGoalViewModelAdapter(get(), get()) }

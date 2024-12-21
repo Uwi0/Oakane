@@ -8,6 +8,8 @@ import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -16,14 +18,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("TransactionsViewModelKt")
 class TransactionsViewModel(
     private val transactionRepository: TransactionRepository
 ) : ViewModel() {
 
+    @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(TransactionsState())
 
+    @NativeCoroutines
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<TransactionsEffect>()
 
