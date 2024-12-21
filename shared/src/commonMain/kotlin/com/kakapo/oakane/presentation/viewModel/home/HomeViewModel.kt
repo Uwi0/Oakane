@@ -21,7 +21,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("HomeViewModelKt")
 class HomeViewModel(
     private val transactionRepository: TransactionRepository,
     private val goalRepository: GoalRepository,

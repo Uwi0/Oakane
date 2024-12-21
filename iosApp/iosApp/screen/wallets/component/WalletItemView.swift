@@ -25,19 +25,16 @@ fileprivate struct TopContentView: View {
     
     let wallet: WalletItemModel
     let onSelectWalled: () -> Void
-    private let size: CGFloat = 30
     
     var body: some View {
         HStack(spacing: 8) {
             SelectedIconView(
                 imageName: wallet.icon,
                 icon: wallet.iconName,
-                color: wallet.color.toColorInt(),
-                size: size,
-                padding: 8
+                color: wallet.color.toColorInt()
             )
             Text(wallet.name)
-                .font(Typography.bodyMedium)
+                .font(Typography.titleMedium)
             Spacer()
             OutlinedCheckmarkRadioButton(selected: wallet.isSelected, onClick: onSelectWalled)
         }
