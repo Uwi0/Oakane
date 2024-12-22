@@ -11,7 +11,8 @@ fun WalletEntity.toWalletModel(): WalletModel {
         currency = "Rp",
         balance = balance,
         name = name,
-        isDefaultIcon = false,
+        color = color,
+        isDefaultIcon = isDefaultIcon == 1L,
         icon = icon
     )
 }
