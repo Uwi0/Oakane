@@ -13,4 +13,20 @@ struct GoalState {
     var note: String = ""
     var isDialogShown: Bool = false
     var dialogContent: GoalDialogContent = .updateAmount
+    
+    init(){}
+    
+    init(state: GoalStateKt){
+        fileName = state.goal.fileName
+        title = state.goal.goalName
+        savedAmount = state.savedAmount
+        targetAmount = state.targetAmount
+        progress = state.goal.progress
+        startDate = state.goal.startDate
+        endDate = state.goal.endDate
+        daysLeft = state.dayLeft
+        note = state.goal.note
+        isDialogShown = state.dialogShown
+        dialogContent = state.dialogContent
+    }
 }
