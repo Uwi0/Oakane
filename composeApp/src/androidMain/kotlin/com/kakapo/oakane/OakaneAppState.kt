@@ -11,6 +11,7 @@ import androidx.navigation.navOptions
 import com.kakapo.oakane.presentation.feature.categories.navigation.navigateToCategories
 import com.kakapo.oakane.presentation.feature.goals.navigation.navigateToGoals
 import com.kakapo.oakane.presentation.feature.home.navigation.navigateToHome
+import com.kakapo.oakane.presentation.feature.report.navigation.navigateToReport
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
 import com.kakapo.oakane.presentation.feature.wallets.navigation.navigateToWallets
 import com.kakapo.oakane.presentation.navigation.DrawerMenuNavigation
@@ -43,9 +44,9 @@ class OakaneAppState(val navController: NavHostController) {
             DrawerMenuNavigation.CATEGORIES -> navController.navigateToCategories()
             DrawerMenuNavigation.Goals -> navController.navigateToGoals()
             DrawerMenuNavigation.WALLETS -> navController.navigateToWallets()
+            DrawerMenuNavigation.Report -> navController.navigateToReport()
         }
     }
-
 
     private fun navOptionsPopBackStack() = navOptions {
         popUpTo(navController.graph.findStartDestination().id) {
