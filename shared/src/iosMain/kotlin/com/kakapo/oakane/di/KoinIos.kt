@@ -2,7 +2,6 @@ package com.kakapo.oakane.di
 
 import com.kakapo.oakane.data.database.MySqlDriverFactory
 import com.kakapo.oakane.data.preference.OakanePreferenceDataStoreFactory
-import com.kakapo.oakane.presentation.MonthlyBudgetViewModelAdapter
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
 import org.koin.core.Koin
@@ -13,11 +12,7 @@ import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.module
 
 object KoinIos {
-    fun initialize(): KoinApplication = initKoin(
-        appModule = module {
-            factory { MonthlyBudgetViewModelAdapter(get(), get()) }
-        }
-    )
+    fun initialize(): KoinApplication = initKoin()
 }
 
 @OptIn(kotlinx.cinterop.BetaInteropApi::class)
