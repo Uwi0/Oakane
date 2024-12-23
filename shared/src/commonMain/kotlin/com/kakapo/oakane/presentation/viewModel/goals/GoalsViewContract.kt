@@ -1,7 +1,9 @@
 package com.kakapo.oakane.presentation.viewModel.goals
 
 import com.kakapo.oakane.model.GoalModel
+import kotlin.native.ObjCName
 
+@ObjCName("GoalsStateKt")
 data class GoalsState(
     val searchQuery: String = "",
     val goals: List<GoalModel> = emptyList(),
