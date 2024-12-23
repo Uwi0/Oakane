@@ -1,39 +1,59 @@
 import Foundation
 import Shared
+import Combine
+import KMPNativeCoroutinesCombine
 
 final class CategoriesViewModel: ObservableObject {
     @Published var uiState = CategoriesState()
-    let tabBars = TransactionType.allCases.map(\.name)
+    @Published var uiEffect: CategoriesEffect? = nil
     
-    var expenseCategories: [CategoryModel] {
-        CategoryModelKt.swiftFilterBy(uiState.categories, type: .expense)
-    }
-    
-    var incomeCategories: [CategoryModel] {
-        CategoryModelKt.swiftFilterBy(uiState.categories, type: .income)
-    }
-    
-    private var viewModel: CategoriesViewModelAdapter = Koin.shared.get()
+    private var viewModel: CategoriesViewModelKt = Koin.shared.get()
+    private var uiStateCancellable: AnyCancellable?
+    private var uiEffectCancellable: AnyCancellable?
     
     init() {
-        viewModel.observeData { [weak self] uiState in
-            DispatchQueue.main.async {
-                self?.uiState.categories = uiState.filteredCategories
-                self?.uiState.sheetContent = uiState.sheetContent
-                self?.uiState.categoryName = uiState.categoryName
-                self?.uiState.selectedColor = uiState.defaultColor
-                self?.uiState.defaultColors = uiState.categoriesColor
-                self?.uiState.selectedIcon = uiState.defaultIcon
-                self?.uiState.showSheet = uiState.showSheet
-                self?.uiState.imageName = uiState.fileName
-                self?.uiState.categoryId = uiState.categoryId
-                self?.uiState.isEditMode = uiState.isEditMode
-            }
-        }
+        viewModel.initializeData()
+        observeUiState()
+        observerUiEffect()
     }
     
     func handle(event: CategoriesEvent) {
         viewModel.handleEvent(event: event)
+    }
+    
+    private func observeUiState() {
+        let publisher = createPublisher(for: viewModel.uiStateFlow)
+        uiStateCancellable = publisher.sink { completion in
+            print("completion \(completion)")
+        } receiveValue: { state in
+            self.update(state: state)
+        }
+    }
+    
+    private func update(state: CategoriesStateKt){
+        DispatchQueue.main.async {
+            self.uiState = CategoriesState(state: state)
+        }
+    }
+    
+    private func observerUiEffect() {
+        let publisher = createPublisher(for: viewModel.uiEffect)
+        uiEffectCancellable = publisher.sink { completion in
+            print("completion \(completion)")
+        } receiveValue: { effect in
+            self.update(effect: effect)
+        }
+    }
+    
+    func update(effect: CategoriesEffect){
+        DispatchQueue.main.async {
+            self.uiEffect = effect
+        }
+    }
+    
+    deinit {
+        uiStateCancellable?.cancel()
+        uiEffectCancellable?.cancel()
     }
     
 }

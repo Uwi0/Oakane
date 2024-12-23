@@ -19,66 +19,66 @@ struct CategoriesScreen: View {
         viewModel.uiState.sheetContent == CategoriesSheetContent.create
     }
     
-    private var searchQuery: String {
-        viewModel.uiState.searchQuery
-    }
-    
     private var uiState: CategoriesState {
         viewModel.uiState
     }
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                ColorTheme.surface
-                    .ignoresSafeArea()
-                CategoriesContentView(
-                    selectedTab: $viewModel.uiState.selectedTab,
-                    searchQuery: $viewModel.uiState.searchQuery,
-                    tabBars: viewModel.tabBars,
-                    expenseCategories: viewModel.expenseCategories,
-                    incomeCategories: viewModel.incomeCategories,
-                    onEvent: viewModel.handle
-                )
-                .onChange(of: searchQuery){
-                    viewModel.handle(event: .Search(query: searchQuery))
-                }
-                
-                FabButtonView(
-                    size: FabConstant.size,
-                    xPos: geometry.size.width - FabConstant.xOffset,
-                    yPos: geometry.size.height - FabConstant.yOffset,
-                    onClick: { viewModel.handle(event: .ShowSheet(visibility: true)) }
-                )
+            ColorTheme.surface
+                .ignoresSafeArea()
+            CategoriesContentView(
+                selectedTab: $viewModel.uiState.selectedTab,
+                searchQuery: $viewModel.uiState.searchQuery,
+                uiState: uiState,
+                onEvent: viewModel.handle(event:)
+            )
+            .onChange(of: uiState.searchQuery){
+                viewModel.handle(event: .Search(query: uiState.searchQuery))
             }
-            .navigationBarBackButtonHidden(true)
-            .customToolbar(content: toolbarContent, onEvent: onToolbarEvent(toolbarEvent:))
-            .sheet(isPresented: $viewModel.uiState.showSheet) {
-                VStack {
-                    switch uiState.sheetContent {
-                    case .create:
-                        CreateCategoryContentView(uiState: viewModel.uiState, onEvent: viewModel.handle)
-                    case .selectColor:
-                        Text("Select Color")
-                    case .selectIcon:
-                        SelectIconView(
-                            selectedIcon: uiState.selectedIcon,
-                            selectedColor: uiState.selectedColor,
-                            onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon))},
-                            onTakImage: { image in viewModel.handle(event: .PickImage(file: image))},
-                            onConfirm: { viewModel.handle(event: .ConfirmIcon())}
-                        )
-                    }
-                }
-                .presentationDetents([bottomSheetSize])
-                .presentationDragIndicator(.visible)
-            }
+            
+            FabButtonView(
+                size: FabConstant.size,
+                xPos: geometry.size.width - FabConstant.xOffset,
+                yPos: geometry.size.height - FabConstant.yOffset,
+                onClick: { viewModel.handle(event: .ShowSheet(visibility: true)) }
+            )
         }
-        
+        .navigationBarBackButtonHidden(true)
+        .onChange(of: viewModel.uiEffect){ observe(effect: viewModel.uiEffect) }
+        .sheet(isPresented: $viewModel.uiState.showSheet, onDismiss: { viewModel.handle(event: .ShowSheet(visibility: false))}) {
+            VStack {
+                switch uiState.sheetContent {
+                case .create:
+                    CreateCategoryContentView(uiState: viewModel.uiState, onEvent: viewModel.handle)
+                case .selectColor:
+                    Text("Select Color")
+                case .selectIcon:
+                    SelectIconView(
+                        selectedIcon: uiState.selectedIcon,
+                        selectedColor: uiState.selectedColor,
+                        onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon))},
+                        onTakImage: { image in viewModel.handle(event: .PickImage(file: image))},
+                        onConfirm: { viewModel.handle(event: .ConfirmIcon())}
+                    )
+                }
+            }
+            .presentationDetents([bottomSheetSize])
+            .presentationDragIndicator(.visible)
+        }
     }
     
-    private func onToolbarEvent(toolbarEvent: ToolbarEvent) {
-        navigation.navigateBack()
+    
+    private func observe(effect: CategoriesEffect?){
+        if let safeEffect = effect {
+            switch onEnum(of: safeEffect){
+            case .hideSheet:
+                print("Hide Sheet")
+            case .navigateBack:
+                navigation.navigateBack()
+            }
+        }
+        viewModel.uiEffect = nil
     }
 }
 

@@ -5,15 +5,17 @@ import com.kakapo.oakane.model.category.CategoryIconName
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
+import kotlin.native.ObjCName
 
+@ObjCName("CategoriesStateKt")
 data class CategoriesState(
     val searchQuery: String = "",
     val categories: List<CategoryModel> = emptyList(),
     val filteredCategories: List<CategoryModel> = emptyList(),
-    val selectedTab: Int = TransactionType.Expense.ordinal,
+    val selectedTab: Int = TransactionType.Income.ordinal,
     val selectedType: TransactionType = TransactionType.Income,
     val sheetContent: CategoriesSheetContent = CategoriesSheetContent.Create,
-    val selectedColor: String = "",
+    val selectedColor: String = "0xFF4CAF50",
     val selectedIcon: CategoryIconName = CategoryIconName.DEFAULT,
     val fileName: String = "",
     val showSheet: Boolean = false,
@@ -28,13 +30,13 @@ data class CategoriesState(
 
     val defaultIcon: CategoryIconName
         get() {
-            return if (selectedIcon == CategoryIconName.DEFAULT) categories[1].iconName
+            return if (selectedIcon == CategoryIconName.DEFAULT && categories.isNotEmpty()) categories[1].iconName
             else selectedIcon
         }
 
     val defaultColor: Int
         get() {
-            return if (selectedColor == "") categories[0].formattedColor
+            return if (selectedColor == "0xFF4CAF50" && categories.isNotEmpty()) categories[0].formattedColor
             else selectedColor.toColorInt()
         }
 
@@ -66,7 +68,7 @@ data class CategoriesState(
         showSheet = visibility,
         categoryName = "",
         selectedType = TransactionType.Expense,
-        selectedColor = "",
+        selectedColor = "0xFF4CAF50",
         selectedIcon = CategoryIconName.DEFAULT,
         fileName = "",
         isEditMode = false,
