@@ -2,7 +2,9 @@ package com.kakapo.oakane.presentation.viewModel.addGoal
 
 import com.kakapo.oakane.model.GoalModel
 import kotlinx.datetime.Clock
+import kotlin.native.ObjCName
 
+@ObjCName("AddGoalStateKt")
 data class AddGoalState(
     val id: Long = 0L,
     val fileName: String = "",

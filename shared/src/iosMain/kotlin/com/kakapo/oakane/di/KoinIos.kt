@@ -2,7 +2,6 @@ package com.kakapo.oakane.di
 
 import com.kakapo.oakane.data.database.MySqlDriverFactory
 import com.kakapo.oakane.data.preference.OakanePreferenceDataStoreFactory
-import com.kakapo.oakane.presentation.AddGoalViewModelAdapter
 import com.kakapo.oakane.presentation.GoalViewModelAdapter
 import com.kakapo.oakane.presentation.GoalsViewModelAdapter
 import com.kakapo.oakane.presentation.MonthlyBudgetViewModelAdapter
@@ -18,7 +17,6 @@ import org.koin.dsl.module
 object KoinIos {
     fun initialize(): KoinApplication = initKoin(
         appModule = module {
-            factory { AddGoalViewModelAdapter(get(), get()) }
             factory { GoalViewModelAdapter(get(), get()) }
             factory { GoalsViewModelAdapter(get(), get()) }
             factory { MonthlyBudgetViewModelAdapter(get(), get()) }

@@ -5,20 +5,26 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.GoalRepository
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("AddGoalViewModelKt")
 class AddGoalViewModel(
     private val goalRepository: GoalRepository
 ): ViewModel() {
 
+    @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(AddGoalState())
 
+    @NativeCoroutines
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<AddGoalEffect>()
 
