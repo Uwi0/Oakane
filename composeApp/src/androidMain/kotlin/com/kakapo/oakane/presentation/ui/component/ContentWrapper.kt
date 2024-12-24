@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 fun ColumnWrapper(
     modifier: Modifier = Modifier,
     shapes: Shape = MaterialTheme.shapes.medium,
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     onClick: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
@@ -31,7 +32,7 @@ fun ColumnWrapper(
             modifier = Modifier
                 .fillMaxWidth()
                 .then(modifier),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = verticalArrangement,
             horizontalAlignment = horizontalAlignment
         ) {
             content.invoke(this)

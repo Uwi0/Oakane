@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.oakane.presentation.feature.reports.component.DonutChartView
+import com.kakapo.oakane.presentation.feature.reports.component.DonutChartComponentView
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsState
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -35,7 +35,12 @@ private fun ReportsScreen(uiState: ReportsState) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = "Reports")
-                DonutChartView(proportions = uiState.proportions, colorsInt = uiState.colors)
+                DonutChartComponentView(
+                    amount = 20_000_000_000.0,
+                    proportions = uiState.proportions,
+                    colorsInt = uiState.colors,
+                    categoriesName = uiState.names
+                )
             }
         }
     )

@@ -15,4 +15,6 @@ data class ReportsState(
     }
 
     val colors: List<Int> get() = reports.map { it.color.toColorInt() }
+
+    val names: List<String> get() = reports.map { it.name }
 }
