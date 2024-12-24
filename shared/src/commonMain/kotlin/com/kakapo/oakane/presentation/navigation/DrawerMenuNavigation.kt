@@ -6,5 +6,5 @@ enum class DrawerMenuNavigation(val title: String) {
     CATEGORIES("Categories"),
     Goals("Goals"),
     WALLETS("Wallets"),
-    Report("Report")
+    Reports("Reports")
 }
