@@ -6,13 +6,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.feature.reports.component.BudgetContentView
 import com.kakapo.oakane.presentation.feature.reports.component.ButtonFilterView
 import com.kakapo.oakane.presentation.feature.reports.component.DonutChartComponentView
 import com.kakapo.oakane.presentation.feature.reports.component.ReportsItemView
@@ -33,6 +37,9 @@ private fun ReportsScreen(uiState: ReportsState) {
         topBar = {
             CustomNavigationTopAppBarView(
                 title = "Reports",
+                actions = {
+                    CustomIconButton(icon = Icons.Outlined.FileDownload) { }
+                },
                 onNavigateBack = {}
             )
         },
@@ -54,6 +61,9 @@ private fun ReportsScreen(uiState: ReportsState) {
                         colorsInt = uiState.colors,
                         categoriesName = uiState.names
                     )
+                }
+                item {
+                    BudgetContentView(item = uiState.monthlyOverView)
                 }
                 items(uiState.reports) { report ->
                     ReportsItemView(report)

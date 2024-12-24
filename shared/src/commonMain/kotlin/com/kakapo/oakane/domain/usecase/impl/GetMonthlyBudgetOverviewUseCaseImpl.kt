@@ -21,6 +21,7 @@ class GetMonthlyBudgetOverviewUseCaseImpl(
             val totalIncome = totalIncomeDeferred.await().getOrNull() ?: 0.0
             val totalExpense = totalExpenseDeferred.await().getOrNull() ?: 0.0
             val limit = limitDeferred.await().getOrNull() ?: 0.0
+            val progress = if(limit == 0.0) 0.0 else totalExpense / limit
 
             MonthlyBudgetOverViewModel(
                 totalIncome = totalIncome,
@@ -28,7 +29,7 @@ class GetMonthlyBudgetOverviewUseCaseImpl(
                 spent = totalExpense,
                 left = limit - totalExpense,
                 limit = limit,
-                progress = (totalExpense / limit).toFloat()
+                progress = progress.toFloat()
             )
         }
     }
