@@ -44,6 +44,7 @@ fun ColumnWrapper(
 fun RowWrapper(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(8.dp),
     content: @Composable RowScope.() -> Unit
 ) {
     Surface(
@@ -56,7 +57,7 @@ fun RowWrapper(
                 .fillMaxWidth()
                 .then(modifier),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = horizontalArrangement
         ) {
             content.invoke(this)
         }
