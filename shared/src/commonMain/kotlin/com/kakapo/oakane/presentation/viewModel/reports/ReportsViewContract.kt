@@ -8,7 +8,7 @@ import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 import com.kakapo.oakane.presentation.viewModel.reports.model.currentMonth
 import kotlin.native.ObjCName
 
-@ObjCName("ReportsState")
+@ObjCName("ReportsStateKt")
 data class ReportsState(
     val reports: List<ReportModel> = emptyList(),
     val monthlyOverView: MonthlyBudgetOverViewModel = MonthlyBudgetOverViewModel(),

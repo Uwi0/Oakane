@@ -118,7 +118,7 @@ class ReportsViewModel(
 
     private fun onSelectedAllWallet(){
         initializeData()
-        _uiState.update { it.copy(selectedWallet = null) }
+        _uiState.update { it.copy(selectedWallet = null, selectedWalletName = "All Wallet") }
     }
 
     private fun onFilterByMonth(month: MonthReport){
