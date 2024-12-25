@@ -39,21 +39,29 @@ class TransactionRepositoryImpl(
         return localDatasource.updateTransaction(transaction.toEntity())
     }
 
-    override suspend fun loadTotalExpense(walletId: Long?): Result<Double> {
+    override suspend fun loadTotalExpense(
+        walletId: Long?,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double> {
         val typeExpense = TransactionType.Expense.ordinal.toLong()
         return if (walletId != null) {
-            localDatasource.getTotalTransactionBy(walletId, typeExpense)
+            localDatasource.getTotalTransactionBy(walletId, typeExpense, startDateOfMonth, endDateOfMonth)
         } else {
-            localDatasource.getTotalTransactionBaseOn(typeExpense)
+            localDatasource.getTotalTransactionBaseOn(typeExpense, startDateOfMonth, endDateOfMonth)
         }
     }
 
-    override suspend fun loadTotalIncome(walletId: Long?): Result<Double> {
+    override suspend fun loadTotalIncome(
+        walletId: Long?,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double> {
         val typeIncome = TransactionType.Income.ordinal.toLong()
         return if (walletId != null) {
-            localDatasource.getTotalTransactionBy(walletId, typeIncome)
+            localDatasource.getTotalTransactionBy(walletId, typeIncome, startDateOfMonth, endDateOfMonth)
         } else {
-            localDatasource.getTotalTransactionBaseOn(typeIncome)
+            localDatasource.getTotalTransactionBaseOn(typeIncome, startDateOfMonth, endDateOfMonth)
         }
     }
 

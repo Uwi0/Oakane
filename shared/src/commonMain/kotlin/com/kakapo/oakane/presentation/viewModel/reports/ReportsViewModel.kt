@@ -52,10 +52,11 @@ class ReportsViewModel(
     }
 
     private fun loadMonthlyBudgetOverView(walletId: Long? = null) = viewModelScope.launch {
+        val (startDateOfMont, endDateOfMonth) = _uiState.value.monthNumber
         val onSuccess: (MonthlyBudgetOverViewModel) -> Unit = { monthlyOverView ->
             _uiState.update { it.copy(monthlyOverView = monthlyOverView) }
         }
-        getMonthlyBudgetOverview.execute(walletId).fold(
+        getMonthlyBudgetOverview.execute(walletId, startDateOfMont, endDateOfMonth).fold(
             onSuccess = onSuccess,
             onFailure = {}
         )

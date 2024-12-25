@@ -1,6 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.reports
 
-import com.kakapo.oakane.common.toStartDateOfMonthAndEndDateOfMonth
+import com.kakapo.oakane.common.startDateAndEndDateOfMonth
 import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.wallet.WalletItemModel
@@ -29,7 +29,7 @@ data class ReportsState(
 
     val names: List<String> get() = displayedReports.map { it.name }
 
-    val monthNumber get() = selectedMonth.monthNumber.toStartDateOfMonthAndEndDateOfMonth()
+    val monthNumber get() = startDateAndEndDateOfMonth(selectedMonth.monthNumber)
 
     fun updateBalance(balance: Double) = copy(
         totalBalance = balance,

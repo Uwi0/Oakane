@@ -21,10 +21,19 @@ interface TransactionLocalDatasource {
     suspend fun deleteTransaction(id: Long): Result<Unit>
 
     @NativeCoroutines
-    suspend fun getTotalTransactionBaseOn(type: Long): Result<Double>
+    suspend fun getTotalTransactionBaseOn(
+        type: Long,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double>
 
     @NativeCoroutines
-    suspend fun getTotalTransactionBy(walletId: Long, type: Long): Result<Double>
+    suspend fun getTotalTransactionBy(
+        walletId: Long,
+        type: Long,
+        startDateOfMonth: Long,
+        endDateMonth: Long
+    ): Result<Double>
 
     @NativeCoroutines
     suspend fun getTransactionCategories(

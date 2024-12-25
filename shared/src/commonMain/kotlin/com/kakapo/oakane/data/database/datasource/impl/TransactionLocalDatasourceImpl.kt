@@ -65,15 +65,33 @@ class TransactionLocalDatasourceImpl(
         }
     }
 
-    override suspend fun getTotalTransactionBaseOn(type: Long): Result<Double> {
+    override suspend fun getTotalTransactionBaseOn(
+        type: Long,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double> {
         return runCatching {
-            transactionDb.getTotalTransactionBaseOn(type).executeAsOne()
+            transactionDb.getTotalTransactionBaseOn(
+                type,
+                startDateOfMonth,
+                endDateOfMonth
+            ).executeAsOne()
         }
     }
 
-    override suspend fun getTotalTransactionBy(walletId: Long, type: Long): Result<Double> {
+    override suspend fun getTotalTransactionBy(
+        walletId: Long,
+        type: Long,
+        startDateOfMonth: Long,
+        endDateMonth: Long
+    ): Result<Double> {
         return runCatching {
-            transactionDb.getTotalTransactionBy(walletId, type).executeAsOne()
+            transactionDb.getTotalTransactionBy(
+                walletId,
+                type,
+                startDateOfMonth,
+                endDateMonth
+            ).executeAsOne()
         }
     }
 

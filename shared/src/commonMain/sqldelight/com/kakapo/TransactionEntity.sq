@@ -84,12 +84,12 @@ WHERE transactionId = ?;
 getTotalTransactionBaseOn:
 SELECT COALESCE(SUM(amount), 0) AS totalTransaction
 FROM TransactionTable
-WHERE type = ?;
+WHERE type = ? AND dateCreated >= ? AND dateCreated <= ?;
 
 getTotalTransactionBy:
 SELECT COALESCE(SUM(amount), 0) AS totalTransaction
 FROM TransactionTable
-WHERE walletId = ? AND type = ?;
+WHERE walletId = ? AND type = ? AND dateCreated >= ? AND dateCreated <= ?;
 
 getTransactionCategory:
 SELECT

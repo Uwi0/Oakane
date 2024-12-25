@@ -23,10 +23,14 @@ interface TransactionRepository {
     suspend fun update(transaction: TransactionParam): Result<Unit>
 
     @NativeCoroutines
-    suspend fun loadTotalExpense(walletId: Long?): Result<Double>
+    suspend fun loadTotalExpense(
+        walletId: Long?,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double>
 
     @NativeCoroutines
-    suspend fun loadTotalIncome(walletId: Long?): Result<Double>
+    suspend fun loadTotalIncome(walletId: Long?, startDateOfMonth: Long, endDateOfMonth: Long): Result<Double>
 
     @NativeCoroutines
     fun loadTransactionsCategories(

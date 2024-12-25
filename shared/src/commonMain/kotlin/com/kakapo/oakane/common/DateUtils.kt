@@ -50,15 +50,16 @@ fun getEndOfMonthUnixTime(): Long {
     return unixTime
 }
 
-fun Int.toStartDateOfMonthAndEndDateOfMonth(
+fun startDateAndEndDateOfMonth(
+    month: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).monthNumber,
     currentYear: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
 ): Pair<Long, Long> {
 
-    val startDate = LocalDate(currentYear, this, 1)
+    val startDate = LocalDate(currentYear, month, 1)
         .atStartOfDayIn(TimeZone.currentSystemDefault())
         .toEpochMilliseconds()
 
-    val daysInMonth = LocalDate(currentYear, this, 1)
+    val daysInMonth = LocalDate(currentYear, month, 1)
         .plus(1, DateTimeUnit.MONTH)
         .minus(1, DateTimeUnit.DAY)
         .atTime(23, 59, 59, 999_999_999)
