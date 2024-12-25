@@ -3,6 +3,7 @@ package com.kakapo.oakane.data.database.datasource.impl
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.GetTransactionCategory
+import com.kakapo.GetTransactionCategoryBy
 import com.kakapo.GetTransactions
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
@@ -75,6 +76,14 @@ class TransactionLocalDatasourceImpl(
             transactionDb.getTransactionCategory()
                 .executeAsList()
                 .map(GetTransactionCategory::toTransactionCategoryEntity)
+        }
+    }
+
+    override suspend fun getTransactionCategoriesBy(walletId: Long): Result<List<TransactionCategoryEntity>> {
+        return runCatching {
+            transactionDb.getTransactionCategoryBy(walletId)
+                .executeAsList()
+                .map(GetTransactionCategoryBy::toTransactionCategoryEntity)
         }
     }
 

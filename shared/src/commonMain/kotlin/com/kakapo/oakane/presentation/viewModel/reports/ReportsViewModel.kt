@@ -45,7 +45,7 @@ class ReportsViewModel(
         when (event) {
             is ReportsEvent.NavigateBack -> emit(ReportsEffect.NavigateBack)
             is ReportsEvent.SelectedAllWallet -> _uiState.update { it.updateAllWallet() }
-            is ReportsEvent.Selected -> _uiState.update { it.updateSelected(event.wallet) }
+            is ReportsEvent.Selected -> loadTransactionCategoriesWith(event.wallet)
         }
     }
 
@@ -61,10 +61,21 @@ class ReportsViewModel(
 
     private fun loadTransactionCategories() = viewModelScope.launch {
         val onSuccess: (List<ReportModel>) -> Unit = { reports ->
-            _uiState.update { it.copy(reports = reports) }
+            _uiState.update { it.copy(reports = reports, displayedReports = reports) }
         }
 
         transactionRepository.loadTransactionsCategories().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
+    private fun loadTransactionCategoriesWith(walletItem: WalletItemModel) = viewModelScope.launch {
+        val onSuccess: (List<ReportModel>) -> Unit = { reports ->
+            _uiState.update { it.updateSelected(walletItem, reports) }
+        }
+
+        transactionRepository.loadTransactionsCategoriesBy(walletItem.id).asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )

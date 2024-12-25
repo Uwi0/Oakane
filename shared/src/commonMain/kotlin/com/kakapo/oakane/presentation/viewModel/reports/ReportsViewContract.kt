@@ -8,6 +8,7 @@ import kotlin.native.ObjCName
 @ObjCName("ReportsState")
 data class ReportsState(
     val reports: List<ReportModel> = emptyList(),
+    val displayedReports: List<ReportModel> = emptyList(),
     val monthlyOverView: MonthlyBudgetOverViewModel = MonthlyBudgetOverViewModel(),
     val totalBalance: Double = 0.0,
     val displayedTotalBalance: Double = 0.0,
@@ -15,13 +16,13 @@ data class ReportsState(
     val selectedWallet: String = "All Wallet"
 ){
     val proportions: List<Float> get(){
-        val total = reports.sumOf { it.amount }
-        return reports.map { (it.amount / total).toFloat() }
+        val total = displayedReports.sumOf { it.amount }
+        return displayedReports.map { (it.amount / total).toFloat() }
     }
 
-    val colors: List<Int> get() = reports.map { it.formattedColor }
+    val colors: List<Int> get() = displayedReports.map { it.formattedColor }
 
-    val names: List<String> get() = reports.map { it.name }
+    val names: List<String> get() = displayedReports.map { it.name }
 
     fun updateBalance(balance: Double) = copy(
         totalBalance = balance,
@@ -30,12 +31,14 @@ data class ReportsState(
 
     fun updateAllWallet() = copy(
         selectedWallet = "All Wallet",
-        displayedTotalBalance = totalBalance
+        displayedTotalBalance = totalBalance,
+        displayedReports = reports
     )
 
-    fun updateSelected(wallet: WalletItemModel) = copy(
+    fun updateSelected(wallet: WalletItemModel, reports: List<ReportModel>) = copy(
         selectedWallet = wallet.name,
-        displayedTotalBalance = wallet.balance
+        displayedTotalBalance = wallet.balance,
+        displayedReports = reports
     )
 }
 

@@ -2,6 +2,7 @@ package com.kakapo.oakane.data.database.model
 
 import com.kakapo.GetTransactionBy
 import com.kakapo.GetTransactionCategory
+import com.kakapo.GetTransactionCategoryBy
 import com.kakapo.GetTransactions
 
 data class TransactionEntity(
@@ -71,6 +72,18 @@ fun GetTransactionBy.toTransactionEntity(): TransactionEntity {
 }
 
 fun GetTransactionCategory.toTransactionCategoryEntity(): TransactionCategoryEntity {
+    return TransactionCategoryEntity(
+        id = categoryId,
+        name = categoryName,
+        type = transactionType,
+        icon = categoryIcon,
+        color = categoryColor,
+        isDefault = defaultCategory == 1L,
+        totalTransaction = totalAmount ?: 0.0
+    )
+}
+
+fun GetTransactionCategoryBy.toTransactionCategoryEntity(): TransactionCategoryEntity {
     return TransactionCategoryEntity(
         id = categoryId,
         name = categoryName,

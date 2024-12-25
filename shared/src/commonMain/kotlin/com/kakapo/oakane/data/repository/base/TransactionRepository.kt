@@ -23,4 +23,6 @@ interface TransactionRepository {
     suspend fun loadTotalIncome(): Result<Double>
     @NativeCoroutines
     fun loadTransactionsCategories(): Flow<Result<List<ReportModel>>>
+    @NativeCoroutines
+    fun loadTransactionsCategoriesBy(walletId: Long): Flow<Result<List<ReportModel>>>
 }
