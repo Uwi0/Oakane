@@ -18,9 +18,9 @@ interface TransactionRepository {
     @NativeCoroutines
     suspend fun update(transaction: TransactionParam): Result<Unit>
     @NativeCoroutines
-    suspend fun loadTotalExpense(): Result<Double>
+    suspend fun loadTotalExpense(walletId: Long?): Result<Double>
     @NativeCoroutines
-    suspend fun loadTotalIncome(): Result<Double>
+    suspend fun loadTotalIncome(walletId: Long?): Result<Double>
     @NativeCoroutines
     fun loadTransactionsCategories(): Flow<Result<List<ReportModel>>>
     @NativeCoroutines

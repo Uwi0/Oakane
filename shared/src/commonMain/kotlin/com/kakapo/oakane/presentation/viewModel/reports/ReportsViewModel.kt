@@ -44,16 +44,16 @@ class ReportsViewModel(
     fun handleEVent(event: ReportsEvent) {
         when (event) {
             is ReportsEvent.NavigateBack -> emit(ReportsEffect.NavigateBack)
-            is ReportsEvent.SelectedAllWallet -> _uiState.update { it.updateAllWallet() }
+            is ReportsEvent.SelectedAllWallet ->onSelectedAllWallet()
             is ReportsEvent.Selected -> loadTransactionCategoriesWith(event.wallet)
         }
     }
 
-    private fun loadMonthlyBudgetOverView() = viewModelScope.launch {
+    private fun loadMonthlyBudgetOverView(walletId: Long? = null) = viewModelScope.launch {
         val onSuccess: (MonthlyBudgetOverViewModel) -> Unit = { monthlyOverView ->
             _uiState.update { it.copy(monthlyOverView = monthlyOverView) }
         }
-        getMonthlyBudgetOverview.execute().fold(
+        getMonthlyBudgetOverview.execute(walletId).fold(
             onSuccess = onSuccess,
             onFailure = {}
         )
@@ -73,6 +73,7 @@ class ReportsViewModel(
     private fun loadTransactionCategoriesWith(walletItem: WalletItemModel) = viewModelScope.launch {
         val onSuccess: (List<ReportModel>) -> Unit = { reports ->
             _uiState.update { it.updateSelected(walletItem, reports) }
+            loadMonthlyBudgetOverView(walletItem.id)
         }
 
         transactionRepository.loadTransactionsCategoriesBy(walletItem.id).asCustomResult().subscribe(
@@ -101,6 +102,11 @@ class ReportsViewModel(
             onSuccess = onSuccess,
             onError = ::handleError
         )
+    }
+
+    private fun onSelectedAllWallet(){
+        loadMonthlyBudgetOverView()
+        _uiState.update { it.updateAllWallet() }
     }
 
     private fun handleError(throwable: Throwable?){

@@ -65,9 +65,15 @@ class TransactionLocalDatasourceImpl(
         }
     }
 
-    override suspend fun loadTotalTransactionBaseOn(type: Long): Result<Double> {
+    override suspend fun getTotalTransactionBaseOn(type: Long): Result<Double> {
         return runCatching {
             transactionDb.getTotalTransactionBaseOn(type).executeAsOne()
+        }
+    }
+
+    override suspend fun getTotalTransactionBy(walletId: Long, type: Long): Result<Double> {
+        return runCatching {
+            transactionDb.getTotalTransactionBy(walletId, type).executeAsOne()
         }
     }
 

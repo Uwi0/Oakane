@@ -86,6 +86,11 @@ SELECT COALESCE(SUM(amount), 0) AS totalTransaction
 FROM TransactionTable
 WHERE type = ?;
 
+getTotalTransactionBy:
+SELECT COALESCE(SUM(amount), 0) AS totalTransaction
+FROM TransactionTable
+WHERE walletId = ? AND type = ?;
+
 getTransactionCategory:
 SELECT
     c.id AS categoryId,

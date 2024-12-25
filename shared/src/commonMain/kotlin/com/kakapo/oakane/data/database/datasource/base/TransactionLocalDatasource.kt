@@ -16,7 +16,9 @@ interface TransactionLocalDatasource {
     @NativeCoroutines
     suspend fun deleteTransaction(id: Long): Result<Unit>
     @NativeCoroutines
-    suspend fun loadTotalTransactionBaseOn(type: Long): Result<Double>
+    suspend fun getTotalTransactionBaseOn(type: Long): Result<Double>
+    @NativeCoroutines
+    suspend fun getTotalTransactionBy(walletId: Long, type: Long): Result<Double>
     @NativeCoroutines
     suspend fun getTransactionCategories(): Result<List<TransactionCategoryEntity>>
     @NativeCoroutines

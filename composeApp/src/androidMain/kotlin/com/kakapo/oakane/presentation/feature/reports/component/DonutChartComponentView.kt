@@ -38,7 +38,6 @@ internal fun DonutChartComponentView(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("color size: ${colors.size}")
         CustomSegmentedButtonView()
         Box(
             modifier = Modifier.fillMaxWidth(),

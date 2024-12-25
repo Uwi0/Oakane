@@ -39,7 +39,7 @@ private fun ButtonView(title: String, icon: ImageVector, onCLick: () -> Unit) {
         color = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.outline,
         shadowElevation = 2.dp,
-        onClick = {}
+        onClick = onCLick
     ) {
         Row(
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),

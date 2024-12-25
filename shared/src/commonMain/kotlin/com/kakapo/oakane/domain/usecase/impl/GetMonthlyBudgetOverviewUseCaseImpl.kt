@@ -12,10 +12,10 @@ class GetMonthlyBudgetOverviewUseCaseImpl(
     private val transactionRepository: TransactionRepository
 ) : GetMonthlyBudgetOverviewUseCase {
 
-    override suspend fun execute(): Result<MonthlyBudgetOverViewModel> = coroutineScope {
+    override suspend fun execute(walletId: Long?): Result<MonthlyBudgetOverViewModel> = coroutineScope {
         runCatching {
-            val totalIncomeDeferred = async { transactionRepository.loadTotalIncome() }
-            val totalExpenseDeferred = async { transactionRepository.loadTotalExpense() }
+            val totalIncomeDeferred = async { transactionRepository.loadTotalIncome(walletId) }
+            val totalExpenseDeferred = async { transactionRepository.loadTotalExpense(walletId) }
             val limitDeferred = async { monthlyBudgetRepository.loadLimit() }
 
             val totalIncome = totalIncomeDeferred.await().getOrNull() ?: 0.0

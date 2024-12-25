@@ -5,5 +5,5 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface GetMonthlyBudgetOverviewUseCase {
     @NativeCoroutines
-    suspend fun execute(): Result<MonthlyBudgetOverViewModel>
+    suspend fun execute(walletId: Long? = null): Result<MonthlyBudgetOverViewModel>
 }
