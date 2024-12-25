@@ -10,9 +10,9 @@ data class WalletItemModel(
     val currency: String = "",
     val balance: Double = 0.0,
     val color: String = "",
-    val income: Double,
-    val expense: Double,
-    val isSelected: Boolean
+    val income: Double = 0.0,
+    val expense: Double = 0.0,
+    val isSelected: Boolean = false
 ){
     val iconName: CategoryIconName get() {
         return if (isDefault) CategoryIconName.fromString(icon)

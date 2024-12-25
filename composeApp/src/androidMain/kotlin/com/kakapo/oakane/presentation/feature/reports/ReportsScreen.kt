@@ -21,6 +21,7 @@ import com.kakapo.oakane.presentation.feature.reports.component.BudgetContentVie
 import com.kakapo.oakane.presentation.feature.reports.component.ButtonFilterView
 import com.kakapo.oakane.presentation.feature.reports.component.DonutChartComponentView
 import com.kakapo.oakane.presentation.feature.reports.component.ReportsItemView
+import com.kakapo.oakane.presentation.viewModel.reports.ReportsEvent
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsState
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -34,11 +35,11 @@ internal fun ReportsRoute() {
         viewModel.initializeData()
     }
 
-    ReportsScreen(uiState = uiState)
+    ReportsScreen(uiState = uiState, onEvent = viewModel::handleEVent)
 }
 
 @Composable
-private fun ReportsScreen(uiState: ReportsState) {
+private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit) {
     Scaffold(
         topBar = {
             CustomNavigationTopAppBarView(
@@ -58,11 +59,11 @@ private fun ReportsScreen(uiState: ReportsState) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    ButtonFilterView()
+                    ButtonFilterView(uiState = uiState, onEvent = onEvent)
                 }
                 item {
                     DonutChartComponentView(
-                        amount = uiState.totalBalance,
+                        amount = uiState.displayedTotalBalance,
                         proportions = uiState.proportions,
                         colorsInt = uiState.colors,
                         categoriesName = uiState.names

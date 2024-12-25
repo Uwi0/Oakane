@@ -9,6 +9,7 @@ import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,16 +22,25 @@ class ReportsViewModel(
     private val getMonthlyBudgetOverview: GetMonthlyBudgetOverviewUseCase,
     private val transactionRepository: TransactionRepository,
     private val walletRepository: WalletRepository
-): ViewModel() {
+) : ViewModel() {
 
     @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(ReportsState())
 
-    fun initializeData(){
+    fun initializeData() {
         loadMonthlyBudgetOverView()
         loadTransactionCategories()
         loadTotalBalance()
+        loadWallets()
+    }
+
+    fun handleEVent(event: ReportsEvent) {
+        when (event) {
+            is ReportsEvent.NavigateBack -> {}
+            is ReportsEvent.SelectedAllWallet -> _uiState.update { it.updateAllWallet() }
+            is ReportsEvent.Selected -> _uiState.update { it.updateSelected(event.wallet) }
+        }
     }
 
     private fun loadMonthlyBudgetOverView() = viewModelScope.launch {
@@ -55,12 +65,22 @@ class ReportsViewModel(
 
     private fun loadTotalBalance() = viewModelScope.launch {
         val onSuccess: (Double) -> Unit = { totalBalance ->
-            _uiState.update { it.copy(totalBalance = totalBalance) }
+            _uiState.update { it.updateBalance(totalBalance) }
         }
 
         walletRepository.loadTotalBalance().fold(
             onSuccess = onSuccess,
             onFailure = {}
+        )
+    }
+
+    private fun loadWallets() = viewModelScope.launch {
+        val onSuccess: (List<WalletItemModel>) -> Unit = { wallets ->
+            _uiState.update { it.copy(wallets = wallets) }
+        }
+
+        walletRepository.loadWallets().asCustomResult().subscribe(
+            onSuccess = onSuccess
         )
     }
 }
