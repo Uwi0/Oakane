@@ -78,7 +78,7 @@ private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit
                 }
                 item {
                     DonutChartComponentView(
-                        amount = uiState.displayedTotalBalance,
+                        amount = uiState.totalBalance,
                         proportions = uiState.proportions,
                         colorsInt = uiState.colors,
                         categoriesName = uiState.names
@@ -87,7 +87,7 @@ private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit
                 item {
                     BudgetContentView(item = uiState.monthlyOverView)
                 }
-                items(uiState.displayedReports) { report ->
+                items(uiState.reports) { report ->
                     ReportsItemView(report)
                 }
             }

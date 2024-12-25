@@ -47,7 +47,7 @@ class ReportsViewModel(
             is ReportsEvent.NavigateBack -> emit(ReportsEffect.NavigateBack)
             is ReportsEvent.SelectedAllWallet ->onSelectedAllWallet()
             is ReportsEvent.Selected -> loadTransactionCategoriesWith(event.wallet)
-            is ReportsEvent.FilterBy ->onFilterByMonth(event.month)
+            is ReportsEvent.FilterBy -> onFilterByMonth(event.month)
         }
     }
 
@@ -65,7 +65,7 @@ class ReportsViewModel(
     private fun loadTransactionCategories() = viewModelScope.launch {
         val (startDateOfMont, endDateOfMonth) = _uiState.value.monthNumber
         val onSuccess: (List<ReportModel>) -> Unit = { reports ->
-            _uiState.update { it.copy(reports = reports, displayedReports = reports) }
+            _uiState.update { it.copy(reports = reports) }
         }
 
         transactionRepository.loadTransactionsCategories(
@@ -117,8 +117,8 @@ class ReportsViewModel(
     }
 
     private fun onSelectedAllWallet(){
-        loadMonthlyBudgetOverView()
-        _uiState.update { it.updateAllWallet() }
+        initializeData()
+        _uiState.update { it.copy(selectedWallet = null) }
     }
 
     private fun onFilterByMonth(month: MonthReport){
