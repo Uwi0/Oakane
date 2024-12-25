@@ -13,6 +13,7 @@ final class AppNavigation: ObservableObject {
         case goals
         case monthlyBudget
         case wallets
+        case reports
     }
     
     @Published var navPath = NavigationPath()
@@ -41,6 +42,8 @@ final class AppNavigation: ObservableObject {
             navigate(to: .goals)
         case .wallets:
             navigate(to: .wallets)
+        case .reports:
+            navigate(to: .reports)
         }
     }
     

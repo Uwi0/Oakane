@@ -38,7 +38,6 @@ internal fun DonutChartComponentView(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        CustomSegmentedButtonView()
         Box(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
@@ -57,7 +56,6 @@ internal fun DonutChartComponentView(
                     color = MaterialTheme.colorScheme.outline
                 )
             }
-
         }
 
         FlowRow(

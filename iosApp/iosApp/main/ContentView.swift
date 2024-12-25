@@ -30,6 +30,8 @@ struct ContentView: View {
                             MonthlyBudgetScreen()
                         case .wallets:
                             WalletsScreen()
+                        case .reports:
+                            ReportsScreen()
                         }
                     }
                 
