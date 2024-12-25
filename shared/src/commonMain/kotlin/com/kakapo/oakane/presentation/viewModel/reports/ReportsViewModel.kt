@@ -10,7 +10,9 @@ import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.wallet.WalletItemModel
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -28,6 +30,10 @@ class ReportsViewModel(
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(ReportsState())
 
+    @NativeCoroutines
+    val uiEffect get() = _uiEffect
+    private val _uiEffect = MutableSharedFlow<ReportsEffect>()
+
     fun initializeData() {
         loadMonthlyBudgetOverView()
         loadTransactionCategories()
@@ -37,7 +43,7 @@ class ReportsViewModel(
 
     fun handleEVent(event: ReportsEvent) {
         when (event) {
-            is ReportsEvent.NavigateBack -> {}
+            is ReportsEvent.NavigateBack -> emit(ReportsEffect.NavigateBack)
             is ReportsEvent.SelectedAllWallet -> _uiState.update { it.updateAllWallet() }
             is ReportsEvent.Selected -> _uiState.update { it.updateSelected(event.wallet) }
         }
@@ -60,6 +66,7 @@ class ReportsViewModel(
 
         transactionRepository.loadTransactionsCategories().asCustomResult().subscribe(
             onSuccess = onSuccess,
+            onError = ::handleError
         )
     }
 
@@ -70,7 +77,7 @@ class ReportsViewModel(
 
         walletRepository.loadTotalBalance().fold(
             onSuccess = onSuccess,
-            onFailure = {}
+            onFailure = ::handleError
         )
     }
 
@@ -80,7 +87,17 @@ class ReportsViewModel(
         }
 
         walletRepository.loadWallets().asCustomResult().subscribe(
-            onSuccess = onSuccess
+            onSuccess = onSuccess,
+            onError = ::handleError
         )
+    }
+
+    private fun handleError(throwable: Throwable?){
+        val message = throwable?.message ?: "Unknown error"
+        emit(ReportsEffect.ShowError(message))
+    }
+
+    private fun emit(effect: ReportsEffect) = viewModelScope.launch {
+        _uiEffect.emit(effect)
     }
 }

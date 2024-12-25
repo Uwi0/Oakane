@@ -12,8 +12,8 @@ fun NavController.navigateToReports(navOptions: NavOptions? = null) {
     navigate(REPORTS_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.reportsScreen(){
+fun NavGraphBuilder.reportsScreen(navigateBack: () -> Unit) {
     composable(REPORTS_ROUTE){
-        ReportsRoute()
+        ReportsRoute(navigateBack = navigateBack)
     }
 }

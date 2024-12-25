@@ -13,26 +13,41 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.reports.component.BudgetContentView
 import com.kakapo.oakane.presentation.feature.reports.component.ButtonFilterView
 import com.kakapo.oakane.presentation.feature.reports.component.DonutChartComponentView
 import com.kakapo.oakane.presentation.feature.reports.component.ReportsItemView
+import com.kakapo.oakane.presentation.viewModel.reports.ReportsEffect
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsEvent
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsState
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun ReportsRoute() {
+internal fun ReportsRoute(
+    navigateBack: () -> Unit
+) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<ReportsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.initializeData()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when(effect){
+                ReportsEffect.NavigateBack -> navigateBack.invoke()
+                is ReportsEffect.ShowError -> context.showToast(message = effect.message)
+            }
+        }
     }
 
     ReportsScreen(uiState = uiState, onEvent = viewModel::handleEVent)
@@ -47,7 +62,7 @@ private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit
                 actions = {
                     CustomIconButton(icon = Icons.Outlined.FileDownload) { }
                 },
-                onNavigateBack = {}
+                onNavigateBack = { onEvent.invoke(ReportsEvent.NavigateBack) }
             )
         },
         content = { paddingValues ->

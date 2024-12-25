@@ -39,6 +39,11 @@ data class ReportsState(
     )
 }
 
+sealed class ReportsEffect {
+    data object NavigateBack: ReportsEffect()
+    data class ShowError(val message: String): ReportsEffect()
+}
+
 sealed class ReportsEvent {
     data object NavigateBack: ReportsEvent()
     data object SelectedAllWallet: ReportsEvent()
