@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
@@ -18,7 +19,8 @@ import kotlin.native.ObjCName
 @ObjCName("ReportsViewModelKt")
 class ReportsViewModel(
     private val getMonthlyBudgetOverview: GetMonthlyBudgetOverviewUseCase,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val walletRepository: WalletRepository
 ): ViewModel() {
 
     @NativeCoroutinesState
@@ -28,6 +30,7 @@ class ReportsViewModel(
     fun initializeData(){
         loadMonthlyBudgetOverView()
         loadTransactionCategories()
+        loadTotalBalance()
     }
 
     private fun loadMonthlyBudgetOverView() = viewModelScope.launch {
@@ -47,6 +50,17 @@ class ReportsViewModel(
 
         transactionRepository.loadTransactionsCategories().asCustomResult().subscribe(
             onSuccess = onSuccess,
+        )
+    }
+
+    private fun loadTotalBalance() = viewModelScope.launch {
+        val onSuccess: (Double) -> Unit = { totalBalance ->
+            _uiState.update { it.copy(totalBalance = totalBalance) }
+        }
+
+        walletRepository.loadTotalBalance().fold(
+            onSuccess = onSuccess,
+            onFailure = {}
         )
     }
 }

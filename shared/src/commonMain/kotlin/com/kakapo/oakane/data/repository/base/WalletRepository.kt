@@ -24,4 +24,6 @@ interface WalletRepository {
     suspend fun update(wallet: WalletModel): Result<Unit>
     @NativeCoroutines
     suspend fun deleteWalletBy(id: Long): Result<Unit>
+    @NativeCoroutines
+    suspend fun loadTotalBalance(): Result<Double>
 }

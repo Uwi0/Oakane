@@ -62,7 +62,7 @@ private fun ReportsScreen(uiState: ReportsState) {
                 }
                 item {
                     DonutChartComponentView(
-                        amount = 20_000_000_000.0,
+                        amount = uiState.totalBalance,
                         proportions = uiState.proportions,
                         colorsInt = uiState.colors,
                         categoriesName = uiState.names

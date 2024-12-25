@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,13 +31,14 @@ internal fun DonutChartComponentView(
     colorsInt: List<Int>,
     categoriesName: List<String>
 ) {
-    val colors by remember { mutableStateOf(colorsInt.map { Color(it) }) }
+    val colors = colorsInt.map { Color(it) }
     ColumnWrapper(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Text("color size: ${colors.size}")
         CustomSegmentedButtonView()
         Box(
             modifier = Modifier.fillMaxWidth(),

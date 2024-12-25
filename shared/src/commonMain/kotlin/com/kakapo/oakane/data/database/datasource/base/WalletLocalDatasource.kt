@@ -16,4 +16,6 @@ interface WalletLocalDatasource {
     suspend fun update(wallet: WalletEntity): Result<Unit>
     @NativeCoroutines
     suspend fun deleteWalletBy(id: Long): Result<Unit>
+    @NativeCoroutines
+    suspend fun geTotalBalance(): Result<Double>
 }

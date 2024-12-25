@@ -67,4 +67,8 @@ class WalletRepositoryImpl(
     override suspend fun deleteWalletBy(id: Long): Result<Unit> {
         return localDatasource.deleteWalletBy(id)
     }
+
+    override suspend fun loadTotalBalance(): Result<Double> {
+        return localDatasource.geTotalBalance()
+    }
 }
