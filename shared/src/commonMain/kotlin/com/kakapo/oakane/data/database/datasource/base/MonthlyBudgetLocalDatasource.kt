@@ -13,7 +13,7 @@ interface MonthlyBudgetLocalDatasource {
     @NativeCoroutines
     suspend fun updateMonthlyBudget(entity: MonthlyBudgetEntity): Result<Unit>
     @NativeCoroutines
-    suspend fun getTotalBudgetWith(currentTime: Long): Result<Double>
+    suspend fun getTotalBudgetWith(startDateOfMonth: Long, endDatOfMont: Long): Result<Double>
     @NativeCoroutines
     suspend fun selectActiveMonthlyBudgets(): Result<Long>
 }

@@ -32,7 +32,7 @@ class GetMonthlyBudgetOverviewUseCaseImpl(
                     endDateOfMonth
                 )
             }
-            val limitDeferred = async { monthlyBudgetRepository.loadLimit() }
+            val limitDeferred = async { monthlyBudgetRepository.loadLimit(startDateOfMont, endDateOfMonth) }
 
             val totalIncome = totalIncomeDeferred.await().getOrNull() ?: 0.0
             val totalExpense = totalExpenseDeferred.await().getOrNull() ?: 0.0

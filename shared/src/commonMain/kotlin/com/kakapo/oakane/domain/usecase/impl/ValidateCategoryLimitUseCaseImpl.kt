@@ -1,5 +1,6 @@
 package com.kakapo.oakane.domain.usecase.impl
 
+import com.kakapo.oakane.common.startDateAndEndDateOfMonth
 import com.kakapo.oakane.data.model.CategoryLimitParam
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
@@ -16,8 +17,9 @@ class ValidateCategoryLimitUseCaseImpl(
     ): Result<Unit> {
         val monthlyBudgetId = categoryLimit.monthlyBudgetId
         val newLimitAmount = categoryLimit.limitAmount
+        val (startDate, endDate) = startDateAndEndDateOfMonth()
         return runCatching {
-            val totalBudget = monthlyBudgetRepository.loadLimit().getOrThrow()
+            val totalBudget = monthlyBudgetRepository.loadLimit(startDate, endDate).getOrThrow()
             val totalCategoryLimit = categoryLimitRepository.loadTotalCategoryLimitBy(monthlyBudgetId).getOrThrow()
             val alreadyExist = categoryLimitRepository.checkIFExists(categoryLimit.categoryId, monthlyBudgetId).getOrThrow()
             val newLimit = totalCategoryLimit + newLimitAmount

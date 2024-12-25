@@ -8,13 +8,16 @@ interface MonthlyBudgetRepository {
     @NativeCoroutines
     suspend fun add(monthlyBudget: MonthlyBudgetParam): Result<Unit>
     @NativeCoroutines
-    suspend fun hasCurrentMontlyBudgetAtTheTime(): Result<Boolean>
+    suspend fun hasCurrentMonthlyBudgetAtTheTime(): Result<Boolean>
     @NativeCoroutines
     suspend fun loadMonthlyBudget(): Result<MonthlyBudgetModel>
     @NativeCoroutines
     suspend fun update(monthlyBudget: MonthlyBudgetParam): Result<Unit>
     @NativeCoroutines
-    suspend fun loadLimit(): Result<Double>
+    suspend fun loadLimit(
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double>
     @NativeCoroutines
     suspend fun loadActiveMonthlyBudget(): Result<Long>
 }

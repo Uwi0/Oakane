@@ -44,7 +44,7 @@ WHERE id = ?;
 getTotalBudgetWith:
 SELECT totalBudget
 FROM MonthlyBudgetTable
-WHERE :currentTimeStamp BETWEEN startDate AND endDate;
+WHERE createdAt >= ? AND createdAt <= ?;
 
 selectActiveMonthlyBudgets:
 SELECT id
