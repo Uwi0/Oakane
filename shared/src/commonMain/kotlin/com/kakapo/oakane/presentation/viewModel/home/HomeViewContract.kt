@@ -1,10 +1,12 @@
 package com.kakapo.oakane.presentation.viewModel.home
 
 import com.kakapo.oakane.model.GoalModel
-import com.kakapo.oakane.model.wallet.WalletModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.model.wallet.WalletModel
+import kotlin.native.ObjCName
 
+@ObjCName("HomeStateKt")
 data class HomeState(
     val wallet: WalletModel = WalletModel(),
     val transactions: List<TransactionModel> = emptyList(),

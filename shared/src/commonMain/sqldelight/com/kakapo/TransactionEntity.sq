@@ -84,4 +84,39 @@ WHERE transactionId = ?;
 getTotalTransactionBaseOn:
 SELECT COALESCE(SUM(amount), 0) AS totalTransaction
 FROM TransactionTable
-WHERE type = ?;
+WHERE type = ? AND dateCreated >= ? AND dateCreated <= ?;
+
+getTotalTransactionBy:
+SELECT COALESCE(SUM(amount), 0) AS totalTransaction
+FROM TransactionTable
+WHERE walletId = ? AND type = ? AND dateCreated >= ? AND dateCreated <= ?;
+
+getTransactionCategory:
+SELECT
+    c.id AS categoryId,
+    c.name AS categoryName,
+    c.icon AS categoryIcon,
+    c.color AS categoryColor,
+    c.isDefault AS defaultCategory,
+    t.type AS transactionType,
+    SUM(t.amount) AS totalAmount
+FROM TransactionTable t
+INNER JOIN CategoryTable c
+ON t.category = c.id
+WHERE t.dateCreated >= ? AND t.dateCreated <= ?
+GROUP BY c.id;
+
+getTransactionCategoryBy:
+SELECT
+    c.id AS categoryId,
+    c.name AS categoryName,
+    c.icon AS categoryIcon,
+    c.color AS categoryColor,
+    c.isDefault AS defaultCategory,
+    t.type AS transactionType,
+    SUM(t.amount) AS totalAmount
+FROM TransactionTable t
+INNER JOIN CategoryTable c
+ON t.category = c.id
+WHERE t.walletId = ? AND t.dateCreated >= ? AND t.dateCreated <= ?
+GROUP BY c.id;

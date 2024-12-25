@@ -31,7 +31,9 @@ SELECT COUNT(*) FROM MonthlyBudgetTable
 WHERE :currentTimeStamp BETWEEN startDate AND endDate;
 
 getMonthlyBudget:
-SELECT * FROM MonthlyBudgetTable;
+SELECT * FROM MonthlyBudgetTable
+ORDER BY id DESC
+LIMIT 1;
 
 updateMonthlyBudget:
 UPDATE MonthlyBudgetTable
@@ -42,7 +44,7 @@ WHERE id = ?;
 getTotalBudgetWith:
 SELECT totalBudget
 FROM MonthlyBudgetTable
-WHERE :currentTimeStamp BETWEEN startDate AND endDate;
+WHERE createdAt >= ? AND createdAt <= ?;
 
 selectActiveMonthlyBudgets:
 SELECT id

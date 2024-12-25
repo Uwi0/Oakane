@@ -60,6 +60,6 @@ private struct SavingProgressView: View {
 }
 
 #Preview {
-    let uiState = GoalState(fileName: "", title: "Hello world")
+    let uiState = GoalState()
     CardGoalView(uiState: uiState)
 }

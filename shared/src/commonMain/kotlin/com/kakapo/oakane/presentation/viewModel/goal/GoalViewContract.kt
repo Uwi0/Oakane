@@ -3,7 +3,9 @@ package com.kakapo.oakane.presentation.viewModel.goal
 import com.kakapo.oakane.common.daysBetween
 import com.kakapo.oakane.common.toFormatIDRWithCurrency
 import com.kakapo.oakane.model.GoalModel
+import kotlin.native.ObjCName
 
+@ObjCName("GoalStateKt")
 data class GoalState(
     val goal: GoalModel = GoalModel(),
     val savingAmount: String = "",

@@ -6,7 +6,9 @@ import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.model.category.CategoryLimitModel
 import com.kakapo.oakane.model.category.CategoryModel
 import kotlinx.datetime.Clock
+import kotlin.native.ObjCName
 
+@ObjCName("MonthlyBudgetStateKt")
 data class MonthlyBudgetState(
     val id: Long = 0,
     val amount: String = "",

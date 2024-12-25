@@ -15,7 +15,7 @@ class MonthlyBudgetRepositoryImpl(
         return localDatasource.insertMonthlyBudget(monthlyBudget.toEntity())
     }
 
-    override suspend fun hasCurrentMontlyBudgetAtTheTime(): Result<Boolean> {
+    override suspend fun hasCurrentMonthlyBudgetAtTheTime(): Result<Boolean> {
         val currentTime = Clock.System.now().toEpochMilliseconds()
         return localDatasource.hasCurrentMonthlyBudgetIn(currentTime)
     }
@@ -28,9 +28,8 @@ class MonthlyBudgetRepositoryImpl(
         return localDatasource.updateMonthlyBudget(monthlyBudget.toEntity())
     }
 
-    override suspend fun loadLimit(): Result<Double> {
-        val currentTime = Clock.System.now().toEpochMilliseconds()
-        return localDatasource.getTotalBudgetWith(currentTime)
+    override suspend fun loadLimit(startDateOfMonth: Long, endDateOfMonth: Long): Result<Double> {
+        return localDatasource.getTotalBudgetWith(startDateOfMonth, endDateOfMonth)
     }
 
     override suspend fun loadActiveMonthlyBudget(): Result<Long> {

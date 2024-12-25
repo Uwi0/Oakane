@@ -2,9 +2,13 @@ package com.kakapo.oakane.data.database.datasource.impl
 
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
+import com.kakapo.GetTransactionCategory
+import com.kakapo.GetTransactionCategoryBy
 import com.kakapo.GetTransactions
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
+import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
+import com.kakapo.oakane.data.database.model.toTransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.toTransactionEntity
 
 class TransactionLocalDatasourceImpl(
@@ -61,9 +65,56 @@ class TransactionLocalDatasourceImpl(
         }
     }
 
-    override suspend fun loadTotalTransactionBaseOn(type: Long): Result<Double> {
+    override suspend fun getTotalTransactionBaseOn(
+        type: Long,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double> {
         return runCatching {
-            transactionDb.getTotalTransactionBaseOn(type).executeAsOne()
+            transactionDb.getTotalTransactionBaseOn(
+                type,
+                startDateOfMonth,
+                endDateOfMonth
+            ).executeAsOne()
+        }
+    }
+
+    override suspend fun getTotalTransactionBy(
+        walletId: Long,
+        type: Long,
+        startDateOfMonth: Long,
+        endDateMonth: Long
+    ): Result<Double> {
+        return runCatching {
+            transactionDb.getTotalTransactionBy(
+                walletId,
+                type,
+                startDateOfMonth,
+                endDateMonth
+            ).executeAsOne()
+        }
+    }
+
+    override suspend fun getTransactionCategories(
+        starDateMonth: Long,
+        endDateMonth: Long
+    ): Result<List<TransactionCategoryEntity>> {
+        return runCatching {
+            transactionDb.getTransactionCategory(starDateMonth, endDateMonth)
+                .executeAsList()
+                .map(GetTransactionCategory::toTransactionCategoryEntity)
+        }
+    }
+
+    override suspend fun getTransactionCategoriesBy(
+        walletId: Long,
+        starDateMonth: Long,
+        endDateMonth: Long
+    ): Result<List<TransactionCategoryEntity>> {
+        return runCatching {
+            transactionDb.getTransactionCategoryBy(walletId, starDateMonth, endDateMonth)
+                .executeAsList()
+                .map(GetTransactionCategoryBy::toTransactionCategoryEntity)
         }
     }
 

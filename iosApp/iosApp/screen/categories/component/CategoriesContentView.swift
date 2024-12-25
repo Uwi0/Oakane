@@ -4,27 +4,24 @@ import Shared
 struct CategoriesContentView: View {
     @Binding var selectedTab: Int
     @Binding var searchQuery: String
-    let tabBars: [String]
-    let expenseCategories: [CategoryModel]
-    let incomeCategories: [CategoryModel]
+    let uiState: CategoriesState
     let onEvent: (CategoriesEvent) -> Void
-    
     
     var body: some View {
         VStack {
-            Divider()
+            NavigationTopAppbar(title: "Categories", navigateBack: { onEvent(.NavigateBack()) })
             OutlinedSearchTextFieldView(query: $searchQuery, placeHolder: "Search Categories...")
                 .padding(.horizontal, 16)
-            TabBarView(currentTab: $selectedTab, tabBarOptions: tabBars)
+            TabBarView(currentTab: $selectedTab, tabBarOptions: uiState.tabBars)
             TabView(selection: $selectedTab) {
                 CategoriesView(
-                    categories: incomeCategories,
+                    categories: uiState.incomeCategories,
                     onClick: { category in onEvent(.OnTapped(category: category)) }
                 )
                 .tag(0)
                 
                 CategoriesView(
-                    categories: expenseCategories,
+                    categories: uiState.expenseCategories,
                     onClick: { category in onEvent(.OnTapped(category: category)) }
                 )
                 .tag(1)

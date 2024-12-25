@@ -14,33 +14,31 @@ struct GoalScreen: View {
     
     var body: some View {
         GeometryReader { proxy in
-            ZStack {
-                ColorTheme.surface.ignoresSafeArea()
-                VStack {
-                    ToolbarView(onEvent: viewModel.handle(event:))
-                    VStack(spacing: 16) {
-                        CardGoalView(uiState: uiState)
-                        CardTimeView(uiState: uiState)
-                        CardNoteView(note: uiState.note)
-                        Spacer()
-                    }
-                    .padding(.vertical, 24)
-                    .padding(.horizontal, 16)
+            ColorTheme.surface.ignoresSafeArea()
+            VStack {
+                ToolbarView(onEvent: viewModel.handle(event:))
+                VStack(spacing: 16) {
+                    CardGoalView(uiState: uiState)
+                    CardTimeView(uiState: uiState)
+                    CardNoteView(note: uiState.note)
+                    Spacer()
                 }
-                FabButtonView(
-                    size: FabConstant.size,
-                    xPos: proxy.size.width - FabConstant.xOffset,
-                    yPos: proxy.size.height - FabConstant.yOffset,
-                    onClick: {
-                        viewModel.handle(event: .Dialog(shown: true, content: .updateAmount))
-                    }
+                .padding(.vertical, 24)
+                .padding(.horizontal, 16)
+            }
+            FabButtonView(
+                size: FabConstant.size,
+                xPos: proxy.size.width - FabConstant.xOffset,
+                yPos: proxy.size.height - FabConstant.yOffset,
+                onClick: {
+                    viewModel.handle(event: .Dialog(shown: true, content: .updateAmount))
+                }
+            )
+            if uiState.isDialogShown {
+                GoalDialogView(
+                    uiState: uiState,
+                    onEvent: viewModel.handle(event:)
                 )
-                if uiState.isDialogShown {
-                    GoalDialogView(
-                        uiState: uiState,
-                        onEvent: viewModel.handle(event:)
-                    )
-                }
             }
         }
         .navigationBarBackButtonHidden(true)

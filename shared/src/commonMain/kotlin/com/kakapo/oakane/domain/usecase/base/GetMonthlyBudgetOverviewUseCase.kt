@@ -1,7 +1,14 @@
 package com.kakapo.oakane.domain.usecase.base
 
+import com.kakapo.oakane.common.startDateAndEndDateOfMonth
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface GetMonthlyBudgetOverviewUseCase {
-    suspend fun execute(): Result<MonthlyBudgetOverViewModel>
+    @NativeCoroutines
+    suspend fun execute(
+        walletId: Long? = null,
+        startDateOfMont: Long = startDateAndEndDateOfMonth().first,
+        endDateOfMonth: Long = startDateAndEndDateOfMonth().second
+    ): Result<MonthlyBudgetOverViewModel>
 }

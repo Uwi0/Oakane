@@ -1,6 +1,8 @@
 package com.kakapo.oakane.data.database.model
 
 import com.kakapo.GetTransactionBy
+import com.kakapo.GetTransactionCategory
+import com.kakapo.GetTransactionCategoryBy
 import com.kakapo.GetTransactions
 
 data class TransactionEntity(
@@ -12,6 +14,16 @@ data class TransactionEntity(
     val category: CategoryEntity,
     val dateCreated: Long,
     val note: String?
+)
+
+data class TransactionCategoryEntity(
+    val id: Long,
+    val name: String,
+    val type: Long,
+    val icon: String,
+    val color: String,
+    val isDefault: Boolean,
+    val totalTransaction: Double
 )
 
 fun GetTransactions.toTransactionEntity(): TransactionEntity {
@@ -57,5 +69,29 @@ fun GetTransactionBy.toTransactionEntity(): TransactionEntity {
     )
 
     return transactionEntity
+}
+
+fun GetTransactionCategory.toTransactionCategoryEntity(): TransactionCategoryEntity {
+    return TransactionCategoryEntity(
+        id = categoryId,
+        name = categoryName,
+        type = transactionType,
+        icon = categoryIcon,
+        color = categoryColor,
+        isDefault = defaultCategory == 1L,
+        totalTransaction = totalAmount ?: 0.0
+    )
+}
+
+fun GetTransactionCategoryBy.toTransactionCategoryEntity(): TransactionCategoryEntity {
+    return TransactionCategoryEntity(
+        id = categoryId,
+        name = categoryName,
+        type = transactionType,
+        icon = categoryIcon,
+        color = categoryColor,
+        isDefault = defaultCategory == 1L,
+        totalTransaction = totalAmount ?: 0.0
+    )
 }
 

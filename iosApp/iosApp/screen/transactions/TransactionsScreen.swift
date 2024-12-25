@@ -32,7 +32,7 @@ struct TransactionsScreen: View {
 
         }
         .navigationBarBackButtonHidden(true)
-        .sheet(isPresented: $viewModel.uiState.sheetSown){
+        .sheet(isPresented: $viewModel.uiState.sheetShown){
             VStack {
                 switch viewModel.uiState.sheetContent {
                 case .type:

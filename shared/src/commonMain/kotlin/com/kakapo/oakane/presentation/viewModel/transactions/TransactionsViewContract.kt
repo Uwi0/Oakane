@@ -3,7 +3,9 @@ package com.kakapo.oakane.presentation.viewModel.transactions
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
+import kotlin.native.ObjCName
 
+@ObjCName("TransactionsStateKt")
 data class TransactionsState(
     val transactions: List<TransactionModel> = emptyList(),
     val filteredTransactions: List<TransactionModel> = transactions,

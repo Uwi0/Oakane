@@ -1,10 +1,13 @@
 package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
+import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.model.toModel
+import com.kakapo.oakane.data.model.toReportModel
 import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.coroutines.flow.Flow
@@ -36,13 +39,52 @@ class TransactionRepositoryImpl(
         return localDatasource.updateTransaction(transaction.toEntity())
     }
 
-    override suspend fun loadTotalExpense(): Result<Double> {
+    override suspend fun loadTotalExpense(
+        walletId: Long?,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double> {
         val typeExpense = TransactionType.Expense.ordinal.toLong()
-        return localDatasource.loadTotalTransactionBaseOn(typeExpense)
+        return if (walletId != null) {
+            localDatasource.getTotalTransactionBy(walletId, typeExpense, startDateOfMonth, endDateOfMonth)
+        } else {
+            localDatasource.getTotalTransactionBaseOn(typeExpense, startDateOfMonth, endDateOfMonth)
+        }
     }
 
-    override suspend fun loadTotalIncome(): Result<Double> {
+    override suspend fun loadTotalIncome(
+        walletId: Long?,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double> {
         val typeIncome = TransactionType.Income.ordinal.toLong()
-        return localDatasource.loadTotalTransactionBaseOn(typeIncome)
+        return if (walletId != null) {
+            localDatasource.getTotalTransactionBy(walletId, typeIncome, startDateOfMonth, endDateOfMonth)
+        } else {
+            localDatasource.getTotalTransactionBaseOn(typeIncome, startDateOfMonth, endDateOfMonth)
+        }
+    }
+
+    override fun loadTransactionsCategories(
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Flow<Result<List<ReportModel>>> = flow {
+        val result = localDatasource.getTransactionCategories(startDateOfMonth, endDateOfMonth)
+            .mapCatching { it.map(TransactionCategoryEntity::toReportModel) }
+        emit(result)
+    }
+
+    override fun loadTransactionsCategoriesBy(
+        walletId: Long,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Flow<Result<List<ReportModel>>> = flow {
+        val result = localDatasource.getTransactionCategoriesBy(
+            walletId,
+            startDateOfMonth,
+            endDateOfMonth
+        ).mapCatching { it.map(TransactionCategoryEntity::toReportModel) }
+
+        emit(result)
     }
 }

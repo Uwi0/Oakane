@@ -11,15 +11,19 @@ import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
-import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetModel
 import com.kakapo.oakane.model.category.CategoryLimitModel
+import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetModel
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("MonthlyBudgetViewModelKt")
 class MonthlyBudgetViewModel(
     private val monthlyBudgetRepository: MonthlyBudgetRepository,
     private val categoryRepository: CategoryRepository,
@@ -27,9 +31,11 @@ class MonthlyBudgetViewModel(
     private val validateCategoryLimitUseCase: ValidateCategoryLimitUseCase
 ) : ViewModel() {
 
+    @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(MonthlyBudgetState())
 
+    @NativeCoroutines
     val effect get() = _effect.asSharedFlow()
     private val _effect = MutableSharedFlow<MonthlyBudgetEffect>()
 
@@ -57,7 +63,7 @@ class MonthlyBudgetViewModel(
                 loadCategoryLimits()
             }
         }
-        monthlyBudgetRepository.hasCurrentMontlyBudgetAtTheTime().fold(
+        monthlyBudgetRepository.hasCurrentMonthlyBudgetAtTheTime().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

@@ -58,3 +58,6 @@ WHERE id = ?;
 
 deleteWallet:
 DELETE FROM WalletTable WHERE id = ?;
+
+getTotalBalance:
+SELECT COALESCE(SUM(balance), 0) AS totalBalance FROM WalletTable;

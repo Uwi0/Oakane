@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProgressIndicatorView: View {
     @State private var animatedProgress: Float = 0.0
+    @State private var isUpdating = false
     var value: Float
     
     private let radius: CGFloat = 16
@@ -19,8 +20,13 @@ struct ProgressIndicatorView: View {
                 }
             }
             .onChange(of: value) {
+                guard !isUpdating else { return }
+                isUpdating = true
                 withAnimation(.easeInOut(duration: 0.5)) {
                     animatedProgress = value
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    isUpdating = false
                 }
             }
     }
