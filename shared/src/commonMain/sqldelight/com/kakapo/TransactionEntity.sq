@@ -103,6 +103,7 @@ SELECT
 FROM TransactionTable t
 INNER JOIN CategoryTable c
 ON t.category = c.id
+WHERE t.dateCreated >= ? AND t.dateCreated <= ?
 GROUP BY c.id;
 
 getTransactionCategoryBy:
@@ -117,5 +118,5 @@ SELECT
 FROM TransactionTable t
 INNER JOIN CategoryTable c
 ON t.category = c.id
-WHERE t.walletId = ?
+WHERE t.walletId = ? AND t.dateCreated >= ? AND t.dateCreated <= ?
 GROUP BY c.id;

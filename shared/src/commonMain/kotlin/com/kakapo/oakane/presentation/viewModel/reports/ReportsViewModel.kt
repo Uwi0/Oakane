@@ -10,6 +10,7 @@ import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.wallet.WalletItemModel
+import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -46,6 +47,7 @@ class ReportsViewModel(
             is ReportsEvent.NavigateBack -> emit(ReportsEffect.NavigateBack)
             is ReportsEvent.SelectedAllWallet ->onSelectedAllWallet()
             is ReportsEvent.Selected -> loadTransactionCategoriesWith(event.wallet)
+            is ReportsEvent.FilterBy ->onFilterByMonth(event.month)
         }
     }
 
@@ -60,23 +62,32 @@ class ReportsViewModel(
     }
 
     private fun loadTransactionCategories() = viewModelScope.launch {
+        val (startDateOfMont, endDateOfMonth) = _uiState.value.monthNumber
         val onSuccess: (List<ReportModel>) -> Unit = { reports ->
             _uiState.update { it.copy(reports = reports, displayedReports = reports) }
         }
 
-        transactionRepository.loadTransactionsCategories().asCustomResult().subscribe(
+        transactionRepository.loadTransactionsCategories(
+            startDateOfMont,
+            endDateOfMonth
+        ).asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )
     }
 
     private fun loadTransactionCategoriesWith(walletItem: WalletItemModel) = viewModelScope.launch {
+        val (startDateOfMont, endDateOfMonth) = _uiState.value.monthNumber
         val onSuccess: (List<ReportModel>) -> Unit = { reports ->
             _uiState.update { it.updateSelected(walletItem, reports) }
             loadMonthlyBudgetOverView(walletItem.id)
         }
 
-        transactionRepository.loadTransactionsCategoriesBy(walletItem.id).asCustomResult().subscribe(
+        transactionRepository.loadTransactionsCategoriesBy(
+            walletItem.id,
+            startDateOfMont,
+            endDateOfMonth
+        ).asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )
@@ -107,6 +118,16 @@ class ReportsViewModel(
     private fun onSelectedAllWallet(){
         loadMonthlyBudgetOverView()
         _uiState.update { it.updateAllWallet() }
+    }
+
+    private fun onFilterByMonth(month: MonthReport){
+        val wallet = _uiState.value.selectedWallet
+        _uiState.update { it.copy(selectedMonth = month) }
+        if (wallet != null){
+            loadTransactionCategoriesWith(wallet)
+        } else {
+            onSelectedAllWallet()
+        }
     }
 
     private fun handleError(throwable: Throwable?){

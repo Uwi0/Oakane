@@ -57,15 +57,26 @@ class TransactionRepositoryImpl(
         }
     }
 
-    override fun loadTransactionsCategories(): Flow<Result<List<ReportModel>>> = flow {
-        val result = localDatasource.getTransactionCategories()
+    override fun loadTransactionsCategories(
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Flow<Result<List<ReportModel>>> = flow {
+        val result = localDatasource.getTransactionCategories(startDateOfMonth, endDateOfMonth)
             .mapCatching { it.map(TransactionCategoryEntity::toReportModel) }
         emit(result)
     }
 
-    override fun loadTransactionsCategoriesBy(walletId: Long): Flow<Result<List<ReportModel>>> = flow {
-        val result = localDatasource.getTransactionCategoriesBy(walletId)
-            .mapCatching { it.map(TransactionCategoryEntity::toReportModel) }
+    override fun loadTransactionsCategoriesBy(
+        walletId: Long,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Flow<Result<List<ReportModel>>> = flow {
+        val result = localDatasource.getTransactionCategoriesBy(
+            walletId,
+            startDateOfMonth,
+            endDateOfMonth
+        ).mapCatching { it.map(TransactionCategoryEntity::toReportModel) }
+
         emit(result)
     }
 }

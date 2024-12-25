@@ -77,17 +77,24 @@ class TransactionLocalDatasourceImpl(
         }
     }
 
-    override suspend fun getTransactionCategories(): Result<List<TransactionCategoryEntity>> {
+    override suspend fun getTransactionCategories(
+        starDateMonth: Long,
+        endDateMonth: Long
+    ): Result<List<TransactionCategoryEntity>> {
         return runCatching {
-            transactionDb.getTransactionCategory()
+            transactionDb.getTransactionCategory(starDateMonth, endDateMonth)
                 .executeAsList()
                 .map(GetTransactionCategory::toTransactionCategoryEntity)
         }
     }
 
-    override suspend fun getTransactionCategoriesBy(walletId: Long): Result<List<TransactionCategoryEntity>> {
+    override suspend fun getTransactionCategoriesBy(
+        walletId: Long,
+        starDateMonth: Long,
+        endDateMonth: Long
+    ): Result<List<TransactionCategoryEntity>> {
         return runCatching {
-            transactionDb.getTransactionCategoryBy(walletId)
+            transactionDb.getTransactionCategoryBy(walletId, starDateMonth, endDateMonth)
                 .executeAsList()
                 .map(GetTransactionCategoryBy::toTransactionCategoryEntity)
         }

@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.feature.reports.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -19,34 +20,66 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsEvent
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsState
+import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 
 @Composable
 internal fun ButtonFilterView(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        ButtonView(title = "Jan", icon = Icons.Default.CalendarMonth, onCLick = {})
+        ButtonDateFilterView(uiState = uiState, onEvent = onEvent)
         ButtonWalletsDropDownMenu(uiState = uiState, onEvent = onEvent)
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ButtonView(title: String, icon: ImageVector, onCLick: () -> Unit) {
+private fun ButtonDateFilterView(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit) {
+    var isExpanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = isExpanded,
+        onExpandedChange = { isExpanded = it }
+    ) {
+        ButtonFilterView(
+            modifier = Modifier.menuAnchor(),
+            title = uiState.selectedMonth.title,
+            icon = { ExposedDropdownMenuDefaults.TrailingIcon(isExpanded) }
+        )
+        ExposedDropdownMenu(
+            modifier = Modifier.heightIn(max = 360.dp),
+            expanded = isExpanded,
+            onDismissRequest = { isExpanded = false }
+        ) {
+            MonthReport.entries.forEach { month ->
+                DropdownMenuItem(
+                    text = { Text(text = month.description) },
+                    onClick = {
+                        onEvent.invoke(ReportsEvent.FilterBy(month))
+                        isExpanded = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ButtonFilterView(modifier: Modifier,title: String, icon: @Composable () -> Unit) {
     Surface(
+        modifier = modifier,
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.outline,
         shadowElevation = 2.dp,
-        onClick = onCLick
     ) {
         Row(
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            Icon(imageVector = Icons.Default.CalendarMonth, contentDescription = null)
             Text(text = title)
-            Icon(imageVector = icon, contentDescription = null)
+            icon.invoke()
         }
     }
 }
@@ -61,12 +94,12 @@ private fun ButtonWalletsDropDownMenu(uiState: ReportsState, onEvent: (ReportsEv
     ) {
         ButtonWalletsView(
             modifier = Modifier.menuAnchor(),
-            title = uiState.selectedWallet,
-            icon = { ExposedDropdownMenuDefaults.TrailingIcon(isExpanded) },
-            onCLick = { isExpanded = !isExpanded }
+            title = uiState.selectedWalletName,
+            icon = { ExposedDropdownMenuDefaults.TrailingIcon(isExpanded) }
         )
 
         ExposedDropdownMenu(
+            modifier = Modifier.heightIn(max = 360.dp),
             expanded = isExpanded,
             onDismissRequest = { isExpanded = false }
         ) {
@@ -94,8 +127,7 @@ private fun ButtonWalletsDropDownMenu(uiState: ReportsState, onEvent: (ReportsEv
 private fun ButtonWalletsView(
     modifier: Modifier = Modifier,
     title: String,
-    icon: @Composable () -> Unit,
-    onCLick: () -> Unit
+    icon: @Composable () -> Unit
 ) {
     Surface(
         modifier = modifier,
@@ -103,7 +135,6 @@ private fun ButtonWalletsView(
         color = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.outline,
         shadowElevation = 2.dp,
-        onClick = {}
     ) {
         Row(
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
