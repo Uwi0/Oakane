@@ -2,9 +2,12 @@ package com.kakapo.oakane.data.database.datasource.impl
 
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
+import com.kakapo.GetTransactionCategory
 import com.kakapo.GetTransactions
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
+import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
+import com.kakapo.oakane.data.database.model.toTransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.toTransactionEntity
 
 class TransactionLocalDatasourceImpl(
@@ -64,6 +67,14 @@ class TransactionLocalDatasourceImpl(
     override suspend fun loadTotalTransactionBaseOn(type: Long): Result<Double> {
         return runCatching {
             transactionDb.getTotalTransactionBaseOn(type).executeAsOne()
+        }
+    }
+
+    override suspend fun getTransactionCategories(): Result<List<TransactionCategoryEntity>> {
+        return runCatching {
+            transactionDb.getTransactionCategory()
+                .executeAsList()
+                .map(GetTransactionCategory::toTransactionCategoryEntity)
         }
     }
 

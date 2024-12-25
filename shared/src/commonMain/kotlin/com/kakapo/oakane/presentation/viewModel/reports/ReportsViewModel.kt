@@ -2,7 +2,11 @@ package com.kakapo.oakane.presentation.viewModel.reports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.oakane.common.asCustomResult
+import com.kakapo.oakane.common.subscribe
+import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
+import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +17,8 @@ import kotlin.native.ObjCName
 
 @ObjCName("ReportsViewModelKt")
 class ReportsViewModel(
-    private val getMonthlyBudgetOverview: GetMonthlyBudgetOverviewUseCase
+    private val getMonthlyBudgetOverview: GetMonthlyBudgetOverviewUseCase,
+    private val transactionRepository: TransactionRepository
 ): ViewModel() {
 
     @NativeCoroutinesState
@@ -22,6 +27,7 @@ class ReportsViewModel(
 
     fun initializeData(){
         loadMonthlyBudgetOverView()
+        loadTransactionCategories()
     }
 
     private fun loadMonthlyBudgetOverView() = viewModelScope.launch {
@@ -31,6 +37,16 @@ class ReportsViewModel(
         getMonthlyBudgetOverview.execute().fold(
             onSuccess = onSuccess,
             onFailure = {}
+        )
+    }
+
+    private fun loadTransactionCategories() = viewModelScope.launch {
+        val onSuccess: (List<ReportModel>) -> Unit = { reports ->
+            _uiState.update { it.copy(reports = reports) }
+        }
+
+        transactionRepository.loadTransactionsCategories().asCustomResult().subscribe(
+            onSuccess = onSuccess,
         )
     }
 }

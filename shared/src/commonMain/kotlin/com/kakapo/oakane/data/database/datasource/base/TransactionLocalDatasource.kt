@@ -1,5 +1,6 @@
 package com.kakapo.oakane.data.database.datasource.base
 
+import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
@@ -16,4 +17,6 @@ interface TransactionLocalDatasource {
     suspend fun deleteTransaction(id: Long): Result<Unit>
     @NativeCoroutines
     suspend fun loadTotalTransactionBaseOn(type: Long): Result<Double>
+    @NativeCoroutines
+    suspend fun getTransactionCategories(): Result<List<TransactionCategoryEntity>>
 }

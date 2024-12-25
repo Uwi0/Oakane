@@ -1,8 +1,11 @@
 package com.kakapo.oakane.data.model
 
+import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
+import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.model.transaction.asTransactionType
 
 data class TransactionParam(
@@ -40,4 +43,14 @@ fun TransactionEntity.toModel() = TransactionModel(
     category = category.toCategoryModel(),
     amount = amount,
     note = note ?: ""
+)
+
+fun TransactionCategoryEntity.toReportModel() = ReportModel(
+    id = id,
+    name = name,
+    color = color,
+    amount = totalTransaction,
+    isExpense = type == TransactionType.Expense.ordinal.toLong(),
+    isDefault = isDefault,
+    icon = icon
 )

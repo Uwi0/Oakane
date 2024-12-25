@@ -1,10 +1,13 @@
 package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
+import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.model.toModel
+import com.kakapo.oakane.data.model.toReportModel
 import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import kotlinx.coroutines.flow.Flow
@@ -44,5 +47,13 @@ class TransactionRepositoryImpl(
     override suspend fun loadTotalIncome(): Result<Double> {
         val typeIncome = TransactionType.Income.ordinal.toLong()
         return localDatasource.loadTotalTransactionBaseOn(typeIncome)
+    }
+
+    override fun loadTransactionsCategories(): Flow<Result<List<ReportModel>>> = flow {
+        val result = localDatasource.getTransactionCategories()
+            .mapCatching {
+                it.map(TransactionCategoryEntity::toReportModel)
+            }
+        emit(result)
     }
 }

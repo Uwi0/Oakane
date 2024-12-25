@@ -1,6 +1,7 @@
 package com.kakapo.oakane.data.repository.base
 
 import com.kakapo.oakane.data.model.TransactionParam
+import com.kakapo.oakane.model.ReportModel
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
@@ -20,4 +21,6 @@ interface TransactionRepository {
     suspend fun loadTotalExpense(): Result<Double>
     @NativeCoroutines
     suspend fun loadTotalIncome(): Result<Double>
+    @NativeCoroutines
+    fun loadTransactionsCategories(): Flow<Result<List<ReportModel>>>
 }

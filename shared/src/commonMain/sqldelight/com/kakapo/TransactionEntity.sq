@@ -85,3 +85,17 @@ getTotalTransactionBaseOn:
 SELECT COALESCE(SUM(amount), 0) AS totalTransaction
 FROM TransactionTable
 WHERE type = ?;
+
+getTransactionCategory:
+SELECT
+    c.id AS categoryId,
+    c.name AS categoryName,
+    c.icon AS categoryIcon,
+    c.color AS categoryColor,
+    c.isDefault AS defaultCategory,
+    t.type AS transactionType,
+    SUM(t.amount) AS totalAmount
+FROM TransactionTable t
+INNER JOIN CategoryTable c
+ON t.category = c.id
+GROUP BY c.id;
