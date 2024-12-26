@@ -51,7 +51,7 @@ class ReportsViewModel(
     }
 
     private fun onSelected(wallet: WalletItemModel) {
-        if (wallet.id == 0L) loadDefaultValue()
+        if (wallet.isDefaultWallet()) loadDefaultValue()
         else loadTransactionCategoriesWith(wallet)
     }
 

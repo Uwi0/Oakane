@@ -2,16 +2,17 @@ import SwiftUI
 
 struct ReportsScreen: View {
     
+    @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel: ReportsViewModel = ReportsViewModel()
     
     var uiState: ReportsState { viewModel.uiState }
     
     var body: some View {
         VStack {
-            ReportsTopbarView()
+            TopAppbar()
             ScrollView {
                 VStack(spacing: 16) {
-                    ButtonFilterReportView(wallets: uiState.wallets)
+                    ButtonFilterReportView(wallets: uiState.wallets, onEvent: viewModel.handle(event:))
                         .padding(.horizontal, 16)
                         .padding(.top, 24)
                     
@@ -21,7 +22,7 @@ struct ReportsScreen: View {
                     ReportBudgetContentView(item: uiState.monthlyOverView)
                         .padding(.horizontal, 16)
                     
-                    reportsItem()
+                    ReportsItem()
                 }
             }
             .scrollIndicators(.hidden)
@@ -30,7 +31,7 @@ struct ReportsScreen: View {
         .navigationBarBackButtonHidden(true)
     }
     
-    @ViewBuilder func reportsItem() -> some View {
+    @ViewBuilder private func ReportsItem() -> some View {
         VStack(spacing: 16) {
             ForEach(uiState.reportsKt, id: \.id) { report in
                 ReportItemView(item: report)
@@ -39,16 +40,21 @@ struct ReportsScreen: View {
         }
     }
     
-}
-
-fileprivate struct ReportsTopbarView: View {
-    
-    var body: some View {
+    @ViewBuilder private func TopAppbar() -> some View {
         VStack {
-            NavigationTopAppbar(title: "Reports", navigateBack: {})
+            NavigationTopAppbar(
+                title: "Reports",
+                actionContent: {
+                    Image(systemName: "square.and.arrow.down")
+                        .frame(width: 24, height: 24)
+                        .onTapGesture {}
+                },
+                navigateBack: { navigation.navigateBack() }
+            )
             Divider()
         }
     }
+    
 }
 
 #Preview {

@@ -4,15 +4,24 @@ import Shared
 struct ButtonFilterReportView: View {
     
     let wallets: [WalletItemModel]
+    let onEvent: (ReportsEvent) -> Void
     
     @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date())
     @State private var selectedWallet: WalletItemModel = defaultWalletItem
     private let months = Calendar.current.monthSymbols
     
+    private var formattedMonth: MonthReport {
+        Int32(selectedMonth).toMonthReport()
+    }
+    
     var body: some View {
         HStack {
-            FilterDatePicker()
-            FilterWalletPicker()
+            FilterDatePicker().onChange(of: selectedMonth) {
+                onEvent(.FilterBy(month: formattedMonth))
+            }
+            FilterWalletPicker().onChange(of: selectedWallet) {
+                onEvent(.Selected(wallet: selectedWallet))
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

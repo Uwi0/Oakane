@@ -3,7 +3,7 @@ package com.kakapo.oakane.model.wallet
 import com.kakapo.oakane.model.category.CategoryIconName
 
 data class WalletItemModel(
-    val id: Long = 999,
+    val id: Long = DEFAULT_ID,
     val name: String = "All Wallet",
     val isDefault: Boolean = true,
     val icon: String = "",
@@ -17,6 +17,12 @@ data class WalletItemModel(
     val iconName: CategoryIconName get() {
         return if (isDefault) CategoryIconName.fromString(icon)
         else CategoryIconName.SALARY
+    }
+
+    fun isDefaultWallet() = id == DEFAULT_ID
+
+    companion object {
+        const val DEFAULT_ID = 9999L
     }
 }
 
