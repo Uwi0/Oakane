@@ -29,6 +29,11 @@ data class ReportsState(
 
     val monthNumber get() = startDateAndEndDateOfMonth(selectedMonth.monthNumber)
 
+    val displayedWallets: List<WalletItemModel> get() {
+        val allWallet = WalletItemModel()
+        return listOf(allWallet) + wallets
+    }
+
     fun updateBalance(balance: Double) = copy(
         totalBalance = balance,
     )
@@ -48,7 +53,6 @@ sealed class ReportsEffect {
 
 sealed class ReportsEvent {
     data object NavigateBack: ReportsEvent()
-    data object SelectedAllWallet: ReportsEvent()
     data class Selected(val wallet: WalletItemModel): ReportsEvent()
     data class FilterBy(val month: MonthReport): ReportsEvent()
 }

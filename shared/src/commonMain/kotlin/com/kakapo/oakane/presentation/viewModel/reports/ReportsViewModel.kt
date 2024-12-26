@@ -45,10 +45,14 @@ class ReportsViewModel(
     fun handleEVent(event: ReportsEvent) {
         when (event) {
             is ReportsEvent.NavigateBack -> emit(ReportsEffect.NavigateBack)
-            is ReportsEvent.SelectedAllWallet ->onSelectedAllWallet()
-            is ReportsEvent.Selected -> loadTransactionCategoriesWith(event.wallet)
+            is ReportsEvent.Selected -> onSelected(event.wallet)
             is ReportsEvent.FilterBy -> onFilterByMonth(event.month)
         }
+    }
+
+    private fun onSelected(wallet: WalletItemModel) {
+        if (wallet.id == 0L) loadDefaultValue()
+        else loadTransactionCategoriesWith(wallet)
     }
 
     private fun loadMonthlyBudgetOverView(walletId: Long? = null) = viewModelScope.launch {
@@ -116,22 +120,19 @@ class ReportsViewModel(
         )
     }
 
-    private fun onSelectedAllWallet(){
+    private fun loadDefaultValue() {
         initializeData()
         _uiState.update { it.copy(selectedWallet = null, selectedWalletName = "All Wallet") }
     }
 
-    private fun onFilterByMonth(month: MonthReport){
+    private fun onFilterByMonth(month: MonthReport) {
         val wallet = _uiState.value.selectedWallet
         _uiState.update { it.copy(selectedMonth = month) }
-        if (wallet != null){
-            loadTransactionCategoriesWith(wallet)
-        } else {
-            onSelectedAllWallet()
-        }
+        if (wallet != null) loadTransactionCategoriesWith(wallet)
+        else loadDefaultValue()
     }
 
-    private fun handleError(throwable: Throwable?){
+    private fun handleError(throwable: Throwable?) {
         val message = throwable?.message ?: "Unknown error"
         emit(ReportsEffect.ShowError(message))
     }

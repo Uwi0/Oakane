@@ -103,14 +103,7 @@ private fun ButtonWalletsDropDownMenu(uiState: ReportsState, onEvent: (ReportsEv
             expanded = isExpanded,
             onDismissRequest = { isExpanded = false }
         ) {
-            DropdownMenuItem(
-                text = { Text(text = "All Wallet") },
-                onClick = {
-                    onEvent.invoke(ReportsEvent.SelectedAllWallet)
-                    isExpanded = false
-                }
-            )
-            uiState.wallets.forEach { wallet ->
+            uiState.displayedWallets.forEach { wallet ->
                 DropdownMenuItem(
                     text = { Text(text = wallet.name) },
                     onClick = {
