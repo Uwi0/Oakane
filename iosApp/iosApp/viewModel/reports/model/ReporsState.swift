@@ -16,7 +16,7 @@ struct ReportsState {
         reportsKt = state.reports
         monthlyOverView = state.monthlyOverView
         totalBalance = state.totalBalance
-        wallets = state.wallets
+        wallets = state.displayedWallets
         selectedName = state.selectedWalletName
         selectedMonth = state.selectedMonth
         reports = state.reports.enumerated().map{ (index, report) in

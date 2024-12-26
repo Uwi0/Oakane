@@ -3,8 +3,8 @@ package com.kakapo.oakane.model.wallet
 import com.kakapo.oakane.model.category.CategoryIconName
 
 data class WalletItemModel(
-    val id: Long = 0,
-    val name: String = "",
+    val id: Long = 999,
+    val name: String = "All Wallet",
     val isDefault: Boolean = true,
     val icon: String = "",
     val currency: String = "",
@@ -19,3 +19,5 @@ data class WalletItemModel(
         else CategoryIconName.SALARY
     }
 }
+
+val defaultWalletItem = WalletItemModel()

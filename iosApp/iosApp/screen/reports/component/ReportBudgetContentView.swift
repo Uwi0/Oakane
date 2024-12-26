@@ -53,8 +53,7 @@ internal struct ReportBudgetContentView: View {
                 
                 Text("\(amount.toIDRCurrency())")
                     .font(Typography.bodySmall)
-            }
-            
+            }            
         }
     }
 }

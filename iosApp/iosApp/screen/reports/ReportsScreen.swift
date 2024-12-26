@@ -11,9 +11,12 @@ struct ReportsScreen: View {
             ReportsTopbarView()
             ScrollView {
                 VStack(spacing: 16) {
-                    DonutChartComponentView(reports: uiState.reports, walletBalance: uiState.totalBalance)
+                    ButtonFilterReportView(wallets: uiState.wallets)
                         .padding(.horizontal, 16)
                         .padding(.top, 24)
+                    
+                    DonutChartComponentView(reports: uiState.reports, walletBalance: uiState.totalBalance)
+                        .padding(.horizontal, 16)
                         
                     ReportBudgetContentView(item: uiState.monthlyOverView)
                         .padding(.horizontal, 16)
