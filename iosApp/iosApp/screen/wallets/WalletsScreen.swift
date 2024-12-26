@@ -3,7 +3,7 @@ import Shared
 
 struct WalletsScreen: View {
     
-    @StateObject var viewModel: WalletsViewModel = WalletsViewModel()
+    @StateObject private var viewModel: WalletsViewModel = WalletsViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     
     private var uiState: WalletsState { viewModel.uiState }

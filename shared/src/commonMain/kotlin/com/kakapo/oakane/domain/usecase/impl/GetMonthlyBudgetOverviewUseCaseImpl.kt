@@ -45,7 +45,7 @@ class GetMonthlyBudgetOverviewUseCaseImpl(
                 spent = totalExpense,
                 left = limit - totalExpense,
                 limit = limit,
-                progress = progress.toFloat()
+                progress = if(progress >= 1f) 1f else progress.toFloat()
             )
         }
     }

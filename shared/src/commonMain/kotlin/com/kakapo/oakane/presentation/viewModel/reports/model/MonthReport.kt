@@ -23,3 +23,7 @@ fun currentMonth(): MonthReport {
     val currentMonth = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).monthNumber
     return MonthReport.entries.find { it.monthNumber == currentMonth } ?: MonthReport.JAN
 }
+
+fun Int.toMonthReport(): MonthReport {
+    return MonthReport.entries.find { it.monthNumber == this } ?: MonthReport.JAN
+}
