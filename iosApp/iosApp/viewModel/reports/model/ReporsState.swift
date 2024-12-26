@@ -2,6 +2,7 @@ import Foundation
 import Shared
 
 struct ReportsState {
+    var reportsKt: [ReportModelKt] = []
     var reports: [ReportModel] = []
     var monthlyOverView: MonthlyBudgetOverViewModel = defaultMonthlyBudgetOverView
     var totalBalance: Double = 0
@@ -12,11 +13,18 @@ struct ReportsState {
     init(){}
     
     init(state: ReportsStateKt){
-        reports = state.reports
+        reportsKt = state.reports
         monthlyOverView = state.monthlyOverView
         totalBalance = state.totalBalance
         wallets = state.wallets
         selectedName = state.selectedWalletName
         selectedMonth = state.selectedMonth
+        reports = state.reports.enumerated().map{ (index, report) in
+            ReportModel(
+                id: report.id,
+                title: report.name,
+                color: report.formattedColor,
+                proportion: Double(truncating: state.proportions[index]))
+        }
     }
 }

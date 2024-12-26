@@ -3,7 +3,7 @@ import Shared
 
 struct ReportItemView: View {
     
-    let item: ReportModel
+    let item: ReportModelKt
     
     private var color: Color {
         item.isDefault ? Color.primary : Color.error

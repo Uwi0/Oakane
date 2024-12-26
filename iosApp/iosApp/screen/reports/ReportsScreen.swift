@@ -9,9 +9,17 @@ struct ReportsScreen: View {
     var body: some View {
         VStack {
             ReportsTopbarView()
-            Spacer()
             ScrollView {
-                reportsItem()
+                VStack(spacing: 16) {
+                    DonutChartComponentView(reports: uiState.reports, walletBalance: uiState.totalBalance)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 24)
+                        
+                    ReportBudgetContentView(item: uiState.monthlyOverView)
+                        .padding(.horizontal, 16)
+                    
+                    reportsItem()
+                }
             }
             .scrollIndicators(.hidden)
         }
@@ -21,13 +29,13 @@ struct ReportsScreen: View {
     
     @ViewBuilder func reportsItem() -> some View {
         VStack(spacing: 16) {
-            ForEach(uiState.reports, id: \.id) { report in
+            ForEach(uiState.reportsKt, id: \.id) { report in
                 ReportItemView(item: report)
             }
             .padding(.horizontal, 16)
         }
-        
     }
+    
 }
 
 fileprivate struct ReportsTopbarView: View {

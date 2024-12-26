@@ -23,11 +23,7 @@ struct ProgressIndicatorView: View {
                 guard !isUpdating else { return }
                 isUpdating = true
                 withAnimation(.easeInOut(duration: 0.5)) {
-                    if value > 1 {
-                        animatedProgress = 1
-                    } else {
-                        animatedProgress = value
-                    }
+                    animatedProgress = value
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     isUpdating = false
