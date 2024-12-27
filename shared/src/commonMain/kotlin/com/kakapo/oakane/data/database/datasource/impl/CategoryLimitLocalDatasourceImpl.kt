@@ -86,4 +86,20 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
                 .map(CategoryLimitTable::toCategoryLimitEntity)
         }
     }
+
+    override suspend fun restoreCategoryLimits(categoryLimits: List<CategoryLimitEntity>): Result<Unit> {
+        return runCatching {
+            categoryLimits.forEach {
+                categoryLimitQueries.insertCategoryLimitBackup(
+                    id = it.id,
+                    categoryId = it.categoryId,
+                    monthlyBudgetId = it.monthlyBudgetId,
+                    limitAmount = it.limitAmount,
+                    spentAmount = it.spentAmount,
+                    updatedAt = it.updatedAt,
+                    createdAt = it.createdAt
+                )
+            }
+        }
+    }
 }

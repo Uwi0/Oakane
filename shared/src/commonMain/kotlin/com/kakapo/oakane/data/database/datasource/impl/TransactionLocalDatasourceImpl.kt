@@ -127,4 +127,22 @@ class TransactionLocalDatasourceImpl(
         }
     }
 
+    override suspend fun restoreTransactions(transactions: List<TransactionEntity>): Result<Unit> {
+        return runCatching {
+            transactions.forEach { transaction ->
+                transactionDb.insertTransactionBackup(
+                    id = transaction.id,
+                    walletId = transaction.walletId,
+                    title = transaction.title,
+                    amount = transaction.amount,
+                    type = transaction.type,
+                    category = transaction.category.id,
+                    dateCreated = transaction.dateCreated,
+                    note = transaction.note
+                )
+
+            }
+        }
+    }
+
 }

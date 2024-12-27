@@ -18,4 +18,6 @@ interface MonthlyBudgetLocalDatasource {
     suspend fun selectActiveMonthlyBudgets(): Result<Long>
     @NativeCoroutines
     suspend fun getMonthlyBudgetsForBackup(): Result<List<MonthlyBudgetEntity>>
+    @NativeCoroutines
+    suspend fun restoreMonthlyBudgets(monthlyBudgets: List<MonthlyBudgetEntity>): Result<Unit>
 }

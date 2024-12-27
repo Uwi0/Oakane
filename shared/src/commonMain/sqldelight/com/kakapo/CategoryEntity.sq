@@ -109,5 +109,9 @@ INSERT INTO CategoryTable (name, type, icon, color, isDefault) VALUES
     ('Loan Payments', 1, 'Loan Payments', '0xFF455A64', 1),
     ('Interest Expense', 1, 'Interest Expense', '0xFF78909C', 1);
 
-getCategoryForBackup:
+getCategoriesForBackup:
 SELECT * FROM CategoryTable;
+
+insertCategoryBackup:
+INSERT OR REPLACE INTO CategoryTable(id, name, type, icon, color, isDefault)
+VALUES (?, ?, ?, ?, ?, ?);

@@ -62,5 +62,9 @@ DELETE FROM WalletTable WHERE id = ?;
 getTotalBalance:
 SELECT COALESCE(SUM(balance), 0) AS totalBalance FROM WalletTable;
 
-getAllWalletsForBackup:
+getWalletsForBackup:
 SELECT * FROM WalletTable;
+
+insertBakupWallets:
+INSERT INTO WalletTable(id, name, balance, color, icon, isDefaultIcon, createdAt, updateAt)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?);

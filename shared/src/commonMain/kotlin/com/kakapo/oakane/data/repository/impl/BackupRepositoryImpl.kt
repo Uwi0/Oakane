@@ -44,6 +44,35 @@ class BackupRepositoryImpl(
         }
     }
 
+    override suspend fun restoreBackup(backup: String): Result<Unit> = coroutineScope {
+        runCatching {
+            val backupModel = Json.decodeFromString(BackupModel.serializer(), backup)
+
+            val categoryDeferred = async {
+                categoryDatasource.restoreCategories(backupModel.categories)
+            }
+            val categoryLimitDeferred = async {
+                categoryLimitDatasource.restoreCategoryLimits(backupModel.categoryLimits)
+            }
+            val goalDeferred = async {
+                goalDatasource.restoreGoals(backupModel.goals)
+            }
+            val monthlyBudgetDeferred = async {
+                monthlyDatasource.restoreMonthlyBudgets(backupModel.monthlyBudgets)
+            }
+            val transactionDeferred = async {
+                transactionDatasource.restoreTransactions(backupModel.transactions)
+            }
+
+            categoryDeferred.await()
+            categoryLimitDeferred.await()
+            goalDeferred.await()
+            monthlyBudgetDeferred.await()
+            transactionDeferred.await()
+            Unit
+        }
+    }
+
     @Serializable
     data class BackupModel(
         val categoryLimits: List<CategoryLimitEntity>,

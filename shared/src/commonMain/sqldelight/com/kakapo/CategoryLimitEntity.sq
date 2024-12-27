@@ -72,3 +72,7 @@ WHERE id = ?;
 
 getCategoryLimitForBackup:
 SELECT * FROM CategoryLimitTable;
+
+insertCategoryLimitBackup:
+INSERT OR REPLACE INTO CategoryLimitTable(id, categoryId, monthlyBudgetId, limitAmount, spentAmount, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?);

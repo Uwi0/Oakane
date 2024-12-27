@@ -20,4 +20,6 @@ interface WalletLocalDatasource {
     suspend fun geTotalBalance(): Result<Double>
     @NativeCoroutines
     suspend fun getWalletForBackup(): Result<List<WalletEntity>>
+    @NativeCoroutines
+    suspend fun restoreWallets(wallets: List<WalletEntity>): Result<Unit>
 }

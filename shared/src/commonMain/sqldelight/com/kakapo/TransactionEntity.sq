@@ -123,3 +123,24 @@ GROUP BY c.id;
 
 getTransactionsForBackup:
 SELECT * FROM TransactionTable;
+
+insertTransactionBackup:
+INSERT INTO TransactionTable(
+    id,
+    walletId,
+    title,
+    amount,
+    type,
+    category,
+    dateCreated,
+    note
+) VALUES (
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);

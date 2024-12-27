@@ -50,4 +50,7 @@ interface TransactionLocalDatasource {
 
     @NativeCoroutines
     suspend fun getTransactionsForBackup(): Result<List<TransactionEntity>>
+
+    @NativeCoroutines
+    suspend fun restoreTransactions(transactions: List<TransactionEntity>): Result<Unit>
 }

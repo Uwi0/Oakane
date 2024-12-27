@@ -65,7 +65,24 @@ class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
 
     override suspend fun getGoalsForBackup(): Result<List<GoalEntity>> {
         return runCatching {
-            goalTable.getGoals().executeAsList().map(GoalTable::toGoalEntity)
+            goalTable.getGoalsForBackup().executeAsList().map(GoalTable::toGoalEntity)
+        }
+    }
+
+    override suspend fun restoreGoals(goals: List<GoalEntity>): Result<Unit> {
+        return runCatching {
+            goals.forEach {
+                goalTable.insertGoalBackup(
+                    id = it.id,
+                    imageFile = it.imageFile,
+                    name = it.name,
+                    targetAmount = it.targetAmount,
+                    savedAmount = it.savedAmount,
+                    note = it.note,
+                    startDate = it.startDate,
+                    endDate = it.endDate,
+                )
+            }
         }
     }
 

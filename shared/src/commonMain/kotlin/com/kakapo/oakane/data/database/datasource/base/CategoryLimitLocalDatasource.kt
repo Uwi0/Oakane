@@ -22,4 +22,6 @@ interface CategoryLimitLocalDatasource {
     suspend fun update(spentAmount: Double, id: Long): Result<Unit>
     @NativeCoroutines
     suspend fun getCategoryLimitsForBackup(): Result<List<CategoryLimitEntity>>
+    @NativeCoroutines
+    suspend fun restoreCategoryLimits(categoryLimits: List<CategoryLimitEntity>): Result<Unit>
 }

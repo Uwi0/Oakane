@@ -70,4 +70,20 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver) : MonthlyBudgetLoca
                 .map(MonthlyBudgetTable::toMonthlyBudgetEntity)
         }
     }
+
+    override suspend fun restoreMonthlyBudgets(monthlyBudgets: List<MonthlyBudgetEntity>): Result<Unit> {
+        return runCatching {
+            monthlyBudgets.forEach {
+                monthlyBudgetTable.insertMonthlyBudgetBackup(
+                    id = it.id,
+                    totalBudget = it.totalBudget,
+                    spentAmount = it.spentAmount,
+                    startDate = it.startDate,
+                    endDate = it.endDate,
+                    createdAt = it.createdAt,
+                    updatedAt = it.updatedAt
+                )
+            }
+        }
+    }
 }

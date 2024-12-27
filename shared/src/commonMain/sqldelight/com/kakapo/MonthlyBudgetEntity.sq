@@ -54,3 +54,7 @@ LIMIT 1;
 
 getMonthlyBudgetForBackup:
 SELECT * FROM MonthlyBudgetTable;
+
+insertMonthlyBudgetBackuo:
+INSERT OR REPLACE INTO MonthlyBudgetTable(id, totalBudget, spentAmount, startDate, endDate, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?);

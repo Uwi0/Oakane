@@ -3,6 +3,7 @@ package com.kakapo.oakane.data.database.datasource.impl
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.GetWallets
+import com.kakapo.WalletTable
 import com.kakapo.oakane.data.database.datasource.base.WalletLocalDatasource
 import com.kakapo.oakane.data.database.model.WalletEntity
 import com.kakapo.oakane.data.database.model.toWalletEntity
@@ -71,9 +72,26 @@ class WalletLocalDatasourceImpl(
 
     override suspend fun getWalletForBackup(): Result<List<WalletEntity>> {
         return runCatching {
-            walletTable.getWallets()
+            walletTable.getWalletsForBackup()
                 .executeAsList()
-                .map(GetWallets::toWalletEntity)
+                .map(WalletTable::toWalletEntity)
+        }
+    }
+
+    override suspend fun restoreWallets(wallets: List<WalletEntity>): Result<Unit> {
+        return runCatching {
+            wallets.forEach {
+                walletTable.insertBakupWallets(
+                    id = it.id,
+                    name = it.name,
+                    balance = it.balance,
+                    color = it.color,
+                    icon = it.icon,
+                    isDefaultIcon = it.isDefaultIcon,
+                    createdAt = it.createdAt,
+                    updateAt = it.updateAt
+                )
+            }
         }
     }
 }

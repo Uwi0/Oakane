@@ -64,9 +64,24 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
 
     override suspend fun getCategoriesForBackup(): Result<List<CategoryEntity>> {
         return runCatching {
-            categoryDb.getCategories()
+            categoryDb.getCategoriesForBackup()
                 .executeAsList()
                 .map(CategoryTable::toCategoryEntity)
+        }
+    }
+
+    override suspend fun restoreCategories(categories: List<CategoryEntity>): Result<Unit> {
+        return runCatching {
+            categories.forEach {
+                categoryDb.insertCategoryBackup(
+                    id = it.id,
+                    name = it.name,
+                    type = it.type,
+                    icon = it.icon,
+                    color = it.color,
+                    isDefault = it.isDefault
+                )
+            }
         }
     }
 }

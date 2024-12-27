@@ -54,6 +54,10 @@ SET imageFile = ?,
     endDate = ?
 WHERE id = ?;
 
-getGoalForBackup:
+getGoalsForBackup:
 SELECT * FROM GoalTable;
+
+insertGoalBackup:
+INSERT OR REPLACE INTO GoalTable(id, imageFile, name, targetAmount, savedAmount, note, startDate, endDate)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 

@@ -20,4 +20,6 @@ interface CategoryLocalDatasource {
     suspend fun getCategoryColors(): Result<List<String>>
     @NativeCoroutines
     suspend fun getCategoriesForBackup(): Result<List<CategoryEntity>>
+    @NativeCoroutines
+    suspend fun restoreCategories(categories: List<CategoryEntity>): Result<Unit>
 }

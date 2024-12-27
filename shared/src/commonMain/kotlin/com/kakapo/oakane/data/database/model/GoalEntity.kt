@@ -23,5 +23,5 @@ fun GoalTable.toGoalEntity() = GoalEntity(
     savedAmount = savedAmount,
     note = note,
     startDate = startDate,
-    endDate = endDate
+    endDate = endDate,
 )
