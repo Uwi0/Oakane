@@ -49,5 +49,5 @@ interface TransactionLocalDatasource {
     ): Result<List<TransactionCategoryEntity>>
 
     @NativeCoroutines
-    suspend fun getTransactionForBackup(): Result<String>
+    suspend fun getTransactionsForBackup(): Result<List<TransactionEntity>>
 }

@@ -19,5 +19,5 @@ interface WalletLocalDatasource {
     @NativeCoroutines
     suspend fun geTotalBalance(): Result<Double>
     @NativeCoroutines
-    suspend fun getWalletForBackup(): Result<String>
+    suspend fun getWalletForBackup(): Result<List<WalletEntity>>
 }

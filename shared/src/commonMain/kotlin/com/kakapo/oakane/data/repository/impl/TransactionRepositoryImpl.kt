@@ -87,8 +87,4 @@ class TransactionRepositoryImpl(
 
         emit(result)
     }
-
-    override suspend fun loadTransactionForBackup(): Result<String> {
-        return localDatasource.getTransactionForBackup()
-    }
 }

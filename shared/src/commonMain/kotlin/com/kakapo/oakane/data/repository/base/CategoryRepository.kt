@@ -19,6 +19,4 @@ interface CategoryRepository {
     suspend fun update(category: CategoryModel): Result<Unit>
     @NativeCoroutines
     suspend fun deleteCategoryBy(id: Long): Result<Unit>
-    @NativeCoroutines
-    suspend fun loadCategoryForBackup(): Result<String>
 }

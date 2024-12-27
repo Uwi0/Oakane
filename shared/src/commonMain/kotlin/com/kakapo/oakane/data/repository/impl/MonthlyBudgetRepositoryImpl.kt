@@ -36,8 +36,4 @@ class MonthlyBudgetRepositoryImpl(
         return localDatasource.selectActiveMonthlyBudgets()
     }
 
-    override suspend fun loadMonthlyBudgetForBackup(): Result<String> {
-        return localDatasource.getMonthlyBudgetForBackup()
-    }
-
 }

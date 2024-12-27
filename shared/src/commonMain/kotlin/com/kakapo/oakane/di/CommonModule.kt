@@ -14,25 +14,25 @@ import com.kakapo.oakane.data.database.datasource.impl.TransactionLocalDatasourc
 import com.kakapo.oakane.data.database.datasource.impl.WalletLocalDatasourceImpl
 import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
 import com.kakapo.oakane.data.preference.datasource.impl.PreferenceDatasourceImpl
+import com.kakapo.oakane.data.repository.base.BackupRepository
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
+import com.kakapo.oakane.data.repository.impl.BackupRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.CategoryLimitRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.GoalRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.WalletRepositoryImpl
-import com.kakapo.oakane.domain.usecase.base.CreateBackupFileUseCase
 import com.kakapo.oakane.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.oakane.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
-import com.kakapo.oakane.domain.usecase.impl.CreateBackupFileUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.DeleteTransactionUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.GetMonthlyBudgetOverviewUseCaseImpl
 import com.kakapo.oakane.domain.usecase.impl.SaveTransactionUseCaseImpl
@@ -82,6 +82,7 @@ object CommonModule {
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
         factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get()) }
         factory<WalletRepository> { WalletRepositoryImpl(get(), get()) }
+        factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get()) }
     }
 
     val domainModule: Module = module {
@@ -90,7 +91,6 @@ object CommonModule {
         factory<UpdateTransactionUseCase> { UpdateTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<GetMonthlyBudgetOverviewUseCase> { GetMonthlyBudgetOverviewUseCaseImpl(get(), get()) }
-        factory<CreateBackupFileUseCase> { CreateBackupFileUseCaseImpl(get(), get(), get(), get(), get(), get()) }
     }
 
     val viewModel: Module = module {
@@ -105,7 +105,7 @@ object CommonModule {
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get()) }
-        viewModel { SettingsViewModel()}
+        viewModel { SettingsViewModel(get())}
     }
 
     val coroutineScope = module {

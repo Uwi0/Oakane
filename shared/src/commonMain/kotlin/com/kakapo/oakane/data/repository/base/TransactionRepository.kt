@@ -30,7 +30,11 @@ interface TransactionRepository {
     ): Result<Double>
 
     @NativeCoroutines
-    suspend fun loadTotalIncome(walletId: Long?, startDateOfMonth: Long, endDateOfMonth: Long): Result<Double>
+    suspend fun loadTotalIncome(
+        walletId: Long?,
+        startDateOfMonth: Long,
+        endDateOfMonth: Long
+    ): Result<Double>
 
     @NativeCoroutines
     fun loadTransactionsCategories(
@@ -44,7 +48,4 @@ interface TransactionRepository {
         startDateOfMonth: Long,
         endDateOfMonth: Long
     ): Flow<Result<List<ReportModel>>>
-
-    @NativeCoroutines
-    suspend fun loadTransactionForBackup(): Result<String>
 }

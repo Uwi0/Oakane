@@ -11,7 +11,6 @@ import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.data.database.model.toTransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.toTransactionEntity
-import kotlinx.serialization.json.Json
 
 class TransactionLocalDatasourceImpl(
     driver: SqlDriver
@@ -120,12 +119,11 @@ class TransactionLocalDatasourceImpl(
         }
     }
 
-    override suspend fun getTransactionForBackup(): Result<String> {
+    override suspend fun getTransactionsForBackup(): Result<List<TransactionEntity>> {
         return runCatching {
-            val transactions = transactionDb.getTransactionsForBackup()
+            transactionDb.getTransactionsForBackup()
                 .executeAsList()
                 .map(TransactionTable::toTransactionEntity)
-            Json.encodeToString(transactions)
         }
     }
 

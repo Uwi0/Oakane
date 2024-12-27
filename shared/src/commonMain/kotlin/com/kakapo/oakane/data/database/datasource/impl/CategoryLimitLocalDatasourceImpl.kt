@@ -7,7 +7,6 @@ import com.kakapo.GetCategoryLimits
 import com.kakapo.oakane.data.database.datasource.base.CategoryLimitLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryLimitEntity
 import com.kakapo.oakane.data.database.model.toCategoryLimitEntity
-import kotlinx.serialization.json.Json
 
 class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLocalDatasource {
 
@@ -80,12 +79,11 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
         }
     }
 
-    override suspend fun getCategoryLimitBackup(): Result<String> {
+    override suspend fun getCategoryLimitsForBackup(): Result<List<CategoryLimitEntity>> {
         return runCatching {
-            val categories = categoryLimitQueries.getCategoryLimitForBackup()
+            categoryLimitQueries.getCategoryLimitForBackup()
                 .executeAsList()
                 .map(CategoryLimitTable::toCategoryLimitEntity)
-            Json.encodeToString(categories)
         }
     }
 }

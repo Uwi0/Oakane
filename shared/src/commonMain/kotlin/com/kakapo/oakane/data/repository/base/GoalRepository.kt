@@ -17,6 +17,4 @@ interface GoalRepository {
     suspend fun deleteGoalBy(id: Long): Result<Unit>
     @NativeCoroutines
     suspend fun update(goal: GoalModel, id: Long): Result<Unit>
-    @NativeCoroutines
-    suspend fun loadGoalForBackup(): Result<String>
 }

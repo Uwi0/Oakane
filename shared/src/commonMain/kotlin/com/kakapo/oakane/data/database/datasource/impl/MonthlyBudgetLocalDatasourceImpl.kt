@@ -7,7 +7,6 @@ import com.kakapo.MonthlyBudgetTable
 import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.database.model.MonthlyBudgetEntity
 import com.kakapo.oakane.data.database.model.toMonthlyBudgetEntity
-import kotlinx.serialization.json.Json
 
 class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver) : MonthlyBudgetLocalDatasource {
 
@@ -64,12 +63,11 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver) : MonthlyBudgetLoca
         return runCatching { monthlyBudgetTable.selectActiveMonthlyBudgets().executeAsOne() }
     }
 
-    override suspend fun getMonthlyBudgetForBackup(): Result<String> {
+    override suspend fun getMonthlyBudgetsForBackup(): Result<List<MonthlyBudgetEntity>> {
         return runCatching {
-            val monthlyBudgets = monthlyBudgetTable.getMonthlyBudgetForBackup()
+            monthlyBudgetTable.getMonthlyBudgetForBackup()
                 .executeAsList()
                 .map(MonthlyBudgetTable::toMonthlyBudgetEntity)
-            Json.encodeToString(monthlyBudgets)
         }
     }
 }
