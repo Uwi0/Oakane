@@ -8,4 +8,5 @@ plugins {
     alias(libs.plugins.touchlab.skie) apply false
     alias(libs.plugins.devtools.ksp) apply false
     alias(libs.plugins.kmp.nativecoroutines) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }

@@ -69,3 +69,6 @@ updateSpentAmount:
 UPDATE CategoryLimitTable
 SET spentAmount = ?
 WHERE id = ?;
+
+getCategoryLimitForBackup:
+SELECT * FROM CategoryLimitTable;

@@ -18,4 +18,6 @@ interface CategoryLocalDatasource {
     suspend fun deleteCategoryBy(id: Long): Result<Unit>
     @NativeCoroutines
     suspend fun getCategoryColors(): Result<List<String>>
+    @NativeCoroutines
+    suspend fun getCategoryForBackup(): Result<String>
 }

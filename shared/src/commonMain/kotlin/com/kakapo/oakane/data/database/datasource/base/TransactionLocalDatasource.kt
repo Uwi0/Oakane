@@ -47,4 +47,7 @@ interface TransactionLocalDatasource {
         starDateMonth: Long,
         endDateMonth: Long
     ): Result<List<TransactionCategoryEntity>>
+
+    @NativeCoroutines
+    suspend fun getTransactionForBackup(): Result<String>
 }

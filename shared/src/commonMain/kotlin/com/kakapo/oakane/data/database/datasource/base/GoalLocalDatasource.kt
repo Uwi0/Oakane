@@ -16,4 +16,6 @@ interface GoalLocalDatasource {
     suspend fun deleteGoalBy(id: Long): Result<Unit>
     @NativeCoroutines
     suspend fun update(goal: GoalEntity, id: Long): Result<Unit>
+    @NativeCoroutines
+    suspend fun getGoalsForBackup(): Result<String>
 }

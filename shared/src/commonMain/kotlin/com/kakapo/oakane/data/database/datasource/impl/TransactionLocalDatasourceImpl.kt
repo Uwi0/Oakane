@@ -5,11 +5,13 @@ import com.kakapo.Database
 import com.kakapo.GetTransactionCategory
 import com.kakapo.GetTransactionCategoryBy
 import com.kakapo.GetTransactions
+import com.kakapo.TransactionTable
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
 import com.kakapo.oakane.data.database.model.toTransactionCategoryEntity
 import com.kakapo.oakane.data.database.model.toTransactionEntity
+import kotlinx.serialization.json.Json
 
 class TransactionLocalDatasourceImpl(
     driver: SqlDriver
@@ -115,6 +117,15 @@ class TransactionLocalDatasourceImpl(
             transactionDb.getTransactionCategoryBy(walletId, starDateMonth, endDateMonth)
                 .executeAsList()
                 .map(GetTransactionCategoryBy::toTransactionCategoryEntity)
+        }
+    }
+
+    override suspend fun getTransactionForBackup(): Result<String> {
+        return runCatching {
+            val transactions = transactionDb.getTransactionsForBackup()
+                .executeAsList()
+                .map(TransactionTable::toTransactionEntity)
+            Json.encodeToString(transactions)
         }
     }
 

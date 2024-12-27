@@ -3,11 +3,13 @@ package com.kakapo.oakane.data.database.datasource.impl
 import app.cash.sqldelight.db.SqlDriver
 import co.touchlab.kermit.Logger
 import com.kakapo.Database
+import com.kakapo.MonthlyBudgetTable
 import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.database.model.MonthlyBudgetEntity
 import com.kakapo.oakane.data.database.model.toMonthlyBudgetEntity
+import kotlinx.serialization.json.Json
 
-class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver): MonthlyBudgetLocalDatasource {
+class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver) : MonthlyBudgetLocalDatasource {
 
     private val monthlyBudgetTable = Database(sqlDriver).monthlyBudgetEntityQueries
 
@@ -49,7 +51,10 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver): MonthlyBudgetLocal
         }
     }
 
-    override suspend fun getTotalBudgetWith(startDateOfMonth: Long, endDatOfMont: Long): Result<Double> {
+    override suspend fun getTotalBudgetWith(
+        startDateOfMonth: Long,
+        endDatOfMont: Long
+    ): Result<Double> {
         return runCatching {
             monthlyBudgetTable.getTotalBudgetWith(startDateOfMonth, endDatOfMont).executeAsOne()
         }
@@ -57,5 +62,14 @@ class MonthlyBudgetLocalDatasourceImpl(sqlDriver: SqlDriver): MonthlyBudgetLocal
 
     override suspend fun selectActiveMonthlyBudgets(): Result<Long> {
         return runCatching { monthlyBudgetTable.selectActiveMonthlyBudgets().executeAsOne() }
+    }
+
+    override suspend fun getMonthlyBudgetForBackup(): Result<String> {
+        return runCatching {
+            val monthlyBudgets = monthlyBudgetTable.getMonthlyBudgetForBackup()
+                .executeAsList()
+                .map(MonthlyBudgetTable::toMonthlyBudgetEntity)
+            Json.encodeToString(monthlyBudgets)
+        }
     }
 }

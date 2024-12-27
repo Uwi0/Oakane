@@ -6,6 +6,7 @@ import com.kakapo.GetWallets
 import com.kakapo.oakane.data.database.datasource.base.WalletLocalDatasource
 import com.kakapo.oakane.data.database.model.WalletEntity
 import com.kakapo.oakane.data.database.model.toWalletEntity
+import kotlinx.serialization.json.Json
 
 class WalletLocalDatasourceImpl(
     driver: SqlDriver
@@ -42,7 +43,9 @@ class WalletLocalDatasourceImpl(
     }
 
     override suspend fun getWallets(): Result<List<WalletEntity>> {
-        return runCatching { walletTable.getWallets().executeAsList().map(GetWallets::toWalletEntity) }
+        return runCatching {
+            walletTable.getWallets().executeAsList().map(GetWallets::toWalletEntity)
+        }
     }
 
     override suspend fun update(wallet: WalletEntity): Result<Unit> {
@@ -64,6 +67,15 @@ class WalletLocalDatasourceImpl(
     }
 
     override suspend fun geTotalBalance(): Result<Double> {
-        return runCatching{ walletTable.getTotalBalance().executeAsOne() }
+        return runCatching { walletTable.getTotalBalance().executeAsOne() }
+    }
+
+    override suspend fun getWalletForBackup(): Result<String> {
+        return runCatching {
+            val wallets = walletTable.getWallets()
+                .executeAsList()
+                .map(GetWallets::toWalletEntity)
+            Json.encodeToString(wallets)
+        }
     }
 }

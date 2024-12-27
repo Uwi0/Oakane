@@ -2,7 +2,9 @@ package com.kakapo.oakane.data.database.model
 
 import com.kakapo.CategoryLimitTable
 import com.kakapo.GetCategoryLimits
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CategoryLimitEntity(
     val id: Long = 0,
     val categoryId: Long,

@@ -108,3 +108,6 @@ INSERT INTO CategoryTable (name, type, icon, color, isDefault) VALUES
     ('Credit Card Payments', 1, 'Credit Card Payments', '0xFF607D8B', 1),
     ('Loan Payments', 1, 'Loan Payments', '0xFF455A64', 1),
     ('Interest Expense', 1, 'Interest Expense', '0xFF78909C', 1);
+
+getCategoryForBackup:
+SELECT * FROM CategoryTable;

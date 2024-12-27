@@ -120,3 +120,6 @@ INNER JOIN CategoryTable c
 ON t.category = c.id
 WHERE t.walletId = ? AND t.dateCreated >= ? AND t.dateCreated <= ?
 GROUP BY c.id;
+
+getTransactionsForBackup:
+SELECT * FROM TransactionTable;

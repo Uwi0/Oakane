@@ -1,18 +1,25 @@
 package com.kakapo.oakane.data.database.datasource.impl
 
 import app.cash.sqldelight.db.SqlDriver
+import com.kakapo.CategoryLimitTable
 import com.kakapo.Database
 import com.kakapo.GetCategoryLimits
 import com.kakapo.oakane.data.database.datasource.base.CategoryLimitLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryLimitEntity
 import com.kakapo.oakane.data.database.model.toCategoryLimitEntity
+import kotlinx.serialization.json.Json
 
 class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLocalDatasource {
 
     private val categoryLimitQueries = Database(sqlDriver).categoryLimitEntityQueries
 
     override suspend fun checkIFExists(categoryId: Long, monthlyBudgetId: Long): Result<Boolean> {
-        return runCatching { categoryLimitQueries.checkCategoryLimitExists(categoryId, monthlyBudgetId).executeAsOne() }
+        return runCatching {
+            categoryLimitQueries.checkCategoryLimitExists(
+                categoryId,
+                monthlyBudgetId
+            ).executeAsOne()
+        }
     }
 
     override suspend fun insert(categoryLimit: CategoryLimitEntity): Result<Unit> {
@@ -51,7 +58,7 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
     }
 
     override suspend fun update(categoryLimit: CategoryLimitEntity): Result<Unit> {
-        return runCatching { 
+        return runCatching {
             categoryLimitQueries.updateCategoryLimit(
                 categoryId = categoryLimit.categoryId,
                 limitAmount = categoryLimit.limitAmount,
@@ -70,6 +77,15 @@ class CategoryLimitLocalDatasourceImpl(sqlDriver: SqlDriver) : CategoryLimitLoca
     override suspend fun update(spentAmount: Double, id: Long): Result<Unit> {
         return runCatching {
             categoryLimitQueries.updateSpentAmount(spentAmount = spentAmount, id = id)
+        }
+    }
+
+    override suspend fun getCategoryLimitBackup(): Result<String> {
+        return runCatching {
+            val categories = categoryLimitQueries.getCategoryLimitForBackup()
+                .executeAsList()
+                .map(CategoryLimitTable::toCategoryLimitEntity)
+            Json.encodeToString(categories)
         }
     }
 }

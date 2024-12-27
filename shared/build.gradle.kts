@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.touchlab.skie)
     alias(libs.plugins.kmp.nativecoroutines)
     alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -39,6 +40,7 @@ kotlin {
 
             implementation(libs.datastore)
             implementation(libs.datastore.preferences)
+            implementation(libs.kotlinx.serialization)
 
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)

@@ -16,4 +16,6 @@ interface MonthlyBudgetLocalDatasource {
     suspend fun getTotalBudgetWith(startDateOfMonth: Long, endDatOfMont: Long): Result<Double>
     @NativeCoroutines
     suspend fun selectActiveMonthlyBudgets(): Result<Long>
+    @NativeCoroutines
+    suspend fun getMonthlyBudgetForBackup(): Result<String>
 }

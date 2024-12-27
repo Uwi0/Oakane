@@ -54,3 +54,6 @@ SET imageFile = ?,
     endDate = ?
 WHERE id = ?;
 
+getGoalForBackup:
+SELECT * FROM GoalTable;
+

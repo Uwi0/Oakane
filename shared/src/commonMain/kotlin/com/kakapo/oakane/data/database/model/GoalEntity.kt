@@ -1,7 +1,9 @@
 package com.kakapo.oakane.data.database.model
 
 import com.kakapo.GoalTable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GoalEntity(
     val id: Long,
     val imageFile: String,

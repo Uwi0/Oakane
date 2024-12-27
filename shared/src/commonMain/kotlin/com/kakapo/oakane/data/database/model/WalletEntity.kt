@@ -2,7 +2,9 @@ package com.kakapo.oakane.data.database.model
 
 import com.kakapo.GetWallets
 import com.kakapo.WalletTable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class WalletEntity(
     val id: Long,
     val name: String,

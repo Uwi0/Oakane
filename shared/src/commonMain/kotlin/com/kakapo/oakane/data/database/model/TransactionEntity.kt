@@ -4,14 +4,17 @@ import com.kakapo.GetTransactionBy
 import com.kakapo.GetTransactionCategory
 import com.kakapo.GetTransactionCategoryBy
 import com.kakapo.GetTransactions
+import com.kakapo.TransactionTable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TransactionEntity(
     val id: Long,
     val walletId: Long = 0,
     val title: String,
     val amount: Double,
     val type: Long,
-    val category: CategoryEntity,
+    val category: CategoryEntity = CategoryEntity(),
     val dateCreated: Long,
     val note: String?
 )
@@ -25,6 +28,18 @@ data class TransactionCategoryEntity(
     val isDefault: Boolean,
     val totalTransaction: Double
 )
+
+fun TransactionTable.toTransactionEntity(): TransactionEntity {
+    return TransactionEntity(
+        id = id,
+        walletId = walletId,
+        title = title,
+        amount = amount,
+        type = type,
+        dateCreated = dateCreated,
+        note = note
+    )
+}
 
 fun GetTransactions.toTransactionEntity(): TransactionEntity {
     val category = CategoryEntity(

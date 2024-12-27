@@ -1,7 +1,9 @@
 package com.kakapo.oakane.data.database.model
 
 import com.kakapo.MonthlyBudgetTable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MonthlyBudgetEntity(
     val id: Long = 0,
     val totalBudget: Double = 0.0,

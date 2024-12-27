@@ -6,6 +6,7 @@ import com.kakapo.Database
 import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryEntity
 import com.kakapo.oakane.data.database.model.toCategoryEntity
+import kotlinx.serialization.json.Json
 
 class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
 
@@ -60,5 +61,15 @@ class CategoryLocalDatasourceImpl(driver: SqlDriver) : CategoryLocalDatasource {
 
     override suspend fun getCategoryColors(): Result<List<String>> {
         return runCatching { categoryDb.getCategoryColors().executeAsList().distinct() }
+    }
+
+    override suspend fun getCategoryForBackup(): Result<String> {
+        return runCatching {
+            val categories = categoryDb.getCategories()
+                .executeAsList()
+                .map(CategoryTable::toCategoryEntity)
+
+            Json.encodeToString(categories)
+        }
     }
 }

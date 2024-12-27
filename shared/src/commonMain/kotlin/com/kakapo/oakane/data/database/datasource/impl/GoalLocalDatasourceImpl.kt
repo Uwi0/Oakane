@@ -6,6 +6,7 @@ import com.kakapo.GoalTable
 import com.kakapo.oakane.data.database.datasource.base.GoalLocalDatasource
 import com.kakapo.oakane.data.database.model.GoalEntity
 import com.kakapo.oakane.data.database.model.toGoalEntity
+import kotlinx.serialization.json.Json
 
 class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
 
@@ -60,6 +61,13 @@ class GoalLocalDatasourceImpl(sqlDriver: SqlDriver): GoalLocalDatasource {
                 endDate = goal.endDate,
                 id = id
             )
+        }
+    }
+
+    override suspend fun getGoalsForBackup(): Result<String> {
+        return runCatching {
+            val goals = goalTable.getGoals().executeAsList().map(GoalTable::toGoalEntity)
+            Json.encodeToString(goals)
         }
     }
 

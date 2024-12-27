@@ -51,3 +51,6 @@ SELECT id
 FROM MonthlyBudgetTable
 WHERE strftime('%s', 'now') * 1000 BETWEEN startDate AND endDate
 LIMIT 1;
+
+getMonthlyBudgetForBackup:
+SELECT * FROM MonthlyBudgetTable;
