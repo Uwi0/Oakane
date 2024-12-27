@@ -44,4 +44,7 @@ interface TransactionRepository {
         startDateOfMonth: Long,
         endDateOfMonth: Long
     ): Flow<Result<List<ReportModel>>>
+
+    @NativeCoroutines
+    suspend fun loadTransactionForBackup(): Result<String>
 }

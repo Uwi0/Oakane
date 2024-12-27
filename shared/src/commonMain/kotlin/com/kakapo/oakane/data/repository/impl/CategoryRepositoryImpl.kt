@@ -49,4 +49,8 @@ class CategoryRepositoryImpl(
         return localDatasource.deleteCategoryBy(id)
     }
 
+    override suspend fun loadCategoryForBackup(): Result<String> {
+        return localDatasource.getCategoryForBackup()
+    }
+
 }

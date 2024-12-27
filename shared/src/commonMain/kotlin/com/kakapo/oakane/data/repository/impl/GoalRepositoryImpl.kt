@@ -39,4 +39,8 @@ class GoalRepositoryImpl (
         val goalEntity = goal.toGoalEntity()
         return localDatasource.update(goalEntity, id)
     }
+
+    override suspend fun loadGoalForBackup(): Result<String> {
+        return localDatasource.getGoalsForBackup()
+    }
 }

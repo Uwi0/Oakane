@@ -26,4 +26,6 @@ interface WalletRepository {
     suspend fun deleteWalletBy(id: Long): Result<Unit>
     @NativeCoroutines
     suspend fun loadTotalBalance(): Result<Double>
+    @NativeCoroutines
+    suspend fun loadWalletForBackup(): Result<String>
 }

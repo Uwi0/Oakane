@@ -22,4 +22,6 @@ interface CategoryLimitRepository {
     suspend fun updateIncrement(spentAmount: Double, id: Long): Result<Unit>
     @NativeCoroutines
     suspend fun update(spentAmount: Double, id: Long): Result<Unit>
+    @NativeCoroutines
+    suspend fun loadCategoryLimitForBackup(): Result<String>
 }

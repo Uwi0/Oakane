@@ -20,4 +20,6 @@ interface MonthlyBudgetRepository {
     ): Result<Double>
     @NativeCoroutines
     suspend fun loadActiveMonthlyBudget(): Result<Long>
+    @NativeCoroutines
+    suspend fun loadMonthlyBudgetForBackup(): Result<String>
 }

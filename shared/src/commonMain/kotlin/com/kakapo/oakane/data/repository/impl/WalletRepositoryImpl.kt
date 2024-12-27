@@ -71,4 +71,8 @@ class WalletRepositoryImpl(
     override suspend fun loadTotalBalance(): Result<Double> {
         return localDatasource.geTotalBalance()
     }
+
+    override suspend fun loadWalletForBackup(): Result<String> {
+        return localDatasource.getWalletForBackup()
+    }
 }

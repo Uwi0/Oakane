@@ -50,6 +50,10 @@ class CategoryLimitRepositoryImpl(
         return localDatasource.updateIncrement(spentAmount, id)
     }
 
+    override suspend fun loadCategoryLimitForBackup(): Result<String> {
+        return localDatasource.getCategoryLimitBackup()
+    }
+
     override suspend fun update(spentAmount: Double, id: Long): Result<Unit> {
         return localDatasource.update(spentAmount, id)
     }
