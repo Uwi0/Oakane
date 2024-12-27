@@ -17,6 +17,7 @@ import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
 import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.monthlyBudgetScreen
 import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.navigateToMonthlyBudget
 import com.kakapo.oakane.presentation.feature.reports.navigation.reportsScreen
+import com.kakapo.oakane.presentation.feature.settings.navigation.settingsScreen
 import com.kakapo.oakane.presentation.feature.transaction.navigation.navigateToTransaction
 import com.kakapo.oakane.presentation.feature.transaction.navigation.transactionScreen
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
@@ -75,5 +76,6 @@ internal fun OakaneNavHost(
         reportsScreen(
             navigateBack = navController::navigateUp
         )
+        settingsScreen()
     }
 }
