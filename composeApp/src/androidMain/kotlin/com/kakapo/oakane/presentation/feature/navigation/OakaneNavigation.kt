@@ -76,6 +76,6 @@ internal fun OakaneNavHost(
         reportsScreen(
             navigateBack = navController::navigateUp
         )
-        settingsScreen()
+        settingsScreen(navigateBack = navController::navigateUp)
     }
 }

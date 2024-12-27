@@ -15,21 +15,41 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsEffect
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun SettingsRoute() {
-    SettingsScreen()
+internal fun SettingsRoute(
+    navigateBack: () -> Unit
+) {
+    val viewModel = koinViewModel<SettingsViewModel>()
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                SettingsEffect.NavigateBack -> navigateBack.invoke()
+            }
+        }
+    }
+
+    SettingsScreen(onEvent = viewModel::handleEvent)
 }
 
 @Composable
-private fun SettingsScreen() {
+private fun SettingsScreen(onEvent: (SettingsEvent) -> Unit) {
     Scaffold(
         topBar = {
-            CustomNavigationTopAppBarView(title = "Settings") { }
+            CustomNavigationTopAppBarView(
+                title = "Settings",
+                onNavigateBack = { onEvent.invoke(SettingsEvent.NavigateBack) }
+            )
         },
         content = { paddingValues ->
             Column(
@@ -67,8 +87,16 @@ private fun SettingsButton(title: String, icon: ImageVector, onClick: () -> Unit
                 .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Icon(imageVector = icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-            Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

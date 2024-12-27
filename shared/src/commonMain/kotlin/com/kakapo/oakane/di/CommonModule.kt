@@ -46,6 +46,7 @@ import com.kakapo.oakane.presentation.viewModel.goals.GoalsViewModel
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetViewModel
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
@@ -104,6 +105,7 @@ object CommonModule {
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get()) }
+        viewModel { SettingsViewModel()}
     }
 
     val coroutineScope = module {
