@@ -42,7 +42,7 @@ internal fun SettingsRoute(
     val scope = rememberCoroutineScope()
     var json = "test"
 
-    val launcher = rememberLauncherForActivityResult(
+    val createJsonLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         val data = result.data
@@ -60,14 +60,34 @@ internal fun SettingsRoute(
         }
     }
 
+    val retrieveJsonLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val data = result.data
+        val uri = data?.data
+        uri?.let { fileUri ->
+            context.contentResolver.openInputStream(fileUri)?.let { inputStream ->
+                scope.launch {
+                    withContext(Dispatchers.IO) {
+                        val retrievedJson = inputStream.bufferedReader().use { it.readText() }
+                        inputStream.close()
+                        viewModel.handleEvent(SettingsEvent.RetrieveBackupFile(retrievedJson))
+                    }
+                }
+            }
+        }
+    }
+
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 SettingsEffect.NavigateBack -> navigateBack.invoke()
                 is SettingsEffect.GenerateBackupFile -> {
                     json = effect.json
-                    launcher.launch(createNewDocumentIntent())
+                    createJsonLauncher.launch(createNewDocumentIntent())
                 }
+
+                SettingsEffect.RestoreBackupFile -> retrieveJsonLauncher.launch(openDocumentIntent())
             }
         }
     }
@@ -78,8 +98,19 @@ internal fun SettingsRoute(
 fun createNewDocumentIntent(): Intent {
     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
         addCategory(Intent.CATEGORY_OPENABLE)
-        type = "json/*"
+        type = "application/json"
         putExtra(Intent.EXTRA_TITLE, "test-${System.currentTimeMillis()}.json")
+    }
+    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+    intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+    return intent
+}
+
+fun openDocumentIntent(): Intent {
+    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+        addCategory(Intent.CATEGORY_OPENABLE)
+        type = "application/json"
     }
     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
@@ -111,7 +142,7 @@ private fun SettingsScreen(onEvent: (SettingsEvent) -> Unit) {
                 SettingsButton(
                     title = "Import Data",
                     icon = Icons.Outlined.ImportExport,
-                    onClick = {}
+                    onClick = { onEvent.invoke(SettingsEvent.RestoreBackupFile) }
                 )
             }
         }

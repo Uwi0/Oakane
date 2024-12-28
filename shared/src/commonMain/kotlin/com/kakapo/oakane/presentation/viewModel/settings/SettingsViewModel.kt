@@ -20,12 +20,21 @@ class SettingsViewModel(
         when(event) {
             SettingsEvent.NavigateBack -> emit(SettingsEffect.NavigateBack)
             SettingsEvent.GenerateBackupFile -> createBackupFile()
+            SettingsEvent.RestoreBackupFile -> emit(SettingsEffect.RestoreBackupFile)
+            is SettingsEvent.RetrieveBackupFile -> retrieveBackupFile(event.json)
         }
     }
 
     private fun createBackupFile() = viewModelScope.launch {
         backupRepository.createBackup().fold(
             onSuccess = { emit(SettingsEffect.GenerateBackupFile(it))},
+            onFailure = {}
+        )
+    }
+
+    private fun retrieveBackupFile(json: String) = viewModelScope.launch {
+        backupRepository.restoreBackup(json).fold(
+            onSuccess = { emit(SettingsEffect.NavigateBack) },
             onFailure = {}
         )
     }

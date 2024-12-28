@@ -136,7 +136,7 @@ class TransactionLocalDatasourceImpl(
                     title = transaction.title,
                     amount = transaction.amount,
                     type = transaction.type,
-                    category = transaction.category.id,
+                    category = transaction.categoryId,
                     dateCreated = transaction.dateCreated,
                     note = transaction.note
                 )

@@ -11,6 +11,7 @@ import kotlinx.serialization.Serializable
 data class TransactionEntity(
     val id: Long,
     val walletId: Long = 0,
+    val categoryId: Long = 0,
     val title: String,
     val amount: Double,
     val type: Long,
@@ -33,6 +34,7 @@ fun TransactionTable.toTransactionEntity(): TransactionEntity {
     return TransactionEntity(
         id = id,
         walletId = walletId,
+        categoryId = category,
         title = title,
         amount = amount,
         type = type,
