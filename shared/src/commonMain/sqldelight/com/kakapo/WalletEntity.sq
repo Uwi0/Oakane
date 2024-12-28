@@ -66,5 +66,5 @@ getWalletsForBackup:
 SELECT * FROM WalletTable;
 
 insertBakupWallets:
-INSERT INTO WalletTable(id, name, balance, color, icon, isDefaultIcon, createdAt, updateAt)
+INSERT OR REPLACE INTO WalletTable(id, name, balance, color, icon, isDefaultIcon, createdAt, updateAt)
 VALUES(?, ?, ?, ?, ?, ?, ?, ?);

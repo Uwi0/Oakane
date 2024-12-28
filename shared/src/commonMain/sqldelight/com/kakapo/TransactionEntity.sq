@@ -125,7 +125,7 @@ getTransactionsForBackup:
 SELECT * FROM TransactionTable;
 
 insertTransactionBackup:
-INSERT INTO TransactionTable(
+INSERT OR REPLACE INTO TransactionTable(
     id,
     walletId,
     title,

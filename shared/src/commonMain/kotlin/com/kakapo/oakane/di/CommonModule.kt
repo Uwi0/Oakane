@@ -82,7 +82,7 @@ object CommonModule {
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
         factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get()) }
         factory<WalletRepository> { WalletRepositoryImpl(get(), get()) }
-        factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get()) }
+        factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get()) }
     }
 
     val domainModule: Module = module {

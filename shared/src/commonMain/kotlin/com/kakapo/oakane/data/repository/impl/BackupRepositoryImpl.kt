@@ -5,11 +5,13 @@ import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.GoalLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
+import com.kakapo.oakane.data.database.datasource.base.WalletLocalDatasource
 import com.kakapo.oakane.data.database.model.CategoryEntity
 import com.kakapo.oakane.data.database.model.CategoryLimitEntity
 import com.kakapo.oakane.data.database.model.GoalEntity
 import com.kakapo.oakane.data.database.model.MonthlyBudgetEntity
 import com.kakapo.oakane.data.database.model.TransactionEntity
+import com.kakapo.oakane.data.database.model.WalletEntity
 import com.kakapo.oakane.data.repository.base.BackupRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -22,6 +24,7 @@ class BackupRepositoryImpl(
     private val goalDatasource: GoalLocalDatasource,
     private val monthlyDatasource: MonthlyBudgetLocalDatasource,
     private val transactionDatasource: TransactionLocalDatasource,
+    private val walletDatasource: WalletLocalDatasource
 ): BackupRepository {
 
     override suspend fun createBackup(): Result<String> = coroutineScope {
@@ -31,13 +34,15 @@ class BackupRepositoryImpl(
             val goals = async { goalDatasource.getGoalsForBackup() }
             val monthlyBudgets = async { monthlyDatasource.getMonthlyBudgetsForBackup() }
             val transactions = async { transactionDatasource.getTransactionsForBackup() }
+            val wallets = async { walletDatasource.getWalletForBackup() }
 
             val backup = BackupModel(
                 categoryLimits.await().getOrElse { emptyList() },
                 categories.await().getOrElse { emptyList() },
                 goals.await().getOrElse { emptyList() },
                 monthlyBudgets.await().getOrElse { emptyList() },
-                transactions.await().getOrElse { emptyList() }
+                transactions.await().getOrElse { emptyList() },
+                wallets.await().getOrElse { emptyList() }
             )
 
             Json.encodeToString(backup)
@@ -63,12 +68,16 @@ class BackupRepositoryImpl(
             val transactionDeferred = async {
                 transactionDatasource.restoreTransactions(backupModel.transactions)
             }
+            val walletDeferred = async {
+                walletDatasource.restoreWallets(backupModel.wallets)
+            }
 
             categoryDeferred.await()
             categoryLimitDeferred.await()
             goalDeferred.await()
             monthlyBudgetDeferred.await()
             transactionDeferred.await()
+            walletDeferred.await()
             Unit
         }
     }
@@ -79,7 +88,8 @@ class BackupRepositoryImpl(
         val categories: List<CategoryEntity>,
         val goals: List<GoalEntity>,
         val monthlyBudgets: List<MonthlyBudgetEntity>,
-        val transactions: List<TransactionEntity>
+        val transactions: List<TransactionEntity>,
+        val wallets: List<WalletEntity>
     )
 
 }
