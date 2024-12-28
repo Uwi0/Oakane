@@ -7,7 +7,7 @@ import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
-import com.kakapo.oakane.model.ReportModel
+import com.kakapo.oakane.model.report.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport

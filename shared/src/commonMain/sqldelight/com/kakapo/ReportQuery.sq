@@ -1,0 +1,33 @@
+generateReportAllWallet:
+SELECT
+    strftime('%Y-%m', t.dateCreated / 1000, 'unixepoch') AS Month,
+    c.name AS Category_Name,
+    CASE c.type
+        WHEN 0 THEN 'Income'
+        WHEN 1 THEN 'Expense'
+    END AS Category_Type,
+    cl.limitAmount AS Category_Budget_Limit,
+    cl.spentAmount AS Amount_Spent_in_Category,
+    (cl.limitAmount - cl.spentAmount) AS Remaining_Category_Budget,
+    w.name AS Wallet_Name,
+    w.balance AS Wallet_Balance,
+    t.title AS Transaction_Title,
+    t.amount AS Transaction_Amount,
+    CASE t.type
+        WHEN 0 THEN 'Income'
+        WHEN 1 THEN 'Expense'
+    END AS Transaction_Type,
+    datetime(t.dateCreated / 1000, 'unixepoch') AS Transaction_Date,
+    t.note AS Note
+FROM
+    TransactionTable t
+LEFT JOIN
+    CategoryTable c ON t.category = c.id
+LEFT JOIN
+    CategoryLimitTable cl ON c.id = cl.categoryId
+LEFT JOIN
+    WalletTable w ON t.walletId = w.id
+WHERE
+    t.dateCreated BETWEEN strftime('%s', '2024-12-01') * 1000 AND strftime('%s', '2024-12-31') * 1000
+ORDER BY
+    t.dateCreated;

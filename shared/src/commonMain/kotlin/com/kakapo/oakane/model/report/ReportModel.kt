@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model
+package com.kakapo.oakane.model.report
 
 import com.kakapo.oakane.common.toColorInt
 import com.kakapo.oakane.model.category.CategoryIconName
