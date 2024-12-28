@@ -28,15 +28,19 @@ class SettingsViewModel(
     private fun createBackupFile() = viewModelScope.launch {
         backupRepository.createBackup().fold(
             onSuccess = { emit(SettingsEffect.GenerateBackupFile(it))},
-            onFailure = {}
+            onFailure = ::handleError
         )
     }
 
     private fun retrieveBackupFile(json: String) = viewModelScope.launch {
         backupRepository.restoreBackup(json).fold(
             onSuccess = { emit(SettingsEffect.NavigateBack) },
-            onFailure = {}
+            onFailure = ::handleError
         )
+    }
+
+    private fun handleError(throwable: Throwable? = null) {
+        emit(SettingsEffect.ShowError(throwable?.message ?: "Unknown error"))
     }
 
     private fun emit(effect: SettingsEffect) = viewModelScope.launch {

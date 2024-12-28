@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.common.getCurrentDateWith
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEffect
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
@@ -32,6 +34,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
+
+private const val DATE_FORMAT = "dd-MM-yyyy-HH-mm-ss"
 
 @Composable
 internal fun SettingsRoute(
@@ -88,6 +92,7 @@ internal fun SettingsRoute(
                 }
 
                 SettingsEffect.RestoreBackupFile -> retrieveJsonLauncher.launch(openDocumentIntent())
+                is SettingsEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
@@ -96,10 +101,11 @@ internal fun SettingsRoute(
 }
 
 fun createNewDocumentIntent(): Intent {
+    val fileName = "backup-oakane-${getCurrentDateWith(DATE_FORMAT)}.json"
     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
         addCategory(Intent.CATEGORY_OPENABLE)
         type = "application/json"
-        putExtra(Intent.EXTRA_TITLE, "test-${System.currentTimeMillis()}.json")
+        putExtra(Intent.EXTRA_TITLE, fileName)
     }
     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)

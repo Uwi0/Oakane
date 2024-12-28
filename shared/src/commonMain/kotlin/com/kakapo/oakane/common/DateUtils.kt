@@ -14,6 +14,12 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 
+fun getCurrentDateWith(format: String): String {
+    val instant = Clock.System.now()
+    val localDateTime: LocalDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+    return localDateTime.toFormatedString(format)
+}
+
 fun Long.toDateWith(format: String): String {
     val instant = Instant.fromEpochMilliseconds(this)
     val localDateTime: LocalDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
