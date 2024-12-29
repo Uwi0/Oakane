@@ -11,9 +11,9 @@ class ReportLocalDatasourceImpl(sqlDriver: SqlDriver): ReportLocalDatasource {
 
     private val reportQuery = Database(sqlDriver).reportQueryQueries
 
-    override suspend fun generateReportAllWallet(): Result<List<ReportEntity>> {
+    override suspend fun generateReportAllWallet(onMonth: String): Result<List<ReportEntity>> {
         return runCatching {
-            reportQuery.generateReportAllWallet()
+            reportQuery.generateReportAllWallet(onMonth, onMonth)
                 .executeAsList()
                 .map(GenerateReportAllWallet::toReportEntity)
         }

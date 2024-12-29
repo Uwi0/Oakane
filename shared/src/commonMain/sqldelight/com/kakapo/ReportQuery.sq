@@ -28,6 +28,7 @@ LEFT JOIN
 LEFT JOIN
     WalletTable w ON t.walletId = w.id
 WHERE
-    t.dateCreated BETWEEN strftime('%s', '2024-12-01') * 1000 AND strftime('%s', '2024-12-31') * 1000
+    t.dateCreated BETWEEN strftime('%s', strftime('%Y', 'now') || '-' || ? || '-01') * 1000
+    AND strftime('%s', strftime('%Y', 'now') || '-' || ? || '-01', '+1 month', '-1 day') * 1000
 ORDER BY
     t.dateCreated;

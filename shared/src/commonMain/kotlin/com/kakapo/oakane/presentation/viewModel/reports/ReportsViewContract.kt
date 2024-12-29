@@ -28,12 +28,13 @@ data class ReportsState(
 
     val names: List<String> get() = reports.map { it.name }
 
-    val monthNumber get() = startDateAndEndDateOfMonth(selectedMonth.monthNumber)
+    val monthNumber: Pair<Long, Long> get() = startDateAndEndDateOfMonth(selectedMonth.monthNumber)
 
     val displayedWallets: List<WalletItemModel> get() {
         val allWallet = WalletItemModel()
         return listOf(allWallet) + wallets
     }
+
 
     fun updateBalance(balance: Double) = copy(
         totalBalance = balance,

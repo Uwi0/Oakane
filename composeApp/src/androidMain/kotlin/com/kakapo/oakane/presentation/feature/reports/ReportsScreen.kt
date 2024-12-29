@@ -2,8 +2,6 @@ package com.kakapo.oakane.presentation.feature.reports
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.oakane.common.getCurrentDateWith
 import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.domain.usecase.toCsvUseCase
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
@@ -37,8 +35,6 @@ import com.kakapo.oakane.presentation.viewModel.reports.ReportsState
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
-
-private const val REPORT_NAME = "report.csv"
 
 @Composable
 internal fun ReportsRoute(
@@ -58,7 +54,8 @@ internal fun ReportsRoute(
                 ReportsEffect.NavigateBack -> navigateBack.invoke()
                 is ReportsEffect.ShowError -> context.showToast(message = effect.message)
                 is ReportsEffect.GenerateReport -> {
-                    val fileReport = effect.reports.toCsvUseCase(context, REPORT_NAME).await()
+                    val fileName = uiState.toReportName()
+                    val fileReport = effect.reports.toCsvUseCase(context, fileName).await()
                     fileReport?.let {
                         saveToDownloads(context, it)
                     }
@@ -70,21 +67,9 @@ internal fun ReportsRoute(
     ReportsScreen(uiState = uiState, onEvent = viewModel::handleEVent)
 }
 
-fun shareFile(context: Context, file: File) {
-    val uri: Uri = FileProvider.getUriForFile(
-        context,
-        "${context.packageName}.provider",
-        file
-    )
-
-    val intent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/csv"
-        putExtra(Intent.EXTRA_STREAM, uri)
-        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    }
-
-    val chooserIntent = Intent.createChooser(intent, "Share CSV")
-    context.startActivity(chooserIntent)
+private fun ReportsState.toReportName(): String {
+    val format = "dd-MM-yyyy-HH-mm-ss"
+    return "report-${selectedMonth.name}-${getCurrentDateWith(format)}.csv"
 }
 
 fun saveToDownloads(context: Context, file: File) {
