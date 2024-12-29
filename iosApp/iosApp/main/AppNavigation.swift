@@ -44,6 +44,8 @@ final class AppNavigation: ObservableObject {
             navigate(to: .wallets)
         case .reports:
             navigate(to: .reports)
+        case .settings:
+            print("Settings")
         }
     }
     

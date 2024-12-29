@@ -1,9 +1,11 @@
 import SwiftUI
+import Shared
 
 struct ReportsScreen: View {
     
     @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel: ReportsViewModel = ReportsViewModel()
+    @State private var viewController: UIViewController?
     
     var uiState: ReportsState { viewModel.uiState }
     
@@ -28,7 +30,9 @@ struct ReportsScreen: View {
             .scrollIndicators(.hidden)
         }
         .background(content: { ColorTheme.surface.ignoresSafeArea()})
+        .background(ViewControllerAccessor { vc in viewController = vc} )
         .navigationBarBackButtonHidden(true)
+        .onChange(of: viewModel.uiEffect) { observe(effect: viewModel.uiEffect) }
     }
     
     @ViewBuilder private func ReportsItem() -> some View {
@@ -47,11 +51,33 @@ struct ReportsScreen: View {
                 actionContent: {
                     Image(systemName: "square.and.arrow.down")
                         .frame(width: 24, height: 24)
-                        .onTapGesture {}
+                        .onTapGesture { viewModel.handle(event: .GenerateReport())}
                 },
                 navigateBack: { navigation.navigateBack() }
             )
             Divider()
+        }
+    }
+    
+    private func observe(effect: ReportsEffect?){
+        if let safeEffect = effect {
+            switch onEnum(of: safeEffect) {
+            case .generateReport(let effect):
+                generateReports(values: effect.reports)
+            case .navigateBack(_):
+                print("Navigate back")
+            case .showError(let effect):
+                print(effect.message)
+            }
+        }
+        viewModel.uiEffect = nil
+    }
+    
+    private func generateReports(values: [ReportCsvModelKt]) {
+        let reports = values.toReportCsvModels()
+        let reportsCsv = generateCSV(from: reports)
+        if let controller = viewController {
+            saveCSVAndShare(csvString: reportsCsv, fileName: "reports.csv", viewController: controller)
         }
     }
     
