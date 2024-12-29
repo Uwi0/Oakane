@@ -13,11 +13,11 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.presentation.feature.transactions.component.SwipeToDeleteTransactionView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionBottomSheetView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionTopAppBarView
@@ -30,6 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TransactionsRoute(navigateBack: () -> Unit, navigateToTransaction: (Long) -> Unit) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<TransactionsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(
@@ -47,6 +48,7 @@ internal fun TransactionsRoute(navigateBack: () -> Unit, navigateToTransaction: 
                 is TransactionsEffect.ToDetail -> navigateToTransaction.invoke(effect.id)
                 TransactionsEffect.HideSheet -> sheetState.hide()
                 TransactionsEffect.NavigateBack -> navigateBack.invoke()
+                is TransactionsEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }

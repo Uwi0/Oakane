@@ -38,6 +38,7 @@ sealed class TransactionsEffect{
     data object NavigateBack: TransactionsEffect()
     data object HideSheet: TransactionsEffect()
     data class ToDetail(val id: Long): TransactionsEffect()
+    data class ShowError(val message: String): TransactionsEffect()
 }
 
 sealed class TransactionsEvent {

@@ -2,8 +2,9 @@ package com.kakapo.oakane.presentation.viewModel.transactions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
+import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.intoMidnight
+import com.kakapo.oakane.common.subscribe
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionModel
@@ -103,26 +104,20 @@ class TransactionsViewModel(
 
     private fun delete(transaction: TransactionModel) = viewModelScope.launch {
         transactionRepository.deleteTransactionBy(transaction.id).fold(
-            onSuccess = {
-                updateDeleted(transaction)
-            },
-            onFailure = { e ->
-                Logger.e(throwable = e, messageString = "error delete item ${e.message}")
-            }
+            onSuccess = { updateDeleted(transaction) },
+            onFailure = ::handleError
         )
     }
 
     private fun loadTransactions() = viewModelScope.launch {
-        transactionRepository.loadTransactions().collect { result ->
-            result.fold(
-                onSuccess = { transactionsResult ->
-                    _uiState.update { it.copy(transactions = transactionsResult) }
-                },
-                onFailure = { e ->
-                    Logger.e(throwable = e, messageString = "error load transactions ${e.message}")
-                }
-            )
+        val onSuccess: (List<TransactionModel>) -> Unit = { transactions ->
+            _uiState.update { it.copy(transactions = transactions) }
         }
+
+        transactionRepository.loadTransactions().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
     }
 
     private fun updateDeleted(transactions: TransactionModel) {
@@ -134,6 +129,11 @@ class TransactionsViewModel(
     private fun hideSheet() {
         _uiState.update { it.hideSheet() }
         emit(TransactionsEffect.HideSheet)
+    }
+
+    private fun handleError(throwable: Throwable?) {
+        val message = throwable?.message ?: "Unknown error"
+        emit(TransactionsEffect.ShowError(message))
     }
 
     private fun emit(effect: TransactionsEffect) = viewModelScope.launch {

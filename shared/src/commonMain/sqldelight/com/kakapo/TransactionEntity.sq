@@ -60,7 +60,8 @@ SELECT
     CategoryTable.isDefault AS defaultCategory
 FROM TransactionTable
 INNER JOIN CategoryTable
-ON TransactionTable.category = CategoryTable.id;
+ON TransactionTable.category = CategoryTable.id
+ORDER BY dateCreated DESC;
 
 getTransactionBy:
 SELECT
@@ -119,7 +120,8 @@ FROM TransactionTable t
 INNER JOIN CategoryTable c
 ON t.category = c.id
 WHERE t.walletId = ? AND t.dateCreated >= ? AND t.dateCreated <= ?
-GROUP BY c.id;
+GROUP BY c.id
+ORDER BY dateCreated DESC;
 
 getTransactionsForBackup:
 SELECT * FROM TransactionTable;
