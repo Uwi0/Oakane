@@ -1,8 +1,11 @@
 package com.kakapo.oakane.presentation.feature.reports
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,7 +60,7 @@ internal fun ReportsRoute(
                 is ReportsEffect.GenerateReport -> {
                     val fileReport = effect.reports.toCsvUseCase(context, REPORT_NAME).await()
                     fileReport?.let {
-                        shareFile(context, it)
+                        saveToDownloads(context, it)
                     }
                 }
             }
@@ -70,7 +73,7 @@ internal fun ReportsRoute(
 fun shareFile(context: Context, file: File) {
     val uri: Uri = FileProvider.getUriForFile(
         context,
-        "${context.packageName}.provider", // Make sure to add this in your AndroidManifest.xml
+        "${context.packageName}.provider",
         file
     )
 
@@ -82,6 +85,27 @@ fun shareFile(context: Context, file: File) {
 
     val chooserIntent = Intent.createChooser(intent, "Share CSV")
     context.startActivity(chooserIntent)
+}
+
+fun saveToDownloads(context: Context, file: File) {
+    val resolver = context.contentResolver
+    val contentValues = ContentValues().apply {
+        put(MediaStore.MediaColumns.DISPLAY_NAME, file.name)
+        put(MediaStore.MediaColumns.MIME_TYPE, "text/csv")
+        put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+        put(MediaStore.MediaColumns.RELATIVE_PATH, "Download/oakane/report")
+    }
+
+    val uri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+
+    uri?.let {
+        resolver.openOutputStream(it)?.use { outputStream ->
+            file.inputStream().use { inputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+        context.showToast("Report downloaded")
+    }
 }
 
 @Composable
