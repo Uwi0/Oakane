@@ -30,5 +30,6 @@ LEFT JOIN
 WHERE
     t.dateCreated BETWEEN strftime('%s', strftime('%Y', 'now') || '-' || ? || '-01') * 1000
     AND strftime('%s', strftime('%Y', 'now') || '-' || ? || '-01', '+1 month', '-1 day') * 1000
+    AND (w.id = COALESCE(?, w.id))
 ORDER BY
     t.dateCreated;

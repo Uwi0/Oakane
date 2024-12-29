@@ -5,5 +5,5 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface ReportLocalDatasource {
     @NativeCoroutines
-    suspend fun generateReportAllWallet(onMonth: String): Result<List<ReportEntity>>
+    suspend fun generateReportAllWallet(onMonth: String, walletId: Long?): Result<List<ReportEntity>>
 }

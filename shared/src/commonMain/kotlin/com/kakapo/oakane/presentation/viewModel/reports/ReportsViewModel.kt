@@ -129,7 +129,8 @@ class ReportsViewModel(
             emit(ReportsEffect.GenerateReport(reports))
         }
         val month = _uiState.value.selectedMonth.monthNumber.toString()
-        reportRepository.generateReportAllWallet(onMonth = month).fold(
+        val walletId = _uiState.value.selectedWallet?.id
+        reportRepository.generateReportAllWallet(onMonth = month, walletId = walletId).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

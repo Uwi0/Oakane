@@ -35,7 +35,6 @@ data class ReportsState(
         return listOf(allWallet) + wallets
     }
 
-
     fun updateBalance(balance: Double) = copy(
         totalBalance = balance,
     )

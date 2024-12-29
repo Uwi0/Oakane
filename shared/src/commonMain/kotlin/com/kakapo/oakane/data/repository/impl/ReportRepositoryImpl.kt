@@ -10,8 +10,11 @@ class ReportRepositoryImpl(
     private val reportLocalDatasource: ReportLocalDatasource
 ): ReportRepository {
 
-    override suspend fun generateReportAllWallet(onMonth: String): Result<List<ReportCsvModel>> {
-        return reportLocalDatasource.generateReportAllWallet(onMonth = onMonth)
+    override suspend fun generateReportAllWallet(
+        onMonth: String,
+        walletId: Long?
+    ): Result<List<ReportCsvModel>> {
+        return reportLocalDatasource.generateReportAllWallet(onMonth = onMonth, walletId = walletId)
             .mapCatching { it.map(ReportEntity::toReportCsvModel) }
     }
 }
