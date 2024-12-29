@@ -111,7 +111,7 @@ object CommonModule {
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get())}
-        viewModel { ReportsViewModel(get(), get(), get()) }
+        viewModel { ReportsViewModel(get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get())}
     }
 

@@ -3,4 +3,7 @@
     <files-path
         name="images"
         path="." />
+    <external-files-path
+        name="csv_files"
+        path="." />
 </paths>

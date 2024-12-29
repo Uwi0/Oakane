@@ -23,6 +23,7 @@ kotlin = "2.1.0"
 kotlinx-datetime = "0.6.1"
 kotlinx-serialization = "1.8.0-RC"
 ksp = "2.1.0-1.0.29"
+open-csv = "5.7.1"
 skie = "0.10.0"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.6"
@@ -58,6 +59,7 @@ koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-compose-viewmodel-navigation" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+open-csv = { group = "com.opencsv", name = "opencsv", version.ref = "open-csv" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }

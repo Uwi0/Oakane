@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.oakane.common.asCustomResult
 import com.kakapo.oakane.common.subscribe
+import com.kakapo.oakane.data.repository.base.ReportRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
-import com.kakapo.oakane.model.report.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.oakane.model.report.ReportCsvModel
+import com.kakapo.oakane.model.report.ReportModel
 import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -24,7 +26,8 @@ import kotlin.native.ObjCName
 class ReportsViewModel(
     private val getMonthlyBudgetOverview: GetMonthlyBudgetOverviewUseCase,
     private val transactionRepository: TransactionRepository,
-    private val walletRepository: WalletRepository
+    private val walletRepository: WalletRepository,
+    private val reportRepository: ReportRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -47,6 +50,7 @@ class ReportsViewModel(
             is ReportsEvent.NavigateBack -> emit(ReportsEffect.NavigateBack)
             is ReportsEvent.Selected -> onSelected(event.wallet)
             is ReportsEvent.FilterBy -> onFilterByMonth(event.month)
+            ReportsEvent.GenerateReport -> generateReportCSV()
         }
     }
 
@@ -117,6 +121,17 @@ class ReportsViewModel(
         walletRepository.loadWallets().asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
+        )
+    }
+
+    private fun generateReportCSV() = viewModelScope.launch {
+        val onSuccess: (List<ReportCsvModel>) -> Unit = { reports ->
+            emit(ReportsEffect.GenerateReport(reports))
+        }
+
+        reportRepository.generateReportAllWallet().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 

@@ -1,8 +1,9 @@
 package com.kakapo.oakane.presentation.viewModel.reports
 
 import com.kakapo.oakane.common.startDateAndEndDateOfMonth
-import com.kakapo.oakane.model.report.ReportModel
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.oakane.model.report.ReportCsvModel
+import com.kakapo.oakane.model.report.ReportModel
 import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 import com.kakapo.oakane.presentation.viewModel.reports.model.currentMonth
@@ -49,10 +50,12 @@ data class ReportsState(
 sealed class ReportsEffect {
     data object NavigateBack: ReportsEffect()
     data class ShowError(val message: String): ReportsEffect()
+    data class GenerateReport(val reports: List<ReportCsvModel>): ReportsEffect()
 }
 
 sealed class ReportsEvent {
     data object NavigateBack: ReportsEvent()
     data class Selected(val wallet: WalletItemModel): ReportsEvent()
     data class FilterBy(val month: MonthReport): ReportsEvent()
+    data object GenerateReport: ReportsEvent()
 }
