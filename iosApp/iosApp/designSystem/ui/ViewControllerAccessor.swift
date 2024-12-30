@@ -14,3 +14,18 @@ struct ViewControllerAccessor: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
     }
 }
+
+func saveDocument(value: String, fileName: String, viewController: UIViewController) {
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let fileURL = documentsDirectory.appendingPathComponent(fileName)
+
+    do {
+        try value.write(to: fileURL, atomically: true, encoding: .utf8)
+
+        let activityViewController = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
+        viewController.present(activityViewController, animated: true)
+    } catch {
+        print("Error saving \(fileName) to file: \(error)")
+    }
+}
+

@@ -65,6 +65,8 @@ struct TransactionsScreen: View {
             case .navigateBack: navigation.navigateBack()
             case .toDetail(let effect):
                 navigation.navigate(to: .transaction(transactionId: effect.id))
+            case .showError(let effect):
+                print(effect.message)
             }
         }
         viewModel.uiEffect = nil

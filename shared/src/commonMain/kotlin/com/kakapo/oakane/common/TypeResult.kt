@@ -1,5 +1,6 @@
 package com.kakapo.oakane.common
 
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -12,6 +13,7 @@ sealed interface CustomResult<out T> {
     data object Loading : CustomResult<Nothing>
 }
 
+@NativeCoroutines
 fun <T> Flow<T>?.asResult(): Flow<CustomResult<T>> {
     return this?.map<T, CustomResult<T>> {
         CustomResult.Success(it)
@@ -23,6 +25,7 @@ fun <T> Flow<T>?.asResult(): Flow<CustomResult<T>> {
         ?: flowOf(CustomResult.Error(NullPointerException("Flow<Result<T>> is null")))
 }
 
+@NativeCoroutines
 fun <T> Flow<Result<T>>?.asCustomResult(): Flow<CustomResult<T>> {
     return this?.map {
         if (it.isSuccess) {
@@ -39,6 +42,7 @@ fun <T> Flow<Result<T>>?.asCustomResult(): Flow<CustomResult<T>> {
 }
 
 
+@NativeCoroutines
 suspend fun <T> Flow<CustomResult<T>>.subscribe(
     onLoading: () -> Unit = {},
     onSuccess: (T) -> Unit = {},
@@ -53,6 +57,7 @@ suspend fun <T> Flow<CustomResult<T>>.subscribe(
     }
 }
 
+@NativeCoroutines
 suspend fun <T> Flow<CustomResult<T>>.suspendSubscribe(
     onLoading: () -> Unit = {},
     onSuccess: suspend (T) -> Unit = {},

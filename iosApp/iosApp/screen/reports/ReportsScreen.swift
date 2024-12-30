@@ -77,7 +77,7 @@ struct ReportsScreen: View {
         let reports = values.toReportCsvModels()
         let reportsCsv = generateCSV(from: reports)
         if let controller = viewController {
-            saveCSVAndShare(csvString: reportsCsv, fileName: "reports.csv", viewController: controller)
+            saveDocument(value: reportsCsv, fileName: "reports.csv", viewController: controller)
         }
     }
     

@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("SettingsViewModelKt")
 class SettingsViewModel(
     private val backupRepository: BackupRepository,
     private val systemRepository: SystemRepository

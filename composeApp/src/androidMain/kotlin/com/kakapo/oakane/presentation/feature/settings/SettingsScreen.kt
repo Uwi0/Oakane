@@ -31,8 +31,8 @@ import com.kakapo.oakane.common.getCurrentDateWith
 import com.kakapo.oakane.common.utils.showToast
 import com.kakapo.oakane.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsView
 import com.kakapo.oakane.presentation.feature.settings.component.DialogThemeView
-import com.kakapo.oakane.presentation.feature.settings.component.SettingsButtonView
 import com.kakapo.oakane.presentation.feature.settings.component.asString
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEffect
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
@@ -168,12 +168,12 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
                     onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
                 )
                 HorizontalDivider()
-                SettingsButtonView(
+                ButtonSettingsView(
                     title = "Back Up Data",
                     icon = Icons.Outlined.Backup,
                     onClick = { onEvent.invoke(SettingsEvent.GenerateBackupFile) }
                 )
-                SettingsButtonView(
+                ButtonSettingsView(
                     title = "Import Data",
                     icon = Icons.Outlined.ImportExport,
                     onClick = { onEvent.invoke(SettingsEvent.RestoreBackupFile) }

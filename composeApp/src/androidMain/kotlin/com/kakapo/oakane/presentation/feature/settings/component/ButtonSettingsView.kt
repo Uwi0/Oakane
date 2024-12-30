@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun SettingsButtonView(title: String, icon: ImageVector, onClick: () -> Unit) {
+internal fun ButtonSettingsView(title: String, icon: ImageVector, onClick: () -> Unit) {
     Surface(
         color = MaterialTheme.colorScheme.surface,
         shape = MaterialTheme.shapes.medium,

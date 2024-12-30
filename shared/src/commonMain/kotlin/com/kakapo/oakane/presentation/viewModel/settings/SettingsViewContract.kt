@@ -2,7 +2,9 @@ package com.kakapo.oakane.presentation.viewModel.settings
 
 import com.kakapo.oakane.model.system.Theme
 import com.kakapo.oakane.model.system.asTheme
+import kotlin.native.ObjCName
 
+@ObjCName("SettingsStateKt")
 data class SettingsState(
     val themeMode: Theme = Theme.System,
     val isDialogShown: Boolean = false,

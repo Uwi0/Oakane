@@ -50,16 +50,3 @@ func generateCSV(from data: [ReportCsvModel]) -> String {
     return csvString
 }
 
-func saveCSVAndShare(csvString: String, fileName: String, viewController: UIViewController) {
-    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    let fileURL = documentsDirectory.appendingPathComponent(fileName)
-
-    do {
-        try csvString.write(to: fileURL, atomically: true, encoding: .utf8)
-
-        let activityViewController = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
-        viewController.present(activityViewController, animated: true)
-    } catch {
-        print("Error saving CSV file: \(error)")
-    }
-}
