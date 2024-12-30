@@ -148,7 +148,4 @@ class AddTransactionViewModel(
     private fun emit(effect: AddTransactionEffect) = viewModelScope.launch {
         _uiSideEffect.emit(effect)
     }
-
-
-
 }

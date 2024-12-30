@@ -22,6 +22,7 @@ import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.data.repository.base.ReportRepository
+import com.kakapo.oakane.data.repository.base.SystemRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.data.repository.impl.BackupRepositoryImpl
@@ -30,6 +31,7 @@ import com.kakapo.oakane.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.GoalRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.ReportRepositoryImpl
+import com.kakapo.oakane.data.repository.impl.SystemRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.oakane.data.repository.impl.WalletRepositoryImpl
 import com.kakapo.oakane.domain.usecase.base.DeleteTransactionUseCase
@@ -48,6 +50,7 @@ import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
 import com.kakapo.oakane.presentation.viewModel.goal.GoalViewModel
 import com.kakapo.oakane.presentation.viewModel.goals.GoalsViewModel
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
+import com.kakapo.oakane.presentation.viewModel.main.MainViewModel
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetViewModel
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
@@ -90,6 +93,7 @@ object CommonModule {
         factory<WalletRepository> { WalletRepositoryImpl(get(), get()) }
         factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get()) }
         factory<ReportRepository> { ReportRepositoryImpl(get()) }
+        factory<SystemRepository> { SystemRepositoryImpl(get()) }
     }
 
     val domainModule: Module = module {
@@ -101,6 +105,7 @@ object CommonModule {
     }
 
     val viewModel: Module = module {
+        viewModel { MainViewModel(get())}
         viewModel { AddTransactionViewModel(get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get()) }
@@ -112,7 +117,7 @@ object CommonModule {
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get()) }
-        viewModel { SettingsViewModel(get())}
+        viewModel { SettingsViewModel(get(), get())}
     }
 
     val coroutineScope = module {

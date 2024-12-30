@@ -3,6 +3,7 @@ package com.kakapo.oakane
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,22 +14,49 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.touchlab.kermit.Logger
+import com.kakapo.oakane.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.navigation.OakaneNavHost
 import com.kakapo.oakane.presentation.navigation.DrawerMenuNavigation
+import com.kakapo.oakane.presentation.viewModel.main.MainEvent
+import com.kakapo.oakane.presentation.viewModel.main.MainViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val appState = rememberAppState()
-            AppTheme {
-                OakaneApp(appState)
+            val viewModel = koinViewModel<MainViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            val isDarkTheme = when (uiState.theme) {
+                Theme.System -> isSystemInDarkTheme()
+                Theme.Light -> false
+                Theme.Dark -> true
+            }
+
+            LaunchedEffect(Unit) {
+                viewModel.initData()
+            }
+
+            AppTheme(darkTheme = isDarkTheme) {
+                OakaneApp(
+                    appState,
+                    onSelectedTheme = { theme ->
+                        Logger.d("Theme: $theme")
+                        viewModel.handleEvent(MainEvent.OnChange(theme))
+                    }
+                )
             }
         }
     }
@@ -36,7 +64,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun OakaneApp(
-    appState: OakaneAppState
+    appState: OakaneAppState,
+    onSelectedTheme: (Theme) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -47,7 +76,11 @@ private fun OakaneApp(
         drawerState = drawerState,
         gesturesEnabled = appState.isDashboardRoute,
         content = {
-            OakaneNavHost(navController = appState.navController, openDrawer = openDrawer)
+            OakaneNavHost(
+                navController = appState.navController,
+                openDrawer = openDrawer,
+                onSelectedTheme = onSelectedTheme
+            )
         },
         drawerContent = {
             DrawerContent(appState, closeDrawer)

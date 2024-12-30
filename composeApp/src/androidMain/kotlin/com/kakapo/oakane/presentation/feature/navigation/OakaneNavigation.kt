@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.feature.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.kakapo.oakane.model.system.Theme
 import com.kakapo.oakane.presentation.feature.addGoal.navigation.addGoalScreen
 import com.kakapo.oakane.presentation.feature.addGoal.navigation.navigateToAddGoal
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTransactionScreen
@@ -29,7 +30,8 @@ import com.kakapo.oakane.presentation.feature.wallets.navigation.walletsScreen
 internal fun OakaneNavHost(
     navController: NavHostController,
     startDestination: String = HOME_ROUTE,
-    openDrawer: () -> Unit
+    openDrawer: () -> Unit,
+    onSelectedTheme: (Theme) -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         homeScreen(
@@ -76,6 +78,6 @@ internal fun OakaneNavHost(
         reportsScreen(
             navigateBack = navController::navigateUp
         )
-        settingsScreen(navigateBack = navController::navigateUp)
+        settingsScreen(navigateBack = navController::navigateUp, onSelectedTheme = onSelectedTheme)
     }
 }
