@@ -6,6 +6,7 @@ struct SettingsScreen: View {
     @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel: SettingsViewModel = SettingsViewModel()
     @State private var viewController: UIViewController?
+    @State private var isPresented: Bool = false
     
     var body: some View {
         VStack {
@@ -20,7 +21,7 @@ struct SettingsScreen: View {
                 ButtonSettingsView(
                     title: "Import Data",
                     iconName: "square.and.arrow.down",
-                    onClick: {}
+                    onClick: { isPresented = true }
                 )
                 Spacer()
             }
@@ -31,6 +32,16 @@ struct SettingsScreen: View {
         .background(ColorTheme.surface.ignoresSafeArea())
         .background(ViewControllerAccessor { vc in viewController = vc} )
         .onChange(of: viewModel.uiEffect) { observe(effect: viewModel.uiEffect) }
+        .fileImporter(
+            isPresented: $isPresented,
+            allowedContentTypes: [.json],
+            onCompletion: { result in
+                switch result {
+                case .success(let url): readBackup(url: url)
+                case .failure(let error): print("error \(error)")
+                }
+            }
+        )
     }
     
     @ViewBuilder func NavigationBar() -> some View {
@@ -50,7 +61,7 @@ struct SettingsScreen: View {
             case .navigateBack:
                 print("Navigate back")
             case .restoreBackupFile:
-                print("")
+                print("restire back up")
             case .showError(let effect):
                 print(effect.message)
             }
@@ -65,6 +76,15 @@ struct SettingsScreen: View {
         if let safeViewController = viewController {
             saveDocument(value: json, fileName: fileName, viewController: safeViewController)
         }
-        
+    }
+    
+    private func readBackup(url: URL) {
+        let result = readJSONFileAsString(fileUrl: url)
+        switch result {
+        case .success(let json):
+            viewModel.handle(event: .RetrieveBackupFile(json: json))
+        case .failure(let error):
+            print("error \(error)")
+        }
     }
 }
