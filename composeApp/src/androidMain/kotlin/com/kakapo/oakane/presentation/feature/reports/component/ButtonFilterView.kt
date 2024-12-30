@@ -12,6 +12,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +43,7 @@ private fun ButtonDateFilterView(uiState: ReportsState, onEvent: (ReportsEvent) 
         onExpandedChange = { isExpanded = it }
     ) {
         ButtonFilterView(
-            modifier = Modifier.menuAnchor(),
+            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
             title = uiState.selectedMonth.title,
             icon = { ExposedDropdownMenuDefaults.TrailingIcon(isExpanded) }
         )
@@ -93,7 +94,7 @@ private fun ButtonWalletsDropDownMenu(uiState: ReportsState, onEvent: (ReportsEv
         onExpandedChange = { isExpanded = it }
     ) {
         ButtonWalletsView(
-            modifier = Modifier.menuAnchor(),
+            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
             title = uiState.selectedWalletName,
             icon = { ExposedDropdownMenuDefaults.TrailingIcon(isExpanded) }
         )
