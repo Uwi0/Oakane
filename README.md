@@ -22,4 +22,6 @@ about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform
 Oakane is a cross-platform finance app built using Kotlin Multiplatform with Jetpack Compose for Android and SwiftUI for iOS.
 The name "Oakane" comes from a mix of "oak", symbolizing growth, and "okane", which means money in Japanese. 
 
+⚒️ This repository is my playground where I experiment with different ideas and concepts. Expect there to be bugs and unfinished features from time to time. Enjoy the journey!
+
 Img Source: https://www.pixiv.net/en/users/6567678
