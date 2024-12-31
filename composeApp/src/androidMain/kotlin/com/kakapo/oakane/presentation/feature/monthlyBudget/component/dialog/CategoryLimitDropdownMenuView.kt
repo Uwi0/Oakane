@@ -11,6 +11,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +41,7 @@ fun CategoryLimitDropdownMenuView(state: AddCategoryLimitState) {
         onExpandedChange = state::changeExpanded
     ) {
         OutlinedTextField(
-            modifier = Modifier.menuAnchor(),
+            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
             value = state.selectedOptionText,
             onValueChange = state::changeSelectedOptionText,
             shape = MaterialTheme.shapes.medium,
