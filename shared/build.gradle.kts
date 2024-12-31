@@ -25,7 +25,6 @@ kotlin {
 
             implementation(libs.datastore)
             implementation(libs.datastore.preferences)
-            implementation(libs.kotlinx.serialization)
 
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)

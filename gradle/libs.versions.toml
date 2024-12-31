@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.3"
+agp = "8.8.0-rc02"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -15,6 +15,7 @@ coil = "2.7.0"
 colorpicker = "1.1.2"
 compose-plugin = "1.7.0"
 datastore = "1.1.1"
+dependency-analys = "2.6.1"
 junit = "4.13.2"
 kermit = "2.0.5"
 kmp-nativecoroutines = "1.0.0-ALPHA-38"
@@ -27,7 +28,9 @@ open-csv = "5.7.1"
 skie = "0.10.0"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.6"
-material = "1.12.0"
+kotlinStdlib = "2.1.0"
+runner = "1.5.2"
+core = "1.5.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -64,24 +67,27 @@ open-csv = { group = "com.opencsv", name = "opencsv", version.ref = "open-csv" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 #Dependencies of the included build logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analys" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 [plugins]
 appCash-sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analys" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmp-nativecoroutines"}
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 touchlab-skie = { id = "co.touchlab.skie", version.ref = "skie" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 #plugin define by this project
 kakapo-kotlinMultiplatform = { id = "com.kakapo.app.kotlinMultiplatform", version = "unspecified" }
