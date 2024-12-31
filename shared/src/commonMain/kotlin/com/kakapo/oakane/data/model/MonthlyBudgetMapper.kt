@@ -1,6 +1,6 @@
 package com.kakapo.oakane.data.model
 
-import com.kakapo.oakane.data.database.model.MonthlyBudgetEntity
+import com.kakapo.database.model.MonthlyBudgetEntity
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetModel
 
 data class MonthlyBudgetParam(

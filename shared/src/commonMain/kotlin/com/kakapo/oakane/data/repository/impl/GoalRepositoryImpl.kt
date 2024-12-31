@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.data.database.datasource.base.GoalLocalDatasource
-import com.kakapo.oakane.data.database.model.GoalEntity
+import com.kakapo.database.datasource.base.GoalLocalDatasource
+import com.kakapo.database.model.GoalEntity
 import com.kakapo.oakane.data.model.toGoalEntity
 import com.kakapo.oakane.data.model.toGoalModel
 import com.kakapo.oakane.data.repository.base.GoalRepository

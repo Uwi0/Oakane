@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.model
 
-import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
-import com.kakapo.oakane.data.database.model.TransactionEntity
+import com.kakapo.database.model.TransactionCategoryEntity
+import com.kakapo.database.model.TransactionEntity
 import com.kakapo.oakane.model.report.ReportModel
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionModel

@@ -1,6 +1,6 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.data.database.datasource.base.MonthlyBudgetLocalDatasource
+import com.kakapo.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.data.model.toMonthlyBudgetModel
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository

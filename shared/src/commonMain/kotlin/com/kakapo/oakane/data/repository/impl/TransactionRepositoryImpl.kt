@@ -1,8 +1,8 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.data.database.datasource.base.TransactionLocalDatasource
-import com.kakapo.oakane.data.database.model.TransactionCategoryEntity
-import com.kakapo.oakane.data.database.model.TransactionEntity
+import com.kakapo.database.datasource.base.TransactionLocalDatasource
+import com.kakapo.database.model.TransactionCategoryEntity
+import com.kakapo.database.model.TransactionEntity
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.model.toModel
 import com.kakapo.oakane.data.model.toReportModel
