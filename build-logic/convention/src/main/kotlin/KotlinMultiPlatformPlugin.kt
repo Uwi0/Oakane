@@ -5,6 +5,7 @@ import com.kakapo.app.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 
@@ -19,5 +20,20 @@ class KotlinMultiPlatformPlugin: Plugin<Project> {
         
         extensions.configure<KotlinMultiplatformExtension>(::configureKotlinMultiplatform)
         extensions.configure<LibraryExtension>(::configureKotlinAndroid)
+
+        target.afterEvaluate {
+            // Remove log pollution until Android support in KMP improves.
+            extensions.findByType<KotlinMultiplatformExtension>()?.let { kmpExt ->
+                kmpExt.sourceSets.removeAll {
+                    setOf(
+                        "androidAndroidTestRelease",
+                        "androidTestFixtures",
+                        "androidTestFixturesDebug",
+                        "androidTestFixturesRelease",
+                        "androidTestFixturesDemo",
+                    ).contains(it.name)
+                }
+            }
+        }
     }
 }

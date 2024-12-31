@@ -1,7 +1,9 @@
 package com.kakapo.app.buildlogic
 
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 internal fun Project.configureKotlinMultiplatform(
     extension: KotlinMultiplatformExtension
@@ -46,6 +48,29 @@ internal fun Project.configureKotlinMultiplatform(
                     "kotlin.time.ExperimentalTime",
                     "kotlinx.coroutines.ExperimentalCoroutinesApi",
                 ).forEach { optIn(it) }
+            }
+        }
+    }
+
+    targets.withType<KotlinNativeTarget>().configureEach {
+
+        binaries.all {
+            linkerOpts("-lsqlite3")
+        }
+
+        compilations.configureEach {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    freeCompilerArgs.add("-Xallocator=custom")
+                    freeCompilerArgs.add("-XXLanguage:+ImplicitSignedToUnsignedIntegerConversion")
+                    freeCompilerArgs.add("-Xadd-light-debug=enable")
+                    freeCompilerArgs.add("-Xexpect-actual-classes")
+
+                    freeCompilerArgs.addAll(
+                        "-opt-in=kotlinx.cinterop.ExperimentalForeignApi",
+                        "-opt-in=kotlinx.cinterop.BetaInteropApi",
+                    )
+                }
             }
         }
     }
