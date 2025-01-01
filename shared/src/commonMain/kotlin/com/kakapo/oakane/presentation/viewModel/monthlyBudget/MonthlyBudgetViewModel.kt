@@ -3,8 +3,8 @@ package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.kakapo.oakane.common.asCustomResult
-import com.kakapo.oakane.common.subscribe
+import com.kakapo.common.asCustomResult
+import com.kakapo.common.subscribe
 import com.kakapo.oakane.data.model.CategoryLimitParam
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository

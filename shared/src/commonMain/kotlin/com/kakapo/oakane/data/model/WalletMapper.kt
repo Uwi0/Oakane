@@ -1,6 +1,6 @@
 package com.kakapo.oakane.data.model
 
-import com.kakapo.oakane.common.asLong
+import com.kakapo.common.asLong
 import com.kakapo.database.model.WalletEntity
 import com.kakapo.oakane.model.wallet.WalletItemModel
 import com.kakapo.oakane.model.wallet.WalletModel

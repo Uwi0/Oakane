@@ -2,8 +2,8 @@ package com.kakapo.oakane.presentation.viewModel.reports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakapo.oakane.common.asCustomResult
-import com.kakapo.oakane.common.subscribe
+import com.kakapo.common.asCustomResult
+import com.kakapo.common.subscribe
 import com.kakapo.oakane.data.repository.base.ReportRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository

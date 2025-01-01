@@ -1,6 +1,6 @@
 package com.kakapo.oakane.data.model
 
-import com.kakapo.oakane.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatIDRWithCurrency
 import com.kakapo.database.model.ReportEntity
 import com.kakapo.oakane.model.report.ReportCsvModel
 

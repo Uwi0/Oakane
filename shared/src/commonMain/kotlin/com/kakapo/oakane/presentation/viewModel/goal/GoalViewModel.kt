@@ -2,7 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.goal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakapo.oakane.common.asDouble
+import com.kakapo.common.asDouble
 import com.kakapo.oakane.data.repository.base.GoalRepository
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState

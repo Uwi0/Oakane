@@ -1,6 +1,6 @@
 package com.kakapo.oakane.model.category
 
-import com.kakapo.oakane.common.toColorInt
+import com.kakapo.common.toColorInt
 import com.kakapo.oakane.model.transaction.TransactionType
 
 data class CategoryModel(

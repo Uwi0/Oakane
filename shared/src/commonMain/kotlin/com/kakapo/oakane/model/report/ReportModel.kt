@@ -1,6 +1,6 @@
 package com.kakapo.oakane.model.report
 
-import com.kakapo.oakane.common.toColorInt
+import com.kakapo.common.toColorInt
 import com.kakapo.oakane.model.category.CategoryIconName
 import kotlin.native.ObjCName
 
