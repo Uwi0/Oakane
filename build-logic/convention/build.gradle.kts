@@ -32,5 +32,9 @@ gradlePlugin {
             id = "com.kakapo.app.kotlinMultiplatform"
             implementationClass = "KotlinMultiPlatformPlugin"
         }
+        register("xcframework") {
+            id = "com.kakapo.app.xcframework"
+            implementationClass = "XCFrameworkPlugin"
+        }
     }
 }
