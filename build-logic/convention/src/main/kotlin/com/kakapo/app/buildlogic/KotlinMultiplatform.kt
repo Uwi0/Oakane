@@ -15,17 +15,9 @@ internal fun Project.configureKotlinMultiplatform(
         androidTarget()
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = path.substring(1)
-                .replace(":", "-")
-                .replaceFirstChar { it.uppercase() }
-        }
-    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     sourceSets.apply {
         commonMain.dependencies {

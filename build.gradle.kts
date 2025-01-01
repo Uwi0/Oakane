@@ -10,4 +10,5 @@ plugins {
     alias(libs.plugins.kmp.nativecoroutines) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.dependency.analysis) apply false
+    alias(libs.plugins.kotlinCocoapods) apply false
 }

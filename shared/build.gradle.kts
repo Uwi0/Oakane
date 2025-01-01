@@ -1,6 +1,5 @@
+
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -8,29 +7,26 @@ plugins {
     alias(libs.plugins.kmp.nativecoroutines)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.kakapo.kotlinMultiplatform)
-    alias(libs.plugins.kakapo.xcFramework)
+    alias(libs.plugins.kotlinCocoapods)
 }
 
+version = "1.0.0"
+
 kotlin {
-    val xcFramework = XCFramework("Oakane")
-
-    targets.withType<KotlinNativeTarget>().configureEach {
-        binaries.withType<Framework> {
-            baseName = "Oakane"
-
-            isStatic = !debuggable
-            linkerOpts.add("-lsqlite3")
-            freeCompilerArgs += if (debuggable) "-Xadd-light-debug=enable" else ""
-
-            export(projects.core.common)
-
-            xcFramework.add(this)
-        }
-    }
-
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
+    val xcf = XCFramework()
+    val iosTargets = listOf(iosX64(), iosArm64(), iosSimulatorArm64())
+
+    iosTargets.forEach {
+        it.binaries.framework {
+            baseName = "Shared"
+            export(projects.core.common)
+            xcf.add(this)
         }
     }
 
@@ -56,6 +52,7 @@ kotlin {
             implementation(libs.koin.android)
         }
         sourceSets.iosMain.dependencies {
+            implementation(projects.core.common)
         }
     }
 }
