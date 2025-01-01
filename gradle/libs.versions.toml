@@ -28,9 +28,6 @@ open-csv = "5.7.1"
 skie = "0.10.0"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.6"
-kotlinStdlib = "2.1.0"
-runner = "1.5.2"
-core = "1.5.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -72,9 +69,6 @@ sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", 
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analys" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
-androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
-androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 [plugins]
 appCash-sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
@@ -91,3 +85,4 @@ touchlab-skie = { id = "co.touchlab.skie", version.ref = "skie" }
 
 #plugin define by this project
 kakapo-kotlinMultiplatform = { id = "com.kakapo.app.kotlinMultiplatform", version = "unspecified" }
+kakapo-xcFramework = { id = "com.kakapo.app.xcframework", version = "unspecified" }
