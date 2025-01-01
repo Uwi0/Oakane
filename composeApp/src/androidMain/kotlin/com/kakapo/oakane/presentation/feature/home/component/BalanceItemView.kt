@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.kakapo.oakane.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatIDRWithCurrency
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
 

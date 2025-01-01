@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.oakane.common.utils.showToast
+import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.feature.transactions.component.SwipeToDeleteTransactionView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionBottomSheetView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionTopAppBarView

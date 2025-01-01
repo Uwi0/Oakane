@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.common.formatDateWith
+import com.kakapo.common.formatDateWith
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 import com.kakapo.oakane.presentation.viewModel.goal.GoalState
 

@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatIDRWithCurrency
 import com.kakapo.oakane.model.report.ReportModel
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel

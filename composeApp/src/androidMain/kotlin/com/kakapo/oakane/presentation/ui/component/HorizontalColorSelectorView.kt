@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
-import com.kakapo.oakane.common.toColorInt
+import com.kakapo.common.toColorInt
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 
 data class ColorSelector(

@@ -20,7 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.oakane.common.toDateWith
+import com.kakapo.common.toDateWith
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.model.transaction.asTransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
