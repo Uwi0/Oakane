@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.kmp.nativecoroutines)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.kakapo.kotlinMultiplatform)
-    alias(libs.plugins.kotlinCocoapods)
 }
 
 version = "1.0.0"
