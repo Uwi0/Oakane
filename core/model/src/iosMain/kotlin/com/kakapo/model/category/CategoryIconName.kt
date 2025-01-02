@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model.category
+package com.kakapo.model.category
 
 val parentCategories = categoryMap.keys.toList()
 
