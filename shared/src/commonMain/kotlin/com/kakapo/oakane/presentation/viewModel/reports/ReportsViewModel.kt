@@ -128,9 +128,9 @@ class ReportsViewModel(
         val onSuccess: (List<ReportCsvModel>) -> Unit = { reports ->
             emit(ReportsEffect.GenerateReport(reports))
         }
-        val month = _uiState.value.selectedMonth.monthNumber.toString()
+        val month = _uiState.value.selectedMonth.toNumberString()
         val walletId = _uiState.value.selectedWallet?.id
-        reportRepository.generateReportAllWallet(onMonth = month, walletId = walletId).fold(
+        reportRepository.generateReports(onMonth = month, walletId = walletId).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

@@ -17,6 +17,13 @@ enum class MonthReport(val monthNumber: Int, val title: String, val description:
     OCT(10, "Oct", "October"),
     NOV(11, "Nov", "November"),
     DEC(12, "Dec", "December");
+
+    fun toNumberString(): String {
+        return when(this.monthNumber) {
+            in 1 .. 9 -> "0${this.monthNumber}"
+            else -> this.monthNumber.toString()
+        }
+    }
 }
 
 fun currentMonth(): MonthReport {

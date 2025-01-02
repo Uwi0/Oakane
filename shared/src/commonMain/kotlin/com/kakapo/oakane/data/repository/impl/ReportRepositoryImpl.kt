@@ -1,5 +1,6 @@
 package com.kakapo.oakane.data.repository.impl
 
+import co.touchlab.kermit.Logger
 import com.kakapo.database.datasource.base.ReportLocalDatasource
 import com.kakapo.database.model.ReportEntity
 import com.kakapo.oakane.data.model.toReportCsvModel
@@ -10,10 +11,11 @@ class ReportRepositoryImpl(
     private val reportLocalDatasource: ReportLocalDatasource
 ): ReportRepository {
 
-    override suspend fun generateReportAllWallet(
+    override suspend fun generateReports(
         onMonth: String,
         walletId: Long?
     ): Result<List<ReportCsvModel>> {
+        Logger.d("generateReports $onMonth, $walletId")
         return reportLocalDatasource.generateReportAllWallet(onMonth = onMonth, walletId = walletId)
             .mapCatching { it.map(ReportEntity::toReportCsvModel) }
     }

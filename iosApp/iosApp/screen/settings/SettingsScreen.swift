@@ -46,7 +46,7 @@ struct SettingsScreen: View {
     
     @ViewBuilder func NavigationBar() -> some View {
         VStack {
-            NavigationTopAppbar(title: "Settings", navigateBack: {})
+            NavigationTopAppbar(title: "Settings", navigateBack: { navigation.navigateBack() })
             Divider()
         }
     }

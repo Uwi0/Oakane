@@ -76,8 +76,14 @@ struct ReportsScreen: View {
     private func generateReports(values: [ReportCsvModelKt]) {
         let reports = values.toReportCsvModels()
         let reportsCsv = generateCSV(from: reports)
+        let dateFormat = "dd-mm-yyyy-HH-mm-ss"
+        let formattedDate = DateUtilsKt.getCurrentDateWith(format: dateFormat)
         if let controller = viewController {
-            saveDocument(value: reportsCsv, fileName: "reports.csv", viewController: controller)
+            saveDocument(
+                value: reportsCsv,
+                fileName: "reports-\(formattedDate).csv",
+                viewController: controller
+            )
         }
     }
     
