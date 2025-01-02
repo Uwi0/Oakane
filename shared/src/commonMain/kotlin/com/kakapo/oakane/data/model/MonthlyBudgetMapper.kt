@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.model
 
 import com.kakapo.database.model.MonthlyBudgetEntity
-import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetModel
+import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
 
 data class MonthlyBudgetParam(
     val id: Long = 0,

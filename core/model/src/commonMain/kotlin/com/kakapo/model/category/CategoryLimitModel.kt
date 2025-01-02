@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model.category
+package com.kakapo.model.category
 
 import com.kakapo.common.toFormatIDRWithCurrency
 

@@ -2,8 +2,8 @@ package com.kakapo.oakane.data.model
 
 import com.kakapo.common.asLong
 import com.kakapo.database.model.WalletEntity
-import com.kakapo.oakane.model.wallet.WalletItemModel
-import com.kakapo.oakane.model.wallet.WalletModel
+import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletModel
 
 fun WalletEntity.toWalletModel(): WalletModel {
     return WalletModel(
@@ -17,7 +17,7 @@ fun WalletEntity.toWalletModel(): WalletModel {
     )
 }
 
-fun WalletEntity.toWalletItemModel(walletId: Long): WalletItemModel{
+fun WalletEntity.toWalletItemModel(walletId: Long): WalletItemModel {
     return WalletItemModel(
         id = id,
         name = name,

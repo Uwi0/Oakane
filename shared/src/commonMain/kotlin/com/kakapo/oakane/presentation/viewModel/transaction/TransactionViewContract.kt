@@ -1,6 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.transaction
 
-import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.model.transaction.TransactionModel
 import kotlin.native.ObjCName
 
 @ObjCName("TransactionStateKt")

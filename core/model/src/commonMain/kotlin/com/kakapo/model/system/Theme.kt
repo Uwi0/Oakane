@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model.system
+package com.kakapo.model.system
 
 enum class Theme {
     System, Light, Dark

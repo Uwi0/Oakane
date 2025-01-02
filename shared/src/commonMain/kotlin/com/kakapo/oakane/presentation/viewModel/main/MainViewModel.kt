@@ -2,8 +2,8 @@ package com.kakapo.oakane.presentation.viewModel.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.data.repository.base.SystemRepository
-import com.kakapo.oakane.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow

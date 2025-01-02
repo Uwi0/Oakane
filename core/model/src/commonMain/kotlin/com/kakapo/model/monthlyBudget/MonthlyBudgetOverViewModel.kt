@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model.monthlyBudget
+package com.kakapo.model.monthlyBudget
 
 data class MonthlyBudgetOverViewModel(
     val limit: Double = 5_000_000.0,

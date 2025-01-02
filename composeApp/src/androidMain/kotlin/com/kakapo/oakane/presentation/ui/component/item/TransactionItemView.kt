@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.asTextEllipsis
 import com.kakapo.common.toFormatIDR
-import com.kakapo.oakane.model.transaction.TransactionModel
-import com.kakapo.oakane.model.transaction.dummyValue
+import com.kakapo.model.transaction.TransactionModel
+import com.kakapo.model.transaction.dummyValue
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView

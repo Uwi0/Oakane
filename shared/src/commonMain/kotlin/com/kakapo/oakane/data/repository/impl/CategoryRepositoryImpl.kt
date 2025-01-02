@@ -2,10 +2,10 @@ package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.database.model.CategoryEntity
+import com.kakapo.model.category.CategoryModel
 import com.kakapo.oakane.data.model.toCategoryEntity
 import com.kakapo.oakane.data.model.toCategoryModel
 import com.kakapo.oakane.data.repository.base.CategoryRepository
-import com.kakapo.oakane.model.category.CategoryModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

@@ -1,10 +1,10 @@
 package com.kakapo.oakane.data.preference.datasource.utils
 
+import com.kakapo.model.system.Theme
+import com.kakapo.model.system.asTheme
 import com.kakapo.oakane.data.preference.constant.IntKey
 import com.kakapo.oakane.data.preference.constant.LongKey
 import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
-import com.kakapo.oakane.model.system.Theme
-import com.kakapo.oakane.model.system.asTheme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 @NativeCoroutines

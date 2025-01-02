@@ -2,10 +2,10 @@ package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.database.datasource.base.CategoryLimitLocalDatasource
 import com.kakapo.database.model.CategoryLimitEntity
+import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.oakane.data.model.CategoryLimitParam
 import com.kakapo.oakane.data.model.toCategoryLimitModel
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
-import com.kakapo.oakane.model.category.CategoryLimitModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Clock

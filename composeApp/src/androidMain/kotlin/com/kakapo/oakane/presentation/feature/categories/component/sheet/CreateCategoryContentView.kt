@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
@@ -18,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
@@ -104,7 +103,6 @@ private fun CategoryNameFieldView(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun SegmentTransactionTypeView(
     uiState: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit

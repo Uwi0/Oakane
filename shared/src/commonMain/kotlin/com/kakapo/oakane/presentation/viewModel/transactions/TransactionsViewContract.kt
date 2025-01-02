@@ -1,8 +1,8 @@
 package com.kakapo.oakane.presentation.viewModel.transactions
 
-import com.kakapo.oakane.model.category.CategoryModel
-import com.kakapo.oakane.model.transaction.TransactionModel
-import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.transaction.TransactionModel
+import com.kakapo.model.transaction.TransactionType
 import kotlin.native.ObjCName
 
 @ObjCName("TransactionsStateKt")

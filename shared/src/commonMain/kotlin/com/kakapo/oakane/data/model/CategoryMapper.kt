@@ -2,8 +2,8 @@ package com.kakapo.oakane.data.model
 
 import com.kakapo.common.asLong
 import com.kakapo.database.model.CategoryEntity
-import com.kakapo.oakane.model.category.CategoryModel
-import com.kakapo.oakane.model.transaction.asTransactionType
+import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.transaction.asTransactionType
 
 fun CategoryEntity.toCategoryModel() = CategoryModel(
     id = id,

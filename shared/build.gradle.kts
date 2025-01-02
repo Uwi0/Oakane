@@ -25,6 +25,7 @@ kotlin {
         it.binaries.framework {
             baseName = "Shared"
             export(projects.core.common)
+            export(projects.core.model)
             xcf.add(this)
         }
     }

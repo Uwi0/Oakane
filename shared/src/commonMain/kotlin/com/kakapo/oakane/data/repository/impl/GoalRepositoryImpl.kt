@@ -2,10 +2,10 @@ package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.database.datasource.base.GoalLocalDatasource
 import com.kakapo.database.model.GoalEntity
+import com.kakapo.model.GoalModel
 import com.kakapo.oakane.data.model.toGoalEntity
 import com.kakapo.oakane.data.model.toGoalModel
 import com.kakapo.oakane.data.repository.base.GoalRepository
-import com.kakapo.oakane.model.GoalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.repository.base
 
-import com.kakapo.oakane.model.wallet.WalletItemModel
-import com.kakapo.oakane.model.wallet.WalletModel
+import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 

@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model.monthlyBudget
+package com.kakapo.model.monthlyBudget
 
 data class MonthlyBudgetModel(
     val id: Long,

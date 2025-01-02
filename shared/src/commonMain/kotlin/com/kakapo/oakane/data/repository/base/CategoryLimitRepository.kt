@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.repository.base
 
+import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.oakane.data.model.CategoryLimitParam
-import com.kakapo.oakane.model.category.CategoryLimitModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 

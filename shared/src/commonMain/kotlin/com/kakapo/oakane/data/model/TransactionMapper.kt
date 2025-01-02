@@ -2,11 +2,11 @@ package com.kakapo.oakane.data.model
 
 import com.kakapo.database.model.TransactionCategoryEntity
 import com.kakapo.database.model.TransactionEntity
-import com.kakapo.oakane.model.report.ReportModel
-import com.kakapo.oakane.model.category.CategoryModel
-import com.kakapo.oakane.model.transaction.TransactionModel
-import com.kakapo.oakane.model.transaction.TransactionType
-import com.kakapo.oakane.model.transaction.asTransactionType
+import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.report.ReportModel
+import com.kakapo.model.transaction.TransactionModel
+import com.kakapo.model.transaction.TransactionType
+import com.kakapo.model.transaction.asTransactionType
 
 data class TransactionParam(
     val id: Long = 0,

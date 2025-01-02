@@ -1,6 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.goals
 
-import com.kakapo.oakane.model.GoalModel
+import com.kakapo.model.GoalModel
 import kotlin.native.ObjCName
 
 @ObjCName("GoalsStateKt")

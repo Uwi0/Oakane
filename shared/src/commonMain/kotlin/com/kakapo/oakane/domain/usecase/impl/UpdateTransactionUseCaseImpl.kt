@@ -1,13 +1,13 @@
 package com.kakapo.oakane.domain.usecase.impl
 
 import co.touchlab.kermit.Logger
+import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.base.UpdateTransactionUseCase
-import com.kakapo.oakane.model.category.CategoryLimitModel
 
 class UpdateTransactionUseCaseImpl(
     private val transactionRepository: TransactionRepository,

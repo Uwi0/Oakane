@@ -1,9 +1,9 @@
 package com.kakapo.oakane.presentation.viewModel.categories
 
 import com.kakapo.common.toColorInt
-import com.kakapo.oakane.model.category.CategoryIconName
-import com.kakapo.oakane.model.category.CategoryModel
-import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.model.category.CategoryIconName
+import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import kotlin.native.ObjCName
 

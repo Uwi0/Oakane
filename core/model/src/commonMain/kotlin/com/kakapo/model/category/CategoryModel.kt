@@ -1,7 +1,7 @@
-package com.kakapo.oakane.model.category
+package com.kakapo.model.category
 
 import com.kakapo.common.toColorInt
-import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.model.transaction.TransactionType
 
 data class CategoryModel(
     val id: Long = 0,

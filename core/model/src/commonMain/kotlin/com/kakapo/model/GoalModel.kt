@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model
+package com.kakapo.model
 
 data class GoalModel(
     val id: Long = 0,

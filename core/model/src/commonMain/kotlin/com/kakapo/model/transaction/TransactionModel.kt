@@ -1,7 +1,7 @@
-package com.kakapo.oakane.model.transaction
+package com.kakapo.model.transaction
 
 import com.kakapo.common.formatDateWith
-import com.kakapo.oakane.model.category.CategoryModel
+import com.kakapo.model.category.CategoryModel
 
 data class TransactionModel(
     val id: Long = 0,

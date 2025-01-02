@@ -1,6 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.main
 
-import com.kakapo.oakane.model.system.Theme
+import com.kakapo.model.system.Theme
 
 data class MainState(
     val theme: Theme = Theme.System

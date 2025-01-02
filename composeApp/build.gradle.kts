@@ -17,11 +17,13 @@ kotlin {
     sourceSets {
 
         androidMain.dependencies {
+            implementation(projects.core.common)
+            implementation(projects.core.model)
+
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.kermit)
             implementation(libs.open.csv)
-            implementation(projects.core.common)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

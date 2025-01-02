@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model.report
+package com.kakapo.model.report
 
 import kotlin.native.ObjCName
 

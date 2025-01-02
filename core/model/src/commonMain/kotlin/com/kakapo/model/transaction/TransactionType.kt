@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model.transaction
+package com.kakapo.model.transaction
 
 enum class TransactionType {
     Income,

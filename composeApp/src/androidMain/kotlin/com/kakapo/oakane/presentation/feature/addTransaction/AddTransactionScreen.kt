@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.toDateWith
-import com.kakapo.oakane.model.transaction.TransactionType
-import com.kakapo.oakane.model.transaction.asTransactionType
+import com.kakapo.model.transaction.TransactionType
+import com.kakapo.model.transaction.asTransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.menu.CustomDropdownMenu
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField

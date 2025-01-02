@@ -1,6 +1,6 @@
 package com.kakapo.oakane.domain.usecase.base
 
-import com.kakapo.oakane.model.transaction.TransactionModel
+import com.kakapo.model.transaction.TransactionModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface DeleteTransactionUseCase {

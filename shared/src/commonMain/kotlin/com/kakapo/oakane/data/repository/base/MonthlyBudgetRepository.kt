@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.repository.base
 
+import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
-import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface MonthlyBudgetRepository {

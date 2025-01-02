@@ -1,6 +1,6 @@
 package com.kakapo.oakane.data.repository.base
 
-import com.kakapo.oakane.model.category.CategoryModel
+import com.kakapo.model.category.CategoryModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 

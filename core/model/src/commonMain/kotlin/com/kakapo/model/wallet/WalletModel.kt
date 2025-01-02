@@ -1,6 +1,6 @@
-package com.kakapo.oakane.model.wallet
+package com.kakapo.model.wallet
 
-import com.kakapo.oakane.model.category.CategoryIconName
+import com.kakapo.model.category.CategoryIconName
 
 data class WalletModel(
     val id: Long = 0,

@@ -3,12 +3,12 @@ package com.kakapo.oakane.presentation.viewModel.addTransaction
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.oakane.domain.usecase.base.UpdateTransactionUseCase
-import com.kakapo.oakane.model.transaction.TransactionType
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow

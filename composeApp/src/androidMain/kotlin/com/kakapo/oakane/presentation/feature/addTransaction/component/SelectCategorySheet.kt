@@ -23,8 +23,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.model.category.CategoryModel
-import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.animation.slidingContentAnimation
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView

@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.model
 
 import com.kakapo.database.model.CategoryLimitEntity
-import com.kakapo.oakane.model.category.CategoryLimitModel
+import com.kakapo.model.category.CategoryLimitModel
 
 data class CategoryLimitParam(
     val id: Long = 0,

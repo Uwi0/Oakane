@@ -1,6 +1,6 @@
 package com.kakapo.oakane.data.repository.base
 
-import com.kakapo.oakane.model.system.Theme
+import com.kakapo.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface SystemRepository {

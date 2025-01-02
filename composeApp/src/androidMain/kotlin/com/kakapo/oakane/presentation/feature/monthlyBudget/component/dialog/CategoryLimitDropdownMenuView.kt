@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.oakane.model.category.CategoryModel
+import com.kakapo.model.category.CategoryModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.ui.model.asIcon
 

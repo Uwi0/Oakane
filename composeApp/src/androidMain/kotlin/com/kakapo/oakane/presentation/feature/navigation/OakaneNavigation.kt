@@ -3,7 +3,7 @@ package com.kakapo.oakane.presentation.feature.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.kakapo.oakane.model.system.Theme
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.feature.addGoal.navigation.addGoalScreen
 import com.kakapo.oakane.presentation.feature.addGoal.navigation.navigateToAddGoal
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTransactionScreen

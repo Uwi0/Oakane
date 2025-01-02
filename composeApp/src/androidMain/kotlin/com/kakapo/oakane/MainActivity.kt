@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
-import com.kakapo.oakane.model.system.Theme
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.navigation.OakaneNavHost
 import com.kakapo.oakane.presentation.navigation.DrawerMenuNavigation

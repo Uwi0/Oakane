@@ -1,4 +1,4 @@
-package com.kakapo.oakane.model.category
+package com.kakapo.model.category
 
 enum class CategoryIconName(val displayName: String, val parentCategory: ParentCategory) {
 

@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.model
 
 import com.kakapo.database.model.GoalEntity
-import com.kakapo.oakane.model.GoalModel
+import com.kakapo.model.GoalModel
 
 fun GoalModel.toGoalEntity(): GoalEntity {
     return GoalEntity(

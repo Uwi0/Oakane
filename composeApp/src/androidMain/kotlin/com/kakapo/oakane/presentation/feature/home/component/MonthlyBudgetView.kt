@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.toFormatIDR
 import com.kakapo.common.toFormatIDRWithCurrency
-import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
-import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedIconCircleButton
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView

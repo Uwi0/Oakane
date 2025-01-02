@@ -1,6 +1,6 @@
-package com.kakapo.oakane.model.wallet
+package com.kakapo.model.wallet
 
-import com.kakapo.oakane.model.category.CategoryIconName
+import com.kakapo.model.category.CategoryIconName
 
 data class WalletItemModel(
     val id: Long = DEFAULT_ID,
@@ -14,7 +14,8 @@ data class WalletItemModel(
     val expense: Double = 0.0,
     val isSelected: Boolean = false
 ){
-    val iconName: CategoryIconName get() {
+    val iconName: CategoryIconName
+        get() {
         return if (isDefault) CategoryIconName.fromString(icon)
         else CategoryIconName.SALARY
     }

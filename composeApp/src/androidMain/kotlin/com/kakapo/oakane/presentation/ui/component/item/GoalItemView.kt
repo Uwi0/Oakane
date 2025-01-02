@@ -16,11 +16,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.R
 import com.kakapo.common.formatDateWith
-import com.kakapo.common.toFormatIDRWithCurrency
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.oakane.model.GoalModel
+import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.model.GoalModel
+import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.RowWrapper

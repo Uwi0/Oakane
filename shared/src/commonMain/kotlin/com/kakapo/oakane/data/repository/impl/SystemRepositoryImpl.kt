@@ -1,10 +1,10 @@
 package com.kakapo.oakane.data.repository.impl
 
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.data.preference.constant.IntKey
 import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
 import com.kakapo.oakane.data.preference.datasource.utils.getThemeMode
 import com.kakapo.oakane.data.repository.base.SystemRepository
-import com.kakapo.oakane.model.system.Theme
 
 class SystemRepositoryImpl(
     private val preferenceDatasource: PreferenceDatasource

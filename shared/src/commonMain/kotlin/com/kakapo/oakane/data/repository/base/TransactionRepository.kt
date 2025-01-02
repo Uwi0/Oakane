@@ -1,8 +1,8 @@
 package com.kakapo.oakane.data.repository.base
 
+import com.kakapo.model.report.ReportModel
+import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.oakane.data.model.TransactionParam
-import com.kakapo.oakane.model.report.ReportModel
-import com.kakapo.oakane.model.transaction.TransactionModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 
