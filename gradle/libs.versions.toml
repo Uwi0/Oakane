@@ -1,5 +1,5 @@
 [versions]
-agp = "8.2.2"
+agp = "8.8.0-rc02"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -11,16 +11,17 @@ androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.6"
 androidx-navigation = "2.8.5"
 androidx-test-junit = "1.2.1"
-coil = "2.6.0"
+coil = "2.7.0"
 colorpicker = "1.1.2"
 compose-plugin = "1.7.0"
 datastore = "1.1.1"
+dependency-analys = "2.6.1"
 junit = "4.13.2"
-kermit = "2.0.4"
+kermit = "2.0.5"
 kmp-nativecoroutines = "1.0.0-ALPHA-38"
 koin-bom = "4.0.0"
 kotlin = "2.1.0"
-kotlinx-datetime = "0.6.1"
+kotlinxdatetime = "0.6.1"
 kotlinx-serialization = "1.8.0-RC"
 ksp = "2.1.0-1.0.29"
 open-csv = "5.7.1"
@@ -57,21 +58,32 @@ koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-compose-viewmodel-navigation" }
-kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxdatetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 open-csv = { group = "com.opencsv", name = "opencsv", version.ref = "open-csv" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 
+#Dependencies of the included build logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analys" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
 appCash-sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analys" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmp-nativecoroutines"}
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 touchlab-skie = { id = "co.touchlab.skie", version.ref = "skie" }
+kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+
+#plugin define by this project
+kakapo-kotlinMultiplatform = { id = "com.kakapo.app.kotlinMultiplatform", version = "unspecified" }
+kakapo-xcFramework = { id = "com.kakapo.app.xcframework", version = "unspecified" }

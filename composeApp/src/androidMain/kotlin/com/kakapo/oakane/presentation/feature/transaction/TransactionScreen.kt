@@ -28,8 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.R
-import com.kakapo.oakane.common.toFormatIDRWithCurrency
-import com.kakapo.oakane.common.utils.showToast
+import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.showToast
 import com.kakapo.oakane.model.transaction.TransactionModel
 import com.kakapo.oakane.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton

@@ -1,6 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.addTransaction
 
-import com.kakapo.oakane.common.asDouble
+import com.kakapo.common.asDouble
 import com.kakapo.oakane.data.model.TransactionParam
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionModel

@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Brightness6
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.ImportExport
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -27,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.oakane.common.getCurrentDateWith
-import com.kakapo.oakane.common.utils.showToast
+import com.kakapo.common.getCurrentDateWith
+import com.kakapo.common.showToast
 import com.kakapo.oakane.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsView
@@ -163,11 +162,11 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
                     .padding(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                ThemeButtonView(
-                    theme = uiState.themeMode,
-                    onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
-                )
-                HorizontalDivider()
+//                ThemeButtonView(
+//                    theme = uiState.themeMode,
+//                    onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
+//                )
+//                HorizontalDivider()
                 ButtonSettingsView(
                     title = "Back Up Data",
                     icon = Icons.Outlined.Backup,

@@ -21,6 +21,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.kermit)
             implementation(libs.open.csv)
+            implementation(projects.core.common)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

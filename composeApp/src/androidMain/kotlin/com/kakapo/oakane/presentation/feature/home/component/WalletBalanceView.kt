@@ -21,8 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
-import com.kakapo.oakane.common.toFormatIDR
-import com.kakapo.oakane.common.utils.getSavedImageUri
+import com.kakapo.common.toFormatIDR
+import com.kakapo.common.getSavedImageUri
 import com.kakapo.oakane.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage

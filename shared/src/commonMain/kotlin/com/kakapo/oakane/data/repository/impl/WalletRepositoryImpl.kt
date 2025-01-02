@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.data.database.datasource.base.WalletLocalDatasource
-import com.kakapo.oakane.data.database.model.WalletEntity
+import com.kakapo.database.datasource.base.WalletLocalDatasource
+import com.kakapo.database.model.WalletEntity
 import com.kakapo.oakane.data.model.toWalletEntity
 import com.kakapo.oakane.data.model.toWalletItemModel
 import com.kakapo.oakane.data.model.toWalletModel

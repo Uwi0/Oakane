@@ -1,5 +1,7 @@
 package com.kakapo.oakane.model.category
 
+import com.kakapo.common.toFormatIDRWithCurrency
+
 data class CategoryLimitModel(
     val id: Long,
     val category: CategoryModel,
@@ -12,6 +14,8 @@ data class CategoryLimitModel(
     val formattedColor: Int get() = category.formattedColor
     val iconName: CategoryIconName get() = category.iconName
     val progress: Float get() = if(spent == 0.0) 0F else spent.toFloat() / limit.toFloat()
+    val formattedLimit: String get() = limit.toFormatIDRWithCurrency()
+    val formattedSpent: String get() = spent.toFormatIDRWithCurrency()
 
     companion object {
         val EMPTY = CategoryLimitModel(1, category = CategoryModel(), 100_000.0, 50_000.0)

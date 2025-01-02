@@ -1,6 +1,6 @@
 package com.kakapo.oakane.domain.usecase.base
 
-import com.kakapo.oakane.common.startDateAndEndDateOfMonth
+import com.kakapo.common.startDateAndEndDateOfMonth
 import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 

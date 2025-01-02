@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.data.database.datasource.base.CategoryLimitLocalDatasource
-import com.kakapo.oakane.data.database.model.CategoryLimitEntity
+import com.kakapo.database.datasource.base.CategoryLimitLocalDatasource
+import com.kakapo.database.model.CategoryLimitEntity
 import com.kakapo.oakane.data.model.CategoryLimitParam
 import com.kakapo.oakane.data.model.toCategoryLimitModel
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository

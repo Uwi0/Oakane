@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.R
-import com.kakapo.oakane.common.utils.getSavedImageUri
-import com.kakapo.oakane.common.utils.saveImageUri
-import com.kakapo.oakane.common.utils.showToast
+import com.kakapo.common.getSavedImageUri
+import com.kakapo.common.saveImageUri
+import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomImagePicker
 
 @Composable

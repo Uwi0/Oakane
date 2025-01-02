@@ -1,6 +1,6 @@
 package com.kakapo.oakane.domain.usecase.impl
 
-import com.kakapo.oakane.common.startDateAndEndDateOfMonth
+import com.kakapo.common.startDateAndEndDateOfMonth
 import com.kakapo.oakane.data.model.CategoryLimitParam
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository

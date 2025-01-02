@@ -1,7 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 
-import com.kakapo.oakane.common.asDouble
-import com.kakapo.oakane.common.getEndOfMonthUnixTime
+import com.kakapo.common.asDouble
+import com.kakapo.common.getEndOfMonthUnixTime
 import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import com.kakapo.oakane.model.category.CategoryLimitModel
 import com.kakapo.oakane.model.category.CategoryModel

@@ -1,6 +1,6 @@
 package com.kakapo.oakane.model.transaction
 
-import com.kakapo.oakane.common.formatDateWith
+import com.kakapo.common.formatDateWith
 import com.kakapo.oakane.model.category.CategoryModel
 
 data class TransactionModel(

@@ -1,7 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.goal
 
-import com.kakapo.oakane.common.daysBetween
-import com.kakapo.oakane.common.toFormatIDRWithCurrency
+import com.kakapo.common.daysBetween
+import com.kakapo.common.toFormatIDRWithCurrency
 import com.kakapo.oakane.model.GoalModel
 import kotlin.native.ObjCName
 

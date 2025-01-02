@@ -1,7 +1,7 @@
 package com.kakapo.oakane.data.repository.impl
 
-import com.kakapo.oakane.data.database.datasource.base.CategoryLocalDatasource
-import com.kakapo.oakane.data.database.model.CategoryEntity
+import com.kakapo.database.datasource.base.CategoryLocalDatasource
+import com.kakapo.database.model.CategoryEntity
 import com.kakapo.oakane.data.model.toCategoryEntity
 import com.kakapo.oakane.data.model.toCategoryModel
 import com.kakapo.oakane.data.repository.base.CategoryRepository

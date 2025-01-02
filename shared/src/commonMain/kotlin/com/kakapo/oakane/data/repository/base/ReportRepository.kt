@@ -5,5 +5,5 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface ReportRepository {
     @NativeCoroutines
-    suspend fun generateReportAllWallet(onMonth: String, walletId: Long?): Result<List<ReportCsvModel>>
+    suspend fun generateReports(onMonth: String, walletId: Long?): Result<List<ReportCsvModel>>
 }

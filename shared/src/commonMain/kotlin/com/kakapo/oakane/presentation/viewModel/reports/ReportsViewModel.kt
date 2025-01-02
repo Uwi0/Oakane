@@ -2,8 +2,8 @@ package com.kakapo.oakane.presentation.viewModel.reports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakapo.oakane.common.asCustomResult
-import com.kakapo.oakane.common.subscribe
+import com.kakapo.common.asCustomResult
+import com.kakapo.common.subscribe
 import com.kakapo.oakane.data.repository.base.ReportRepository
 import com.kakapo.oakane.data.repository.base.TransactionRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
@@ -128,9 +128,9 @@ class ReportsViewModel(
         val onSuccess: (List<ReportCsvModel>) -> Unit = { reports ->
             emit(ReportsEffect.GenerateReport(reports))
         }
-        val month = _uiState.value.selectedMonth.monthNumber.toString()
+        val month = _uiState.value.selectedMonth.toNumberString()
         val walletId = _uiState.value.selectedWallet?.id
-        reportRepository.generateReportAllWallet(onMonth = month, walletId = walletId).fold(
+        reportRepository.generateReports(onMonth = month, walletId = walletId).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

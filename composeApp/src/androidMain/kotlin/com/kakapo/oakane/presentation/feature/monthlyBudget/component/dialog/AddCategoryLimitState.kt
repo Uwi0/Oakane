@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.kakapo.oakane.common.asDouble
+import com.kakapo.common.asDouble
 import com.kakapo.oakane.model.category.CategoryLimitModel
 import com.kakapo.oakane.model.category.CategoryModel
 import kotlinx.coroutines.delay

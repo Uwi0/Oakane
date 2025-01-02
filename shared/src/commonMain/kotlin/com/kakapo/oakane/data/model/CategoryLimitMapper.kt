@@ -1,6 +1,6 @@
 package com.kakapo.oakane.data.model
 
-import com.kakapo.oakane.data.database.model.CategoryLimitEntity
+import com.kakapo.database.model.CategoryLimitEntity
 import com.kakapo.oakane.model.category.CategoryLimitModel
 
 data class CategoryLimitParam(

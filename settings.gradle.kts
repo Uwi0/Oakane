@@ -2,6 +2,7 @@ rootProject.name = "Oakane"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             mavenContent {
@@ -30,3 +31,6 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 include(":shared")
+include(":core:database")
+include(":core:model")
+include(":core:common")

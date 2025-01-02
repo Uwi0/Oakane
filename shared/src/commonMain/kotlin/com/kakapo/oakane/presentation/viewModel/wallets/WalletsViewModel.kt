@@ -2,8 +2,8 @@ package com.kakapo.oakane.presentation.viewModel.wallets
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakapo.oakane.common.asCustomResult
-import com.kakapo.oakane.common.subscribe
+import com.kakapo.common.asCustomResult
+import com.kakapo.common.subscribe
 import com.kakapo.oakane.data.repository.base.CategoryRepository
 import com.kakapo.oakane.data.repository.base.WalletRepository
 import com.kakapo.oakane.domain.usecase.selectedWalletUseCase

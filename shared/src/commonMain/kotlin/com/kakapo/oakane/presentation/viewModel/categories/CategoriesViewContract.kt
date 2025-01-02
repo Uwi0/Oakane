@@ -1,6 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.categories
 
-import com.kakapo.oakane.common.toColorInt
+import com.kakapo.common.toColorInt
 import com.kakapo.oakane.model.category.CategoryIconName
 import com.kakapo.oakane.model.category.CategoryModel
 import com.kakapo.oakane.model.transaction.TransactionType

@@ -20,8 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.oakane.common.getCurrentDateWith
-import com.kakapo.oakane.common.utils.showToast
+import co.touchlab.kermit.Logger
+import com.kakapo.common.getCurrentDateWith
+import com.kakapo.common.showToast
 import com.kakapo.oakane.domain.usecase.toCsvUseCase
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
@@ -55,6 +56,7 @@ internal fun ReportsRoute(
                 is ReportsEffect.ShowError -> context.showToast(message = effect.message)
                 is ReportsEffect.GenerateReport -> {
                     val fileName = uiState.toReportName()
+                    Logger.d("reports ${effect.reports}")
                     val fileReport = effect.reports.toCsvUseCase(context, fileName).await()
                     fileReport?.let {
                         saveToDownloads(context, it)

@@ -1,46 +1,47 @@
+
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.appCash.sqlDelight)
     alias(libs.plugins.touchlab.skie)
     alias(libs.plugins.kmp.nativecoroutines)
     alias(libs.plugins.devtools.ksp)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kakapo.kotlinMultiplatform)
+    alias(libs.plugins.kotlinCocoapods)
 }
+
+version = "1.0.0"
 
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            export(libs.androidx.lifecycle.viewmodel)
+    val xcf = XCFramework()
+    val iosTargets = listOf(iosX64(), iosArm64(), iosSimulatorArm64())
+
+    iosTargets.forEach {
+        it.binaries.framework {
             baseName = "Shared"
+            export(projects.core.common)
+            xcf.add(this)
         }
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.sqldelight.coroutines)
-
             api(libs.androidx.lifecycle.viewmodel)
 
+            api(projects.core.database)
+            api(projects.core.model)
+            api(projects.core.common)
+
             api(project.dependencies.platform(libs.koin.bom))
-            api(libs.koin.core)
 
             implementation(libs.datastore)
             implementation(libs.datastore.preferences)
-            implementation(libs.kotlinx.serialization)
 
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
@@ -48,31 +49,10 @@ kotlin {
             implementation(libs.kermit)
         }
         sourceSets.androidMain.dependencies {
-            implementation(libs.sqldelight.android.driver)
             implementation(libs.koin.android)
         }
         sourceSets.iosMain.dependencies {
-            implementation(libs.sqldelight.navtive.driver)
-        }
-    }
-}
-
-android {
-    namespace = "com.kakapo.oakane.shared"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-}
-
-sqldelight {
-    databases {
-        create("Database") {
-            packageName.set("com.kakapo")
+            implementation(projects.core.common)
         }
     }
 }
