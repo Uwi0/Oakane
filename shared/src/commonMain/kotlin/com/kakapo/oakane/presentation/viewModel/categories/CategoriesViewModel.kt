@@ -3,7 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.categories
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.kakapo.oakane.data.repository.base.CategoryRepository
+import com.kakapo.data.repository.base.CategoryRepository
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow

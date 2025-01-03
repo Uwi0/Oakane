@@ -1,9 +1,9 @@
 package com.kakapo.oakane.domain.usecase.impl
 
 import com.kakapo.common.startDateAndEndDateOfMonth
-import com.kakapo.oakane.data.model.CategoryLimitParam
-import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
-import com.kakapo.oakane.data.repository.base.MonthlyBudgetRepository
+import com.kakapo.data.model.CategoryLimitParam
+import com.kakapo.data.repository.base.CategoryLimitRepository
+import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.oakane.domain.usecase.base.ValidateCategoryLimitUseCase
 
 class ValidateCategoryLimitUseCaseImpl(

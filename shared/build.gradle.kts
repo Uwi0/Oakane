@@ -36,8 +36,9 @@ kotlin {
 
             api(projects.core.model)
             api(projects.core.common)
-            api(projects.core.database)
-            api(projects.core.preference)
+            implementation(projects.core.database)
+            implementation(projects.core.preference)
+            implementation(projects.core.data)
 
             api(project.dependencies.platform(libs.koin.bom))
 

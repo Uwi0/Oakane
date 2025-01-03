@@ -3,7 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.transaction
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.kakapo.oakane.data.repository.base.TransactionRepository
+import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.oakane.domain.usecase.base.DeleteTransactionUseCase
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState

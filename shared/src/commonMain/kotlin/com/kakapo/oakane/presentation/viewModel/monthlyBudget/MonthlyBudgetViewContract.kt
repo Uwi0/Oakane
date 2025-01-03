@@ -2,9 +2,9 @@ package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 
 import com.kakapo.common.asDouble
 import com.kakapo.common.getEndOfMonthUnixTime
+import com.kakapo.data.model.MonthlyBudgetParam
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.category.CategoryModel
-import com.kakapo.oakane.data.model.MonthlyBudgetParam
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
 

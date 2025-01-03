@@ -1,6 +1,6 @@
 package com.kakapo.oakane.domain.usecase.base
 
-import com.kakapo.oakane.data.model.CategoryLimitParam
+import com.kakapo.data.model.CategoryLimitParam
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface ValidateCategoryLimitUseCase {

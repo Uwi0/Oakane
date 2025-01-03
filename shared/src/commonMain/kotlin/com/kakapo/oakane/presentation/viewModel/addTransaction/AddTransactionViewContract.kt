@@ -4,7 +4,7 @@ import com.kakapo.common.asDouble
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
-import com.kakapo.oakane.data.model.TransactionParam
+import com.kakapo.data.model.TransactionParam
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
 
