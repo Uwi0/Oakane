@@ -1,4 +1,4 @@
-package com.kakapo.oakane.domain.usecase
+package com.kakapo.domain.usecase
 
 import com.kakapo.model.wallet.WalletItemModel
 

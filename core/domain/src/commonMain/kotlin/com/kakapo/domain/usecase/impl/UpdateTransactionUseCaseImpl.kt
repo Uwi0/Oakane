@@ -1,13 +1,12 @@
-package com.kakapo.oakane.domain.usecase.impl
+package com.kakapo.domain.usecase.impl
 
-import co.touchlab.kermit.Logger
 import com.kakapo.data.model.TransactionParam
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
+import com.kakapo.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.model.category.CategoryLimitModel
-import com.kakapo.oakane.domain.usecase.base.UpdateTransactionUseCase
 
 class UpdateTransactionUseCaseImpl(
     private val transactionRepository: TransactionRepository,
@@ -31,7 +30,6 @@ class UpdateTransactionUseCaseImpl(
     private suspend fun updateWallet(transaction: TransactionParam, spentAmountBefore: Double) {
         val balanceBefore = if (transaction.type == 0L) -spentAmountBefore else spentAmountBefore
         val balanceAfter = if (transaction.type == 0L) transaction.amount else -transaction.amount
-        Logger.d("wallet_id: ${transaction.walletId}")
         walletRepository.update(balanceBefore, transaction.walletId).getOrNull()
         walletRepository.update(balanceAfter, transaction.walletId).getOrNull()
     }

@@ -1,9 +1,9 @@
-package com.kakapo.oakane.domain.usecase.impl
+package com.kakapo.domain.usecase.impl
 
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.TransactionRepository
+import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
-import com.kakapo.oakane.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 

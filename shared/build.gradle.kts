@@ -39,6 +39,7 @@ kotlin {
             implementation(projects.core.database)
             implementation(projects.core.preference)
             implementation(projects.core.data)
+            implementation(projects.core.domain)
 
             api(project.dependencies.platform(libs.koin.bom))
 
