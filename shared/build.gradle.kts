@@ -34,17 +34,18 @@ kotlin {
         commonMain.dependencies {
             api(libs.androidx.lifecycle.viewmodel)
 
-            api(projects.core.database)
             api(projects.core.model)
             api(projects.core.common)
+            api(projects.core.database)
+            api(projects.core.preference)
 
             api(project.dependencies.platform(libs.koin.bom))
 
-            implementation(libs.datastore)
-            implementation(libs.datastore.preferences)
-
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+
+            implementation(libs.datastore)
+            implementation(libs.datastore.preferences)
 
             implementation(libs.kermit)
         }

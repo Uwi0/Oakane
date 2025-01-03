@@ -1,10 +1,10 @@
 package com.kakapo.oakane.data.repository.impl
 
 import com.kakapo.model.system.Theme
-import com.kakapo.oakane.data.preference.constant.IntKey
-import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
-import com.kakapo.oakane.data.preference.datasource.utils.getThemeMode
+import com.kakapo.model.system.asTheme
 import com.kakapo.oakane.data.repository.base.SystemRepository
+import com.kakapo.preference.constant.IntKey
+import com.kakapo.preference.datasource.base.PreferenceDatasource
 
 class SystemRepositoryImpl(
     private val preferenceDatasource: PreferenceDatasource
@@ -18,7 +18,8 @@ class SystemRepositoryImpl(
 
     override suspend fun loadSavedTheme(): Result<Theme> {
         return runCatching {
-            preferenceDatasource.getThemeMode()
+            val savedTheme = preferenceDatasource.getIntValue(IntKey.THEME_MODE)
+            savedTheme.asTheme()
         }
     }
 }

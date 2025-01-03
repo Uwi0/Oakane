@@ -14,8 +14,6 @@ import com.kakapo.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.ReportLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.TransactionLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.WalletLocalDatasourceImpl
-import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
-import com.kakapo.oakane.data.preference.datasource.impl.PreferenceDatasourceImpl
 import com.kakapo.oakane.data.repository.base.BackupRepository
 import com.kakapo.oakane.data.repository.base.CategoryLimitRepository
 import com.kakapo.oakane.data.repository.base.CategoryRepository
@@ -57,6 +55,8 @@ import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
+import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

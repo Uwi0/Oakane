@@ -7,10 +7,10 @@ import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.data.model.toWalletEntity
 import com.kakapo.oakane.data.model.toWalletItemModel
 import com.kakapo.oakane.data.model.toWalletModel
-import com.kakapo.oakane.data.preference.constant.LongKey
-import com.kakapo.oakane.data.preference.datasource.base.PreferenceDatasource
-import com.kakapo.oakane.data.preference.datasource.utils.getWalletId
 import com.kakapo.oakane.data.repository.base.WalletRepository
+import com.kakapo.preference.constant.LongKey
+import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.utils.getWalletId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Clock

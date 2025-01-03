@@ -132,7 +132,7 @@ private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit
                 item {
                     BudgetContentView(item = uiState.monthlyOverView)
                 }
-                items(uiState.reports) { report ->
+                items(uiState.reports, key = { it.id }) { report ->
                     ReportsItemView(report)
                 }
             }
