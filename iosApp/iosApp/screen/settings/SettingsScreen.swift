@@ -5,6 +5,7 @@ struct SettingsScreen: View {
     
     @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel: SettingsViewModel = SettingsViewModel()
+    @AppStorage("isDarkMode") private var darkAppearance: Bool = false
     @State private var viewController: UIViewController?
     @State private var isPresented: Bool = false
     
@@ -12,6 +13,7 @@ struct SettingsScreen: View {
         VStack {
             NavigationBar()
             VStack {
+                Toggle("Dark Appearance", isOn: $darkAppearance)
                 Divider()
                 ButtonSettingsView(
                     title: "Back Up",
@@ -44,7 +46,7 @@ struct SettingsScreen: View {
         )
     }
     
-    @ViewBuilder func NavigationBar() -> some View {
+    @ViewBuilder private func NavigationBar() -> some View {
         VStack {
             NavigationTopAppbar(title: "Settings", navigateBack: { navigation.navigateBack() })
             Divider()
@@ -54,7 +56,7 @@ struct SettingsScreen: View {
     private func observe(effect: SettingsEffect?) {
         if let safeEffect = effect {
             switch onEnum(of: safeEffect) {
-            case .confirm(let effect):
+            case .confirm(_):
                 print("clicked")
             case .generateBackupFile(let effect):
                 saveBackup(json: effect.json)
