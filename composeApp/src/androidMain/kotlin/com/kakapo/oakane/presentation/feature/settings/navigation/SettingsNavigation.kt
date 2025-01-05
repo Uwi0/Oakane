@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.kakapo.oakane.model.system.Theme
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.feature.settings.SettingsRoute
 
 const val SETTINGS_ROUTE = "settings"

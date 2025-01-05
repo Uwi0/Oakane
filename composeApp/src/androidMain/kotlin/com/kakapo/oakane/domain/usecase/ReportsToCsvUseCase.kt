@@ -2,7 +2,7 @@ package com.kakapo.oakane.domain.usecase
 
 import android.content.Context
 import co.touchlab.kermit.Logger
-import com.kakapo.oakane.model.report.ReportCsvModel
+import com.kakapo.model.report.ReportCsvModel
 import com.opencsv.CSVWriter
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async

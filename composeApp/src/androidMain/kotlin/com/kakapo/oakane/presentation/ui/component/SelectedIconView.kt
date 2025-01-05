@@ -12,9 +12,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.R
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.oakane.model.category.CategoryIconName
+import com.kakapo.model.category.CategoryIconName
+import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 import com.kakapo.oakane.presentation.ui.model.asIcon

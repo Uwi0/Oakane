@@ -1,10 +1,10 @@
 package com.kakapo.oakane.presentation.viewModel.reports
 
 import com.kakapo.common.startDateAndEndDateOfMonth
-import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
-import com.kakapo.oakane.model.report.ReportCsvModel
-import com.kakapo.oakane.model.report.ReportModel
-import com.kakapo.oakane.model.wallet.WalletItemModel
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.report.ReportCsvModel
+import com.kakapo.model.report.ReportModel
+import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 import com.kakapo.oakane.presentation.viewModel.reports.model.currentMonth
 import kotlin.native.ObjCName

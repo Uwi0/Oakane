@@ -1,9 +1,9 @@
 package com.kakapo.oakane.presentation.viewModel.home
 
-import com.kakapo.oakane.model.GoalModel
-import com.kakapo.oakane.model.monthlyBudget.MonthlyBudgetOverViewModel
-import com.kakapo.oakane.model.transaction.TransactionModel
-import com.kakapo.oakane.model.wallet.WalletModel
+import com.kakapo.model.GoalModel
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.transaction.TransactionModel
+import com.kakapo.model.wallet.WalletModel
 import kotlin.native.ObjCName
 
 @ObjCName("HomeStateKt")

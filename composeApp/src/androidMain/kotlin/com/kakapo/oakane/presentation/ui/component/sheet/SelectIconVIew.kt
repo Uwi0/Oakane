@@ -25,12 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.toColorInt
 import com.kakapo.common.saveImageUri
 import com.kakapo.common.showToast
-import com.kakapo.oakane.model.category.CategoryIconName
-import com.kakapo.oakane.model.category.ParentCategory
-import com.kakapo.oakane.model.category.categoryMap
+import com.kakapo.common.toColorInt
+import com.kakapo.model.category.CategoryIconName
+import com.kakapo.model.category.ParentCategory
+import com.kakapo.model.category.categoryMap
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme

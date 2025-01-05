@@ -1,9 +1,9 @@
 package com.kakapo.oakane.presentation.viewModel.wallets
 
 import com.kakapo.common.toColorInt
-import com.kakapo.oakane.model.category.CategoryIconName
-import com.kakapo.oakane.model.wallet.WalletItemModel
-import com.kakapo.oakane.model.wallet.WalletModel
+import com.kakapo.model.category.CategoryIconName
+import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import kotlin.native.ObjCName
 

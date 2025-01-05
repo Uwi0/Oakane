@@ -17,9 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.toFormatIDRWithCurrency
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.oakane.model.category.CategoryLimitModel
+import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.RowWrapper

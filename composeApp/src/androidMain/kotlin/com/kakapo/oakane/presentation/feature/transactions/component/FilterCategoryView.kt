@@ -33,7 +33,7 @@ internal fun FilterCategoryView(
             contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(items = state.categories) { category ->
+            items(items = state.categories, key = { it.id }) { category ->
                 CategoryItemView(
                     category = category,
                     onEvent = { onEvent.invoke(TransactionsEvent.FilterByCategory(value = category))}

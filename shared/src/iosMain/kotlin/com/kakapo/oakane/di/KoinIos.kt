@@ -1,7 +1,7 @@
 package com.kakapo.oakane.di
 
 import com.kakapo.database.MySqlDriverFactory
-import com.kakapo.oakane.data.preference.OakanePreferenceDataStoreFactory
+import com.kakapo.preference.OakanePreferenceDataStoreFactory
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
 import org.koin.core.Koin

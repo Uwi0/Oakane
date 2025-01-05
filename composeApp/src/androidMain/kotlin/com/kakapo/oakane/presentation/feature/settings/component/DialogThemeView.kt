@@ -14,15 +14,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.model.system.Theme
+import com.kakapo.model.system.Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,20 +51,14 @@ private fun DialogContentThemeView(
 }
 
 @Composable
-private fun ThemeSelection(theme: Theme, onClick: (Int) -> Unit) {
-    var selectedTheme by remember { mutableIntStateOf(theme.ordinal) }
-
-    LaunchedEffect(theme) {
-        selectedTheme = theme.ordinal
-    }
-
+private fun ThemeSelection(selectedTheme: Theme, onClick: (Int) -> Unit) {
     Column {
         Theme.entries.forEach { theme ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val isSelected = selectedTheme == theme.ordinal
+                val isSelected = selectedTheme.ordinal == theme.ordinal
                 RadioButton(
                     selected = isSelected,
                     onClick = { onClick(theme.ordinal) }

@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.model.transaction.TransactionType
+import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsState

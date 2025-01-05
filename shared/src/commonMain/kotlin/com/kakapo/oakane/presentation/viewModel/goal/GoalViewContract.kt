@@ -2,7 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.goal
 
 import com.kakapo.common.daysBetween
 import com.kakapo.common.toFormatIDRWithCurrency
-import com.kakapo.oakane.model.GoalModel
+import com.kakapo.model.GoalModel
 import kotlin.native.ObjCName
 
 @ObjCName("GoalStateKt")

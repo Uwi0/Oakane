@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
-import com.kakapo.oakane.data.repository.base.CategoryRepository
-import com.kakapo.oakane.data.repository.base.WalletRepository
-import com.kakapo.oakane.domain.usecase.selectedWalletUseCase
-import com.kakapo.oakane.model.wallet.WalletItemModel
-import com.kakapo.oakane.model.wallet.WalletModel
+import com.kakapo.data.repository.base.CategoryRepository
+import com.kakapo.data.repository.base.WalletRepository
+import com.kakapo.domain.usecase.selectedWalletUseCase
+import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState

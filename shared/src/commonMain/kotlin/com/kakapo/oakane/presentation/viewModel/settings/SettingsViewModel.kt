@@ -2,9 +2,9 @@ package com.kakapo.oakane.presentation.viewModel.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakapo.oakane.data.repository.base.BackupRepository
-import com.kakapo.oakane.data.repository.base.SystemRepository
-import com.kakapo.oakane.model.system.Theme
+import com.kakapo.data.repository.base.BackupRepository
+import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -3,7 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.goal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asDouble
-import com.kakapo.oakane.data.repository.base.GoalRepository
+import com.kakapo.data.repository.base.GoalRepository
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow

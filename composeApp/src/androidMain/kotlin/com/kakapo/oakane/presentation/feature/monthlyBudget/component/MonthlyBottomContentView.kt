@@ -24,7 +24,7 @@ internal fun MonthlyBottomContentView(uiState: MonthlyBudgetState, onEvent: (Mon
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
         ) {
-            items(uiState.categoryLimits) { category ->
+            items(uiState.categoryLimits, key = { it.id }) { category ->
                 CategoryLimitItemView(category, onEvent)
             }
         }

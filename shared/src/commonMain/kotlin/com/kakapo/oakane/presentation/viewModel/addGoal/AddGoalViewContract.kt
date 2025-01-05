@@ -1,6 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.addGoal
 
-import com.kakapo.oakane.model.GoalModel
+import com.kakapo.model.GoalModel
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
 

@@ -1,7 +1,7 @@
 package com.kakapo.oakane.presentation.ui.model
 
+import com.kakapo.model.category.CategoryIconName
 import com.kakapo.oakane.R
-import com.kakapo.oakane.model.category.CategoryIconName
 
 fun CategoryIconName.asIcon(): Int {
     return when (this) {

@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.toColorInt
 import com.kakapo.common.toFormatIDR
-import com.kakapo.oakane.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
