@@ -50,6 +50,7 @@ import com.kakapo.oakane.presentation.viewModel.goals.GoalsViewModel
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import com.kakapo.oakane.presentation.viewModel.main.MainViewModel
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetViewModel
+import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingViewModel
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
@@ -118,6 +119,7 @@ object CommonModule {
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
+        viewModel { OnBoardingViewModel() }
     }
 
     val coroutineScope = module {
