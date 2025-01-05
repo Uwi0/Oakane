@@ -179,6 +179,7 @@ internal fun StartBalanceTextField(value: String, onValueChange: (String) -> Uni
             Text("Rp.")
         },
         shape = MaterialTheme.shapes.medium,
+        singleLine = true
     )
 }
 
