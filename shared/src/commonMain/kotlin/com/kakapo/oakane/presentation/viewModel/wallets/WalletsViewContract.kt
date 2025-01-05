@@ -66,7 +66,7 @@ data class WalletsState(
         return WalletModel(
             id = walletId,
             currency = "IDR",
-            balance = startBalance.toDouble(),
+            balance = startBalance.ifEmpty { "0" }.toDouble(),
             name = walletName,
             isDefaultIcon = imageFile.isEmpty(),
             icon = icon,

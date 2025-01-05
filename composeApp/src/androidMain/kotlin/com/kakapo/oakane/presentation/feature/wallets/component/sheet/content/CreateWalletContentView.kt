@@ -81,7 +81,8 @@ private fun CreateWalletContent(uiState: WalletsState, onEvent: (WalletsEvent) -
                 value = uiState.walletName,
                 onValueChange = { name -> onEvent.invoke(WalletsEvent.OnChangeWallet(name)) },
                 shape = MaterialTheme.shapes.medium,
-                placeholder = { Text(text = "Wallet Name") }
+                placeholder = { Text(text = "Wallet Name") },
+                singleLine = true
             )
         }
     }
