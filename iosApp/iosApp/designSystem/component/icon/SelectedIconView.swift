@@ -5,7 +5,7 @@ struct SelectedIconView: View {
     
     let imageName: String
     let icon: CategoryIconName
-    let color: Int32
+    let color: Int64
     var size: CGFloat = 48
     var padding: CGFloat = 12
     

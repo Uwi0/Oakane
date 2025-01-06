@@ -8,7 +8,7 @@ struct WalletsState {
     var walletName: String = ""
     var imageFile: String = ""
     var selectedIcon: CategoryIconName = .wallet
-    var selectedColor: Int32 = 0
+    var selectedColor: Int64 = 0
     var colors: [String] = []
     var startBalance: Int = 0
     

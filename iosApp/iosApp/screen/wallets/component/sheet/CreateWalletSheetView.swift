@@ -34,11 +34,11 @@ struct CreateWalletSheetView: View {
 fileprivate struct NameAndIconContentView: View {
     let imageName: String
     let icon: CategoryIconName
-    let color: Int32
+    let color: Int64
     let onEvent: (WalletsEvent) -> Void
     @State private var walletName: String = ""
     
-    init(imageName: String, icon: CategoryIconName, color: Int32,walletName: String, onEvent: @escaping (WalletsEvent) -> Void) {
+    init(imageName: String, icon: CategoryIconName, color: Int64,walletName: String, onEvent: @escaping (WalletsEvent) -> Void) {
         self.imageName = imageName
         self.icon = icon
         self.color = color

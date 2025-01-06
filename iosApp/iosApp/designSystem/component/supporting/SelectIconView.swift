@@ -4,7 +4,7 @@ import PhotosUI
 
 struct SelectIconView: View {
     let selectedIcon: CategoryIconName
-    let selectedColor: Int32
+    let selectedColor: Int64
     let onPickIcon: (CategoryIconName) -> Void
     let onTakImage: (String) -> Void
     let onConfirm: () -> Void
@@ -43,7 +43,7 @@ struct SelectIconView: View {
 
 private struct SelectionIconItemView: View {
     let selectedIcon: CategoryIconName
-    let selectedColor: Int32
+    let selectedColor: Int64
     let parentCategory: ParentCategory
     let onPickIcon: (CategoryIconName) -> Void
     
@@ -77,7 +77,7 @@ private struct SelectionHeaderView: View {
 
 private struct CategoryIconContentView: View {
     let selectedIcon: CategoryIconName
-    let selectedColor: Int32
+    let selectedColor: Int64
     let parentCategory: ParentCategory
     let onPickIcon: (CategoryIconName) -> Void
     private let column: [GridItem] = [.init(.adaptive(minimum: 48, maximum: 48))]
@@ -98,7 +98,7 @@ private struct CategoryIconContentView: View {
 }
 
 struct SelectionIconView: View {
-    let selectedColor: Int32
+    let selectedColor: Int64
     let selectedIcon: CategoryIconName
     let category: CategoryIconName
     let onPickIcon: (CategoryIconName) -> Void

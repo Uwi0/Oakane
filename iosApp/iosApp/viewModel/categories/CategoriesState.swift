@@ -10,7 +10,7 @@ struct CategoriesState {
     var categoryName: String = ""
     var selectedIcon: CategoryIconName = .default
     var imageName: String = ""
-    var selectedColor: Int32 = 0
+    var selectedColor: Int64 = 0
     var defaultColors: [String] = []
     var categoryId: Int64 = 0
     var isEditMode: Bool = false

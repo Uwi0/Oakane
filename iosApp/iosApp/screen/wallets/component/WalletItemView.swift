@@ -31,7 +31,7 @@ fileprivate struct TopContentView: View {
             SelectedIconView(
                 imageName: wallet.icon,
                 icon: wallet.iconName,
-                color: wallet.color.toColorInt()
+                color: Int64(wallet.color) ?? 0xFF4CAF50
             )
             Text(wallet.name)
                 .font(Typography.titleMedium)
