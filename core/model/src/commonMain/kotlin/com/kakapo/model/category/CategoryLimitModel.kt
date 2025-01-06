@@ -11,7 +11,7 @@ data class CategoryLimitModel(
     val name: String get() = category.name
     val isDefault: Boolean get() = category.isDefault
     val fileName: String get() = category.icon
-    val formattedColor: Int get() = category.formattedColor
+    val formattedColor: Long get() = category.formattedColor
     val iconName: CategoryIconName get() = category.iconName
     val progress: Float get() = if(spent == 0.0) 0F else spent.toFloat() / limit.toFloat()
     val formattedLimit: String get() = limit.toFormatIDRWithCurrency()

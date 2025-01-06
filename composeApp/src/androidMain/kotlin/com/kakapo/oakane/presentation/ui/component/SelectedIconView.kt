@@ -22,7 +22,7 @@ import com.kakapo.oakane.presentation.ui.model.asIcon
 data class SelectedIconModel(
     val imageFile: String,
     val defaultIcon: CategoryIconName,
-    val defaultColor: Int
+    val defaultColor: Long
 )
 
 const val FORMAT_IMAGE = ".jpg"

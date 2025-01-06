@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation.viewModel.wallets
 
-import com.kakapo.common.toColorInt
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
@@ -23,9 +22,9 @@ data class WalletsState(
     val dialogShown: Boolean = false
 ){
 
-    val defaultColor: Int get(){
+    val defaultColor: Long get(){
         val color = selectedColor.ifEmpty { colors.first() }
-        return color.toColorInt()
+        return color.toLong()
     }
 
     val startBalanceValue: Int get() = startBalance.toIntOrNull() ?: 0

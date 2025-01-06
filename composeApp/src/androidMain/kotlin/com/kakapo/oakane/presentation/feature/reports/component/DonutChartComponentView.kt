@@ -28,10 +28,10 @@ import com.kakapo.oakane.presentation.ui.component.chart.AnimatedDonutChart
 internal fun DonutChartComponentView(
     amount: Double,
     proportions: List<Float>,
-    colorsInt: List<Int>,
+    colors: List<Long>,
     categoriesName: List<String>
 ) {
-    val colors = colorsInt.map { Color(it) }
+    val formattedColors = colors.map { Color(it) }
     ColumnWrapper(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +45,7 @@ internal fun DonutChartComponentView(
             AnimatedDonutChart(
                 modifier = Modifier.size(280.dp),
                 proportions = proportions,
-                colors = colors
+                colors = formattedColors
             )
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -63,7 +63,7 @@ internal fun DonutChartComponentView(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             categoriesName.forEachIndexed { index, name ->
-                ChartLegend(title = name, color = colors[index])
+                ChartLegend(title = name, color = formattedColors[index])
             }
         }
     }

@@ -27,7 +27,7 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 
 @Composable
-fun SelectColorView(defaultColor: Int, onSelectedColor: (String) -> Unit) {
+fun SelectColorView(defaultColor: Long, onSelectedColor: (String) -> Unit) {
     val controller = rememberColorPickerController()
     var hexCode by remember { mutableStateOf("") }
     var textColor by remember { mutableStateOf(Color.Transparent) }

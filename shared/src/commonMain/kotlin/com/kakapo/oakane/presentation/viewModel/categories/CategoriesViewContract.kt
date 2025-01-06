@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation.viewModel.categories
 
-import com.kakapo.common.toColorInt
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.transaction.TransactionType
@@ -34,10 +33,10 @@ data class CategoriesState(
             else selectedIcon
         }
 
-    val defaultColor: Int
+    val defaultColor: Long
         get() {
             return if (selectedColor == "0xFF4CAF50" && categories.isNotEmpty()) categories[0].formattedColor
-            else selectedColor.toColorInt()
+            else selectedColor.toLong()
         }
 
     fun updateCategories(categories: List<CategoryModel>) = copy(

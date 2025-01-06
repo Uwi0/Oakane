@@ -24,7 +24,7 @@ data class ReportsState(
         return reports.map { (it.amount / total).toFloat() }
     }
 
-    val colors: List<Int> get() = reports.map { it.formattedColor }
+    val colors: List<Long> get() = reports.map { it.formattedColor }
 
     val names: List<String> get() = reports.map { it.name }
 

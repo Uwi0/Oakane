@@ -1,6 +1,5 @@
 package com.kakapo.model.report
 
-import com.kakapo.common.toColorInt
 import com.kakapo.model.category.CategoryIconName
 import kotlin.native.ObjCName
 
@@ -14,7 +13,7 @@ data class ReportModel(
     val isDefault: Boolean,
     val icon: String = "Salary"
 ){
-    val formattedColor: Int get() = color.toColorInt()
+    val formattedColor: Long get() = color.ifEmpty { "0xFF4CAF50" }.toLong()
 
     val iconName: CategoryIconName
         get() {

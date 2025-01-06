@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.saveImageUri
 import com.kakapo.common.showToast
-import com.kakapo.common.toColorInt
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.category.ParentCategory
 import com.kakapo.model.category.categoryMap
@@ -39,7 +38,7 @@ import com.kakapo.oakane.presentation.ui.model.asIcon
 
 @Composable
 internal fun SelectIconView(
-    defaultColor: Int,
+    defaultColor: Long,
     selectionIcon: CategoryIconName,
     onSelectedIcon: (CategoryIconName) -> Unit,
     onPickImage: (String) -> Unit,
@@ -120,7 +119,7 @@ internal fun SelectIconView(
 
 data class CategoryContentModel(
     val parentCategory: ParentCategory,
-    val defaultColor: Int,
+    val defaultColor: Long,
     val selectedIcon: CategoryIconName,
 )
 
@@ -183,7 +182,7 @@ private fun ContentItemView(
 data class SelectionIconModel(
     val icon: CategoryIconName,
     val isSelected: Boolean,
-    val defaultColor: Int
+    val defaultColor: Long
 )
 
 @Composable
@@ -211,7 +210,7 @@ private fun SelectCategoryIconViewPrev() {
     AppTheme {
         Surface {
             SelectIconView(
-                defaultColor = "0xFF4CAF50".toColorInt(),
+                defaultColor = "0xFF4CAF50".toLong(),
                 selectionIcon = CategoryIconName.SALARY,
                 onSelectedIcon = {},
                 onPickImage = {},

@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Event
@@ -21,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kakapo.common.toDateWith
 import com.kakapo.common.showToast
+import com.kakapo.common.toDateWith
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
@@ -92,7 +94,8 @@ private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(vertical = 24.dp, horizontal = 16.dp),
+                    .padding(vertical = 24.dp, horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
