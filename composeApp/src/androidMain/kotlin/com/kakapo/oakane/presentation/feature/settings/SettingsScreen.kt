@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Brightness6
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.ImportExport
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -162,11 +163,11 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
                     .padding(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-//                ThemeButtonView(
-//                    theme = uiState.themeMode,
-//                    onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
-//                )
-//                HorizontalDivider()
+                ThemeButtonView(
+                    theme = uiState.themeMode,
+                    onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
+                )
+                HorizontalDivider()
                 ButtonSettingsView(
                     title = "Back Up Data",
                     icon = Icons.Outlined.Backup,

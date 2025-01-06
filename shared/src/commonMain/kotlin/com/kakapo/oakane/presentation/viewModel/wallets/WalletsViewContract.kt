@@ -70,7 +70,7 @@ data class WalletsState(
             name = walletName,
             isDefaultIcon = imageFile.isEmpty(),
             icon = icon,
-            color = selectedColor
+            color = selectedColor.ifEmpty { "0xFF4CAF50" }
         )
     }
 }

@@ -13,10 +13,10 @@ import com.kakapo.oakane.presentation.feature.goal.navigation.goalScreen
 import com.kakapo.oakane.presentation.feature.goal.navigation.navigateToGoal
 import com.kakapo.oakane.presentation.feature.goals.navigation.goalsScreen
 import com.kakapo.oakane.presentation.feature.goals.navigation.navigateToGoals
+import com.kakapo.oakane.presentation.feature.home.navigation.HOME_ROUTE
 import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
 import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.monthlyBudgetScreen
 import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.navigateToMonthlyBudget
-import com.kakapo.oakane.presentation.feature.onboarding.navigation.ON_BOARDING_ROUTE
 import com.kakapo.oakane.presentation.feature.onboarding.navigation.onBoardingScreen
 import com.kakapo.oakane.presentation.feature.reports.navigation.reportsScreen
 import com.kakapo.oakane.presentation.feature.settings.navigation.settingsScreen
@@ -30,7 +30,7 @@ import com.kakapo.oakane.presentation.feature.wallets.navigation.walletsScreen
 @Composable
 internal fun OakaneNavHost(
     navController: NavHostController,
-    startDestination: String = ON_BOARDING_ROUTE,
+    startDestination: String = HOME_ROUTE,
     openDrawer: () -> Unit,
     onSelectedTheme: (Theme) -> Unit
 ) {

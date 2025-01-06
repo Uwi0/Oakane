@@ -43,6 +43,7 @@ fun SearchTextFieldView(
         leadingIcon = {
             Icon(imageVector = Icons.Default.Search, contentDescription = null)
         },
+        singleLine = true,
         trailingIcon = {
             if (text.isNotEmpty()) {
                 IconButton(onClick = { text = "" }) {

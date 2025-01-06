@@ -67,7 +67,8 @@ fun OutlinedCurrencyTextField(
         },
         prefix = {
             Text(prefix)
-        }
+        },
+        singleLine = true
     )
 }
 

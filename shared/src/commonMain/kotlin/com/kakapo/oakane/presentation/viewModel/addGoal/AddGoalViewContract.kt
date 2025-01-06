@@ -51,7 +51,7 @@ data class AddGoalState(
 
     fun asGoalModel() = GoalModel(
         goalName = goalName,
-        amount = targetAmount.toDouble(),
+        amount = targetAmount.ifEmpty { "0" }.toDouble(),
         note = note,
         startDate = startDate,
         endDate = endDate,
