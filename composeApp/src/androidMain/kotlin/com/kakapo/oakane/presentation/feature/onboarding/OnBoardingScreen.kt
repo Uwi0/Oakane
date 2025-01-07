@@ -23,7 +23,7 @@ internal fun OnBoardingRoute() {
 @Composable
 private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) -> Unit = {}) {
     when (state.onBoardingContent) {
-        OnBoardingContent.Account -> AccountContentView()
+        OnBoardingContent.Account -> AccountContentView(onEvent = onEvent)
         OnBoardingContent.ImportBackup -> ImportBackupContentView()
         OnBoardingContent.SelectCurrency -> SelectCurrencyView()
         OnBoardingContent.CreateWallet -> CreateWalletView()
