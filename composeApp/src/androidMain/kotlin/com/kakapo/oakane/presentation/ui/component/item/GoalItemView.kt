@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.formatDateWith
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.GoalModel
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
@@ -44,7 +44,7 @@ internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(text = goal.goalName, style = MaterialTheme.typography.titleMedium)
             Text(
-                text = goal.amount.toFormatIDRWithCurrency(),
+                text = goal.amount.toFormatCurrency(),
                 style = MaterialTheme.typography.titleMedium
             )
             CustomProgressIndicatorView(value = goal.progress)

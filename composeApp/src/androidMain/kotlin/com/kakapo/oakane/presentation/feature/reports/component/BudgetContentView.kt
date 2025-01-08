@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
@@ -35,13 +35,13 @@ internal fun BudgetContentView(item: MonthlyBudgetOverViewModel) {
             .padding(vertical = 12.dp, horizontal = 16.dp)
     ) {
         Text(
-            text = "Budget: ${item.limit.toFormatIDRWithCurrency()}",
+            text = "Budget: ${item.limit.toFormatCurrency()}",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.outline
         )
         CustomProgressIndicatorView(item.progress)
         Text(
-            text = "Spent: ${item.spent.toFormatIDRWithCurrency()}",
+            text = "Spent: ${item.spent.toFormatCurrency()}",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.outline
         )
@@ -85,7 +85,7 @@ private fun BudgetItemView(amount: Double, isExpense: Boolean) {
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.outline
             )
-            Text(amount.toFormatIDRWithCurrency(), style = MaterialTheme.typography.bodySmall)
+            Text(amount.toFormatCurrency(), style = MaterialTheme.typography.bodySmall)
         }
     }
 }

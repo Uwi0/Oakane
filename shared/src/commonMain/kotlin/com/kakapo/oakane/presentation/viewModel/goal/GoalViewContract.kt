@@ -1,7 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.goal
 
 import com.kakapo.common.daysBetween
-import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.GoalModel
 import kotlin.native.ObjCName
 
@@ -20,12 +20,12 @@ data class GoalState(
 
     val savedAmount: String
         get() {
-            return goal.savedMoney.toFormatIDRWithCurrency()
+            return goal.savedMoney.toFormatCurrency()
         }
 
     val targetAmount: String
         get() {
-            return goal.amount.toFormatIDRWithCurrency()
+            return goal.amount.toFormatCurrency()
         }
 
     fun updateDialog(shown: Boolean, content: GoalDialogContent) = copy(

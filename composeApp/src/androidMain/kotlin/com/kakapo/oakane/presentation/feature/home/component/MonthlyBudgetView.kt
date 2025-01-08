@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.toFormatIDR
-import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
@@ -52,7 +52,7 @@ private fun MonthlyBudgetContent(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             BudgetHeader(onNavigateToAddBudget = { onEvent.invoke(HomeEvent.ToMonthlyBudget) })
             Text(
-                text = overView.limit.toFormatIDRWithCurrency(),
+                text = overView.limit.toFormatCurrency(),
                 style = MaterialTheme.typography.titleMedium
             )
             CustomProgressIndicatorView(value = overView.progress)

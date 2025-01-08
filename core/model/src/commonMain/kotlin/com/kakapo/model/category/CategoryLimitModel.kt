@@ -1,6 +1,6 @@
 package com.kakapo.model.category
 
-import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatCurrency
 
 data class CategoryLimitModel(
     val id: Long,
@@ -14,8 +14,8 @@ data class CategoryLimitModel(
     val formattedColor: Long get() = category.formattedColor
     val iconName: CategoryIconName get() = category.iconName
     val progress: Float get() = if(spent == 0.0) 0F else spent.toFloat() / limit.toFloat()
-    val formattedLimit: String get() = limit.toFormatIDRWithCurrency()
-    val formattedSpent: String get() = spent.toFormatIDRWithCurrency()
+    val formattedLimit: String get() = limit.toFormatCurrency()
+    val formattedSpent: String get() = spent.toFormatCurrency()
 
     companion object {
         val EMPTY = CategoryLimitModel(1, category = CategoryModel(), 100_000.0, 50_000.0)

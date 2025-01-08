@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
-import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.R
@@ -129,7 +129,7 @@ private fun TopContentView(state: TransactionState) {
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = transactionModel.amount.toFormatIDRWithCurrency(),
+                text = transactionModel.amount.toFormatCurrency(),
                 style = MaterialTheme.typography.titleMedium
             )
         }

@@ -18,7 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
@@ -51,13 +51,13 @@ internal fun CategoryLimitItemView(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    category.limit.toFormatIDRWithCurrency(),
+                    category.limit.toFormatCurrency(),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
             CustomProgressIndicatorView(category.progress)
             Text(
-                text = "Spent: ${category.spent.toFormatIDRWithCurrency()}/${progress}%",
+                text = "Spent: ${category.spent.toFormatCurrency()}/${progress}%",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.outline
             )

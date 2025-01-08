@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.toFormatIDRWithCurrency
+import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.report.ReportModel
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
@@ -34,7 +34,7 @@ internal fun ReportsItemView(item: ReportModel) {
         Text(text = item.name, style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.weight(1f))
         Text(
-            text = item.amount.toFormatIDRWithCurrency(),
+            text = item.amount.toFormatCurrency(),
             color = textColor,
             style = MaterialTheme.typography.titleMedium
         )

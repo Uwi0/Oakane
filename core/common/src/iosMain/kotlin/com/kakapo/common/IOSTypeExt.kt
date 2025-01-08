@@ -6,7 +6,7 @@ import platform.Foundation.NSNumberFormatter
 import platform.Foundation.NSNumberFormatterCurrencyStyle
 import platform.Foundation.localeWithLocaleIdentifier
 
-actual fun Double.toFormatIDRWithCurrency(): String {
+actual fun Double.toFormatCurrency(): String {
     val formatter = NSNumberFormatter()
     val number = NSNumber(this)
     formatter.numberStyle = NSNumberFormatterCurrencyStyle
