@@ -24,7 +24,7 @@ internal fun OnBoardingRoute() {
 private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) -> Unit = {}) {
     when (state.onBoardingContent) {
         OnBoardingContent.Account -> AccountContentView(onEvent = onEvent)
-        OnBoardingContent.ImportBackup -> ImportBackupContentView()
+        OnBoardingContent.ImportBackup -> ImportBackupContentView(onEvent = onEvent)
         OnBoardingContent.SelectCurrency -> SelectCurrencyView()
         OnBoardingContent.CreateWallet -> CreateWalletView()
     }

@@ -51,7 +51,7 @@ internal fun AccountContentView(onEvent: (OnBoardingEvent) -> Unit) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 modifier = Modifier.width(224.dp).align(Alignment.CenterHorizontally),
-                text = "By signing in. you accept our Terms & Conditions and privay policy",
+                text = "By signing in. you accept our Terms & Conditions and privacy policy",
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center
             )
