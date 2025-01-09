@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
-import com.kakapo.oakane.presentation.designSystem.component.textField.OutlinedCurrencyTextField
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextField
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEvent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalState
 

@@ -27,7 +27,7 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.menu.CustomDropdownMenu
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
-import com.kakapo.oakane.presentation.designSystem.component.textField.OutlinedCurrencyTextField
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextField
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog

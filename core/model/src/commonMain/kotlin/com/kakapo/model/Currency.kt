@@ -1,166 +1,166 @@
 package com.kakapo.model
 
-enum class Currency(val languageCode: String, val countryCode: String, val countryName: String) {
+enum class Currency(val languageCode: String, val countryCode: String, val countryName: String, val baseMultiplier: Int) {
 
-    AED("ar", "AE", "United Arab Emirates"), // Dirham
-    AFN("fa", "AF", "Afghanistan"), // Afghani
-    ALL("sq", "AL", "Albania"), // Lek
-    AMD("hy", "AM", "Armenia"), // Dram
-    ANG("nl", "AN", "Netherlands Antilles"), // Guilder
-    AOA("pt", "AO", "Angola"), // Kwanza
-    ARS("es", "AR", "Argentina"), // Peso
-    AUD("en", "AU", "Australia"), // Dollar
-    AWG("nl", "AW", "Aruba"), // Florin
-    AZN("az", "AZ", "Azerbaijan"), // Manat
-    BAM("bs", "BA", "Bosnia-Herzegovina"), // Convertible Mark
-    BBD("en", "BB", "Barbados"), // Dollar
-    BDT("bn", "BD", "Bangladesh"), // Taka
-    BGN("bg", "BG", "Bulgaria"), // Lev
-    BHD("ar", "BH", "Bahrain"), // Dinar
-    BIF("fr", "BI", "Burundi"), // Franc
-    BMD("en", "BM", "Bermuda"), // Dollar
-    BND("ms", "BN", "Brunei"), // Dollar
-    BOB("es", "BO", "Bolivia"), // Boliviano
-    BRL("pt", "BR", "Brazil"), // Real
-    BSD("en", "BS", "Bahamas"), // Dollar
-    BTN("dz", "BT", "Bhutan"), // Ngultrum
-    BWP("en", "BW", "Botswana"), // Pula
-    BYN("be", "BY", "Belarus"), // Ruble
-    BZD("en", "BZ", "Belize"), // Dollar
-    CAD("en", "CA", "Canada"), // Dollar
-    CDF("fr", "CD", "Congo"), // Franc
-    CHF("de", "CH", "Switzerland"), // Swiss Franc
-    CLP("es", "CL", "Chile"), // Peso
-    CNY("zh", "CN", "China"), // Yuan
-    COP("es", "CO", "Colombia"), // Peso
-    CRC("es", "CR", "Costa Rica"), // Colón
-    CUP("es", "CU", "Cuba"), // Peso
-    CVE("pt", "CV", "Cape Verde"), // Escudo
-    CZK("cs", "CZ", "Czech Republic"), // Koruna
-    DJF("fr", "DJ", "Djibouti"), // Franc
-    DKK("da", "DK", "Denmark"), // Krone
-    DOP("es", "DO", "Dominican Republic"), // Peso
-    DZD("ar", "DZ", "Algeria"), // Dinar
-    EGP("ar", "EG", "Egypt"), // Pound
-    ERN("ti", "ER", "Eritrea"), // Nakfa
-    ETB("am", "ET", "Ethiopia"), // Birr
-    EUR("de", "EU", "European Union"), // Euro
-    FJD("en", "FJ", "Fiji"), // Dollar
-    FKP("en", "FK", "Falkland Islands"), // Pound
-    FOK("fo", "FO", "Faroe Islands"), // Króna
-    GBP("en", "GB", "United Kingdom"), // Pound
-    GEL("ka", "GE", "Georgia"), // Lari
-    GGP("en", "GG", "Guernsey"), // Pound
-    GHS("en", "GH", "Ghana"), // Cedi
-    GIP("en", "GI", "Gibraltar"), // Pound
-    GMD("en", "GM", "Gambia"), // Dalasi
-    GNF("fr", "GN", "Guinea"), // Franc
-    GTQ("es", "GT", "Guatemala"), // Quetzal
-    GYD("en", "GY", "Guyana"), // Dollar
-    HKD("zh", "HK", "Hong Kong"), // Dollar
-    HNL("es", "HN", "Honduras"), // Lempira
-    HRK("hr", "HR", "Croatia"), // Kuna
-    HTG("fr", "HT", "Haiti"), // Gourde
-    HUF("hu", "HU", "Hungary"), // Forint
-    IDR("id", "ID", "Indonesia"), // Rupiah
-    ILS("he", "IL", "Israel"), // New Shekel
-    IMP("en", "IM", "Isle of Man"), // Pound
-    INR("hi", "IN", "India"), // Rupee
-    IQD("ar", "IQ", "Iraq"), // Dinar
-    IRR("fa", "IR", "Iran"), // Rial
-    ISK("is", "IS", "Iceland"), // Krona
-    JEP("en", "JE", "Jersey"), // Pound
-    JMD("en", "JM", "Jamaica"), // Dollar
-    JOD("ar", "JO", "Jordan"), // Dinar
-    JPY("ja", "JP", "Japan"), // Yen
-    KES("en", "KE", "Kenya"), // Shilling
-    KGS("ky", "KG", "Kyrgyzstan"), // Som
-    KHR("km", "KH", "Cambodia"), // Riel
-    KID("en", "KI", "Kiribati"), // Dollar
-    KMF("fr", "KM", "Comoros"), // Franc
-    KRW("ko", "KR", "South Korea"), // Won
-    KWD("ar", "KW", "Kuwait"), // Dinar
-    KYD("en", "KY", "Cayman Islands"), // Dollar
-    KZT("kk", "KZ", "Kazakhstan"), // Tenge
-    LAK("lo", "LA", "Laos"), // Kip
-    LBP("ar", "LB", "Lebanon"), // Pound
-    LKR("si", "LK", "Sri Lanka"), // Rupee
-    LRD("en", "LR", "Liberia"), // Dollar
-    LSL("en", "LS", "Lesotho"), // Loti
-    LYD("ar", "LY", "Libya"), // Dinar
-    MAD("ar", "MA", "Morocco"), // Dirham
-    MDL("ro", "MD", "Moldova"), // Leu
-    MGA("mg", "MG", "Madagascar"), // Ariary
-    MKD("mk", "MK", "North Macedonia"), // Denar
-    MMK("my", "MM", "Myanmar"), // Kyat
-    MNT("mn", "MN", "Mongolia"), // Tögrög
-    MOP("zh", "MO", "Macau"), // Pataca
-    MRU("ar", "MR", "Mauritania"), // Ouguiya
-    MUR("en", "MU", "Mauritius"), // Rupee
-    MVR("dv", "MV", "Maldives"), // Rufiyaa
-    MWK("en", "MW", "Malawi"), // Kwacha
-    MXN("es", "MX", "Mexico"), // Peso
-    MYR("ms", "MY", "Malaysia"), // Ringgit
-    MZN("pt", "MZ", "Mozambique"), // Metical
-    NAD("en", "NA", "Namibia"), // Dollar
-    NGN("en", "NG", "Nigeria"), // Naira
-    NIO("es", "NI", "Nicaragua"), // Córdoba
-    NOK("no", "NO", "Norway"), // Krone
-    NPR("ne", "NP", "Nepal"), // Rupee
-    NZD("en", "NZ", "New Zealand"), // Dollar
-    OMR("ar", "OM", "Oman"), // Rial
-    PAB("es", "PA", "Panama"), // Balboa
-    PEN("es", "PE", "Peru"), // Sol
-    PGK("en", "PG", "Papua New Guinea"), // Kina
-    PHP("fil", "PH", "Philippines"), // Peso
-    PKR("ur", "PK", "Pakistan"), // Rupee
-    PLN("pl", "PL", "Poland"), // Zloty
-    PYG("es", "PY", "Paraguay"), // Guarani
-    QAR("ar", "QA", "Qatar"), // Riyal
-    RON("ro", "RO", "Romania"), // Leu
-    RSD("sr", "RS", "Serbia"), // Dinar
-    RUB("ru", "RU", "Russia"), // Ruble
-    RWF("rw", "RW", "Rwanda"), // Franc
-    SAR("ar", "SA", "Saudi Arabia"), // Riyal
-    SBD("en", "SB", "Solomon Islands"), // Dollar
-    SCR("en", "SC", "Seychelles"), // Rupee
-    SDG("ar", "SD", "Sudan"), // Pound
-    SEK("sv", "SE", "Sweden"), // Krona
-    SGD("en", "SG", "Singapore"), // Dollar
-    SHP("en", "SH", "Saint Helena"), // Pound
-    SLL("en", "SL", "Sierra Leone"), // Leone
-    SOS("so", "SO", "Somalia"), // Shilling
-    SRD("nl", "SR", "Suriname"), // Dollar
-    SSP("en", "SS", "South Sudan"), // Pound
-    STN("pt", "ST", "São Tomé and Príncipe"), // Dobra
-    SYP("ar", "SY", "Syria"), // Pound
-    SZL("en", "SZ", "Eswatini"), // Lilangeni
-    THB("th", "TH", "Thailand"), // Baht
-    TJS("tg", "TJ", "Tajikistan"), // Somoni
-    TMT("tk", "TM", "Turkmenistan"),
-    TND("ar", "TN", "Tunisia"), // Dinar
-    TOP("to", "TO", "Tonga"), // Paʻanga
-    TRY("tr", "TR", "Turkey"), // Lira
-    TTD("en", "TT", "Trinidad and Tobago"), // Dollar
-    TVD("en", "TV", "Tuvalu"), // Dollar
-    TZS("sw", "TZ", "Tanzania"), // Shilling
-    UAH("uk", "UA", "Ukraine"), // Hryvnia
-    UGX("en", "UG", "Uganda"), // Shilling
-    USD("en", "US", "United States"), // Dollar
-    UYU("es", "UY", "Uruguay"), // Peso
-    UZS("uz", "UZ", "Uzbekistan"), // So'm
-    VES("es", "VE", "Venezuela"), // Bolívar
-    VND("vi", "VN", "Vietnam"), // Dong
-    VUV("bi", "VU", "Vanuatu"), // Vatu
-    WST("sm", "WS", "Samoa"), // Tala
-    XAF("fr", "CM", "Central African States"), // CFA Franc
-    XCD("en", "AG", "East Caribbean States"), // Dollar
-    XOF("fr", "SN", "West African States"), // CFA Franc
-    XPF("fr", "PF", "French Polynesia"), // CFP Franc
-    YER("ar", "YE", "Yemen"), // Rial
-    ZAR("en", "ZA", "South Africa"), // Rand
-    ZMW("en", "ZM", "Zambia"), // Kwacha
-    ZWL("en", "ZW", "Zimbabwe"); // Dollar
+    AED("ar", "AE", "United Arab Emirates", 1),
+    AFN("fa", "AF", "Afghanistan", 1),
+    ALL("sq", "AL", "Albania", 1),
+    AMD("hy", "AM", "Armenia", 1),
+    ANG("nl", "AN", "Netherlands Antilles", 1),
+    AOA("pt", "AO", "Angola", 1),
+    ARS("es", "AR", "Argentina", 1),
+    AUD("en", "AU", "Australia", 1),
+    AWG("nl", "AW", "Aruba", 1),
+    AZN("az", "AZ", "Azerbaijan", 1),
+    BAM("bs", "BA", "Bosnia-Herzegovina", 1),
+    BBD("en", "BB", "Barbados", 1),
+    BDT("bn", "BD", "Bangladesh", 1),
+    BGN("bg", "BG", "Bulgaria", 1),
+    BHD("ar", "BH", "Bahrain", 1),
+    BIF("fr", "BI", "Burundi", 100),
+    BMD("en", "BM", "Bermuda", 1),
+    BND("ms", "BN", "Brunei", 1),
+    BOB("es", "BO", "Bolivia", 1),
+    BRL("pt", "BR", "Brazil", 1),
+    BSD("en", "BS", "Bahamas", 1),
+    BTN("dz", "BT", "Bhutan", 1),
+    BWP("en", "BW", "Botswana", 1),
+    BYN("be", "BY", "Belarus", 1),
+    BZD("en", "BZ", "Belize", 1),
+    CAD("en", "CA", "Canada", 1),
+    CDF("fr", "CD", "Congo", 1000),
+    CHF("de", "CH", "Switzerland", 1),
+    CLP("es", "CL", "Chile", 1),
+    CNY("zh", "CN", "China", 1),
+    COP("es", "CO", "Colombia", 1),
+    CRC("es", "CR", "Costa Rica", 1),
+    CUP("es", "CU", "Cuba", 1),
+    CVE("pt", "CV", "Cape Verde", 1),
+    CZK("cs", "CZ", "Czech Republic", 1),
+    DJF("fr", "DJ", "Djibouti", 100),
+    DKK("da", "DK", "Denmark", 1),
+    DOP("es", "DO", "Dominican Republic", 1),
+    DZD("ar", "DZ", "Algeria", 1),
+    EGP("ar", "EG", "Egypt", 1),
+    ERN("ti", "ER", "Eritrea", 1),
+    ETB("am", "ET", "Ethiopia", 1),
+    EUR("de", "EU", "European Union", 1),
+    FJD("en", "FJ", "Fiji", 1),
+    FKP("en", "FK", "Falkland Islands", 1),
+    FOK("fo", "FO", "Faroe Islands", 1),
+    GBP("en", "GB", "United Kingdom", 1),
+    GEL("ka", "GE", "Georgia", 1),
+    GGP("en", "GG", "Guernsey", 1),
+    GHS("en", "GH", "Ghana", 1),
+    GIP("en", "GI", "Gibraltar", 1),
+    GMD("en", "GM", "Gambia", 1),
+    GNF("fr", "GN", "Guinea", 100),
+    GTQ("es", "GT", "Guatemala", 1),
+    GYD("en", "GY", "Guyana", 1),
+    HKD("zh", "HK", "Hong Kong", 1),
+    HNL("es", "HN", "Honduras", 1),
+    HRK("hr", "HR", "Croatia", 1),
+    HTG("fr", "HT", "Haiti", 1),
+    HUF("hu", "HU", "Hungary", 1),
+    IDR("id", "ID", "Indonesia", 100),
+    ILS("he", "IL", "Israel", 1),
+    IMP("en", "IM", "Isle of Man", 1),
+    INR("hi", "IN", "India", 1),
+    IQD("ar", "IQ", "Iraq", 1),
+    IRR("fa", "IR", "Iran", 100),
+    ISK("is", "IS", "Iceland", 1),
+    JEP("en", "JE", "Jersey", 1),
+    JMD("en", "JM", "Jamaica", 1),
+    JOD("ar", "JO", "Jordan", 1),
+    JPY("ja", "JP", "Japan", 1),
+    KES("en", "KE", "Kenya", 1),
+    KGS("ky", "KG", "Kyrgyzstan", 1),
+    KHR("km", "KH", "Cambodia", 1),
+    KID("en", "KI", "Kiribati", 1),
+    KMF("fr", "KM", "Comoros", 1000),
+    KRW("ko", "KR", "South Korea", 1),
+    KWD("ar", "KW", "Kuwait", 1000),
+    KYD("en", "KY", "Cayman Islands", 1),
+    KZT("kk", "KZ", "Kazakhstan", 1),
+    LAK("lo", "LA", "Laos", 1000),
+    LBP("ar", "LB", "Lebanon", 1),
+    LKR("si", "LK", "Sri Lanka", 1),
+    LRD("en", "LR", "Liberia", 1),
+    LSL("en", "LS", "Lesotho", 1),
+    LYD("ar", "LY", "Libya", 1000),
+    MAD("ar", "MA", "Morocco", 1000),
+    MDL("ro", "MD", "Moldova", 1),
+    MGA("mg", "MG", "Madagascar", 100),
+    MKD("mk", "MK", "North Macedonia", 1),
+    MMK("my", "MM", "Myanmar", 1),
+    MNT("mn", "MN", "Mongolia", 1),
+    MOP("zh", "MO", "Macau", 1),
+    MRU("ar", "MR", "Mauritania", 1),
+    MUR("en", "MU", "Mauritius", 1),
+    MVR("dv", "MV", "Maldives", 1),
+    MWK("en", "MW", "Malawi", 1),
+    MXN("es", "MX", "Mexico", 1),
+    MYR("ms", "MY", "Malaysia", 1),
+    MZN("pt", "MZ", "Mozambique", 1),
+    NAD("en", "NA", "Namibia", 1),
+    NGN("en", "NG", "Nigeria", 1),
+    NIO("es", "NI", "Nicaragua", 1),
+    NOK("no", "NO", "Norway", 1),
+    NPR("ne", "NP", "Nepal", 1),
+    NZD("en", "NZ", "New Zealand", 1),
+    OMR("ar", "OM", "Oman", 1000),
+    PAB("es", "PA", "Panama", 1),
+    PEN("es", "PE", "Peru", 1),
+    PGK("en", "PG", "Papua New Guinea", 1),
+    PHP("fil", "PH", "Philippines", 1),
+    PKR("ur", "PK", "Pakistan", 1),
+    PLN("pl", "PL", "Poland", 1),
+    PYG("es", "PY", "Paraguay", 1),
+    QAR("ar", "QA", "Qatar", 1000),
+    RON("ro", "RO", "Romania", 1),
+    RSD("sr", "RS", "Serbia", 1),
+    RUB("ru", "RU", "Russia", 1),
+    RWF("rw", "RW", "Rwanda", 1000),
+    SAR("ar", "SA", "Saudi Arabia", 1000),
+    SBD("en", "SB", "Solomon Islands", 1),
+    SCR("en", "SC", "Seychelles", 1),
+    SDG("ar", "SD", "Sudan", 1),
+    SEK("sv", "SE", "Sweden", 1),
+    SGD("en", "SG", "Singapore", 1),
+    SHP("en", "SH", "Saint Helena", 1),
+    SLL("en", "SL", "Sierra Leone", 1),
+    SOS("so", "SO", "Somalia", 1),
+    SRD("nl", "SR", "Suriname", 1),
+    SSP("en", "SS", "South Sudan", 1),
+    STN("pt", "ST", "São Tomé and Príncipe", 1),
+    SYP("ar", "SY", "Syria", 1),
+    SZL("en", "SZ", "Eswatini", 1),
+    THB("th", "TH", "Thailand", 1),
+    TJS("tg", "TJ", "Tajikistan", 1),
+    TMT("tk", "TM", "Turkmenistan", 1),
+    TND("ar", "TN", "Tunisia", 1),
+    TOP("to", "TO", "Tonga", 1),
+    TRY("tr", "TR", "Turkey", 1),
+    TTD("en", "TT", "Trinidad and Tobago", 1),
+    TVD("en", "TV", "Tuvalu", 1),
+    TZS("sw", "TZ", "Tanzania", 1),
+    UAH("uk", "UA", "Ukraine", 1),
+    UGX("en", "UG", "Uganda", 1),
+    USD("en", "US", "United States", 1),
+    UYU("es", "UY", "Uruguay", 1),
+    UZS("uz", "UZ", "Uzbekistan", 1),
+    VES("es", "VE", "Venezuela", 1),
+    VND("vi", "VN", "Vietnam", 1),
+    VUV("bi", "VU", "Vanuatu", 1),
+    WST("sm", "WS", "Samoa", 1),
+    XAF("fr", "CM", "Central African States", 1),
+    XCD("en", "AG", "East Caribbean States", 1),
+    XOF("fr", "SN", "West African States", 1),
+    XPF("fr", "PF", "French Polynesia", 1),
+    YER("ar", "YE", "Yemen", 1000),
+    ZAR("en", "ZA", "South Africa", 1),
+    ZMW("en", "ZM", "Zambia", 1),
+    ZWL("en", "ZW", "Zimbabwe", 1);
 
     companion object {
         fun fromCountryCode(countryCode: String): Currency? {

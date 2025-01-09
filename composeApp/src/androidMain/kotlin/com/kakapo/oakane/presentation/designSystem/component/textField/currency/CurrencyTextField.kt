@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.designSystem.component.textField
+package com.kakapo.oakane.presentation.designSystem.component.textField.currency
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions

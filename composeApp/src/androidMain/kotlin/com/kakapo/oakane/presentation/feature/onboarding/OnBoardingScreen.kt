@@ -25,7 +25,7 @@ private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) 
     when (state.onBoardingContent) {
         OnBoardingContent.Account -> AccountContentView(onEvent = onEvent)
         OnBoardingContent.ImportBackup -> ImportBackupContentView(onEvent = onEvent)
-        OnBoardingContent.SelectCurrency -> SelectCurrencyView()
+        OnBoardingContent.SelectCurrency -> SelectCurrencyView(onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) })
         OnBoardingContent.CreateWallet -> CreateWalletView()
     }
 }

@@ -31,7 +31,7 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 
 @Composable
-internal fun SelectCurrencyView() {
+internal fun SelectCurrencyView(onConfirm: (Currency) -> Unit) {
     var query by remember { mutableStateOf("") }
     var selectedCurrency by remember { mutableStateOf(Currency.IDR) }
     val currencies = Currency.entries.filter {
@@ -72,7 +72,7 @@ internal fun SelectCurrencyView() {
                 content = {
                     Text("Confirm Currency")
                 },
-                onClick = {}
+                onClick = { onConfirm.invoke(selectedCurrency) }
             )
         }
     )
@@ -133,6 +133,6 @@ private fun CurrencyItemView(
 @Composable
 private fun SelectCurrencyPreview() {
     AppTheme {
-        SelectCurrencyView()
+        SelectCurrencyView(onConfirm = {})
     }
 }
