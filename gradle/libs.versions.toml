@@ -16,6 +16,7 @@ colorpicker = "1.1.2"
 compose-plugin = "1.7.0"
 datastore = "1.1.1"
 dependency-analys = "2.6.1"
+googleServicePlugin = "4.4.2"
 junit = "4.13.2"
 kermit = "2.0.5"
 kmp-nativecoroutines = "1.0.0-ALPHA-38"
@@ -78,6 +79,7 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analys" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+google-gms-service = { id = "com.google.gms.google-services", version.ref = "googleServicePlugin" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmp-nativecoroutines"}
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

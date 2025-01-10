@@ -7,9 +7,9 @@ fun String.asTextEllipsis(maxLine: Int): String {
     else this
 }
 
-fun String.toColorInt(): Int {
-    val normalized = this.uppercase().replace("0X", "")
-    return normalized.toLong(16).toInt()
+fun String.toColorLong(): Long {
+    val normalized = this.uppercase().removePrefix("0X")
+    return normalized.toLong(16)
 }
 
 fun String.asDouble(): Double {

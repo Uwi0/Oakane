@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.kakapo.common.toColorLong
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 
@@ -33,7 +34,7 @@ fun HorizontalColorSelectorView(
         items(colorSelector.colorsHex) { hex ->
             CategoryIconView(
                 icon = R.drawable.ic_empty,
-                color = Color(hex.ifEmpty { "0xFF4CAF50" }.toLong()),
+                color = Color(hex.ifEmpty { "0xFF4CAF50" }.toColorLong()),
                 onClick = { onClickColor.invoke(hex) }
             )
         }

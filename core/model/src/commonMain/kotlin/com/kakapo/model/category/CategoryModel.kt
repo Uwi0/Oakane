@@ -1,5 +1,6 @@
 package com.kakapo.model.category
 
+import com.kakapo.common.toColorLong
 import com.kakapo.model.transaction.TransactionType
 
 data class CategoryModel(
@@ -11,7 +12,7 @@ data class CategoryModel(
     val isDefault: Boolean = true
 ) {
 
-    val formattedColor: Long get() = color.ifEmpty { "0xFF4CAF50" }.toLong()
+    val formattedColor: Long get() = color.ifEmpty { "0xFF4CAF50" }.toColorLong()
 
     val iconName: CategoryIconName
         get() {

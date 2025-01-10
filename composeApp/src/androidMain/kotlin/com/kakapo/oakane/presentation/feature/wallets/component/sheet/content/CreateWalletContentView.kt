@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation.feature.wallets.component.sheet.content
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -11,12 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +45,6 @@ internal fun CreateWalletContentView(uiState: WalletsState, onEvent: (WalletsEve
     ) {
         CreateWalletContent(uiState = uiState, onEvent = onEvent)
         StartBalanceContent(uiState = uiState, onEvent = onEvent)
-        CurrencyContent(onEvent = onEvent)
         ColorContent(uiState = uiState, onEvent = onEvent)
         Spacer(Modifier.size(48.dp))
         ConfirmButtonView(
@@ -95,27 +89,6 @@ private fun StartBalanceContent(uiState: WalletsState, onEvent: (WalletsEvent) -
             value = uiState.startBalance,
             onValueChange = { balance -> onEvent.invoke(WalletsEvent.ChangeStart(balance)) }
         )
-    }
-}
-
-@Composable
-private fun CurrencyContent(onEvent: (WalletsEvent) -> Unit) {
-    ColumnContent(title = "Currency") {
-        Surface(
-            shape = MaterialTheme.shapes.medium,
-            border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.outline),
-            onClick = { onEvent.invoke(WalletsEvent.FeatureNotAvailable) }
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("IDR", style = MaterialTheme.typography.bodyLarge)
-                Icon(imageVector = Icons.Default.ChevronRight, contentDescription = null)
-            }
-        }
     }
 }
 

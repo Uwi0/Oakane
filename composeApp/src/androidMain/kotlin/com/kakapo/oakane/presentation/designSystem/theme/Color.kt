@@ -218,7 +218,54 @@ val surfaceContainerDarkHighContrast = Color(0xFF1D211B)
 val surfaceContainerHighDarkHighContrast = Color(0xFF272B25)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF323630)
 
-
+val colorSelector: List<Long> = listOf(
+    0xFF4CAF50L,
+    0xFF66BB6AL,
+    0xFF81C784L,
+    0xFFA5D6A7L,
+    0xFF388E3CL,
+    0xFF43A047L,
+    0xFFFFD54FL,
+    0xFF795548L,
+    0xFF64B5F6L,
+    0xFF2196F3L,
+    0xFF1E88E5L,
+    0xFF8D6E63L,
+    0xFFA1887FL,
+    0xFF757575L,
+    0xFFFFA726L,
+    0xFFBDBDBDL,
+    0xFFFFCC80L,
+    0xFF90A4AEL,
+    0xFFB0BEC5L,
+    0xFF8BC34AL,
+    0xFFFF7043L,
+    0xFFFFA726L,
+    0xFF5C6BC0L,
+    0xFFBA68C8L,
+    0xFF7986CBL,
+    0xFF9575CDL,
+    0xFF42A5F5L,
+    0xFF283593L,
+    0xFF673AB7L,
+    0xFF7986CBL,
+    0xFFE57373L,
+    0xFFF06292L,
+    0xFFD32F2FL,
+    0xFFB39DDBL,
+    0xFF9575CDL,
+    0xFFEF9A9AL,
+    0xFFF48FB1L,
+    0xFFAB47BCL,
+    0xFFFFCDD2L,
+    0xFFFFD54FL,
+    0xFFCE93D8L,
+    0xFF90CAF9L,
+    0xFFFFF176L,
+    0xFF607D8BL,
+    0xFF455A64L,
+    0xFF78909CL
+)
 
 
 

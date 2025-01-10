@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.saveImageUri
 import com.kakapo.common.showToast
+import com.kakapo.common.toColorLong
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.category.ParentCategory
 import com.kakapo.model.category.categoryMap
@@ -210,7 +211,7 @@ private fun SelectCategoryIconViewPrev() {
     AppTheme {
         Surface {
             SelectIconView(
-                defaultColor = "0xFF4CAF50".toLong(),
+                defaultColor = "0xFF4CAF50".toColorLong(),
                 selectionIcon = CategoryIconName.SALARY,
                 onSelectedIcon = {},
                 onPickImage = {},

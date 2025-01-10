@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kakapo.common.toColorLong
 import com.kakapo.common.toFormatIDR
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.component.button.OutlinedCheckmarkRadioButton
@@ -48,7 +49,7 @@ private fun WalletTopContent(wallet: WalletItemModel, onEvent: (WalletsEvent) ->
     val selectedIcon = SelectedIconModel(
         imageFile = wallet.icon,
         defaultIcon = wallet.iconName,
-        defaultColor = wallet.color.ifEmpty { "0xFF4CAF50" }.toLong()
+        defaultColor = wallet.color.ifEmpty { "0xFF4CAF50" }.toColorLong()
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,
