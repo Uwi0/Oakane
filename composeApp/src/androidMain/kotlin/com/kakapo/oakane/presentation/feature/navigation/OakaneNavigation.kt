@@ -14,6 +14,7 @@ import com.kakapo.oakane.presentation.feature.goal.navigation.navigateToGoal
 import com.kakapo.oakane.presentation.feature.goals.navigation.goalsScreen
 import com.kakapo.oakane.presentation.feature.goals.navigation.navigateToGoals
 import com.kakapo.oakane.presentation.feature.home.navigation.homeScreen
+import com.kakapo.oakane.presentation.feature.home.navigation.navigateToHome
 import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.monthlyBudgetScreen
 import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.navigateToMonthlyBudget
 import com.kakapo.oakane.presentation.feature.onboarding.navigation.ON_BOARDING_ROUTE
@@ -35,7 +36,9 @@ internal fun OakaneNavHost(
     onSelectedTheme: (Theme) -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
-        onBoardingScreen()
+        onBoardingScreen(
+            navigateToHome = navController::navigateToHome
+        )
         homeScreen(
             openDrawer = openDrawer,
             navigateToAddTransaction = navController::navigateToAddTransaction,

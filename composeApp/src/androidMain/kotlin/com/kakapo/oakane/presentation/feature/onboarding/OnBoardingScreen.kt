@@ -1,6 +1,7 @@
 package com.kakapo.oakane.presentation.feature.onboarding
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.oakane.presentation.feature.onboarding.content.AccountContentView
@@ -8,15 +9,25 @@ import com.kakapo.oakane.presentation.feature.onboarding.content.CreateWalletVie
 import com.kakapo.oakane.presentation.feature.onboarding.content.ImportBackupContentView
 import com.kakapo.oakane.presentation.feature.onboarding.content.SelectCurrencyView
 import com.kakapo.oakane.presentation.model.OnBoardingContent
+import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEffect
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEvent
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingState
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun OnBoardingRoute() {
+internal fun OnBoardingRoute(navigateToHome: () -> Unit) {
     val viewModel = koinViewModel<OnBoardingViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when(effect) {
+                OnBoardingEffect.NavigateToHome -> navigateToHome.invoke()
+            }
+        }
+    }
+
     OnBoardingScreen(state = uiState, onEvent = viewModel::handleEvent)
 }
 
@@ -26,6 +37,6 @@ private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) 
         OnBoardingContent.Account -> AccountContentView(onEvent = onEvent)
         OnBoardingContent.ImportBackup -> ImportBackupContentView(onEvent = onEvent)
         OnBoardingContent.SelectCurrency -> SelectCurrencyView(onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) })
-        OnBoardingContent.CreateWallet -> CreateWalletView()
+        OnBoardingContent.CreateWallet -> CreateWalletView(onEvent = onEvent)
     }
 }

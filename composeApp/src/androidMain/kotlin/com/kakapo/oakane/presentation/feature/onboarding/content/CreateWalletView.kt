@@ -41,9 +41,10 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.designSystem.theme.colorSelector
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
+import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEvent
 
 @Composable
-internal fun CreateWalletView() {
+internal fun CreateWalletView(onEvent: (OnBoardingEvent) -> Unit) {
     var walletName by remember { mutableStateOf("") }
     var startingBalance by remember { mutableStateOf("") }
     var color by remember { mutableStateOf("0xFF4CAF50") }
@@ -106,7 +107,7 @@ internal fun CreateWalletView() {
             CustomButton(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
-                onClick = {},
+                onClick = { onEvent.invoke(OnBoardingEvent.SkippWallet) },
                 content = {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -130,6 +131,6 @@ internal fun CreateWalletView() {
 @Preview
 private fun CreateWalletPreview() {
     AppTheme {
-        CreateWalletView()
+        CreateWalletView(onEvent = {})
     }
 }
