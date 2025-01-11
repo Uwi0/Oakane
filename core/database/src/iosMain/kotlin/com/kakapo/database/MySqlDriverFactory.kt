@@ -8,7 +8,6 @@ actual class MySqlDriverFactory {
     actual fun createDriver(): SqlDriver {
         val driver = NativeSqliteDriver(Database.Schema, DATABASE_NAME)
         addDefaultCategories(driver)
-        addDefaultWallet(driver)
         return driver
     }
 }

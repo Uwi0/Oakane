@@ -104,7 +104,9 @@ class CurrencyTextFieldState(
         var userInput = textFieldValue.text
         var finalSelection = 0
 
-        if (userInput.last().toString() == "." &&
+        if (
+            userInput.isNotEmpty() &&
+            userInput.last().toString() == "." &&
             decimalFormatSymbols.decimalSeparator.toString() != userInput.last().toString()
         ) {
             userInput = userInput.dropLast(1)

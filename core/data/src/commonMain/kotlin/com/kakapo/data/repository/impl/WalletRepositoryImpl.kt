@@ -20,6 +20,10 @@ class WalletRepositoryImpl(
     private val preferenceDatasource: PreferenceDatasource
 ) : WalletRepository {
 
+    override suspend fun createDefaultWallet(): Result<Unit> {
+        return localDatasource.createDefaultWallet()
+    }
+
     override suspend fun saveWallet(id: Long): Result<Unit> {
         return runCatching {
             preferenceDatasource.saveLongValue(LongKey.WALLET_ID, id)

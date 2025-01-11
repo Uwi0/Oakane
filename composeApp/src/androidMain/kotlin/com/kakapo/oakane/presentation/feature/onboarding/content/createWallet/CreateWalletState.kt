@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.kakapo.common.toColorLong
 import com.kakapo.model.category.CategoryIconName
+import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.theme.colorsSelector
 import com.kakapo.oakane.presentation.model.WalletSheetContent
@@ -16,13 +17,15 @@ import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.sheet.CreateWalletSheetEvent
 
 @Composable
-fun rememberCreateWalletState(): CreateWalletState = remember {
-    CreateWalletState()
+fun rememberCreateWalletState(onConfirm: (WalletModel) -> Unit): CreateWalletState = remember {
+    CreateWalletState(onConfirm)
 }
 
 
 @Stable
-class CreateWalletState {
+class CreateWalletState(
+    private val onConfirm: (WalletModel) -> Unit
+) {
 
     var sheetContent by mutableStateOf(WalletSheetContent.Create)
     var walletName by mutableStateOf("")
@@ -66,7 +69,7 @@ class CreateWalletState {
             }
 
             CreateWalletSheetEvent.SaveWallet -> {
-
+                confirmWallet()
             }
         }
     }
@@ -85,5 +88,17 @@ class CreateWalletState {
 
     fun changeColor(hex: String) {
         color = hex
+    }
+
+    private fun confirmWallet() {
+        val wallet = WalletModel(
+            name = walletName,
+            balance = startingBalance.toDoubleOrNull() ?: 0.0,
+            color = color,
+            icon = selectedIcon.imageFile.ifEmpty { selectedIcon.defaultIcon.displayName },
+            isDefaultIcon = selectedIcon.imageFile.isEmpty()
+        )
+        isSheetVisible = false
+        onConfirm(wallet)
     }
 }

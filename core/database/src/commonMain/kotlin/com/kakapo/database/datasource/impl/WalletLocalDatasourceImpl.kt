@@ -14,6 +14,10 @@ class WalletLocalDatasourceImpl(
 
     private val walletTable = Database.invoke(driver).walletEntityQueries
 
+    override suspend fun createDefaultWallet(): Result<Unit> {
+        return kotlin.runCatching { walletTable.createDefaultWallet() }
+    }
+
     override suspend fun update(
         balance: Double,
         updateAt: Long,

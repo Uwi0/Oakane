@@ -35,7 +35,6 @@ import com.kakapo.common.toColorLong
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
-import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.sheet.CreateWalletSheetContentView
@@ -47,9 +46,8 @@ import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEvent
 @Composable
 internal fun CreateWalletView(onEvent: (OnBoardingEvent) -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val createWalletState = rememberCreateWalletState()
-    rememberCurrencyTextFieldState(createWalletState.currencyConfig) {
-
+    val createWalletState = rememberCreateWalletState {
+        onEvent(OnBoardingEvent.ConfirmWallet(it))
     }
 
     CreateWalletContentView(state = createWalletState,onEvent = onEvent)

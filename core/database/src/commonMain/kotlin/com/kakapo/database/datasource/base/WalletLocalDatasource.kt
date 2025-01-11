@@ -5,6 +5,8 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface WalletLocalDatasource {
     @NativeCoroutines
+    suspend fun createDefaultWallet(): Result<Unit>
+    @NativeCoroutines
     suspend fun update(balance: Double, updateAt: Long, walletId: Long): Result<Unit>
     @NativeCoroutines
     suspend fun getWalletBy(id: Long): Result<WalletEntity>

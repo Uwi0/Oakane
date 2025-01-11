@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface WalletRepository {
     @NativeCoroutines
+    suspend fun createDefaultWallet(): Result<Unit>
+    @NativeCoroutines
     suspend fun saveWallet(id: Long): Result<Unit>
     @NativeCoroutines
     suspend fun loadWalletId(): Result<Long>

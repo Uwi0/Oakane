@@ -10,6 +10,7 @@ data class OnBoardingState(
 )
 
 sealed class OnBoardingEffect {
+    data class ShowError(val message: String): OnBoardingEffect()
     data object NavigateToHome : OnBoardingEffect()
 }
 

@@ -13,8 +13,6 @@ createDefaultWallet:
 INSERT OR REPLACE INTO WalletTable(name, balance, color, icon, isDefaultIcon)
 VALUES ('My Wallet', 0.0, '0xFF4CAF50', 'Wallet', 1);
 
-checkIfExist:
-SELECT COUNT(*) FROM WalletTable;
 
 updateWalletTransaction:
 UPDATE WalletTable

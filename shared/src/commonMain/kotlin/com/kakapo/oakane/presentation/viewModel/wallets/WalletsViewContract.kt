@@ -65,7 +65,6 @@ data class WalletsState(
         val icon = imageFile.ifEmpty { selectedIcon.displayName }
         return WalletModel(
             id = walletId,
-            currency = "IDR",
             balance = startBalance.ifEmpty { "0" }.toDouble(),
             name = walletName,
             isDefaultIcon = imageFile.isEmpty(),
