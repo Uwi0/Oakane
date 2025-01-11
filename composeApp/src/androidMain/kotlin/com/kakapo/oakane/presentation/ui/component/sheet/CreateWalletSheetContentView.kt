@@ -9,19 +9,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
@@ -32,8 +25,6 @@ import com.kakapo.oakane.presentation.ui.component.ColorSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
-import java.text.NumberFormat
-import java.util.Locale
 
 sealed class CreateWalletSheetEvent {
     data object ClickedIcon: CreateWalletSheetEvent()
@@ -152,47 +143,6 @@ private fun ColumnContent(title: String, content: @Composable ColumnScope.() -> 
         Text(text = title, style = MaterialTheme.typography.titleMedium)
         content.invoke(this)
     }
-}
-
-@Composable
-internal fun StartBalanceTextField(value: String, onValueChange: (String) -> Unit) {
-
-    var formattedValue by remember { mutableStateOf(value) }
-
-    LaunchedEffect(value) {
-        val unformattedValue = value.filter { it.isDigit() }
-        formattedValue = if (unformattedValue.isNotEmpty()) {
-            val number = unformattedValue.toLongOrNull() ?: 0L
-            NumberFormat.getInstance(Locale("in", "ID")).format(number)
-        } else {
-            ""
-        }
-    }
-
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = formattedValue,
-        onValueChange = { newValue ->
-            val unformattedValue = newValue.filter { it.isDigit() }
-            val formattedText = if (unformattedValue.isNotEmpty()) {
-                val number = unformattedValue.toLongOrNull() ?: 0L
-                NumberFormat.getInstance(Locale("in", "ID")).format(number)
-            } else {
-                ""
-            }
-            formattedValue = formattedText
-            onValueChange(unformattedValue)
-        },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        placeholder = {
-            Text("0")
-        },
-        prefix = {
-            Text("Rp.")
-        },
-        shape = MaterialTheme.shapes.medium,
-        singleLine = true
-    )
 }
 
 @Composable

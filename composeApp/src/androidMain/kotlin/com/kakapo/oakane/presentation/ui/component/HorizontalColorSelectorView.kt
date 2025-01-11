@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import com.kakapo.common.toColorLong
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
@@ -24,6 +25,7 @@ fun HorizontalColorSelectorView(
     onClickColor: (String) -> Unit
 ) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Logger.d("ColorSelector: $colorSelector")
         stickyHeader {
             CategoryIconView(
                 icon = R.drawable.ic_rounded_brush,

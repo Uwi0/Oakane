@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.model.Currency
 import com.kakapo.oakane.presentation.model.OnBoardingContent
@@ -26,7 +27,10 @@ class OnBoardingViewModel(
             is OnBoardingEvent.NavigateNext -> _uiState.update { it.copy(onBoardingContent = event.content) }
             is OnBoardingEvent.OnConfirmCurrency -> saveCurrency(event.currency)
             is OnBoardingEvent.ConfirmWallet -> {}
-            OnBoardingEvent.SkippWallet -> emit(OnBoardingEffect.NavigateToHome)
+            OnBoardingEvent.SkippWallet -> {
+                Logger.d("Skip_wallet")
+                emit(OnBoardingEffect.NavigateToHome)
+            }
         }
     }
 

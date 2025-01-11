@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.onboarding.content
+package com.kakapo.oakane.presentation.feature.onboarding.content.createWallet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -14,15 +14,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,36 +32,44 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.toColorLong
-import com.kakapo.model.category.CategoryIconName
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
-import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
-import com.kakapo.oakane.presentation.designSystem.theme.colorSelector
-import com.kakapo.oakane.presentation.ui.component.ColorSelector
-import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
+import com.kakapo.oakane.presentation.model.WalletSheetContent
+import com.kakapo.oakane.presentation.ui.component.sheet.CreateWalletSheetContentView
+import com.kakapo.oakane.presentation.ui.component.sheet.SelectColorView
+import com.kakapo.oakane.presentation.ui.component.sheet.SelectIconSheetView
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEvent
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CreateWalletView(onEvent: (OnBoardingEvent) -> Unit) {
-    var walletName by remember { mutableStateOf("") }
-    var startingBalance by remember { mutableStateOf("") }
-    var color by remember { mutableStateOf("0xFF4CAF50") }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val createWalletState = rememberCreateWalletState()
+    rememberCurrencyTextFieldState(createWalletState.currencyConfig) {
 
-    val currencyConfig = CurrencyTextFieldConfig(currencySymbol = "RP")
-    val currencyState = rememberCurrencyTextFieldState(currencyConfig) {
-        startingBalance = it
     }
-    var selectedIcon by remember {
-        mutableStateOf(SelectedIconModel("", CategoryIconName.WALLET, color.toColorLong()))
-    }
-    val colorSelector = ColorSelector(
-        defaultColor = color.ifEmpty { "0xFF4CAF50" }.toColorLong(),
-        colorsHex = colorSelector.map { "$it" }.distinct()
-    )
 
+    CreateWalletContentView(state = createWalletState,onEvent = onEvent)
+
+    LaunchedEffect(createWalletState.isSheetVisible) {
+        if(!createWalletState.isSheetVisible) {
+            sheetState.hide()
+        }
+    }
+
+    if (createWalletState.isSheetVisible) {
+        WalletSheetView(
+            createWalletState = createWalletState,
+            sheetState = sheetState
+        )
+    }
+}
+
+@Composable
+private fun CreateWalletContentView(state: CreateWalletState,onEvent: (OnBoardingEvent) -> Unit) {
     Surface {
         Column(
             modifier = Modifier
@@ -87,7 +96,7 @@ internal fun CreateWalletView(onEvent: (OnBoardingEvent) -> Unit) {
             CustomOutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
-                onClick = {},
+                onClick = { state.isSheetVisible = true},
                 content = {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -122,6 +131,41 @@ internal fun CreateWalletView(onEvent: (OnBoardingEvent) -> Unit) {
                         )
                     }
                 }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun WalletSheetView(
+    createWalletState: CreateWalletState,
+    sheetState: SheetState,
+) {
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = { createWalletState.isSheetVisible = false }
+    ) {
+        when (createWalletState.sheetContent) {
+            WalletSheetContent.Create -> CreateWalletSheetContentView(
+                walletName = createWalletState.walletName,
+                selectedIcon = createWalletState.selectedIcon,
+                colorSelector = createWalletState.colorSelector,
+                isEditMode = false,
+                onEvent = createWalletState::walletSheetEvent
+            )
+
+            WalletSheetContent.SelectIcon -> SelectIconSheetView(
+                defaultColor = createWalletState.color.toColorLong(),
+                selectionIcon = createWalletState.selectedIcon.defaultIcon,
+                onSelectedIcon = createWalletState::onSelectedIcon,
+                onPickImage = createWalletState::onPickImage,
+                onConfirm = createWalletState::confirmIcon
+            )
+
+            WalletSheetContent.SelectColor -> SelectColorView(
+                defaultColor = createWalletState.color.toColorLong(),
+                onSelectedColor = createWalletState::changeColor
             )
         }
     }
