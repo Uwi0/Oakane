@@ -22,7 +22,7 @@ import com.kakapo.oakane.presentation.ui.model.asIcon
 data class SelectedIconModel(
     val imageFile: String,
     val defaultIcon: CategoryIconName,
-    val defaultColor: Long
+    val color: Long
 )
 
 const val FORMAT_IMAGE = ".jpg"
@@ -32,7 +32,7 @@ fun SelectedIconView(selectedIcon: SelectedIconModel, onClick: () -> Unit) {
     if (!selectedIcon.imageFile.contains(FORMAT_IMAGE)) {
         CategoryIconView(
             icon = selectedIcon.defaultIcon.asIcon(),
-            color = Color(selectedIcon.defaultColor),
+            color = Color(selectedIcon.color),
             onClick = onClick
         )
     } else {
@@ -43,7 +43,7 @@ fun SelectedIconView(selectedIcon: SelectedIconModel, onClick: () -> Unit) {
                 .size(48.dp)
                 .clip(CircleShape)
                 .border(
-                    color = Color(selectedIcon.defaultColor),
+                    color = Color(selectedIcon.color),
                     width = 3.dp,
                     shape = CircleShape
                 )

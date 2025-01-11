@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import com.kakapo.oakane.presentation.feature.categories.component.sheet.CreateCategoryContentView
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import com.kakapo.oakane.presentation.ui.component.sheet.SelectColorView
-import com.kakapo.oakane.presentation.ui.component.sheet.SelectIconView
+import com.kakapo.oakane.presentation.ui.component.sheet.SelectIconSheetView
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesState
 
@@ -39,7 +39,7 @@ fun CategoriesSheetView(
                     onSelectedColor = { hex -> onEvent.invoke(CategoriesEvent.SelectedColor(hex)) }
                 )
 
-                CategoriesSheetContent.SelectIcon -> SelectIconView(
+                CategoriesSheetContent.SelectIcon -> SelectIconSheetView(
                     defaultColor = uiState.defaultColor,
                     selectionIcon = uiState.selectedIcon,
                     onSelectedIcon = { iconName -> onEvent.invoke(CategoriesEvent.SelectedIcon(iconName))},

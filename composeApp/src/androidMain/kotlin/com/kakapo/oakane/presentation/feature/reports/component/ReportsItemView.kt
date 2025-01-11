@@ -20,7 +20,7 @@ internal fun ReportsItemView(item: ReportModel) {
     val selectedIcon = SelectedIconModel(
         imageFile = item.icon,
         defaultIcon = item.iconName,
-        defaultColor = item.formattedColor
+        color = item.formattedColor
     )
 
     val textColor = if (item.isExpense) MaterialTheme.colorScheme.error

@@ -77,7 +77,7 @@ private fun CategoryNameFieldView(
     val selectedIcon = SelectedIconModel(
         imageFile = uiState.fileName,
         defaultIcon = uiState.selectedIcon,
-        defaultColor = uiState.defaultColor
+        color = uiState.defaultColor
     )
 
     Row(

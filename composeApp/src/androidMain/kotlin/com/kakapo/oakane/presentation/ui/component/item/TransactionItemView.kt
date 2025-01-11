@@ -26,7 +26,7 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
     val selectedIcon = SelectedIconModel(
         imageFile = transaction.category.icon,
         defaultIcon = transaction.category.iconName,
-        defaultColor = transaction.category.formattedColor
+        color = transaction.category.formattedColor
     )
     RowWrapper(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),

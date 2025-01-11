@@ -49,7 +49,7 @@ private fun WalletTopContent(wallet: WalletItemModel, onEvent: (WalletsEvent) ->
     val selectedIcon = SelectedIconModel(
         imageFile = wallet.icon,
         defaultIcon = wallet.iconName,
-        defaultColor = wallet.color.ifEmpty { "0xFF4CAF50" }.toColorLong()
+        color = wallet.color.ifEmpty { "0xFF4CAF50" }.toColorLong()
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,

@@ -38,7 +38,7 @@ import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconVie
 import com.kakapo.oakane.presentation.ui.model.asIcon
 
 @Composable
-internal fun SelectIconView(
+internal fun SelectIconSheetView(
     defaultColor: Long,
     selectionIcon: CategoryIconName,
     onSelectedIcon: (CategoryIconName) -> Unit,
@@ -210,7 +210,7 @@ private fun SelectionIconView(
 private fun SelectCategoryIconViewPrev() {
     AppTheme {
         Surface {
-            SelectIconView(
+            SelectIconSheetView(
                 defaultColor = "0xFF4CAF50".toColorLong(),
                 selectionIcon = CategoryIconName.SALARY,
                 onSelectedIcon = {},
