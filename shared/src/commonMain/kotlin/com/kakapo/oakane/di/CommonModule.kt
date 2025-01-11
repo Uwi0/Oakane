@@ -58,9 +58,6 @@ import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewMod
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -119,12 +116,9 @@ object CommonModule {
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
-        viewModel { OnBoardingViewModel() }
+        viewModel { OnBoardingViewModel(get()) }
     }
 
-    val coroutineScope = module {
-        single { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
-    }
 }
 
 fun initKoin(
@@ -134,7 +128,6 @@ fun initKoin(
     repositoryModule: Module = CommonModule.repositoryModule,
     domainModules: Module = CommonModule.domainModule,
     viewModel: Module = CommonModule.viewModel,
-    coroutineScope: Module = CommonModule.coroutineScope
 ): KoinApplication = startKoin {
     modules(
         appModule,
@@ -143,7 +136,6 @@ fun initKoin(
         repositoryModule,
         domainModules,
         viewModel,
-        coroutineScope,
         platformModule
     )
 }

@@ -10,4 +10,5 @@ object BooleanKey {
 
 object IntKey {
     const val THEME_MODE = "theme_mode"
+    const val CURRENCY = "currency"
 }
