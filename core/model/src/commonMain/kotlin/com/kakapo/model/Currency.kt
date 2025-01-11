@@ -178,3 +178,7 @@ enum class Currency(
         }
     }
 }
+
+fun Int.asCurrency(): Currency {
+    return Currency.entries.find { it.ordinal == this } ?: Currency.IDR
+}
