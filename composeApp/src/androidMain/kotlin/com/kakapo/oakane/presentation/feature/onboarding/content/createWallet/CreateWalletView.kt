@@ -54,7 +54,7 @@ internal fun CreateWalletView(uiState: OnBoardingState, onEvent: (OnBoardingEven
     }
     val textFieldConfig = CurrencyTextFieldConfig(
         locale = Locale(uiState.currency.languageCode, uiState.currency.countryCode),
-        currencySymbol = uiState.currency.currencySymbol
+        currencySymbol = uiState.currency.symbol
     )
 
     LaunchedEffect(createWalletState.isSheetVisible) {

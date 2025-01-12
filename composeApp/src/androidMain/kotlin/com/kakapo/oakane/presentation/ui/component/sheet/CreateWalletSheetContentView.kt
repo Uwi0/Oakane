@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
-import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextField
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
@@ -117,7 +117,7 @@ private fun StartBalanceContent(
         onChangeBalance.invoke(balance)
     }
     ColumnContent(title = "Start Balance") {
-        CurrencyTextField(
+        OutlinedCurrencyTextFieldView(
             state = state,
             modifier = Modifier.fillMaxWidth()
         )

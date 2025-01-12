@@ -1,10 +1,11 @@
 package com.kakapo.oakane.presentation.viewModel.addTransaction
 
 import com.kakapo.common.asDouble
+import com.kakapo.data.model.TransactionParam
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
-import com.kakapo.data.model.TransactionParam
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
 
@@ -20,7 +21,8 @@ data class AddTransactionState(
     val isDropdownExpanded: Boolean = false,
     val isShowDialog: Boolean = false,
     val sheetShown: Boolean = false,
-    val categories: List<CategoryModel> = emptyList()
+    val categories: List<CategoryModel> = emptyList(),
+    val currency: Currency = Currency.IDR
 ) {
     val isEditMode get() = transactionId != 0L
 
@@ -63,6 +65,7 @@ data class AddTransactionState(
 
 sealed class AddTransactionEffect {
     data object NavigateBack : AddTransactionEffect()
+    data class ShowError(val message: String) : AddTransactionEffect()
 }
 
 sealed class AddTransactionEvent {

@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.addGoal
 
+import com.kakapo.model.Currency
 import com.kakapo.model.GoalModel
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
@@ -7,6 +8,7 @@ import kotlin.native.ObjCName
 @ObjCName("AddGoalStateKt")
 data class AddGoalState(
     val id: Long = 0L,
+    val currency: Currency = Currency.IDR,
     val fileName: String = "",
     val goalName: String = "",
     val targetAmount: String = "",

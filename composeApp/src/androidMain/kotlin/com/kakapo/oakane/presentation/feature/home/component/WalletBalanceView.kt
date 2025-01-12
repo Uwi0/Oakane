@@ -47,7 +47,7 @@ internal fun WalletBalanceView(walletModel: WalletModel, onClick: () -> Unit) {
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Top),
-                text = walletModel.currency.currencySymbol,
+                text = walletModel.currency.symbol,
                 style = MaterialTheme.typography.labelLarge
             )
             Text(

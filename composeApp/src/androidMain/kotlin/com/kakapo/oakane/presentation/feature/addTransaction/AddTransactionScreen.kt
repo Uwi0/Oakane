@@ -18,16 +18,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.common.showToast
 import com.kakapo.common.toDateWith
+import com.kakapo.model.Currency
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.model.transaction.asTransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.menu.CustomDropdownMenu
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
-import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextField
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
@@ -36,10 +41,12 @@ import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEve
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionState
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<AddTransactionViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -48,6 +55,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
         viewModel.uiSideEffect.collect { effect ->
             when (effect) {
                 AddTransactionEffect.NavigateBack -> navigateBack.invoke()
+                is AddTransactionEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
@@ -102,14 +110,7 @@ private fun AddTransactionScreen(
                     value = uiState.title,
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangedTitle(it)) }
                 )
-                OutlinedCurrencyTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Amount",
-                    placeHolder = "0",
-                    value = uiState.transactionAmount,
-                    prefix = "Rp ",
-                    onValueChange = { onEvent.invoke(AddTransactionEvent.ChangedAmount(it)) }
-                )
+                AddTransactionCurrencyTextField(currency = uiState.currency, onEvent = onEvent)
                 TransactionTypeDropDown(uiState, onEvent)
                 CustomClickableOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -143,6 +144,25 @@ private fun AddTransactionScreen(
                 )
             }
         }
+    )
+}
+
+@Composable
+private fun AddTransactionCurrencyTextField(
+    currency: Currency,
+    onEvent: (AddTransactionEvent) -> Unit
+) {
+    val textFieldConfig = CurrencyTextFieldConfig(
+        Locale(currency.languageCode, currency.countryCode),
+        currencySymbol = currency.symbol
+    )
+    val state = rememberCurrencyTextFieldState(textFieldConfig) { amount ->
+        onEvent(AddTransactionEvent.ChangedAmount(amount))
+    }
+    OutlinedCurrencyTextFieldView(
+        modifier = Modifier.fillMaxWidth(),
+        state = state,
+        label = { Text("Amount") }
     )
 }
 

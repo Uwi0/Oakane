@@ -5,7 +5,7 @@ enum class Currency(
     val countryCode: String,
     val countryName: String,
     val baseMultiplier: Int,
-    val currencySymbol: String
+    val symbol: String
 ) {
 
     AED("ar", "AE", "United Arab Emirates", 1, "د.إ"),

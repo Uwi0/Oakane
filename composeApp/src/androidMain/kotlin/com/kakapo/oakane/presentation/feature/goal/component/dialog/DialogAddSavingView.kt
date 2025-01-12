@@ -14,11 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kakapo.model.Currency
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
-import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextField
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEvent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalState
+import java.util.Locale
 
 @Composable
 internal fun DialogAddSavingView(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
@@ -32,13 +36,7 @@ internal fun DialogAddSavingView(uiState: GoalState, onEvent: (GoalEvent) -> Uni
                 style = MaterialTheme.typography.headlineSmall
             )
             Spacer(modifier = Modifier.height(16.dp))
-            OutlinedCurrencyTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = uiState.savingAmount,
-                placeHolder = "Saving Amount...",
-                prefix = "Rp",
-                onValueChange = { amount -> onEvent.invoke(GoalEvent.Change(amount)) }
-            )
+            AddSavingTextField(currency = uiState.currency, onEvent = onEvent)
             Spacer(modifier = Modifier.height(24.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 Spacer(Modifier.weight(1f))
@@ -53,4 +51,20 @@ internal fun DialogAddSavingView(uiState: GoalState, onEvent: (GoalEvent) -> Uni
             }
         }
     }
+}
+
+@Composable
+private fun AddSavingTextField(currency: Currency, onEvent: (GoalEvent) -> Unit) {
+    val textFieldConfig = CurrencyTextFieldConfig(
+        Locale(currency.languageCode, currency.countryCode),
+        currencySymbol = currency.symbol
+    )
+    val state = rememberCurrencyTextFieldState(textFieldConfig) { amount ->
+        onEvent(GoalEvent.Change(amount))
+    }
+    OutlinedCurrencyTextFieldView(
+        modifier = Modifier.fillMaxWidth(),
+        state = state,
+        label = { Text("Saving Amount...") }
+    )
 }

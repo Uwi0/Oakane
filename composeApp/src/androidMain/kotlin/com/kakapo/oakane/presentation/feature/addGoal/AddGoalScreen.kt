@@ -23,12 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.touchlab.kermit.Logger
 import com.kakapo.common.showToast
 import com.kakapo.common.toDateWith
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
-import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextField
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.addGoal.component.ImageGoalPicker
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
@@ -38,6 +41,7 @@ import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalState
 import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalViewModel
 import com.kakapo.oakane.presentation.viewModel.addGoal.GoalDateContent
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale
 
 @Composable
 fun AddGoalRoute(
@@ -83,7 +87,7 @@ fun AddGoalRoute(
 private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit) {
     Scaffold(
         topBar = {
-            val title = if(uiState.isEditMode) "Edit Goal" else "Add Goal"
+            val title = if (uiState.isEditMode) "Edit Goal" else "Add Goal"
             CustomNavigationTopAppBarView(
                 title = title,
                 onNavigateBack = { onEvent.invoke(AddGoalEvent.NavigateBack) }
@@ -104,14 +108,7 @@ private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit
                     onSelectedImage = { onEvent.invoke(AddGoalEvent.SetFile(it)) }
                 )
                 Spacer(modifier = Modifier.size(4.dp))
-                OutlinedCurrencyTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Target",
-                    placeHolder = "0",
-                    value = uiState.targetAmount,
-                    prefix = "Rp ",
-                    onValueChange = { onEvent.invoke(AddGoalEvent.SetTarget(it)) }
-                )
+                GoalCurrencyTextField(uiState, onEvent)
                 CustomOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     label = "Goal Name",
@@ -154,5 +151,23 @@ private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit
                 }
             )
         }
+    )
+}
+
+@Composable
+private fun GoalCurrencyTextField(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit) {
+    Logger.d("Currency: ${uiState.currency.symbol}")
+    val currencyTextFieldState = rememberCurrencyTextFieldState(
+        config = CurrencyTextFieldConfig(
+            Locale(uiState.currency.languageCode, uiState.currency.countryCode),
+            currencySymbol = uiState.currency.symbol
+        )
+    ) {
+        onEvent.invoke(AddGoalEvent.SetTarget(it))
+    }
+    OutlinedCurrencyTextFieldView(
+        state = currencyTextFieldState,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text("Target") },
     )
 }

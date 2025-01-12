@@ -2,12 +2,14 @@ package com.kakapo.oakane.presentation.viewModel.addTransaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.data.model.TransactionParam
 import com.kakapo.data.repository.base.CategoryRepository
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.domain.usecase.base.UpdateTransactionUseCase
+import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -23,6 +25,7 @@ import kotlin.native.ObjCName
 class AddTransactionViewModel(
     private val transactionRepository: TransactionRepository,
     private val categoryRepository: CategoryRepository,
+    private val systemRepository: SystemRepository,
     private val saveTransactionUseCase: SaveTransactionUseCase,
     private val updateTransactionUseCase: UpdateTransactionUseCase
 ) : ViewModel(){
@@ -39,12 +42,10 @@ class AddTransactionViewModel(
     private var walletId: Long = 0
 
     fun initializeData(id: Long) {
+        loadCurrency()
         loadCategories().invokeOnCompletion {
-            if (id != 0L) {
-                loadTransactionBy(id)
-            } else {
-                setDefaultCategory()
-            }
+            if (id != 0L) loadTransactionBy(id)
+            else setDefaultCategory()
         }
     }
 
@@ -72,29 +73,34 @@ class AddTransactionViewModel(
     }
 
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {
+        val onSuccess : (TransactionModel) -> Unit = { transaction ->
+            spentBefore = transaction.amount
+            walletId = transaction.walletId
+            _uiState.update { it.copy(transaction) }
+        }
         transactionRepository.loadTransactionBy(id).fold(
-            onSuccess = { transaction ->
-                spentBefore = transaction.amount
-                walletId = transaction.walletId
-                _uiState.update { it.copy(transaction) }
-            },
-            onFailure = {
-                Logger.e(throwable = it, messageString = "error load transaction ${it.message}")
-            }
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 
     private fun loadCategories() = viewModelScope.launch {
+        val onSuccess: (List<CategoryModel>) -> Unit = { categories ->
+            _uiState.update { it.copy(categories = categories) }
+        }
         categoryRepository.loadCategories().collect { resultCategories ->
             resultCategories.fold(
-                onSuccess = { categories ->
-                    _uiState.update { it.copy(categories = categories) }
-                },
-                onFailure = {
-                    Logger.e(throwable = it, messageString = "error load categories ${it.message}")
-                }
+                onSuccess = onSuccess,
+                onFailure = ::handleError
             )
         }
+    }
+
+    private fun loadCurrency() = viewModelScope.launch {
+        systemRepository.loadSavedCurrency().fold(
+            onSuccess = { currency -> _uiState.update { it.copy(currency = currency) } },
+            onFailure = ::handleError
+        )
     }
 
     private fun create(transaction: TransactionParam) = viewModelScope.launch {
@@ -102,9 +108,7 @@ class AddTransactionViewModel(
             onSuccess = {
                 emit(AddTransactionEffect.NavigateBack)
             },
-            onFailure = {
-                Logger.e(throwable = it, messageString = "error create transaction ${it.message}")
-            }
+            onFailure = ::handleError
         )
     }
 
@@ -112,9 +116,7 @@ class AddTransactionViewModel(
         val transactionParam = transaction.copy(walletId = walletId)
         updateTransactionUseCase.executed(transactionParam, spentBefore).fold(
             onSuccess = { emit(AddTransactionEffect.NavigateBack) },
-            onFailure = {
-                Logger.e(throwable = it, messageString = "error update transaction ${it.message}")
-            }
+            onFailure = ::handleError
         )
     }
 
@@ -143,6 +145,10 @@ class AddTransactionViewModel(
         val categories = uiState.value.categories
         val defaultCategory = categories.first { it.type == currentType }
         _uiState.update { it.copy(category = defaultCategory) }
+    }
+
+    private fun handleError(throwable: Throwable?) {
+        emit(AddTransactionEffect.ShowError(throwable?.message ?: "Unknown Error"))
     }
 
     private fun emit(effect: AddTransactionEffect) = viewModelScope.launch {

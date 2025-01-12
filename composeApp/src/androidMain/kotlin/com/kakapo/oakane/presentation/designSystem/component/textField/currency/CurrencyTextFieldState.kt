@@ -27,7 +27,7 @@ fun rememberCurrencyTextFieldState(
     config: CurrencyTextFieldConfig,
     onChange: ((String) -> Unit)
 ): CurrencyTextFieldState {
-    return remember {
+    return remember(config) {
         CurrencyTextFieldState(
             config = config,
             onChange

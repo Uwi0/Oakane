@@ -104,12 +104,12 @@ object CommonModule {
 
     val viewModel: Module = module {
         viewModel { MainViewModel(get())}
-        viewModel { AddTransactionViewModel(get(), get(), get(), get()) }
+        viewModel { AddTransactionViewModel(get(), get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get()) }
         viewModel { TransactionViewModel(get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }
-        viewModel { AddGoalViewModel(get()) }
+        viewModel { AddGoalViewModel(get(), get()) }
         viewModel { GoalViewModel(get(), get()) }
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
