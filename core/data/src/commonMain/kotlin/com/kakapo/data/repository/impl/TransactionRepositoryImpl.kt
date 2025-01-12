@@ -5,7 +5,6 @@ import com.kakapo.data.model.toModel
 import com.kakapo.data.model.toReportModel
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.database.datasource.base.TransactionLocalDatasource
-import com.kakapo.database.model.TransactionEntity
 import com.kakapo.model.asCurrency
 import com.kakapo.model.report.ReportModel
 import com.kakapo.model.transaction.TransactionModel
@@ -25,8 +24,11 @@ class TransactionRepositoryImpl(
     }
 
     override fun loadTransactions(): Flow<Result<List<TransactionModel>>> = flow {
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
         val result = localDatasource.getTransactions()
-            .mapCatching { it.map(TransactionEntity::toModel) }
+            .mapCatching { transactionResult ->
+                transactionResult.map { transaction -> transaction.toModel(currency) }
+            }
         emit(result)
     }
 
@@ -35,7 +37,8 @@ class TransactionRepositoryImpl(
     }
 
     override suspend fun loadTransactionBy(id: Long): Result<TransactionModel> {
-        return localDatasource.getTransaction(id).mapCatching { it.toModel() }
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        return localDatasource.getTransaction(id).mapCatching { it.toModel(currency) }
     }
 
     override suspend fun update(transaction: TransactionParam): Result<Unit> {

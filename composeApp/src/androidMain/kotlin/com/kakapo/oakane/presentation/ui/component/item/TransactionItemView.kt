@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.asTextEllipsis
-import com.kakapo.common.toFormatIDR
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.dummyValue
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
@@ -46,7 +46,7 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
             horizontalAlignment = Alignment.End
         ) {
             Text(
-                text = "Rp. ${transaction.amount.toFormatIDR()}",
+                text = transaction.amount.toFormatCurrency(transaction.currency),
                 color = transactionColor(transaction.type).second,
                 style = MaterialTheme.typography.titleMedium
             )

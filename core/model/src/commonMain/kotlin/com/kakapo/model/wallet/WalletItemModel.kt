@@ -1,5 +1,6 @@
 package com.kakapo.model.wallet
 
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
 
 data class WalletItemModel(
@@ -7,7 +8,7 @@ data class WalletItemModel(
     val name: String = "All Wallet",
     val isDefault: Boolean = true,
     val icon: String = "",
-    val currency: String = "",
+    val currency: Currency = Currency.IDR,
     val balance: Double = 0.0,
     val color: String = "",
     val income: Double = 0.0,

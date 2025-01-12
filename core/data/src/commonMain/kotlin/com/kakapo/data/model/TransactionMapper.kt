@@ -35,7 +35,7 @@ data class TransactionParam(
     )
 }
 
-fun TransactionEntity.toModel() = TransactionModel(
+fun TransactionEntity.toModel(currency: Currency) = TransactionModel(
     id = id,
     walletId = walletId,
     title = title,
@@ -43,7 +43,8 @@ fun TransactionEntity.toModel() = TransactionModel(
     dateCreated = dateCreated,
     category = category.toCategoryModel(),
     amount = amount,
-    note = note ?: ""
+    note = note ?: "",
+    currency = currency
 )
 
 fun TransactionCategoryEntity.toReportModel(currency: Currency) = ReportModel(

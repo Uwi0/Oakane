@@ -18,7 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.toColorLong
-import com.kakapo.common.toFormatIDR
+import com.kakapo.model.Currency
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.component.button.OutlinedCheckmarkRadioButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
@@ -29,6 +30,7 @@ import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 
 @Composable
 internal fun WalletItemView(wallet: WalletItemModel, onEvent: (WalletsEvent) -> Unit) {
+    val currency = wallet.currency
     ColumnWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,7 +38,7 @@ internal fun WalletItemView(wallet: WalletItemModel, onEvent: (WalletsEvent) -> 
     ) {
         WalletTopContent(wallet = wallet, onEvent = onEvent)
         Text(
-            text = "Rp. ${wallet.balance.toFormatIDR()}",
+            text = wallet.balance.toFormatCurrency(currency),
             style = MaterialTheme.typography.headlineMedium
         )
         HorizontalDivider()
@@ -75,20 +77,22 @@ private fun WalletBottomContent(wallet: WalletItemModel) {
         BalanceContent(
             title = "Income This Month",
             amount = wallet.expense,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            currency = wallet.currency
         )
         VerticalDivider(Modifier.height(40.dp), thickness = 2.dp)
         BalanceContent(
             title = "Expense This Month",
             amount = wallet.income,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.error,
+            currency = wallet.currency
         )
         Spacer(Modifier.weight(1f))
     }
 }
 
 @Composable
-private fun BalanceContent(title: String, amount: Double, color: Color) {
+private fun BalanceContent(title: String, amount: Double, color: Color, currency: Currency) {
     Column(
         modifier = Modifier
             .sizeIn(minWidth = 120.dp)
@@ -97,7 +101,7 @@ private fun BalanceContent(title: String, amount: Double, color: Color) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(title, color = color, style = MaterialTheme.typography.labelMedium)
-        Text(text = "Rp ${amount.toFormatIDR()}")
+        Text(text = amount.toFormatCurrency(currency))
     }
 }
 
@@ -113,7 +117,7 @@ private fun WalletItemPreview() {
                 name = "Alfonso Gibbs",
                 isDefault = false,
                 icon = "fringilla",
-                currency = "ligula",
+                currency = Currency.IDR,
                 balance = 20_000_000.0,
                 income = 50_000.0,
                 expense = 50_000.0,

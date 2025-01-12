@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.toFormatIDR
+import com.kakapo.model.Currency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionType
@@ -59,7 +59,8 @@ private fun MonthlyBudgetContent(
             CustomProgressIndicatorView(value = overView.progress)
             SupportContent(
                 spent = overView.spent,
-                left = overView.left
+                left = overView.left,
+                currency = currency
             )
         }
     }
@@ -120,17 +121,17 @@ private fun IncomeAndExpenseContent(overView: MonthlyBudgetOverView) {
 }
 
 @Composable
-private fun SupportContent(spent: Double, left: Double) {
+private fun SupportContent(spent: Double, left: Double, currency: Currency) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Spent Rp ${spent.toFormatIDR()}",
+            text = "Spent Rp ${spent.toFormatCurrency(currency)}",
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = "Left Rp ${left.toFormatIDR()}",
+            text = "Left Rp ${left.toFormatCurrency(currency)}",
             style = MaterialTheme.typography.bodyMedium
         )
     }

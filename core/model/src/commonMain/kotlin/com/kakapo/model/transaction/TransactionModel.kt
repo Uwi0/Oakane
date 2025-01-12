@@ -1,6 +1,7 @@
 package com.kakapo.model.transaction
 
 import com.kakapo.common.formatDateWith
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryModel
 
 data class TransactionModel(
@@ -11,7 +12,8 @@ data class TransactionModel(
     val category: CategoryModel = CategoryModel(),
     val dateCreated: Long = 1729214280000,
     val amount: Double = 0.0,
-    val note: String = ""
+    val note: String = "",
+    val currency: Currency = Currency.IDR
 ) {
     val formattedDate: String
         get() {

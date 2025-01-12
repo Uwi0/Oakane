@@ -6,10 +6,12 @@ import com.kakapo.data.model.toWalletModel
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.database.datasource.base.WalletLocalDatasource
 import com.kakapo.database.model.WalletEntity
+import com.kakapo.model.asCurrency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
 import com.kakapo.preference.constant.LongKey
 import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.utils.getSavedCurrency
 import com.kakapo.preference.datasource.utils.getWalletId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -47,7 +49,10 @@ class WalletRepositoryImpl(
 
     override suspend fun loadWalletById(): Result<WalletModel> {
         val id = preferenceDatasource.getWalletId()
-        return localDatasource.getWalletBy(id).mapCatching(WalletEntity::toWalletModel)
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        return localDatasource.getWalletBy(id).mapCatching { walletEntity ->
+            walletEntity.toWalletModel(currency)
+        }
     }
 
     override suspend fun save(wallet: WalletModel): Result<Unit> {
@@ -58,7 +63,8 @@ class WalletRepositoryImpl(
 
     override fun loadWallets(): Flow<Result<List<WalletItemModel>>> = flow {
         val walletId = preferenceDatasource.getWalletId()
-        val toWalletItem: (WalletEntity) -> WalletItemModel = { it.toWalletItemModel(walletId) }
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        val toWalletItem: (WalletEntity) -> WalletItemModel = { it.toWalletItemModel(walletId, currency) }
         val result = localDatasource.getWallets().mapCatching { it.map(toWalletItem) }
         emit(result)
     }
