@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.data.repository.base.BackupRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.model.Currency
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class OnBoardingViewModel(
     private val systemRepository: SystemRepository,
-    private val walletRepository: WalletRepository
+    private val walletRepository: WalletRepository,
+    private val backupRepository: BackupRepository
 ) : ViewModel() {
 
     val uiState get() = _uiState.asStateFlow()
@@ -30,6 +32,8 @@ class OnBoardingViewModel(
             is OnBoardingEvent.OnConfirmCurrency -> saveCurrency(event.currency)
             is OnBoardingEvent.ConfirmWallet -> createWallet(event.wallet)
             OnBoardingEvent.SkippWallet -> createDefaultWallet()
+            OnBoardingEvent.OnclickRestoredBackup -> emit(OnBoardingEffect.RestoreBackup)
+            is OnBoardingEvent.RestoreBackup -> restoreBackup(event.json)
         }
     }
 
@@ -58,6 +62,16 @@ class OnBoardingViewModel(
             emit(OnBoardingEffect.NavigateToHome)
         }
         walletRepository.save(wallet).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun restoreBackup(json: String) = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            emit(OnBoardingEffect.NavigateToHome)
+        }
+        backupRepository.restoreBackup(json).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

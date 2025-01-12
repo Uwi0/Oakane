@@ -116,7 +116,7 @@ object CommonModule {
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
-        viewModel { OnBoardingViewModel(get(), get()) }
+        viewModel { OnBoardingViewModel(get(), get(), get()) }
     }
 
 }

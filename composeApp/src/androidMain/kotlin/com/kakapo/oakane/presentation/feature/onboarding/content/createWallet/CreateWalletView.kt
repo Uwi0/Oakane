@@ -50,13 +50,13 @@ internal fun CreateWalletView(onEvent: (OnBoardingEvent) -> Unit) {
         onEvent(OnBoardingEvent.ConfirmWallet(it))
     }
 
-    CreateWalletContentView(state = createWalletState,onEvent = onEvent)
-
     LaunchedEffect(createWalletState.isSheetVisible) {
         if(!createWalletState.isSheetVisible) {
             sheetState.hide()
         }
     }
+
+    CreateWalletContentView(state = createWalletState,onEvent = onEvent)
 
     if (createWalletState.isSheetVisible) {
         WalletSheetView(

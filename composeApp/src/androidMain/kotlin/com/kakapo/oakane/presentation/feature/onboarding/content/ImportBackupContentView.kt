@@ -50,7 +50,7 @@ internal fun ImportBackupContentView(onEvent: (OnBoardingEvent) -> Unit) {
             )
             Spacer(Modifier.weight(1f))
             CustomOutlinedButton(
-                onClick = {},
+                onClick = { onEvent.invoke(OnBoardingEvent.OnclickRestoredBackup)},
                 contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
                 content = {
                     Row(
