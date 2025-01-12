@@ -3,7 +3,7 @@ import Shared
 
 internal struct ReportBudgetContentView: View {
     
-    let item: MonthlyBudgetOverViewModel
+    let item: MonthlyBudgetOverView
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

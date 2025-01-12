@@ -29,7 +29,7 @@ struct HorizontalColorSelectorView: View {
                         }
                 }
                 ForEach(colors, id: \.self) { hex in
-                    let colorHex = hex.toColorInt()
+                    let colorHex = hex.toColorLong()
                     let color = Color(hex: colorHex)
                     Circle()
                         .fill(color)

@@ -89,7 +89,7 @@ object CommonModule {
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
         factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get(), get()) }
         factory<WalletRepository> { WalletRepositoryImpl(get(), get()) }
-        factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get()) }
+        factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
         factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
     }

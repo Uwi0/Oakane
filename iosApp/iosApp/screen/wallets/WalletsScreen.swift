@@ -13,7 +13,6 @@ struct WalletsScreen: View {
         case .create: return .fraction(0.65)
         case .selectIcon: return .fraction(0.9)
         case .selectColor: return .large
-        case .selectCurrency: return .large
         }
     }
     
@@ -32,7 +31,6 @@ struct WalletsScreen: View {
                     switch uiState.sheetContent {
                     case .create: CreateWalletSheetView(uiState: uiState, onEvent: viewModel.handle(event:))
                     case .selectColor: Text("Select Color")
-                    case .selectCurrency: Text("Select Currency")
                     case .selectIcon: SelectIconView(
                         selectedIcon: uiState.selectedIcon,
                         selectedColor: uiState.selectedColor,

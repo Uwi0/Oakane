@@ -5,6 +5,10 @@ struct ReportItemView: View {
     
     let item: ReportModelKt
     
+    private var currency: Currency {
+        item.currency
+    }
+    
     private var color: Color {
         item.isDefault ? Color.primary : Color.error
     }
@@ -14,7 +18,7 @@ struct ReportItemView: View {
             SelectedIconView(imageName: item.icon, icon: item.iconName, color: item.formattedColor)
             Text(item.name).font(Typography.titleMedium)
             Spacer().frame(height: 8)
-            Text(item.amount.toFormatIDRWithCurrency()).font(Typography.titleMedium).foregroundStyle(color)
+            Text(item.amount.toFormatCurrency(currency: currency)).font(Typography.titleMedium).foregroundStyle(color)
         }
         .customBackground(backgroundColor: ColorTheme.surface)
     }

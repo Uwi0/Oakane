@@ -4,7 +4,7 @@ import Shared
 struct ReportsState {
     var reportsKt: [ReportModelKt] = []
     var reports: [ReportModel] = []
-    var monthlyOverView: MonthlyBudgetOverViewModel = defaultMonthlyBudgetOverView
+    var monthlyOverView: MonthlyBudgetOverView = defaultMonthlyBudgetOverView
     var totalBalance: Double = 0
     var wallets: [WalletItemModel] = []
     var selectedName: String = ""

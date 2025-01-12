@@ -66,6 +66,8 @@ struct SettingsScreen: View {
                 print("restire back up")
             case .showError(let effect):
                 print(effect.message)
+            case .successChangeCurrency:
+                print("success")
             }
         }
         viewModel.uiEffect = nil

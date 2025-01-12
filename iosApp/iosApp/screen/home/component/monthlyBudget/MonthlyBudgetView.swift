@@ -3,7 +3,7 @@ import Shared
 
 struct MonthlyBudgetView: View {
     
-    let monthlyBudgetOverView: MonthlyBudgetOverViewModel
+    let monthlyBudgetOverView: MonthlyBudgetOverView
     let onEvent: (HomeEvent) -> Void
     
     var body: some View {
@@ -18,7 +18,7 @@ struct MonthlyBudgetView: View {
 
 fileprivate struct TopContentView: View {
     
-    let overview: MonthlyBudgetOverViewModel
+    let overview: MonthlyBudgetOverView
     let onEvent: (HomeEvent) -> Void
     private let imageSize: CGFloat = 24
     
@@ -66,7 +66,7 @@ fileprivate struct TopContentView: View {
 }
 
 fileprivate struct BottomContentView: View {
-    let overview: MonthlyBudgetOverViewModel
+    let overview: MonthlyBudgetOverView
     var body: some View {
         HStack(spacing: 16) {
             BalanceItemView(value: overview.totalIncome,isIncome: true)

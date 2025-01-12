@@ -35,7 +35,7 @@ fileprivate struct IconView: View {
     }
     
     private var color: Color {
-        Color(hex: wallet.color.toColorInt())
+        Color(hex: wallet.color.toColorLong())
     }
     
     var body: some View {
