@@ -13,6 +13,9 @@ import com.kakapo.database.model.GoalEntity
 import com.kakapo.database.model.MonthlyBudgetEntity
 import com.kakapo.database.model.TransactionEntity
 import com.kakapo.database.model.WalletEntity
+import com.kakapo.preference.constant.IntKey
+import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.utils.getSavedCurrency
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.Serializable
@@ -24,19 +27,22 @@ class BackupRepositoryImpl(
     private val goalDatasource: GoalLocalDatasource,
     private val monthlyDatasource: MonthlyBudgetLocalDatasource,
     private val transactionDatasource: TransactionLocalDatasource,
-    private val walletDatasource: WalletLocalDatasource
-): BackupRepository {
+    private val walletDatasource: WalletLocalDatasource,
+    private val preferenceDatasource: PreferenceDatasource,
+) : BackupRepository {
 
     override suspend fun createBackup(): Result<String> = coroutineScope {
         runCatching {
-            val categoryLimits = async { categoryLimitDatasource.getCategoryLimitsForBackup()}
+            val categoryLimits = async { categoryLimitDatasource.getCategoryLimitsForBackup() }
             val categories = async { categoryDatasource.getCategoriesForBackup() }
             val goals = async { goalDatasource.getGoalsForBackup() }
             val monthlyBudgets = async { monthlyDatasource.getMonthlyBudgetsForBackup() }
             val transactions = async { transactionDatasource.getTransactionsForBackup() }
             val wallets = async { walletDatasource.getWalletForBackup() }
+            val currency = async { preferenceDatasource.getSavedCurrency() }
 
             val backup = BackupModel(
+                currency.await(),
                 categoryLimits.await().getOrElse { emptyList() },
                 categories.await().getOrElse { emptyList() },
                 goals.await().getOrElse { emptyList() },
@@ -53,6 +59,9 @@ class BackupRepositoryImpl(
         runCatching {
             val backupModel = Json.decodeFromString(BackupModel.serializer(), backup)
 
+            val currencyDeferred = async {
+                preferenceDatasource.saveIntValue(IntKey.CURRENCY, backupModel.currency)
+            }
             val categoryDeferred = async {
                 categoryDatasource.restoreCategories(backupModel.categories)
             }
@@ -72,6 +81,7 @@ class BackupRepositoryImpl(
                 walletDatasource.restoreWallets(backupModel.wallets)
             }
 
+            currencyDeferred.await()
             categoryDeferred.await()
             categoryLimitDeferred.await()
             goalDeferred.await()
@@ -84,6 +94,7 @@ class BackupRepositoryImpl(
 
     @Serializable
     data class BackupModel(
+        val currency: Int,
         val categoryLimits: List<CategoryLimitEntity>,
         val categories: List<CategoryEntity>,
         val goals: List<GoalEntity>,
