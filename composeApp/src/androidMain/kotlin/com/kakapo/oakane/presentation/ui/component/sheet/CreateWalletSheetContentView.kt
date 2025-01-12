@@ -27,13 +27,13 @@ import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 
 sealed class CreateWalletSheetEvent {
-    data object ClickedIcon: CreateWalletSheetEvent()
-    data class ChangeWalletName(val name: String): CreateWalletSheetEvent()
-    data class ChangeStartBalance(val balance: String): CreateWalletSheetEvent()
-    data object ClickedColorBrush: CreateWalletSheetEvent()
-    data class SelectedColor(val hex: String): CreateWalletSheetEvent()
-    data object DeleteWallet: CreateWalletSheetEvent()
-    data object SaveWallet: CreateWalletSheetEvent()
+    data object ClickedIcon : CreateWalletSheetEvent()
+    data class ChangeWalletName(val name: String) : CreateWalletSheetEvent()
+    data class ChangeStartBalance(val balance: String) : CreateWalletSheetEvent()
+    data object ClickedColorBrush : CreateWalletSheetEvent()
+    data class SelectedColor(val hex: String) : CreateWalletSheetEvent()
+    data object DeleteWallet : CreateWalletSheetEvent()
+    data object SaveWallet : CreateWalletSheetEvent()
 }
 
 @Composable
@@ -41,6 +41,7 @@ internal fun CreateWalletSheetContentView(
     walletName: String,
     selectedIcon: SelectedIconModel,
     colorSelector: ColorSelector,
+    textFieldConfig: CurrencyTextFieldConfig = CurrencyTextFieldConfig(currencySymbol = "RP"),
     isEditMode: Boolean,
     onEvent: (CreateWalletSheetEvent) -> Unit
 ) {
@@ -55,11 +56,12 @@ internal fun CreateWalletSheetContentView(
             selectedIcon = selectedIcon,
             walletName = walletName,
             onIconClick = { onEvent.invoke(CreateWalletSheetEvent.ClickedIcon) },
-            onChangeWalletName = {
-                name -> onEvent.invoke(CreateWalletSheetEvent.ChangeWalletName(name))
+            onChangeWalletName = { name ->
+                onEvent.invoke(CreateWalletSheetEvent.ChangeWalletName(name))
             }
         )
         StartBalanceContent(
+            textFieldConfig = textFieldConfig,
             onChangeBalance = { balance ->
                 onEvent.invoke(CreateWalletSheetEvent.ChangeStartBalance(balance))
             }
@@ -107,10 +109,10 @@ private fun CreateWalletContent(
 }
 
 @Composable
-private fun StartBalanceContent(onChangeBalance: (String) -> Unit) {
-    val textFieldConfig = CurrencyTextFieldConfig(
-        currencySymbol = "Rp"
-    )
+private fun StartBalanceContent(
+    textFieldConfig: CurrencyTextFieldConfig,
+    onChangeBalance: (String) -> Unit
+) {
     val state = rememberCurrencyTextFieldState(textFieldConfig) { balance ->
         onChangeBalance.invoke(balance)
     }

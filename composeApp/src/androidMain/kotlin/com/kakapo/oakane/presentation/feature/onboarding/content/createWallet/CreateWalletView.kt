@@ -35,39 +35,47 @@ import com.kakapo.common.toColorLong
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.sheet.CreateWalletSheetContentView
 import com.kakapo.oakane.presentation.ui.component.sheet.SelectColorView
 import com.kakapo.oakane.presentation.ui.component.sheet.SelectIconSheetView
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEvent
+import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingState
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun CreateWalletView(onEvent: (OnBoardingEvent) -> Unit) {
+internal fun CreateWalletView(uiState: OnBoardingState, onEvent: (OnBoardingEvent) -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val createWalletState = rememberCreateWalletState {
         onEvent(OnBoardingEvent.ConfirmWallet(it))
     }
+    val textFieldConfig = CurrencyTextFieldConfig(
+        locale = Locale(uiState.currency.languageCode, uiState.currency.countryCode),
+        currencySymbol = uiState.currency.currencySymbol
+    )
 
     LaunchedEffect(createWalletState.isSheetVisible) {
-        if(!createWalletState.isSheetVisible) {
+        if (!createWalletState.isSheetVisible) {
             sheetState.hide()
         }
     }
 
-    CreateWalletContentView(state = createWalletState,onEvent = onEvent)
+    CreateWalletContentView(state = createWalletState, onEvent = onEvent)
 
     if (createWalletState.isSheetVisible) {
         WalletSheetView(
             createWalletState = createWalletState,
-            sheetState = sheetState
+            sheetState = sheetState,
+            textFieldConfig = textFieldConfig
         )
     }
 }
 
 @Composable
-private fun CreateWalletContentView(state: CreateWalletState,onEvent: (OnBoardingEvent) -> Unit) {
+private fun CreateWalletContentView(state: CreateWalletState, onEvent: (OnBoardingEvent) -> Unit) {
     Surface {
         Column(
             modifier = Modifier
@@ -94,7 +102,7 @@ private fun CreateWalletContentView(state: CreateWalletState,onEvent: (OnBoardin
             CustomOutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
-                onClick = { state.isSheetVisible = true},
+                onClick = { state.isSheetVisible = true },
                 content = {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -139,6 +147,7 @@ private fun CreateWalletContentView(state: CreateWalletState,onEvent: (OnBoardin
 private fun WalletSheetView(
     createWalletState: CreateWalletState,
     sheetState: SheetState,
+    textFieldConfig: CurrencyTextFieldConfig
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
@@ -149,6 +158,7 @@ private fun WalletSheetView(
                 walletName = createWalletState.walletName,
                 selectedIcon = createWalletState.selectedIcon,
                 colorSelector = createWalletState.colorSelector,
+                textFieldConfig = textFieldConfig,
                 isEditMode = false,
                 onEvent = createWalletState::walletSheetEvent
             )
@@ -173,6 +183,6 @@ private fun WalletSheetView(
 @Preview
 private fun CreateWalletPreview() {
     AppTheme {
-        CreateWalletView(onEvent = {})
+        CreateWalletView(uiState = OnBoardingState(),onEvent = {})
     }
 }

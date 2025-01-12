@@ -42,7 +42,7 @@ internal fun OnBoardingRoute(navigateToHome: () -> Unit) {
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 OnBoardingEffect.NavigateToHome -> navigateToHome.invoke()
                 is OnBoardingEffect.ShowError -> context.showToast(effect.message)
                 OnBoardingEffect.RestoreBackup -> retrieveJsonLauncher.launch(openDocumentIntent())
@@ -69,7 +69,9 @@ private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) 
     when (state.onBoardingContent) {
         OnBoardingContent.Account -> AccountContentView(onEvent = onEvent)
         OnBoardingContent.ImportBackup -> ImportBackupContentView(onEvent = onEvent)
-        OnBoardingContent.SelectCurrency -> SelectCurrencyView(onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) })
-        OnBoardingContent.CreateWallet -> CreateWalletView(onEvent = onEvent)
+        OnBoardingContent.SelectCurrency -> SelectCurrencyView(
+            onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) }
+        )
+        OnBoardingContent.CreateWallet -> CreateWalletView(uiState = state, onEvent = onEvent)
     }
 }
