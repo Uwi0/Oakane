@@ -1,7 +1,7 @@
 [versions]
 agp = "8.7.3"
 android-compileSdk = "34"
-android-minSdk = "24"
+android-minSdk = "26"
 android-targetSdk = "34"
 androidx-activityCompose = "1.9.3"
 androidx-appcompat = "1.7.0"
@@ -28,6 +28,7 @@ ksp = "2.1.0-1.0.29"
 open-csv = "5.7.1"
 project-version = "1.0.0"
 skie = "0.10.0"
+splash-screen = "1.0.0"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.6"
 
@@ -63,6 +64,7 @@ koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-com
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxdatetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 open-csv = { group = "com.opencsv", name = "opencsv", version.ref = "open-csv" }
+splash-screen = { module = "androidx.core:core-splashscreen", version.ref = "splash-screen" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }

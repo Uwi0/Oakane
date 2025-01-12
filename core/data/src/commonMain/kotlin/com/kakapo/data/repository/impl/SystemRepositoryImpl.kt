@@ -5,6 +5,7 @@ import com.kakapo.model.Currency
 import com.kakapo.model.asCurrency
 import com.kakapo.model.system.Theme
 import com.kakapo.model.system.asTheme
+import com.kakapo.preference.constant.BooleanKey
 import com.kakapo.preference.constant.IntKey
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 
@@ -34,6 +35,18 @@ class SystemRepositoryImpl(
     override suspend fun loadSavedCurrency(): Result<Currency> {
         return runCatching {
             preferenceDatasource.getIntValue(IntKey.CURRENCY).asCurrency()
+        }
+    }
+
+    override suspend fun saveOnBoardingAlreadyRead(): Result<Unit> {
+        return runCatching {
+            preferenceDatasource.saveBooleanValue(BooleanKey.ON_BOARDING_ALREADY_READ, true)
+        }
+    }
+
+    override suspend fun loadOnBoardingAlreadyRead(): Result<Boolean> {
+        return runCatching {
+            preferenceDatasource.getBooleanValue(BooleanKey.ON_BOARDING_ALREADY_READ)
         }
     }
 }

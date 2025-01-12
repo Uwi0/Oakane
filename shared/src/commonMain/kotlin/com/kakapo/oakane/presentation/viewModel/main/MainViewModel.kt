@@ -34,6 +34,10 @@ class MainViewModel(
         }
     }
 
+    suspend fun isOnboardingAlreadyRead(): Boolean {
+        return systemRepository.loadOnBoardingAlreadyRead().getOrElse { false }
+    }
+
     private fun loadTheme() = viewModelScope.launch {
         val onSuccess: (Theme) -> Unit = { theme ->
             _uiState.update { it.copy(theme = theme) }

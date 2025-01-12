@@ -5,7 +5,7 @@ object LongKey {
 }
 
 object BooleanKey {
-    const val IS_DARK_MODE = "is_dark_mode"
+    const val ON_BOARDING_ALREADY_READ = "on_boarding_already_read"
 }
 
 object IntKey {

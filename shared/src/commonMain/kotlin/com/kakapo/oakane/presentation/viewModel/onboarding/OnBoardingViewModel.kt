@@ -49,7 +49,7 @@ class OnBoardingViewModel(
 
     private fun createDefaultWallet() = viewModelScope.launch {
         val onSuccess: (Unit) -> Unit = {
-            emit(OnBoardingEffect.NavigateToHome)
+            saveOnBoardingAlreadyRead()
         }
         walletRepository.createDefaultWallet().fold(
             onSuccess = onSuccess,
@@ -59,7 +59,7 @@ class OnBoardingViewModel(
 
     private fun createWallet(wallet: WalletModel) = viewModelScope.launch {
         val onSuccess: (Unit) -> Unit = {
-            emit(OnBoardingEffect.NavigateToHome)
+            saveOnBoardingAlreadyRead()
         }
         walletRepository.save(wallet).fold(
             onSuccess = onSuccess,
@@ -72,6 +72,16 @@ class OnBoardingViewModel(
             emit(OnBoardingEffect.NavigateToHome)
         }
         backupRepository.restoreBackup(json).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun saveOnBoardingAlreadyRead() = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            emit(OnBoardingEffect.NavigateToHome)
+        }
+        systemRepository.saveOnBoardingAlreadyRead().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
