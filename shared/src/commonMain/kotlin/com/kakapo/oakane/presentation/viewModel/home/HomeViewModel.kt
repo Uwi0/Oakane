@@ -10,7 +10,7 @@ import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.model.GoalModel
-import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -91,7 +91,7 @@ class HomeViewModel(
     }
 
     private fun loadBudgetOverView() = viewModelScope.launch {
-        val onSuccess: (MonthlyBudgetOverViewModel) -> Unit = { monthlyBudget ->
+        val onSuccess: (MonthlyBudgetOverView) -> Unit = { monthlyBudget ->
             _uiState.update { it.copy(monthlyBudgetOverView = monthlyBudget) }
         }
         monthlyBudgetOverviewUseCase.execute().fold(

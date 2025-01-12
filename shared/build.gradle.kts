@@ -26,6 +26,8 @@ kotlin {
             baseName = "Shared"
             export(projects.core.common)
             export(projects.core.model)
+            export(libs.androidx.lifecycle.viewmodel)
+            freeCompilerArgs += "-Xbinary=bundleId=com.kakapo.oakane"
             xcf.add(this)
         }
     }

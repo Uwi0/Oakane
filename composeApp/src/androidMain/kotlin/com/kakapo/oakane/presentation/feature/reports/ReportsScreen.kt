@@ -126,7 +126,8 @@ private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit
                         amount = uiState.totalBalance,
                         proportions = uiState.proportions,
                         colors = uiState.colors,
-                        categoriesName = uiState.names
+                        categoriesName = uiState.names,
+                        currency = uiState.currency
                     )
                 }
                 item {

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asDouble
 import com.kakapo.data.repository.base.GoalRepository
+import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.model.Currency
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +18,8 @@ import kotlin.native.ObjCName
 
 @ObjCName("GoalViewModelKt")
 class GoalViewModel(
-    private val repository: GoalRepository
+    private val repository: GoalRepository,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -29,6 +32,7 @@ class GoalViewModel(
 
     fun initializeData(goalId: Long) {
         loadGoalBy(goalId)
+        loadCurrency()
     }
 
     fun handleEvent(event: GoalEvent) {
@@ -49,6 +53,16 @@ class GoalViewModel(
                 onFailure = ::handleError
             )
         }
+    }
+
+    private fun loadCurrency() = viewModelScope.launch {
+        val onSuccess: (Currency) -> Unit = { currency ->
+            _uiState.update { it.copy(currency = currency) }
+        }
+        systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
     }
 
     private fun addSaving() = viewModelScope.launch {

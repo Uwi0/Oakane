@@ -3,8 +3,10 @@ package com.kakapo.oakane.presentation.viewModel.transaction
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
+import com.kakapo.model.Currency
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +19,8 @@ import kotlin.native.ObjCName
 
 @ObjCName("TransactionViewModelKt")
 class TransactionViewModel(
-    private val repository: TransactionRepository,
+    private val transactionRepository: TransactionRepository,
+    private val systemRepository: SystemRepository,
     private val deleteTransactionUseCase: DeleteTransactionUseCase
 ) : ViewModel() {
 
@@ -31,6 +34,7 @@ class TransactionViewModel(
 
     fun initializeData(id: Long) {
         loadTransactionBy(id)
+        loadCurrency()
     }
 
     fun handleEvent(event: TransactionEvent) {
@@ -51,8 +55,18 @@ class TransactionViewModel(
     }
 
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {
-        repository.loadTransactionBy(id).fold(
+        transactionRepository.loadTransactionBy(id).fold(
             onSuccess = { transaction -> _uiState.update { it.copy(transaction = transaction) } },
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadCurrency() = viewModelScope.launch {
+        val onSuccess: (Currency) -> Unit = { currency ->
+            _uiState.update { it.copy(currency = currency) }
+        }
+        systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }

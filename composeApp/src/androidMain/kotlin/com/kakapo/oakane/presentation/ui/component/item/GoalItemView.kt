@@ -16,10 +16,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import com.kakapo.common.formatDateWith
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.GoalModel
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
@@ -29,6 +30,9 @@ import com.kakapo.oakane.presentation.ui.component.RowWrapper
 internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
     val context = LocalContext.current
     val imageUri: Uri? = context.getSavedImageUri(goal.fileName).getOrNull()
+    val currency = goal.currency
+    val savedMoney = goal.savedMoney.toFormatCurrency(currency)
+    Logger.d("currency $currency")
     RowWrapper(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         onClick = onClicked
@@ -44,7 +48,7 @@ internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(text = goal.goalName, style = MaterialTheme.typography.titleMedium)
             Text(
-                text = goal.amount.toFormatCurrency(),
+                text = goal.amount.toFormatCurrency(currency),
                 style = MaterialTheme.typography.titleMedium
             )
             CustomProgressIndicatorView(value = goal.progress)
@@ -53,7 +57,7 @@ internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Rp. ${goal.savedMoney}/${goal.progress}%",
+                    text = "${savedMoney}/${goal.progress}%",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline
                 )

@@ -4,13 +4,16 @@ import com.kakapo.data.model.toGoalEntity
 import com.kakapo.data.model.toGoalModel
 import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.database.datasource.base.GoalLocalDatasource
-import com.kakapo.database.model.GoalEntity
 import com.kakapo.model.GoalModel
+import com.kakapo.model.asCurrency
+import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.utils.getSavedCurrency
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class GoalRepositoryImpl (
-    private val localDatasource: GoalLocalDatasource
+    private val localDatasource: GoalLocalDatasource,
+    private val preferenceDatasource: PreferenceDatasource
 ) : GoalRepository {
 
     override suspend fun save(goal: GoalModel): Result<Unit> {
@@ -18,12 +21,17 @@ class GoalRepositoryImpl (
     }
 
     override fun loadGoals(): Flow<Result<List<GoalModel>>> = flow {
-        val result = localDatasource.getGoals().mapCatching { it.map(GoalEntity::toGoalModel) }
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        val result = localDatasource.getGoals()
+            .mapCatching { goalResult ->
+                goalResult.map{ goal -> goal.toGoalModel(currency) }
+            }
         emit(result)
     }
 
     override fun loadGoalBy(id: Long): Flow<Result<GoalModel>> = flow {
-        val result = localDatasource.getGoalBy(id).mapCatching { it.toGoalModel() }
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        val result = localDatasource.getGoalBy(id).mapCatching { it.toGoalModel(currency) }
         emit(result)
     }
 

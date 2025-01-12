@@ -18,8 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.category.CategoryLimitModel
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
@@ -34,6 +34,8 @@ internal fun CategoryLimitItemView(
     onEvent: (MonthlyBudgetEvent) -> Unit
 ) {
     val progress = NumberFormat.getInstance().format(category.progress * 100)
+    val currency = category.currency
+    val spent = category.spent.toFormatCurrency(currency)
     RowWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
         onClick = { onEvent.invoke(MonthlyBudgetEvent.Selected(category)) }) {
@@ -51,13 +53,13 @@ internal fun CategoryLimitItemView(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    category.limit.toFormatCurrency(),
+                    category.limit.toFormatCurrency(currency),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
             CustomProgressIndicatorView(category.progress)
             Text(
-                text = "Spent: ${category.spent.toFormatCurrency()}/${progress}%",
+                text = "Spent: ${spent}/${progress}%",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.outline
             )

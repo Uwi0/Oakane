@@ -8,7 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.kakapo.common.toFormatCurrency
+import com.kakapo.model.Currency
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
 
@@ -16,7 +17,8 @@ import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
 internal fun BalanceItemView(
     modifier: Modifier = Modifier,
     balance: Double,
-    type: TransactionType
+    type: TransactionType,
+    currency: Currency
 ) {
     ConstraintLayout(modifier = modifier) {
         val (icon, detail) = createRefs()
@@ -40,7 +42,7 @@ internal fun BalanceItemView(
             val title = if (type == TransactionType.Income) "Total Income" else "Total Expense"
             Text(text = title, color = MaterialTheme.colorScheme.outline)
             Text(
-                text = balance.toFormatCurrency(),
+                text = balance.toFormatCurrency(currency),
                 style = MaterialTheme.typography.titleMedium
             )
         }

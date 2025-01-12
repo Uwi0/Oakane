@@ -1,7 +1,8 @@
 package com.kakapo.oakane.presentation.viewModel.reports
 
 import com.kakapo.common.startDateAndEndDateOfMonth
-import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.Currency
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.report.ReportCsvModel
 import com.kakapo.model.report.ReportModel
 import com.kakapo.model.wallet.WalletItemModel
@@ -12,12 +13,13 @@ import kotlin.native.ObjCName
 @ObjCName("ReportsStateKt")
 data class ReportsState(
     val reports: List<ReportModel> = emptyList(),
-    val monthlyOverView: MonthlyBudgetOverViewModel = MonthlyBudgetOverViewModel(),
+    val monthlyOverView: MonthlyBudgetOverView = MonthlyBudgetOverView(),
     val totalBalance: Double = 0.0,
     val wallets: List<WalletItemModel> = emptyList(),
     val selectedWalletName: String = "All Wallet",
     val selectedMonth: MonthReport = currentMonth(),
-    val selectedWallet: WalletItemModel? = null
+    val selectedWallet: WalletItemModel? = null,
+    val currency: Currency = Currency.IDR
 ){
     val proportions: List<Float> get(){
         val total = reports.sumOf { it.amount }

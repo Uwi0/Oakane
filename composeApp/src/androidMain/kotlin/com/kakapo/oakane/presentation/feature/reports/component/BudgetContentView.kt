@@ -22,26 +22,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.toFormatCurrency
-import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.Currency
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 
 @Composable
-internal fun BudgetContentView(item: MonthlyBudgetOverViewModel) {
+internal fun BudgetContentView(item: MonthlyBudgetOverView) {
+    val currency = item.currency
+    val limit = item.limit.toFormatCurrency(currency)
+    val spent = item.spent.toFormatCurrency(currency)
     ColumnWrapper(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 16.dp)
     ) {
         Text(
-            text = "Budget: ${item.limit.toFormatCurrency()}",
+            text = "Budget: $limit",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.outline
         )
         CustomProgressIndicatorView(item.progress)
         Text(
-            text = "Spent: ${item.spent.toFormatCurrency()}",
+            text = "Spent: $spent)}",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.outline
         )
@@ -51,20 +55,20 @@ internal fun BudgetContentView(item: MonthlyBudgetOverViewModel) {
 }
 
 @Composable
-private fun BottomContentView(item: MonthlyBudgetOverViewModel) {
+private fun BottomContentView(item: MonthlyBudgetOverView) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        BudgetItemView(amount = item.totalIncome, isExpense = false)
+        BudgetItemView(amount = item.totalIncome, isExpense = false, currency = item.currency)
         VerticalDivider(Modifier.height(48.dp))
-        BudgetItemView(amount = item.totalExpense, isExpense = true)
+        BudgetItemView(amount = item.totalExpense, isExpense = true, currency = item.currency)
     }
 }
 
 @Composable
-private fun BudgetItemView(amount: Double, isExpense: Boolean) {
+private fun BudgetItemView(amount: Double, isExpense: Boolean, currency: Currency) {
     val icon = if (isExpense) Icons.Default.ArrowDownward
     else Icons.Default.ArrowUpward
 
@@ -85,7 +89,7 @@ private fun BudgetItemView(amount: Double, isExpense: Boolean) {
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.outline
             )
-            Text(amount.toFormatCurrency(), style = MaterialTheme.typography.bodySmall)
+            Text(amount.toFormatCurrency(currency), style = MaterialTheme.typography.bodySmall)
         }
     }
 }

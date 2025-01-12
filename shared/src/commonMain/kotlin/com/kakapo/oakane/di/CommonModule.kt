@@ -83,14 +83,14 @@ object CommonModule {
     }
 
     val repositoryModule: Module = module {
-        factory<TransactionRepository> { TransactionRepositoryImpl(get()) }
+        factory<TransactionRepository> { TransactionRepositoryImpl(get(), get()) }
         factory<CategoryRepository> { CategoryRepositoryImpl(get()) }
-        factory<GoalRepository> { GoalRepositoryImpl(get()) }
+        factory<GoalRepository> { GoalRepositoryImpl(get(), get()) }
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
-        factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get()) }
+        factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get(), get()) }
         factory<WalletRepository> { WalletRepositoryImpl(get(), get()) }
         factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get()) }
-        factory<ReportRepository> { ReportRepositoryImpl(get()) }
+        factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
     }
 
@@ -99,7 +99,7 @@ object CommonModule {
         factory<SaveTransactionUseCase> { SaveTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<UpdateTransactionUseCase> { UpdateTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get(), get()) }
-        factory<GetMonthlyBudgetOverviewUseCase> { GetMonthlyBudgetOverviewUseCaseImpl(get(), get()) }
+        factory<GetMonthlyBudgetOverviewUseCase> { GetMonthlyBudgetOverviewUseCaseImpl(get(), get(), get()) }
     }
 
     val viewModel: Module = module {
@@ -107,14 +107,14 @@ object CommonModule {
         viewModel { AddTransactionViewModel(get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get()) }
-        viewModel { TransactionViewModel(get(), get()) }
+        viewModel { TransactionViewModel(get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }
         viewModel { AddGoalViewModel(get()) }
-        viewModel { GoalViewModel(get()) }
+        viewModel { GoalViewModel(get(), get()) }
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get())}
-        viewModel { ReportsViewModel(get(), get(), get(), get()) }
+        viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
         viewModel { OnBoardingViewModel(get(), get(), get()) }
     }

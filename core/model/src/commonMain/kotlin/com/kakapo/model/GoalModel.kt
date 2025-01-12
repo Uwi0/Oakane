@@ -8,7 +8,8 @@ data class GoalModel(
     val endDate: Long = 0,
     val fileName: String = "",
     val savedMoney: Double = 0.0,
-    val note: String = "some note"
+    val note: String = "some note",
+    val currency: Currency = Currency.IDR
 ) {
 
     val progress: Float

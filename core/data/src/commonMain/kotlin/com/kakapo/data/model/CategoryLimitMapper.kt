@@ -1,6 +1,7 @@
 package com.kakapo.data.model
 
 import com.kakapo.database.model.CategoryLimitEntity
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryLimitModel
 
 data class CategoryLimitParam(
@@ -20,9 +21,10 @@ data class CategoryLimitParam(
     )
 }
 
-fun CategoryLimitEntity.toCategoryLimitModel() = CategoryLimitModel(
+fun CategoryLimitEntity.toCategoryLimitModel(currency: Currency) = CategoryLimitModel(
     id = id,
     category = categoryEntity.toCategoryModel(),
     limit = limitAmount,
-    spent = spentAmount
+    spent = spentAmount,
+    currency = currency,
 )

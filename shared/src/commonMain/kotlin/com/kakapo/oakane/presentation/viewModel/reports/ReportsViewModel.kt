@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.ReportRepository
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
-import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.Currency
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.report.ReportCsvModel
 import com.kakapo.model.report.ReportModel
 import com.kakapo.model.wallet.WalletItemModel
@@ -27,7 +29,8 @@ class ReportsViewModel(
     private val getMonthlyBudgetOverview: GetMonthlyBudgetOverviewUseCase,
     private val transactionRepository: TransactionRepository,
     private val walletRepository: WalletRepository,
-    private val reportRepository: ReportRepository
+    private val reportRepository: ReportRepository,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -43,6 +46,7 @@ class ReportsViewModel(
         loadTransactionCategories()
         loadTotalBalance()
         loadWallets()
+        loadCurrency()
     }
 
     fun handleEVent(event: ReportsEvent) {
@@ -61,7 +65,7 @@ class ReportsViewModel(
 
     private fun loadMonthlyBudgetOverView(walletId: Long? = null) = viewModelScope.launch {
         val (startDateOfMont, endDateOfMonth) = _uiState.value.monthNumber
-        val onSuccess: (MonthlyBudgetOverViewModel) -> Unit = { monthlyOverView ->
+        val onSuccess: (MonthlyBudgetOverView) -> Unit = { monthlyOverView ->
             _uiState.update { it.copy(monthlyOverView = monthlyOverView) }
         }
         getMonthlyBudgetOverview.execute(walletId, startDateOfMont, endDateOfMonth).fold(
@@ -121,6 +125,16 @@ class ReportsViewModel(
         walletRepository.loadWallets().asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
+        )
+    }
+
+    private fun loadCurrency() = viewModelScope.launch {
+        val onSuccess: (Currency) -> Unit = { currency ->
+            _uiState.update { it.copy(currency = currency) }
+        }
+        systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 

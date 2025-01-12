@@ -1,7 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.home
 
 import com.kakapo.model.GoalModel
-import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.wallet.WalletModel
 import kotlin.native.ObjCName
@@ -11,7 +11,7 @@ data class HomeState(
     val wallet: WalletModel = WalletModel(),
     val transactions: List<TransactionModel> = emptyList(),
     val goals: List<GoalModel> = emptyList(),
-    val monthlyBudgetOverView: MonthlyBudgetOverViewModel = MonthlyBudgetOverViewModel(),
+    val monthlyBudgetOverView: MonthlyBudgetOverView = MonthlyBudgetOverView(),
 )
 
 sealed class HomeEffect {

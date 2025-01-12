@@ -20,8 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.toFormatIDR
-import com.kakapo.common.toFormatCurrency
-import com.kakapo.model.monthlyBudget.MonthlyBudgetOverViewModel
+import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedIconCircleButton
@@ -41,9 +41,10 @@ internal fun MonthlyBudgetView(uiState: HomeState, onEvent: (HomeEvent) -> Unit)
 
 @Composable
 private fun MonthlyBudgetContent(
-    overView: MonthlyBudgetOverViewModel,
+    overView: MonthlyBudgetOverView,
     onEvent: (HomeEvent) -> Unit
 ) {
+    val currency = overView.currency
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -52,7 +53,7 @@ private fun MonthlyBudgetContent(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             BudgetHeader(onNavigateToAddBudget = { onEvent.invoke(HomeEvent.ToMonthlyBudget) })
             Text(
-                text = overView.limit.toFormatCurrency(),
+                text = overView.limit.toFormatCurrency(currency),
                 style = MaterialTheme.typography.titleMedium
             )
             CustomProgressIndicatorView(value = overView.progress)
@@ -85,7 +86,7 @@ private fun BudgetHeader(onNavigateToAddBudget: () -> Unit) {
 
 
 @Composable
-private fun IncomeAndExpenseContent(overView: MonthlyBudgetOverViewModel) {
+private fun IncomeAndExpenseContent(overView: MonthlyBudgetOverView) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,7 +99,8 @@ private fun IncomeAndExpenseContent(overView: MonthlyBudgetOverViewModel) {
                 .weight(1f)
                 .fillMaxHeight(),
             balance = overView.totalIncome,
-            type = TransactionType.Income
+            type = TransactionType.Income,
+            currency = overView.currency
         )
         HorizontalDivider(
             color = MaterialTheme.colorScheme.outline,
@@ -111,7 +113,8 @@ private fun IncomeAndExpenseContent(overView: MonthlyBudgetOverViewModel) {
                 .weight(1f)
                 .fillMaxHeight(),
             balance = overView.totalExpense,
-            type = TransactionType.Expense
+            type = TransactionType.Expense,
+            currency = overView.currency
         )
     }
 }

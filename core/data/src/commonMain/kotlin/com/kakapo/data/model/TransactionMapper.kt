@@ -2,6 +2,7 @@ package com.kakapo.data.model
 
 import com.kakapo.database.model.TransactionCategoryEntity
 import com.kakapo.database.model.TransactionEntity
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.report.ReportModel
 import com.kakapo.model.transaction.TransactionModel
@@ -45,12 +46,13 @@ fun TransactionEntity.toModel() = TransactionModel(
     note = note ?: ""
 )
 
-fun TransactionCategoryEntity.toReportModel() = ReportModel(
+fun TransactionCategoryEntity.toReportModel(currency: Currency) = ReportModel(
     id = id,
     name = name,
     color = color,
     amount = totalTransaction,
     isExpense = type == TransactionType.Expense.ordinal.toLong(),
     isDefault = isDefault,
-    icon = icon
+    icon = icon,
+    currency = currency
 )

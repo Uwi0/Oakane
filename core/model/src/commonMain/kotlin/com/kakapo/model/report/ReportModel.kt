@@ -1,6 +1,7 @@
 package com.kakapo.model.report
 
 import com.kakapo.common.toColorLong
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
 import kotlin.native.ObjCName
 
@@ -12,7 +13,8 @@ data class ReportModel(
     val amount: Double,
     val isExpense: Boolean,
     val isDefault: Boolean,
-    val icon: String = "Salary"
+    val icon: String = "Salary",
+    val currency: Currency
 ){
     val formattedColor: Long get() = color.ifEmpty { "0xFF4CAF50" }.toColorLong()
 

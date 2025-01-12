@@ -4,14 +4,17 @@ import com.kakapo.data.model.CategoryLimitParam
 import com.kakapo.data.model.toCategoryLimitModel
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.database.datasource.base.CategoryLimitLocalDatasource
-import com.kakapo.database.model.CategoryLimitEntity
+import com.kakapo.model.asCurrency
 import com.kakapo.model.category.CategoryLimitModel
+import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.utils.getSavedCurrency
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Clock
 
 class CategoryLimitRepositoryImpl(
-    private val localDatasource: CategoryLimitLocalDatasource
+    private val localDatasource: CategoryLimitLocalDatasource,
+    private val preferenceDatasource: PreferenceDatasource
 ) : CategoryLimitRepository {
 
     override suspend fun checkIFExists(categoryId: Long, monthlyBudgetId: Long): Result<Boolean> {
@@ -30,13 +33,19 @@ class CategoryLimitRepositoryImpl(
         categoryId: Long,
         monthlyBudgetId: Long
     ): Result<CategoryLimitModel> {
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
         return localDatasource.getCategoryLimitBy(categoryId, monthlyBudgetId)
-            .mapCatching(CategoryLimitEntity::toCategoryLimitModel)
+            .mapCatching { entityResult ->
+                entityResult.toCategoryLimitModel(currency)
+            }
     }
 
     override fun loadCategoryLimitsBy(monthlyBudgetId: Long): Flow<Result<List<CategoryLimitModel>>> = flow {
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
         val result =  localDatasource.getCategoryLimitsBy(monthlyBudgetId)
-            .mapCatching { it.map(CategoryLimitEntity::toCategoryLimitModel) }
+            .mapCatching { entityResult ->
+                entityResult.map{ entity -> entity.toCategoryLimitModel(currency) }
+            }
         emit(result)
     }
 

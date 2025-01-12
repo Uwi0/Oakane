@@ -9,8 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.toFormatCurrency
 import com.kakapo.model.report.ReportModel
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
@@ -26,6 +26,8 @@ internal fun ReportsItemView(item: ReportModel) {
     val textColor = if (item.isExpense) MaterialTheme.colorScheme.error
     else MaterialTheme.colorScheme.primary
 
+    val currency = item.currency
+
     RowWrapper(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -34,7 +36,7 @@ internal fun ReportsItemView(item: ReportModel) {
         Text(text = item.name, style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.weight(1f))
         Text(
-            text = item.amount.toFormatCurrency(),
+            text = item.amount.toFormatCurrency(currency),
             color = textColor,
             style = MaterialTheme.typography.titleMedium
         )

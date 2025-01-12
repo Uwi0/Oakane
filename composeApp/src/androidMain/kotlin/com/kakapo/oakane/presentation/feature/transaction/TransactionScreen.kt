@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
-import com.kakapo.common.toFormatCurrency
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.R
@@ -113,6 +113,8 @@ private fun TransactionScreen(
 @Composable
 private fun TopContentView(state: TransactionState) {
     val transactionModel = state.transaction
+    val currency = state.currency
+    val amount = transactionModel.amount
     RowWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
         Image(
             painter = painterResource(R.drawable.fubuki_stare),
@@ -129,7 +131,7 @@ private fun TopContentView(state: TransactionState) {
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = transactionModel.amount.toFormatCurrency(),
+                text = amount.toFormatCurrency(currency),
                 style = MaterialTheme.typography.titleMedium
             )
         }

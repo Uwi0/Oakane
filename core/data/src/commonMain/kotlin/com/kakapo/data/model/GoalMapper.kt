@@ -1,6 +1,7 @@
 package com.kakapo.data.model
 
 import com.kakapo.database.model.GoalEntity
+import com.kakapo.model.Currency
 import com.kakapo.model.GoalModel
 
 fun GoalModel.toGoalEntity(): GoalEntity {
@@ -16,7 +17,7 @@ fun GoalModel.toGoalEntity(): GoalEntity {
     )
 }
 
-fun GoalEntity.toGoalModel() = GoalModel(
+fun GoalEntity.toGoalModel(currency: Currency) = GoalModel(
     id = id,
     amount = targetAmount,
     goalName = name,
@@ -24,5 +25,6 @@ fun GoalEntity.toGoalModel() = GoalModel(
     endDate = endDate,
     fileName = imageFile,
     savedMoney = savedAmount,
-    note = note
+    note = note,
+    currency = currency
 )

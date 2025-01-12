@@ -5,16 +5,19 @@ import com.kakapo.data.model.toModel
 import com.kakapo.data.model.toReportModel
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.database.datasource.base.TransactionLocalDatasource
-import com.kakapo.database.model.TransactionCategoryEntity
 import com.kakapo.database.model.TransactionEntity
+import com.kakapo.model.asCurrency
 import com.kakapo.model.report.ReportModel
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
+import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.utils.getSavedCurrency
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class TransactionRepositoryImpl(
-    private val localDatasource: TransactionLocalDatasource
+    private val localDatasource: TransactionLocalDatasource,
+    private val preferenceDatasource: PreferenceDatasource
 ) : TransactionRepository {
 
     override suspend fun save(transaction: TransactionParam): Result<Unit> {
@@ -69,8 +72,13 @@ class TransactionRepositoryImpl(
         startDateOfMonth: Long,
         endDateOfMonth: Long
     ): Flow<Result<List<ReportModel>>> = flow {
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
         val result = localDatasource.getTransactionCategories(startDateOfMonth, endDateOfMonth)
-            .mapCatching { it.map(TransactionCategoryEntity::toReportModel) }
+            .mapCatching { transactionResult ->
+                transactionResult.map{ transaction ->
+                    transaction.toReportModel(currency)
+                }
+            }
         emit(result)
     }
 
@@ -79,11 +87,14 @@ class TransactionRepositoryImpl(
         startDateOfMonth: Long,
         endDateOfMonth: Long
     ): Flow<Result<List<ReportModel>>> = flow {
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
         val result = localDatasource.getTransactionCategoriesBy(
             walletId,
             startDateOfMonth,
             endDateOfMonth
-        ).mapCatching { it.map(TransactionCategoryEntity::toReportModel) }
+        ).mapCatching { transactionResult ->
+            transactionResult.map{ transaction -> transaction.toReportModel(currency)}
+        }
 
         emit(result)
     }

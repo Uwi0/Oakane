@@ -18,7 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.toFormatCurrency
+import com.kakapo.model.Currency
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 import com.kakapo.oakane.presentation.ui.component.chart.AnimatedDonutChart
@@ -29,7 +30,8 @@ internal fun DonutChartComponentView(
     amount: Double,
     proportions: List<Float>,
     colors: List<Long>,
-    categoriesName: List<String>
+    categoriesName: List<String>,
+    currency: Currency,
 ) {
     val formattedColors = colors.map { Color(it) }
     ColumnWrapper(
@@ -49,7 +51,10 @@ internal fun DonutChartComponentView(
             )
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(amount.toFormatCurrency(), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    amount.toFormatCurrency(currency),
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Text(
                     text = "Total",
                     style = MaterialTheme.typography.bodyMedium,
