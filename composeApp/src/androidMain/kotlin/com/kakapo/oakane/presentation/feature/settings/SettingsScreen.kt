@@ -5,19 +5,25 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.sharp.ArrowForwardIos
 import androidx.compose.material.icons.filled.Brightness6
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.ImportExport
+import androidx.compose.material.icons.outlined.Payments
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,9 +36,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.getCurrentDateWith
 import com.kakapo.common.showToast
 import com.kakapo.model.system.Theme
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsView
 import com.kakapo.oakane.presentation.feature.settings.component.DialogThemeView
+import com.kakapo.oakane.presentation.feature.settings.component.SelectCurrencySheet
 import com.kakapo.oakane.presentation.feature.settings.component.asString
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEffect
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
@@ -45,6 +53,7 @@ import org.koin.androidx.compose.koinViewModel
 
 private const val DATE_FORMAT = "dd-MM-yyyy-HH-mm-ss"
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsRoute(
     navigateBack: () -> Unit,
@@ -54,6 +63,7 @@ internal fun SettingsRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var json = "test"
 
     val createJsonLauncher = rememberLauncherForActivityResult(
@@ -103,15 +113,26 @@ internal fun SettingsRoute(
                 SettingsEffect.RestoreBackupFile -> retrieveJsonLauncher.launch(openDocumentIntent())
                 is SettingsEffect.ShowError -> context.showToast(effect.message)
                 is SettingsEffect.Confirm -> onSelectedTheme.invoke(effect.theme)
+                SettingsEffect.SuccessChangeCurrency -> sheetState.hide()
                 is SettingsEffect.GenerateBackupFile -> {
                     json = effect.json
                     createJsonLauncher.launch(createNewDocumentIntent())
                 }
+
+
             }
         }
     }
 
     SettingsScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+
+    if (uiState.isSheetShown) {
+        SelectCurrencySheet(
+            currency = uiState.currency,
+            sheetState = sheetState,
+            onEvent = viewModel::handleEvent,
+        )
+    }
 
     if (uiState.isDialogShown) {
         DialogThemeView(
@@ -163,6 +184,23 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
                     .padding(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                CustomOutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp),
+                    onClick = { onEvent.invoke(SettingsEvent.OnSheet(shown = true)) }
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Outlined.Payments, contentDescription = null)
+                        Text("Set Currency")
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(uiState.currency.name)
+                        Icon(Icons.AutoMirrored.Sharp.ArrowForwardIos, contentDescription = null)
+                    }
+                }
                 ThemeButtonView(
                     theme = uiState.themeMode,
                     onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }

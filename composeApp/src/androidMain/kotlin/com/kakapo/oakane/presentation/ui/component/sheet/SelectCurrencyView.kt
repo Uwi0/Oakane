@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.onboarding.content
+package com.kakapo.oakane.presentation.ui.component.sheet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,9 +31,9 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 
 @Composable
-internal fun SelectCurrencyView(onConfirm: (Currency) -> Unit) {
+internal fun SelectCurrencyView(currency: Currency,onConfirm: (Currency) -> Unit) {
     var query by remember { mutableStateOf("") }
-    var selectedCurrency by remember { mutableStateOf(Currency.IDR) }
+    var selectedCurrency by remember { mutableStateOf(currency) }
     val currencies = Currency.entries.filter {
         it.countryName.lowercase().contains(query.lowercase(), ignoreCase = true) ||
                 it.name.lowercase().contains(query.lowercase(), ignoreCase = true)
@@ -133,6 +133,6 @@ private fun CurrencyItemView(
 @Composable
 private fun SelectCurrencyPreview() {
     AppTheme {
-        SelectCurrencyView(onConfirm = {})
+        SelectCurrencyView(currency = Currency.IDR,onConfirm = {})
     }
 }

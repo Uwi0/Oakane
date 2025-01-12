@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.BackupRepository
 import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.model.Currency
 import com.kakapo.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -30,6 +31,7 @@ class SettingsViewModel(
 
     fun initData() {
         loadIsDarkMode()
+        loadCurrency()
     }
 
     fun handleEvent(event: SettingsEvent) {
@@ -41,6 +43,8 @@ class SettingsViewModel(
             is SettingsEvent.OnDialog -> _uiState.update { it.copy(isDialogShown = event.shown) }
             is SettingsEvent.OnSelected -> _uiState.update { it.update(event.theme) }
             SettingsEvent.OnConfirmTheme -> confirmTheme()
+            is SettingsEvent.OnSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
+            is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
         }
     }
 
@@ -77,6 +81,27 @@ class SettingsViewModel(
         }
 
         systemRepository.saveTheme(theme).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadCurrency() = viewModelScope.launch {
+        val onSuccess: (Currency) -> Unit = { currency ->
+            _uiState.value = _uiState.value.copy(currency = currency)
+        }
+        systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun changeCurrency(currency: Currency) = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.copy(currency = currency, isSheetShown = false) }
+            emit(SettingsEffect.SuccessChangeCurrency)
+        }
+        systemRepository.saveCurrency(currency).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

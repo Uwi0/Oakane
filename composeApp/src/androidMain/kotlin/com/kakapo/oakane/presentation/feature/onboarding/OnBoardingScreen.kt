@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.feature.onboarding
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -12,9 +13,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.feature.onboarding.content.AccountContentView
 import com.kakapo.oakane.presentation.feature.onboarding.content.ImportBackupContentView
-import com.kakapo.oakane.presentation.feature.onboarding.content.SelectCurrencyView
 import com.kakapo.oakane.presentation.feature.onboarding.content.createWallet.CreateWalletView
 import com.kakapo.oakane.presentation.model.OnBoardingContent
+import com.kakapo.oakane.presentation.ui.component.sheet.SelectCurrencyView
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEffect
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEvent
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingState
@@ -66,12 +67,16 @@ private fun openDocumentIntent(): Intent {
 
 @Composable
 private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) -> Unit = {}) {
-    when (state.onBoardingContent) {
-        OnBoardingContent.Account -> AccountContentView(onEvent = onEvent)
-        OnBoardingContent.ImportBackup -> ImportBackupContentView(onEvent = onEvent)
-        OnBoardingContent.SelectCurrency -> SelectCurrencyView(
-            onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) }
-        )
-        OnBoardingContent.CreateWallet -> CreateWalletView(uiState = state, onEvent = onEvent)
+    AnimatedContent(state.onBoardingContent) { content ->
+        when (content) {
+            OnBoardingContent.Account -> AccountContentView(onEvent = onEvent)
+            OnBoardingContent.ImportBackup -> ImportBackupContentView(onEvent = onEvent)
+            OnBoardingContent.SelectCurrency -> SelectCurrencyView(
+                currency = state.currency,
+                onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) }
+            )
+            OnBoardingContent.CreateWallet -> CreateWalletView(uiState = state, onEvent = onEvent)
+        }
     }
+
 }
