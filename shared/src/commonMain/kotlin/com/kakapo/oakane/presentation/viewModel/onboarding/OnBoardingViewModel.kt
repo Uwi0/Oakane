@@ -2,31 +2,39 @@ package com.kakapo.oakane.presentation.viewModel.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.BackupRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.model.Currency
 import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.OnBoardingContent
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("OnBoardingViewModelKt")
 class OnBoardingViewModel(
     private val systemRepository: SystemRepository,
     private val walletRepository: WalletRepository,
     private val backupRepository: BackupRepository
 ) : ViewModel() {
 
+    @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(OnBoardingState())
 
+    @NativeCoroutines
     val uiEffect get() = _uiEffect
     private val _uiEffect = MutableSharedFlow<OnBoardingEffect>()
 
     fun handleEvent(event: OnBoardingEvent) {
+        Logger.d("handleEvent: $event")
         when (event) {
             is OnBoardingEvent.NavigateNext -> _uiState.update { it.copy(onBoardingContent = event.content) }
             is OnBoardingEvent.OnConfirmCurrency -> saveCurrency(event.currency)

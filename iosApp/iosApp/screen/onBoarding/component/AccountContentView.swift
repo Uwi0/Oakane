@@ -1,6 +1,10 @@
 import SwiftUI
+import Shared
 
 struct AccountContentView: View {
+    
+    let onEvent: (OnBoardingEvent) -> Void
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Oakane")
@@ -15,7 +19,7 @@ struct AccountContentView: View {
             Text("Your data will be stored locally on your device. if you uninstall the app or switch devices. you may lose your data. To prevent this, we recommend that you regularly export your backups.")
                 .font(Typography.bodySmall)
             Spacer().frame(height: 16)
-            ButtonAccount(onClick: {})
+            ButtonAccount(onClick: { onEvent(.NavigateNext(content: .importBackup)) })
             Spacer()
             Text("By signing in. you accept our Terms & Conditions and privacy policy")
                 .multilineTextAlignment(.center)
@@ -47,5 +51,5 @@ struct AccountContentView: View {
 }
 
 #Preview {
-    AccountContentView()
+    AccountContentView(onEvent: { _ in })
 }

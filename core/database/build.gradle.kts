@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.appCash.sqlDelight)
     alias(libs.plugins.kmp.nativecoroutines)
+    alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.kakapo.kotlinMultiplatform)
 }
 

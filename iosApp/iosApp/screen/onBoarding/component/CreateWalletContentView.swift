@@ -1,6 +1,10 @@
 import SwiftUI
+import Shared
 
 struct CreateWalletContentView: View {
+    
+    let onEVent: (OnBoardingEvent) -> Void
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Create Your Wallet").font(Typography.displaySmall)
@@ -11,7 +15,8 @@ struct CreateWalletContentView: View {
                 .font(Typography.titleMedium)
             Spacer()
             CreateWalletButton(onClick: {})
-            SkipButton(onClick: {})
+            Spacer().frame(height: 16)
+            SkipButton(onClick: { onEVent(.SkippWallet())})
         }
         .padding(.vertical, 24)
         .padding(.horizontal, 16)
@@ -46,7 +51,7 @@ struct CreateWalletContentView: View {
         FilledContentButtonView(onclick: onClick) {
             Spacer().frame(width: 24,height: 24)
             Spacer()
-            Text("Create Wallet")
+            Text("Skip")
             Spacer()
             Image(systemName: "chevron.right").fontWeight(.bold)
         }
@@ -54,5 +59,5 @@ struct CreateWalletContentView: View {
 }
 
 #Preview {
-    CreateWalletContentView()
+    CreateWalletContentView(onEVent: { _ in })
 }

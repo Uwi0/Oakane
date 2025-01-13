@@ -4,6 +4,7 @@ import Shared
 final class AppNavigation: ObservableObject {
     
     public enum Destination: Codable, Hashable {
+        case home
         case addTransaction(transactionId: Int64)
         case transactions
         case transaction(transactionId: Int64)

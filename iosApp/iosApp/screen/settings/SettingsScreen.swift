@@ -5,7 +5,7 @@ struct SettingsScreen: View {
     
     @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel: SettingsViewModel = SettingsViewModel()
-    @AppStorage("isDarkMode") private var darkAppearance: Bool = false
+    @AppStorage(UserDefaultsKeys.isDarkMode) private var darkAppearance: Bool = false
     @State private var viewController: UIViewController?
     @State private var isPresented: Bool = false
     

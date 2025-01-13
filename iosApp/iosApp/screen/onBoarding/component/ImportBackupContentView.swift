@@ -1,6 +1,10 @@
 import SwiftUI
+import Shared
 
 struct ImportBackupContentView: View {
+    
+    let onEvent: (OnBoardingEvent) -> Void
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Import Your Backup")
@@ -14,7 +18,7 @@ struct ImportBackupContentView: View {
             Spacer()
             ButtonSkip(onClick: {})
             Spacer().frame(height: 16)
-            ButtonStartFresh(onClick: {})
+            ButtonStartFresh(onClick: { onEvent(.NavigateNext(content: .selectCurrency))})
             
         }
         .padding(.vertical, 24)
@@ -52,5 +56,5 @@ struct ImportBackupContentView: View {
 }
 
 #Preview {
-    ImportBackupContentView()
+    ImportBackupContentView(onEvent: { _ in })
 }
