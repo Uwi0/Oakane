@@ -29,8 +29,9 @@ struct AccountContentView: View {
     }
     
     @ViewBuilder private func ButtonAccount(onClick: @escaping () -> Void) -> some View {
-        Button(action: onClick) {
-            HStack(spacing: 16) {
+        FilledContentButtonView(
+            onclick: onClick,
+            content: {
                 Image(systemName: "person.crop.circle")
                     .resizable()
                     .frame(width: 24, height: 24)
@@ -41,14 +42,7 @@ struct AccountContentView: View {
                     .foregroundStyle(ColorTheme.onPrimary)
                 Spacer()
             }
-            .padding(.vertical, 12)
-            .padding(.horizontal, 16)
-            .frame(maxWidth: .infinity)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(ColorTheme.primary)
-            )
-        }
+        )
     }
 }
 

@@ -24,36 +24,30 @@ struct ImportBackupContentView: View {
     }
     
     @ViewBuilder private func ButtonSkip(onClick: @escaping () -> Void) -> some View {
-        Button(action: onClick) {
-            HStack {
+        OutlinedContentButtonView(
+            onClick: onClick,
+            content: {
                 Image(systemName: "square.and.arrow.down").frame(width: 24, height: 24).fontWeight(.bold)
                 Spacer()
                 Text("Import Backup").font(Typography.titleMedium)
                 Spacer()
                 Spacer().frame(width: 24)
             }
-            .foregroundStyle(ColorTheme.primary)
-            .padding(.vertical, 16)
-            .padding(.horizontal, 16)
-            .background(RoundedRectangle(cornerRadius: 16).stroke(ColorTheme.primary, lineWidth: 2))
-        }
-        .buttonStyle(.plain)
+        )
     }
     
     @ViewBuilder private func ButtonStartFresh(onClick: @escaping () -> Void) -> some View {
-        Button(action: onClick) {
-            HStack {
+        FilledContentButtonView(
+            onclick: onClick,
+            content: {
                 Spacer().frame(width: 24, height: 24)
                 Spacer()
                 Text("Start Fresh").font(Typography.titleMedium)
                 Spacer()
-                Image(systemName: "chevron.right").frame(width: 24, height: 24).fontWeight(.bold)
+                Image(systemName: "chevron.right").fontWeight(.bold)
             }
-            .foregroundStyle(ColorTheme.onPrimary)
-            .padding(.vertical, 16)
-            .padding(.horizontal, 16)
-            .background(RoundedRectangle(cornerRadius: 16).fill(ColorTheme.primary))
-        }
+        )
+        
     }
 }
 
