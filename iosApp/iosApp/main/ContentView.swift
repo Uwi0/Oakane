@@ -5,6 +5,7 @@ struct ContentView: View {
     @State private var showDrawer: Bool = false
     @EnvironmentObject private var navigation: AppNavigation
     @AppStorage("isDarkMode") private var isDarkModel: Bool = UserDefaults.standard.bool(forKey: "isDarkMode")
+    @AppStorage("onBoardingAlreadyRead") private var onBoardingAlreadyRead: Bool = UserDefaults.standard.bool(forKey: "onBoardingAlreadyRead")
     
     var body: some View {
         NavigationStack(path: $navigation.navPath) {

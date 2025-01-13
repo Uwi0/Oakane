@@ -20,7 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.model.OnBoardingContent
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEvent
 
@@ -80,5 +82,12 @@ private fun LoginButton(onClick: () -> Unit) {
             Text("Offline Account", style = MaterialTheme.typography.titleMedium)
         }
     }
+}
 
+@Composable
+@Preview
+private fun AccountContentPreview() {
+    AppTheme {
+        AccountContentView(onEvent = {})
+    }
 }
