@@ -17,6 +17,7 @@ struct OnBoardingScreen: View {
             case .createWallet: CreateWalletContentView(onEVent: viewModel.handle(event:))
             }
         }
+        .navigationBarBackButtonHidden(true)
         .onChange(of: viewModel.uiEffect) { observe(effect:viewModel.uiEffect) }
         .onAppear {
             viewModel.initData()

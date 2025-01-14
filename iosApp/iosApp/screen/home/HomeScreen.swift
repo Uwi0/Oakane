@@ -35,6 +35,7 @@ struct HomeScreen: View {
                 )
             }
         }
+        .navigationBarBackButtonHidden(true)
         .onAppear {
             viewModel.initViewModel()
         }
