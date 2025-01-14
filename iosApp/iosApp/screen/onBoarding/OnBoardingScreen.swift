@@ -14,7 +14,7 @@ struct OnBoardingScreen: View {
             case .account: AccountContentView(onEvent: viewModel.handle(event:))
             case .importBackup: ImportBackupContentView(onEvent: viewModel.handle(event:))
             case .selectCurrency: SelectCurrencyContentView(onEvent: viewModel.handle(event:))
-            case .createWallet: CreateWalletContentView(onEVent: viewModel.handle(event:))
+            case .createWallet: CreateWalletContentView(onEvent: viewModel.handle(event:))
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -27,19 +27,19 @@ struct OnBoardingScreen: View {
     private func observe(effect: OnBoardingEffect?) {
         if let safeEffect = effect {
             switch onEnum(of: safeEffect) {
-            case .navigateToHome:
-                DispatchQueue.main.async {
-                    onboardingAlreadyRead = true
-                    navigation.navigate(to: .home)
-                }
-                
-            case .restoreBackup:
-                print("Restore backup")
-            case .showError:
-                print("Show error")
+            case .navigateToHome: navigateToHome()
+            case .restoreBackup: print("Restore backup")
+            case .showError: print("Show error")
             }
         }
         viewModel.uiEffect = nil
+    }
+    
+    private func navigateToHome() {
+        DispatchQueue.main.async {
+            onboardingAlreadyRead = true
+            navigation.navigate(to: .home)
+        }
     }
 }
 
