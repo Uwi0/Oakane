@@ -29,7 +29,7 @@ struct OnBoardingScreen: View {
             switch onEnum(of: safeEffect) {
             case .navigateToHome: navigateToHome()
             case .restoreBackup: print("Restore backup")
-            case .showError: print("Show error")
+            case .showError(let error): print("error \(error)")
             }
         }
         viewModel.uiEffect = nil

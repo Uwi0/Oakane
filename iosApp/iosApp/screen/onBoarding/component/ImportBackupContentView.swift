@@ -4,6 +4,7 @@ import Shared
 struct ImportBackupContentView: View {
     
     let onEvent: (OnBoardingEvent) -> Void
+    @State private var isPresented: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -16,7 +17,7 @@ struct ImportBackupContentView: View {
             Text("You can import your back up to restore your data,  if you have one from previous back up or previous device.")
                 .font(Typography.bodyMedium)
             Spacer()
-            ButtonSkip(onClick: {})
+            ButtonBackup(onClick: { isPresented = true})
             Spacer().frame(height: 16)
             ButtonStartFresh(onClick: { onEvent(.NavigateNext(content: .selectCurrency))})
             
@@ -25,9 +26,19 @@ struct ImportBackupContentView: View {
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(ColorTheme.surface.ignoresSafeArea())
+        .fileImporter(
+            isPresented: $isPresented,
+            allowedContentTypes: [.json],
+            onCompletion: { result in
+                switch result{
+                case .success(let url): readBackupFile(url: url)
+                case .failure(let error): print("Error: \(error)")
+                }
+            }
+        )
     }
     
-    @ViewBuilder private func ButtonSkip(onClick: @escaping () -> Void) -> some View {
+    @ViewBuilder private func ButtonBackup(onClick: @escaping () -> Void) -> some View {
         OutlinedContentButtonView(
             onClick: onClick,
             content: {
@@ -52,6 +63,14 @@ struct ImportBackupContentView: View {
             }
         )
         
+    }
+    
+    private func readBackupFile(url: URL) {
+        let result = readJSONFileAsString(fileUrl: url)
+        switch result {
+        case .success(let json): onEvent(.RestoreBackup(json: json))
+        case .failure(let error): print("error \(error)")
+        }
     }
 }
 
