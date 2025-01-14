@@ -6,13 +6,12 @@ struct ContentView: View {
     @EnvironmentObject private var navigation: AppNavigation
     @AppStorage(UserDefaultsKeys.isDarkMode) private var isDarkModel: Bool = UserDefaults.standard.bool(forKey: UserDefaultsKeys.isDarkMode)
     
-    
     var body: some View {
-        NavigationStack(path: $navigation.navPath) {
-            ZStack {
+        ZStack {
+            NavigationStack(path: $navigation.navPath) {
                 ScreenContent()
-                DrawerMenuView(isShowing: $showDrawer, onMenuClick: navigation.navigateFrom(menu:))
             }
+            DrawerMenuView(isShowing: $showDrawer, onMenuClick: navigation.navigateFrom(menu:))
         }
         .preferredColorScheme(isDarkModel ? .dark : .light)
     }

@@ -2,7 +2,6 @@ package com.kakapo.oakane.presentation.viewModel.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.BackupRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
@@ -34,7 +33,6 @@ class OnBoardingViewModel(
     private val _uiEffect = MutableSharedFlow<OnBoardingEffect>()
 
     fun handleEvent(event: OnBoardingEvent) {
-        Logger.d("handleEvent: $event")
         when (event) {
             is OnBoardingEvent.NavigateNext -> _uiState.update { it.copy(onBoardingContent = event.content) }
             is OnBoardingEvent.OnConfirmCurrency -> saveCurrency(event.currency)

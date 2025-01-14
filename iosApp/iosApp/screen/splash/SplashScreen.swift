@@ -38,9 +38,13 @@ struct SplashScreen: View {
         .onChange(of: shouldNavigate) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 if isAlreadyRead {
-                    navigation.navigate(to: .home)
+                    if navigation.navPath.isEmpty {
+                        navigation.navigate(to: .home)
+                    }
                 } else {
-                    navigation.navigate(to: .onboarding)
+                    if navigation.navPath.isEmpty {
+                        navigation.navigate(to: .onboarding)
+                    }
                 }
             }
         }
