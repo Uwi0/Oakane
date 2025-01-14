@@ -27,21 +27,9 @@ struct WalletsScreen: View {
                 isPresented: $viewModel.uiState.sheetShown,
                 onDismiss: { viewModel.handle(event: .IsSheet(shown: false))}
             ){
-                VStack {
-                    switch uiState.sheetContent {
-                    case .create: CreateWalletSheetView(uiState: uiState, onEvent: viewModel.handle(event:))
-                    case .selectColor: Text("Select Color")
-                    case .selectIcon: SelectIconView(
-                        selectedIcon: uiState.selectedIcon,
-                        selectedColor: uiState.selectedColor,
-                        onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon)) },
-                        onTakImage: { file in viewModel.handle(event: .SelectedImage(file: file)) },
-                        onConfirm: { viewModel.handle(event: .ConfirmIcon()) }
-                    )
-                    }
-                }
-                .presentationDetents([bottomSheetSize])
-                .presentationDragIndicator(.visible)
+                WalletsSheetContent()
+                    .presentationDetents([bottomSheetSize])
+                    .presentationDragIndicator(.visible)
             }
             
             FabButtonView(
@@ -69,6 +57,51 @@ struct WalletsScreen: View {
             }
         }
         viewModel.uiEffect = nil
+    }
+    
+    @ViewBuilder
+    private func WalletsSheetContent() -> some View {
+        VStack {
+            switch uiState.sheetContent {
+            case .create: CreateWalletSheetContent()
+            case .selectColor: Text("Select Color")
+            case .selectIcon: SelectIconView(
+                selectedIcon: uiState.selectedIcon,
+                selectedColor: uiState.selectedColor,
+                onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon)) },
+                onTakImage: { file in viewModel.handle(event: .SelectedImage(file: file)) },
+                onConfirm: { viewModel.handle(event: .ConfirmIcon()) }
+            )
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func CreateWalletSheetContent() -> some View {
+        let onEvent: (CreateWalletEvent) -> Void = { walletEvent in
+            switch walletEvent {
+            case .changeWallet(name: let name):
+                viewModel.handle(event: .OnChangeWallet(name: name))
+            case .selectedIcon:
+                viewModel.handle(event: .SelectedSheet(content: .selectIcon))
+            case .changeStart(balance: let balance):
+                viewModel.handle(event: .ChangeStart(balance: balance))
+            case .selectWallet(color: let color):
+                viewModel.handle(event: .SelectWallet(color: color))
+            case .saveWallet:
+                viewModel.handle(event: .SaveWallet())
+            }
+        }
+        
+        CreateWalletSheetView(
+            imageFile: uiState.imageFile,
+            selectedIcon: uiState.selectedIcon,
+            selectedColor: uiState.selectedColor,
+            walletName: $viewModel.uiState.walletName,
+            startBalance: $viewModel.uiState.startBalance,
+            colors: uiState.colors,
+            onEvent: onEvent
+        )
     }
 }
 

@@ -35,6 +35,7 @@ struct HorizontalColorSelectorView: View {
                         .fill(color)
                         .frame(width: 48, height: 48)
                         .onTapGesture {
+                            selectedColor = color
                             onSelectedColor(hex)
                         }
                 }
