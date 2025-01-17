@@ -7,12 +7,15 @@ struct SettingsScreen: View {
     @StateObject private var viewModel: SettingsViewModel = SettingsViewModel()
     @AppStorage(UserDefaultsKeys.isDarkMode) private var darkAppearance: Bool = false
     @State private var viewController: UIViewController?
-    @State private var isPresented: Bool = false
+    @State private var isFileImportedPresented: Bool = false
+    @State private var isSheetPresented: Bool = false
     
     var body: some View {
         VStack {
+            
             NavigationBar()
             VStack {
+                ButtonCurrencyView()
                 Toggle("Dark Appearance", isOn: $darkAppearance)
                 Divider()
                 ButtonSettingsView(
@@ -23,7 +26,7 @@ struct SettingsScreen: View {
                 ButtonSettingsView(
                     title: "Import Data",
                     iconName: "square.and.arrow.down",
-                    onClick: { isPresented = true }
+                    onClick: { isFileImportedPresented = true }
                 )
                 Spacer()
             }
@@ -35,7 +38,7 @@ struct SettingsScreen: View {
         .background(ViewControllerAccessor { vc in viewController = vc} )
         .onChange(of: viewModel.uiEffect) { observe(effect: viewModel.uiEffect) }
         .fileImporter(
-            isPresented: $isPresented,
+            isPresented: $isFileImportedPresented,
             allowedContentTypes: [.json],
             onCompletion: { result in
                 switch result {
@@ -44,13 +47,37 @@ struct SettingsScreen: View {
                 }
             }
         )
+        .sheet(isPresented: $isSheetPresented) {
+            SelectCurrencyContentView(
+                onConfirm: { selectedCurrency in
+                    viewModel.handle(event: .ChangeCurrency(currency: selectedCurrency))
+                },
+                currency: viewModel.uiState.currentCurrency
+            )
+        }
+        
     }
     
-    @ViewBuilder private func NavigationBar() -> some View {
+    @ViewBuilder
+    private func NavigationBar() -> some View {
         VStack {
             NavigationTopAppbar(title: "Settings", navigateBack: { navigation.navigateBack() })
             Divider()
         }
+    }
+    
+    @ViewBuilder
+    private func ButtonCurrencyView() -> some View {
+        OutlinedContentButtonView(
+            onClick: { isSheetPresented = true },
+            content: {
+                Image(systemName: "dollarsign.circle").resizable().frame(width: 24, height: 24)
+                Text("Set Currency")
+                Spacer()
+                Text("\(viewModel.uiState.currentCurrency.name)")
+                Image(systemName: "chevron.right")
+            }
+        )
     }
     
     private func observe(effect: SettingsEffect?) {
@@ -91,4 +118,8 @@ struct SettingsScreen: View {
             print("error \(error)")
         }
     }
+}
+
+#Preview {
+    SettingsScreen()
 }

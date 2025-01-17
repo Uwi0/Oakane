@@ -184,23 +184,7 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
                     .padding(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CustomOutlinedButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(16.dp),
-                    onClick = { onEvent.invoke(SettingsEvent.OnSheet(shown = true)) }
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(Icons.Outlined.Payments, contentDescription = null)
-                        Text("Set Currency")
-                        Spacer(modifier = Modifier.weight(1f))
-                        Text(uiState.currency.name)
-                        Icon(Icons.AutoMirrored.Sharp.ArrowForwardIos, contentDescription = null)
-                    }
-                }
+                ChangeCurrencyButtonView(onEvent, uiState)
                 ThemeButtonView(
                     theme = uiState.themeMode,
                     onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
@@ -219,6 +203,30 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
             }
         }
     )
+}
+
+@Composable
+private fun ChangeCurrencyButtonView(
+    onEvent: (SettingsEvent) -> Unit,
+    uiState: SettingsState
+) {
+    CustomOutlinedButton(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(16.dp),
+        onClick = { onEvent.invoke(SettingsEvent.OnSheet(shown = true)) }
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(Icons.Outlined.Payments, contentDescription = null)
+            Text("Set Currency")
+            Spacer(modifier = Modifier.weight(1f))
+            Text(uiState.currency.name)
+            Icon(Icons.AutoMirrored.Sharp.ArrowForwardIos, contentDescription = null)
+        }
+    }
 }
 
 @Composable

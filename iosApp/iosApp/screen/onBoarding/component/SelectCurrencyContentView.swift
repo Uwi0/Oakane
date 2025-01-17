@@ -3,14 +3,19 @@ import Shared
 
 struct SelectCurrencyContentView: View {
     
-    let onEvent: (OnBoardingEvent) -> Void
+    let onConfirm: (Currency) -> Void
     
     @State private var query: String = ""
-    @State private var selectedCurrency: Currency = .idr
+    @State private var selectedCurrency: Currency
     private var currencies: [Currency] {
         Currency.allCases.filter { currency in
             query.isEmpty || currency.countryName.lowercased().contains(query.lowercased())
         }
+    }
+    
+    init(onConfirm: @escaping (Currency) -> Void, currency: Currency  = .idr) {
+        self.onConfirm = onConfirm
+        _selectedCurrency = State(initialValue: currency)
     }
     
     var body: some View {
@@ -24,7 +29,7 @@ struct SelectCurrencyContentView: View {
             .scrollIndicators(.hidden)
             FilledButtonView(
                 text: "Confirm Currency",
-                onClick: { onEvent(.OnConfirmCurrency(currency: selectedCurrency))}
+                onClick: { onConfirm(selectedCurrency)}
             )
                 .frame(height: 48)
                 .padding(.horizontal, 16)
@@ -74,5 +79,5 @@ struct SelectCurrencyContentView: View {
 }
 
 #Preview {
-    SelectCurrencyContentView(onEvent: { _ in })
+    SelectCurrencyContentView(onConfirm: { _ in })
 }

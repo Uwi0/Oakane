@@ -7,7 +7,7 @@ struct OutlinedContentButtonView<Content: View>: View {
     
     var body: some View {
         Button(action: onClick) {
-            HStack(alignment: .center) {
+            HStack(alignment: .center, spacing: 16) {
                 content.font(Typography.titleMedium)
                     .foregroundStyle(ColorTheme.primary)
             }

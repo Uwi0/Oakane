@@ -13,7 +13,11 @@ struct OnBoardingScreen: View {
             switch content {
             case .account: AccountContentView(onEvent: viewModel.handle(event:))
             case .importBackup: ImportBackupContentView(onEvent: viewModel.handle(event:))
-            case .selectCurrency: SelectCurrencyContentView(onEvent: viewModel.handle(event:))
+            case .selectCurrency: SelectCurrencyContentView(
+                onConfirm: { selectedCurrency in
+                    viewModel.handle(event: .OnConfirmCurrency(currency: selectedCurrency))
+                }
+            )
             case .createWallet: CreateWalletContentView(onEvent: viewModel.handle(event:))
             }
         }
