@@ -1,9 +1,9 @@
 [versions]
 agp = "8.7.3"
-android-compileSdk = "34"
+android-compileSdk = "35"
 android-minSdk = "26"
-android-targetSdk = "34"
-androidx-activityCompose = "1.9.3"
+android-targetSdk = "35"
+androidx-activityCompose = "1.10.0"
 androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "1.1.0"
 androidx-core-ktx = "1.15.0"
@@ -14,7 +14,7 @@ androidx-test-junit = "1.2.1"
 coil = "2.7.0"
 colorpicker = "1.1.2"
 compose-plugin = "1.7.0"
-datastore = "1.1.1"
+datastore = "1.1.2"
 dependency-analys = "2.6.1"
 googleServicePlugin = "4.4.2"
 junit = "4.13.2"
@@ -25,6 +25,7 @@ kotlin = "2.1.0"
 kotlinxdatetime = "0.6.1"
 kotlinx-serialization = "1.8.0-RC"
 ksp = "2.1.0-1.0.29"
+material-design = "1.12.0"
 open-csv = "5.7.1"
 project-version = "1.0.0"
 skie = "0.10.0"
@@ -63,6 +64,7 @@ koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-compose-viewmodel-navigation" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxdatetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+material-design = { group = "com.google.android.material", name = "material", version.ref = "material-design" }
 open-csv = { group = "com.opencsv", name = "opencsv", version.ref = "open-csv" }
 splash-screen = { module = "androidx.core:core-splashscreen", version.ref = "splash-screen" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
