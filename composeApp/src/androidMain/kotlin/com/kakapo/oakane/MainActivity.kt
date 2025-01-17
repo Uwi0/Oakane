@@ -12,25 +12,19 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
-import com.kakapo.oakane.presentation.feature.home.navigation.HOME_ROUTE
 import com.kakapo.oakane.presentation.feature.navigation.OakaneNavHost
-import com.kakapo.oakane.presentation.feature.onboarding.navigation.ON_BOARDING_ROUTE
 import com.kakapo.oakane.presentation.navigation.DrawerMenuNavigation
 import com.kakapo.oakane.presentation.viewModel.main.MainEvent
 import com.kakapo.oakane.presentation.viewModel.main.MainViewModel
@@ -45,8 +39,6 @@ class MainActivity : ComponentActivity() {
             val appState = rememberAppState()
             val viewModel = koinViewModel<MainViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            var startDestination by remember { mutableStateOf<String?>(null) }
-
             val isDarkTheme = when (uiState.theme) {
                 Theme.System -> isSystemInDarkTheme()
                 Theme.Light -> false
@@ -57,28 +49,13 @@ class MainActivity : ComponentActivity() {
                 viewModel.initData()
             }
 
-            LaunchedEffect(Unit) {
-                startDestination = if(viewModel.isOnboardingAlreadyRead()) {
-                    HOME_ROUTE
-                } else {
-                    ON_BOARDING_ROUTE
-                }
-            }
-
             AppTheme(darkTheme = isDarkTheme) {
-                if(startDestination != null) {
-                    OakaneApp(
-                        appState = appState,
-                        startDestination = startDestination!!,
-                        onSelectedTheme = { theme ->
-                            viewModel.handleEvent(MainEvent.OnChange(theme))
-                        }
-                    )
-                } else {
-                    Surface {
-                        Text(text = "Loading...")
+                OakaneApp(
+                    appState = appState,
+                    onSelectedTheme = { theme ->
+                        viewModel.handleEvent(MainEvent.OnChange(theme))
                     }
-                }
+                )
             }
         }
     }
@@ -87,7 +64,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun OakaneApp(
     appState: OakaneAppState,
-    startDestination: String,
     onSelectedTheme: (Theme) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -101,7 +77,6 @@ private fun OakaneApp(
         content = {
             OakaneNavHost(
                 navController = appState.navController,
-                startDestination = startDestination,
                 openDrawer = openDrawer,
                 onSelectedTheme = onSelectedTheme
             )

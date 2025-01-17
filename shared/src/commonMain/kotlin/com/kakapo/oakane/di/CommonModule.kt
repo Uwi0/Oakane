@@ -53,6 +53,7 @@ import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetViewM
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingViewModel
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
+import com.kakapo.oakane.presentation.viewModel.splash.SplashViewModel
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
@@ -103,6 +104,7 @@ object CommonModule {
     }
 
     val viewModel: Module = module {
+        viewModel { SplashViewModel(get())}
         viewModel { MainViewModel(get())}
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get()) }
