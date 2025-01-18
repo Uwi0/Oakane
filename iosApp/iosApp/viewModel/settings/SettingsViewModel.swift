@@ -17,6 +17,10 @@ final class SettingsViewModel: ObservableObject {
         observeEffect()
     }
     
+    func initData() {
+        viewModel.doInitData()
+    }
+    
     func handle(event: SettingsEvent) {
         viewModel.handleEvent(event: event)
     }

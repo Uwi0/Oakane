@@ -36,6 +36,7 @@ struct SettingsScreen: View {
         .navigationBarBackButtonHidden(true)
         .background(ColorTheme.surface.ignoresSafeArea())
         .background(ViewControllerAccessor { vc in viewController = vc} )
+        .onAppear(perform: viewModel.initData)
         .onChange(of: viewModel.uiEffect) { observe(effect: viewModel.uiEffect) }
         .fileImporter(
             isPresented: $isFileImportedPresented,
@@ -94,7 +95,7 @@ struct SettingsScreen: View {
             case .showError(let effect):
                 print(effect.message)
             case .successChangeCurrency:
-                print("success")
+                isSheetPresented = false
             }
         }
         viewModel.uiEffect = nil
