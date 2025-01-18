@@ -7,7 +7,7 @@ struct WalletItemView: View {
     let onSelectWallet: () -> Void
     
     private var formattedBalance: String {
-        wallet.balance.toFormatIDR()
+        wallet.balance.toFormatCurrency(currency: wallet.currency)
     }
     
     var body: some View {
@@ -52,12 +52,14 @@ fileprivate struct BottomContentView: View {
             BalanceContent(
                 title: "Expense this month",
                 amount: wallet.expense,
+                currency: wallet.currency,
                 color: ColorTheme.error
             )
             Divider().scaleEffect(x: 2.5)
             BalanceContent(
                 title: "Income this month",
                 amount: wallet.income,
+                currency: wallet.currency,
                 color: ColorTheme.primary
             )
         }
@@ -69,10 +71,11 @@ fileprivate struct BalanceContent: View {
     
     let title: String
     let amount: Double
+    let currency: Currency
     let color: Color
     
     private var formattedAmount: String {
-        amount.toIDRCurrency()
+        amount.toFormatCurrency(currency: currency)
     }
     
     var body: some View {
@@ -80,7 +83,7 @@ fileprivate struct BalanceContent: View {
             Text(title)
                 .foregroundStyle(color)
                 .font(Typography.labelMedium)
-            Text("Rp \(formattedAmount)")
+            Text(formattedAmount)
         }
         .frame(minWidth: 120)
     }

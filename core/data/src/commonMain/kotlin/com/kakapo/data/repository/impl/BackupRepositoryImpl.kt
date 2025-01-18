@@ -13,6 +13,7 @@ import com.kakapo.database.model.GoalEntity
 import com.kakapo.database.model.MonthlyBudgetEntity
 import com.kakapo.database.model.TransactionEntity
 import com.kakapo.database.model.WalletEntity
+import com.kakapo.preference.constant.IntKey
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.utils.getSavedCurrency
 import kotlinx.coroutines.async
@@ -41,7 +42,7 @@ class BackupRepositoryImpl(
             val currency = async { preferenceDatasource.getSavedCurrency() }
 
             val backup = BackupModel(
-//                currency.await(),
+                currency.await(),
                 categoryLimits.await().getOrElse { emptyList() },
                 categories.await().getOrElse { emptyList() },
                 goals.await().getOrElse { emptyList() },
@@ -58,9 +59,9 @@ class BackupRepositoryImpl(
         runCatching {
             val backupModel = Json.decodeFromString(BackupModel.serializer(), backup)
 
-//            val currencyDeferred = async {
-//                preferenceDatasource.saveIntValue(IntKey.CURRENCY, backupModel.currency)
-//            }
+            val currencyDeferred = async {
+                preferenceDatasource.saveIntValue(IntKey.CURRENCY, backupModel.currency)
+            }
             val categoryDeferred = async {
                 categoryDatasource.restoreCategories(backupModel.categories)
             }
@@ -80,7 +81,7 @@ class BackupRepositoryImpl(
                 walletDatasource.restoreWallets(backupModel.wallets)
             }
 
-//            currencyDeferred.await()
+            currencyDeferred.await()
             categoryDeferred.await()
             categoryLimitDeferred.await()
             goalDeferred.await()
@@ -93,7 +94,7 @@ class BackupRepositoryImpl(
 
     @Serializable
     data class BackupModel(
-//        val currency: Int,
+        val currency: Int,
         val categoryLimits: List<CategoryLimitEntity>,
         val categories: List<CategoryEntity>,
         val goals: List<GoalEntity>,

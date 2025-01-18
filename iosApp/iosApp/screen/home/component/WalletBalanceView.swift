@@ -57,9 +57,8 @@ fileprivate struct BottomContentView: View {
     var body: some View {
         HStack(spacing: 8) {
             VStack{
-                Text("Rp")
-                    .font(.caption)
-                    .alignmentGuide(.firstTextBaseline) { _ in 0 }
+                Text("\(wallet.currency.symbol)")
+                    .font(Typography.bodyMedium)
                 Spacer().frame(height: 16)
             }
             

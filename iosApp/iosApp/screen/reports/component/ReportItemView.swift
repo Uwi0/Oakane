@@ -17,7 +17,7 @@ struct ReportItemView: View {
         HStack(alignment: .center, spacing: 16) {
             SelectedIconView(imageName: item.icon, icon: item.iconName, color: item.formattedColor)
             Text(item.name).font(Typography.titleMedium)
-            Spacer().frame(height: 8)
+            Spacer()
             Text(item.amount.toFormatCurrency(currency: currency)).font(Typography.titleMedium).foregroundStyle(color)
         }
         .customBackground(backgroundColor: ColorTheme.surface)

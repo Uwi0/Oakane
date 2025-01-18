@@ -9,6 +9,7 @@ struct ReportsState {
     var wallets: [WalletItemModel] = []
     var selectedName: String = ""
     var selectedMonth: MonthReport = MonthReportKt.currentMonth()
+    var currency: Currency = .idr
     
     init(){}
     
@@ -19,6 +20,7 @@ struct ReportsState {
         wallets = state.displayedWallets
         selectedName = state.selectedWalletName
         selectedMonth = state.selectedMonth
+        currency = state.currency
         reports = state.reports.enumerated().map{ (index, report) in
             ReportModel(
                 id: report.id,

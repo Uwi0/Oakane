@@ -23,15 +23,15 @@ fileprivate struct TopContentView: View {
     private let imageSize: CGFloat = 24
     
     private var formattedLimit: String {
-        overview.limit.toIDRCurrency()
+        overview.limit.toFormatCurrency(currency: overview.currency)
     }
     
     private var formattedSpent: String {
-        overview.spent.toIDRCurrency()
+        overview.spent.toFormatCurrency(currency: overview.currency)
     }
     
     private var formattedLeft: String {
-        overview.left.toIDRCurrency()
+        overview.left.toFormatCurrency(currency: overview.currency)
     }
     
     var body: some View {
@@ -69,9 +69,9 @@ fileprivate struct BottomContentView: View {
     let overview: MonthlyBudgetOverView
     var body: some View {
         HStack(spacing: 16) {
-            BalanceItemView(value: overview.totalIncome,isIncome: true)
+            BalanceItemView(value: overview.totalIncome, currency: overview.currency, isIncome: true)
             Spacer()
-            BalanceItemView(value: overview.totalExpense,isIncome: false)
+            BalanceItemView(value: overview.totalExpense, currency: overview.currency, isIncome: false)
         }
     }
 }
@@ -79,6 +79,7 @@ fileprivate struct BottomContentView: View {
 fileprivate struct BalanceItemView: View {
     
     let value: Double
+    let currency: Currency
     let isIncome: Bool
     
     private var imageName: String {
@@ -90,7 +91,7 @@ fileprivate struct BalanceItemView: View {
     }
     
     private var formattedValue: String {
-        value.toIDRCurrency()
+        value.toFormatCurrency(currency: currency)
     }
     
     var body: some View {

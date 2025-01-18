@@ -23,7 +23,7 @@ struct TransactionItemView: View {
             }.minimumScaleFactor(1)
             Spacer()
             VStack(alignment: .trailing, spacing: 8) {
-                Text("Rp. \(transaction.amount.formatted())")
+                Text("\(transaction.amount.toFormatCurrency(currency: transaction.currency))")
                     .foregroundStyle(color)
                     .font(Typography.titleSmall)
                 Text("\(transaction.dateCreated.formatDateWith(pattern: "dd MMM yyyy"))")

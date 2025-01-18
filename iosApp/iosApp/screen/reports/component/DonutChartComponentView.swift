@@ -1,10 +1,12 @@
 import SwiftUI
 import Charts
+import Shared
 
 internal struct DonutChartComponentView: View {
     
     let reports: [ReportModel]
     let walletBalance: Double
+    let currency: Currency
     
     var body: some View {
         VStack(spacing: 16) {
@@ -20,7 +22,7 @@ internal struct DonutChartComponentView: View {
             .scaledToFit()
             .overlay(alignment: .center){
                 VStack(spacing: 8) {
-                    Text(walletBalance.toIDRCurrency())
+                    Text(walletBalance.toFormatCurrency(currency: currency))
                         .font(Typography.titleMedium)
                     Text("Total Balance")
                         .font(Typography.bodyMedium)

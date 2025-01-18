@@ -14,11 +14,11 @@ struct GoalItemView: View {
             VStack(alignment: .leading,spacing: 4) {
                 Text(goal.goalName)
                     .font(Typography.titleSmall)
-                Text("Rp \(goal.amount.formatted())")
+                Text("\(goal.amount.toFormatCurrency(currency: goal.currency))")
                     .font(Typography.titleSmall)
                 ProgressIndicatorView(value: goal.progress)
                 HStack {
-                    Text("Rp \(goal.savedMoney.formatted())/\(goal.progress.formatted())%")
+                    Text("\(goal.savedMoney.toFormatCurrency(currency: goal.currency))/\(goal.progress.formatted())%")
                         .font(Typography.bodySmall)
                         .foregroundStyle(ColorTheme.outline)
                     Spacer()

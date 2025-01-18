@@ -14,64 +14,72 @@ struct AddGoalScreen: View {
     }
     
     var body: some View {
-        VStack(spacing: 16) {
-            GoalImagePickerView(
-                imageUrl: uiState.fileName,
-                onSelectedFile: { name in viewModel.handle(event: .SetFile(name: name))}
-            )
-            
-            Spacer()
-                .frame(height: 4)
-            
-            OutlinedCurrencyTextFieldView(
-                label: "Target",
-                value: $viewModel.uiState.targetAmount,
-                onValueChange: { amount in viewModel.handle(event: .SetTarget(amount: amount))}
-            )
-            
-            OutlinedTextFieldView(
-                value: $viewModel.uiState.goalName,
-                placeHolder: "Goal Name" ,
-                onValueChange: { goalName in viewModel.handle(event: .SetName(value: goalName))}
-            )
-            
-            OutlinedTextFieldView(
-                value: $viewModel.uiState.note,
-                placeHolder: "Note",
-                onValueChange: { note in viewModel.handle(event: .SetNote(value: note))}
-            )
-            
-            DateSelectorView(
-                img: "calendar",
-                text: "Start Date",
-                selectedDate: uiState.startDate,
-                onSelectedDate: { startDate in viewModel.handle(event: .SetStart(date: startDate))}
-            )
-            
-            DateSelectorView(
-                img: "calendar.badge.checkmark",
-                text: "End Date",
-                selectedDate: uiState.endDate,
-                onSelectedDate: { endDate in viewModel.handle(event: .SetEnd(date: endDate))}
-            )
-            
-            Spacer()
-            
-            FilledButtonView(text: "Save Goal", onClick: { viewModel.handle(event: .SaveGoal())} )
-                .frame(height: 48)
+        VStack {
+            AddGoalTopAppBar()
+            VStack(spacing: 16) {
+                GoalImagePickerView(
+                    imageUrl: uiState.fileName,
+                    onSelectedFile: { name in viewModel.handle(event: .SetFile(name: name))}
+                )
+                
+                Spacer()
+                    .frame(height: 4)
+                
+                OutlinedCurrencyTextFieldView(
+                    label: "Target",
+                    value: $viewModel.uiState.targetAmount,
+                    onValueChange: { amount in viewModel.handle(event: .SetTarget(amount: amount))}
+                )
+                
+                OutlinedTextFieldView(
+                    value: $viewModel.uiState.goalName,
+                    placeHolder: "Goal Name" ,
+                    onValueChange: { goalName in viewModel.handle(event: .SetName(value: goalName))}
+                )
+                
+                OutlinedTextFieldView(
+                    value: $viewModel.uiState.note,
+                    placeHolder: "Note",
+                    onValueChange: { note in viewModel.handle(event: .SetNote(value: note))}
+                )
+                
+                DateSelectorView(
+                    img: "calendar",
+                    text: "Start Date",
+                    selectedDate: uiState.startDate,
+                    onSelectedDate: { startDate in viewModel.handle(event: .SetStart(date: startDate))}
+                )
+                
+                DateSelectorView(
+                    img: "calendar.badge.checkmark",
+                    text: "End Date",
+                    selectedDate: uiState.endDate,
+                    onSelectedDate: { endDate in viewModel.handle(event: .SetEnd(date: endDate))}
+                )
+                
+                Spacer()
+                
+                FilledButtonView(text: "Save Goal", onClick: { viewModel.handle(event: .SaveGoal())} )
+                    .frame(height: 48)
+            }
+            .padding(.vertical, 24)
+            .padding(.horizontal, 24)
         }
-        .padding(.vertical, 24)
-        .padding(.horizontal, 24)
         .background(content: {ColorTheme.surface.ignoresSafeArea()})
         .onAppear(perform: { viewModel.initData(goalId: goalId) } )
         .navigationBarBackButtonHidden(true)
         .onChange(of: viewModel.uiEffect){
             observeEffect(effect:viewModel.uiEffect)
         }
+        
     }
     
-    private func onToolbarEvent(_ event: ToolbarEvent) {
-        navigation.navigateBack()
+    @ViewBuilder
+    private func AddGoalTopAppBar() -> some View {
+        VStack {
+            NavigationTopAppbar(title: "Add Goal", navigateBack: { navigation.navigateBack() })
+            Divider()
+        }
     }
     
     private func observeEffect(effect: AddGoalEffect?) {
@@ -82,6 +90,7 @@ struct AddGoalScreen: View {
             case .showError(let errorMsg):
                 print(errorMsg)
             case .successSaveGoal:
+                print("Success Create Goal")
                 navigation.navigateBack()
             }
         }

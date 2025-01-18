@@ -14,12 +14,19 @@ struct ReportsScreen: View {
             TopAppbar()
             ScrollView {
                 VStack(spacing: 16) {
-                    ButtonFilterReportView(wallets: uiState.wallets, onEvent: viewModel.handle(event:))
-                        .padding(.horizontal, 16)
-                        .padding(.top, 24)
+                    ButtonFilterReportView(
+                        wallets: uiState.wallets,
+                        onEvent: viewModel.handle(event:)
+                    )
+                    .padding(.horizontal, 16)
+                    .padding(.top, 24)
                     
-                    DonutChartComponentView(reports: uiState.reports, walletBalance: uiState.totalBalance)
-                        .padding(.horizontal, 16)
+                    DonutChartComponentView(
+                        reports: uiState.reports,
+                        walletBalance: uiState.totalBalance,
+                        currency: uiState.currency
+                    )
+                    .padding(.horizontal, 16)
                         
                     ReportBudgetContentView(item: uiState.monthlyOverView)
                         .padding(.horizontal, 16)

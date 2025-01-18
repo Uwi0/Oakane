@@ -14,6 +14,8 @@ final class AddGoalViewModel: ObservableObject {
     
     func initData(goalId: Int64){
         viewModel.doInitData(goalId: goalId)
+        observeUiState()
+        observeUiEffect()
     }
     
     func handle(event: AddGoalEvent) {

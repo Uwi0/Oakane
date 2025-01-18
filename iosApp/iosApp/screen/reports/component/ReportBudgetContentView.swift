@@ -5,15 +5,19 @@ internal struct ReportBudgetContentView: View {
     
     let item: MonthlyBudgetOverView
     
+    private var currency: Currency {
+        item.currency
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Budget: \(item.limit.toIDRCurrency())")
+            Text("Budget: \(item.limit.toFormatCurrency(currency: currency))")
                 .font(Typography.titleMedium)
                 .foregroundStyle(ColorTheme.outline)
             
             ProgressIndicatorView(value: item.progress)
             
-            Text("Spent: \(item.spent.toIDRCurrency())")
+            Text("Spent: \(item.spent.toFormatCurrency(currency: currency))")
                 .font(Typography.labelMedium)
                 .foregroundStyle(ColorTheme.outline)
             
@@ -51,7 +55,7 @@ internal struct ReportBudgetContentView: View {
                     .font(Typography.titleSmall)
                     .foregroundStyle(ColorTheme.outline)
                 
-                Text("\(amount.toIDRCurrency())")
+                Text("\(amount.toFormatCurrency(currency: currency))")
                     .font(Typography.bodySmall)
             }            
         }
