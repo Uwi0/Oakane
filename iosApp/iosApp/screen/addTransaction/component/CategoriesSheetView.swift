@@ -21,6 +21,10 @@ struct CategoriesSheetView: View {
         }
     }
     
+    private var transactionType: TransactionType {
+        Int32(selectedTab).asTransactionType()
+    }
+    
     private var incomeCategories: [CategoryModel] {
         filteredCategories.filter { category in category.type == .income }
     }
@@ -51,6 +55,9 @@ struct CategoriesSheetView: View {
                 .tag(1)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            .onChange(of: selectedTab) {
+                onEvent(.ChangeType(value: transactionType))
+            }
         }
     }
 }

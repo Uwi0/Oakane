@@ -18,6 +18,14 @@ fun Long.asTransactionType(): TransactionType {
     }
 }
 
+fun Int.asTransactionType(): TransactionType {
+    return if (this == TransactionType.Expense.ordinal) {
+        TransactionType.Expense
+    } else {
+        TransactionType.Income
+    }
+}
+
 fun String.asTransactionType(): TransactionType {
     return when (this) {
         TransactionType.Income.name -> TransactionType.Income

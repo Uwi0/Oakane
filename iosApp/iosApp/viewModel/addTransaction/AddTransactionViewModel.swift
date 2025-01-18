@@ -9,12 +9,9 @@ final class AddTransactionViewModel: ObservableObject {
     private let viewModel: AddTransactionViewModelKt = Koin.shared.get()
     private var uiStateCancellable: AnyCancellable?
     
-    init() {
-        observeUiState()
-    }
-    
     func initializeData(transactionId: Int64) {
         viewModel.initializeData(id: transactionId)
+        observeUiState()
     }
     
     

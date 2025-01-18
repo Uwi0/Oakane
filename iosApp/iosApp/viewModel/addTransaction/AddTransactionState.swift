@@ -4,7 +4,7 @@ import Shared
 struct AddTransactionState {
     var title = ""
     var amount: Int = 0
-    var transactionType: TransactionType = .income
+    var selectedType: String = TransactionType.income.name
     var category: CategoryModel = defaultCategoryModel
     var selectedDate: Int64 = 0
     var note: String = ""
@@ -16,7 +16,7 @@ struct AddTransactionState {
     init(state: AddTransactionStateKt){
         title = state.title
         amount = Int(state.amount)
-        transactionType = state.transactionType
+        selectedType = state.transactionType.name
         category = state.category
         selectedDate = state.date
         note = state.note

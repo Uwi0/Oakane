@@ -25,6 +25,7 @@ struct AddTransactionScreen: View {
                 )
                 SelectionPickerView(
                     title: "Transaction Type",
+                    selectedOption: $viewModel.uiState.selectedType,
                     onClick: { option in
                         viewModel.handle(event: .ChangeType(value: option.asTransactionType()))
                     }

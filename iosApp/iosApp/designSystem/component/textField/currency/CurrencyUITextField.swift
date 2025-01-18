@@ -71,7 +71,7 @@ class CurrencyUITextField: UITextField {
         return (decimal as NSDecimalNumber).doubleValue
     }
     
-    private var decimal: Decimal {
+    private var decimal: Decimal {	
         return textValue.decimal
     }
     

@@ -4,17 +4,10 @@ import Shared
 
 struct SelectionPickerView: View {
     let title: String
+    @Binding var selectedOption: String
     let onClick: (String) -> Void
     
     private let options: [String] = TransactionType.allCases.map(\.self.name)
-    @State private var selectedOpion: String
-    
-    
-    init(title: String, onClick: @escaping (String) -> Void) {
-        self.title = title
-        self.onClick = onClick
-        self.selectedOpion = options.first ?? ""
-    }
     
     var body: some View {
         HStack(alignment: .center) {
@@ -22,7 +15,7 @@ struct SelectionPickerView: View {
                 .font(Typography.bodyLarge)
                 .foregroundStyle(ColorTheme.outline)
             Spacer()
-            Picker(title, selection: $selectedOpion) {
+            Picker(title, selection: $selectedOption) {
                 ForEach(options, id: \.self) { option in
                     Text(option)
                         .tag(option)
@@ -34,12 +27,12 @@ struct SelectionPickerView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .background(RoundedRectangle(cornerRadius: 16).stroke(ColorTheme.outline, lineWidth: 2))
-        .onChange(of: selectedOpion) {
-            onClick(selectedOpion)
+        .onChange(of: selectedOption) {
+            onClick(selectedOption)
         }
     }
 }
 
 #Preview {
-    SelectionPickerView(title: "Select", onClick: { _ in })
+    SelectionPickerView(title: "Select",selectedOption: .constant("") ,onClick: { _ in })
 }

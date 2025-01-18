@@ -3,7 +3,6 @@ package com.kakapo.oakane.presentation.designSystem.component.textField.currency
 import androidx.compose.ui.text.input.TextFieldValue
 import java.text.DecimalFormatSymbols
 
-
 internal class InputSanitizer(
     private val currencySymbol: String,
     private val decimalFormatSymbols: DecimalFormatSymbols
