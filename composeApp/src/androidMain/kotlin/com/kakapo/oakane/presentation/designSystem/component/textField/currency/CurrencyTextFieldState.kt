@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import co.touchlab.kermit.Logger
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
@@ -27,6 +28,7 @@ fun rememberCurrencyTextFieldState(
     config: CurrencyTextFieldConfig,
     onChange: ((String) -> Unit)
 ): CurrencyTextFieldState {
+    Logger.d("rememberCurrencyTextFieldState: $config")
     return remember(config) {
         CurrencyTextFieldState(
             config = config,

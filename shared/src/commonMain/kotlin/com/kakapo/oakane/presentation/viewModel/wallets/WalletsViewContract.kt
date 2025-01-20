@@ -4,6 +4,7 @@ import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.toColorLong
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
+import com.kakapo.model.toFormatNumber
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
@@ -58,7 +59,7 @@ data class WalletsState(
         walletId = wallet.id,
         walletName = wallet.name,
         selectedColor = wallet.color,
-        startBalance = wallet.balance.toString(),
+        startBalance = wallet.balance.toFormatNumber(currency),
         selectedIcon = wallet.iconName,
         imageFile = wallet.icon,
         isSheetShown = true

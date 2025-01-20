@@ -184,3 +184,5 @@ fun Int.asCurrency(): Currency {
 }
 
 expect fun Double.toFormatCurrency(currency: Currency): String
+
+expect fun Double.toFormatNumber(currency: Currency): String

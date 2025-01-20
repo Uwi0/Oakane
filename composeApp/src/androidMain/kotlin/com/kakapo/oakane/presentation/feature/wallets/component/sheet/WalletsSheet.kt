@@ -5,6 +5,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import co.touchlab.kermit.Logger
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
@@ -39,11 +43,15 @@ internal fun WalletsSheet(
         sheetState = sheetState,
         onDismissRequest = { onEvent.invoke(WalletsEvent.IsSheet(shown = false)) }
     ) {
-        val textFieldConfig = CurrencyTextFieldConfig(
-            Locale(uiState.currency.languageCode, uiState.currency.countryCode),
-            initialText = uiState.startBalance,
-            currencySymbol = uiState.currency.symbol
-        )
+        val textFieldConfig by remember {
+            mutableStateOf(
+                CurrencyTextFieldConfig(
+                    Locale(uiState.currency.languageCode, uiState.currency.countryCode),
+                    initialText = uiState.startBalance,
+                    currencySymbol = uiState.currency.symbol
+                )
+            )
+        }
 
         AnimatedContent(uiState.sheetContent, label = "animate_wallets_sheet") { content ->
             when (content) {
@@ -82,6 +90,7 @@ private fun onCreateWalletEvent(
 ) {
     when (createWalletEvent) {
         is CreateWalletSheetEvent.ChangeStartBalance -> {
+            Logger.d("WalletsSheet: onCreateWalletEvent: ChangeStartBalance: ${createWalletEvent.balance}")
             onEvent.invoke(WalletsEvent.ChangeStart(createWalletEvent.balance))
         }
 
