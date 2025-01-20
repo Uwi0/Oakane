@@ -2,11 +2,14 @@ package com.kakapo.oakane.presentation.viewModel.wallets
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.CategoryRepository
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.selectedWalletUseCase
+import com.kakapo.model.Currency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
@@ -23,7 +26,8 @@ import kotlin.native.ObjCName
 @ObjCName("WalletsViewModelKt")
 class WalletsViewModel(
     private val categoryRepository: CategoryRepository,
-    private val walletRepository: WalletRepository
+    private val walletRepository: WalletRepository,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -37,6 +41,7 @@ class WalletsViewModel(
     fun initializeData(){
         loadWallets()
         loadColors()
+        loadCurrency()
     }
 
     fun handleEvent(event: WalletsEvent) {
@@ -80,8 +85,20 @@ class WalletsViewModel(
         )
     }
 
+    private fun loadCurrency() = viewModelScope.launch {
+        val onSuccess: (Currency) -> Unit = { currency ->
+            _uiState.update { it.copy(currency = currency) }
+        }
+
+        systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
     private fun saveWallet() {
         val walletModel = uiState.value.toWalletModel()
+        Logger.d("WalletsViewModel: saveWallet: $walletModel")
         if (walletModel.id == 0L) add(walletModel)
         else update(walletModel)
     }

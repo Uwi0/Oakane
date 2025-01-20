@@ -1,6 +1,8 @@
 package com.kakapo.oakane.presentation.viewModel.wallets
 
+import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.toColorLong
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
@@ -20,7 +22,8 @@ data class WalletsState(
     val startBalance: String = "",
     val selectedIcon: CategoryIconName = CategoryIconName.WALLET,
     val imageFile: String = "",
-    val dialogShown: Boolean = false
+    val dialogShown: Boolean = false,
+    val currency: Currency = Currency.IDR
 ){
 
     val defaultColor: Long get(){
@@ -65,7 +68,7 @@ data class WalletsState(
         val icon = imageFile.ifEmpty { selectedIcon.displayName }
         return WalletModel(
             id = walletId,
-            balance = startBalance.ifEmpty { "0" }.toDouble(),
+            balance = startBalance.ifEmpty { "0" }.asRealCurrencyValue(),
             name = walletName,
             isDefaultIcon = imageFile.isEmpty(),
             icon = icon,

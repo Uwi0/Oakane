@@ -5,6 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
@@ -14,6 +15,7 @@ import com.kakapo.oakane.presentation.ui.component.sheet.SelectColorView
 import com.kakapo.oakane.presentation.ui.component.sheet.SelectIconSheetView
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +39,12 @@ internal fun WalletsSheet(
         sheetState = sheetState,
         onDismissRequest = { onEvent.invoke(WalletsEvent.IsSheet(shown = false)) }
     ) {
+        val textFieldConfig = CurrencyTextFieldConfig(
+            Locale(uiState.currency.languageCode, uiState.currency.countryCode),
+            initialText = uiState.startBalance,
+            currencySymbol = uiState.currency.symbol
+        )
+
         AnimatedContent(uiState.sheetContent, label = "animate_wallets_sheet") { content ->
             when (content) {
                 WalletSheetContent.Create -> CreateWalletSheetContentView(
@@ -44,6 +52,7 @@ internal fun WalletsSheet(
                     selectedIcon = selectedIcon,
                     colorSelector = colorSelector,
                     isEditMode = uiState.walletId != 0L,
+                    textFieldConfig = textFieldConfig,
                     onEvent = { event -> onCreateWalletEvent(event, onEvent) }
                 )
 

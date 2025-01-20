@@ -15,7 +15,7 @@ fun String.toColorLong(): Long {
 fun String.asDouble(): Double {
     return try {
         if (this.isEmpty()) 0.0 else this.toDouble()
-    }catch (e: Exception) {
+    } catch (e: Exception) {
         Logger.e(throwable = e, messageString = "error convert $this to double")
         0.0
     }
@@ -27,5 +27,13 @@ fun String.asInt(): Int {
     } catch (e: Exception) {
         Logger.e(throwable = e, messageString = "error convert $this to int")
         0
+    }
+}
+
+fun String.asRealCurrencyValue(): Double {
+    return try {
+        this.replace(".", "").replace(",", ".").toDouble()
+    } catch (e: Exception) {
+        0.0
     }
 }
