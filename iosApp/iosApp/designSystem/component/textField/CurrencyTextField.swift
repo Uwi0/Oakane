@@ -2,10 +2,10 @@ import SwiftUI
 import UIKit
 import Shared
 
-struct CurrencyField: View {
+struct CurrencyTextField: View {
     @Binding var value: Int
-    var formatter: NumberFormatter
     
+    private let formatter: NumberFormatter
     @FocusState private var isFocused: Bool
     
     private var label: String {
@@ -29,34 +29,40 @@ struct CurrencyField: View {
     }
     
     public var body: some View {
-            Button(action: {
-                isFocused = true
-            }) {
-                HStack {
-                    ZStack {
-                        Text(label)
-                            .layoutPriority(1)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        CurrencyInputField(value: $value, formatter: formatter)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .focused($isFocused)
-                }
-                .frame(maxWidth: .infinity, maxHeight: 32)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 16)
-                .overlay(RoundedRectangle(cornerRadius: 16).stroke(borderColor, lineWidth: 2))
+        Button(action: {
+            isFocused = true
+        }) {
+            HStack {
+                TextFieldView()
             }
-            .buttonStyle(PlainButtonStyle())
+            .outlinedTextStyle(borderColor: borderColor)
         }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+    @ViewBuilder
+    private func TextFieldView() -> some View {
+        ZStack {
+            Text(label)
+                .layoutPriority(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            CurrencyInputField(value: $value, formatter: formatter)
+                .frame(maxWidth: .infinity)
+        }
+        .focused($isFocused)
+    }
 }
 
 #Preview {
     @Previewable @State var value: Int = 0
-    CurrencyField(value: $value, currency: .idr)
+    @Previewable @State var someValue: String = ""
+    VStack {
+        OutlinedTextFieldView(value: $someValue, onValueChange: { _ in })
+        CurrencyTextField(value: $value, currency: .idr)
+    }
 }
 
-class NoCaretTextField: UITextField {
+class CustomTextField: UITextField {
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         false
     }
@@ -78,16 +84,16 @@ struct CurrencyInputField: UIViewRepresentable {
         Coordinator(self)
     }
     
-    func makeUIView(context: Context) -> NoCaretTextField {
-        let textField = NoCaretTextField()
+    func makeUIView(context: Context) -> CustomTextField {
+        let textField = CustomTextField()
         textField.delegate = context.coordinator
         textField.keyboardType = .numberPad
         textField.tintColor = .clear
         textField.textColor = .clear
         textField.textAlignment = .left
         textField.backgroundColor = .clear
+        textField.font = .systemFont(ofSize: 32, weight: .regular)
         
-        // Remove the constraints setup from here since we're handling layout in SwiftUI
         textField.addTarget(
             context.coordinator,
             action: #selector(Coordinator.editingChanged(textField:)),
@@ -98,7 +104,7 @@ struct CurrencyInputField: UIViewRepresentable {
         return textField
     }
     
-    func updateUIView(_ uiView: NoCaretTextField, context: Context) {}
+    func updateUIView(_ uiView: CustomTextField, context: Context) {}
     
     class Coordinator: NSObject, UITextFieldDelegate {
         private var input: CurrencyInputField
@@ -130,7 +136,7 @@ struct CurrencyInputField: UIViewRepresentable {
             return true
         }
         
-        @objc func editingChanged(textField: NoCaretTextField) {
+        @objc func editingChanged(textField: CustomTextField) {
             guard var oldText = lastValidInput else {
                 return
             }

@@ -10,6 +10,8 @@ struct OutlinedSearchTextFieldView: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
+                .resizable()
+                .frame(width: 24, height: 24)
                 .foregroundColor(ColorTheme.outline)
             
             TextField(placeHolder, text: $observer.searchQuery, onEditingChanged: { isEditChange in
@@ -27,11 +29,7 @@ struct OutlinedSearchTextFieldView: View {
                 )
             }
         }
-        .padding(12)
-        .overlay {
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(borderColor, lineWidth: .init(2))
-        }
+        .outlinedTextStyle(borderColor: borderColor)
         .onReceive(observer.$debouncedQuery) { val in
             query = val
         }
