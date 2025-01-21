@@ -3,6 +3,8 @@ package com.kakapo.oakane.presentation.feature.addTransaction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -18,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,6 +33,7 @@ import com.kakapo.model.Currency
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.model.transaction.asTransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.designSystem.component.menu.CustomDropdownMenu
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomClickableOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
@@ -132,6 +139,7 @@ private fun AddTransactionScreen(
                     value = uiState.note,
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangeNote(it)) }
                 )
+                TakeImageButtonView()
                 Spacer(Modifier.weight(1f))
                 val buttonTitle = if (uiState.isEditMode) "Save" else "Add"
                 CustomButton(
@@ -142,6 +150,36 @@ private fun AddTransactionScreen(
                         Text(text = buttonTitle)
                     }
                 )
+            }
+        }
+    )
+}
+
+@Composable
+private fun TakeImageButtonView() {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        TakeImageButtonItemView(title = "Camera", icon = Icons.Outlined.PhotoCamera, onClick = {})
+        TakeImageButtonItemView(title = "Gallery", icon = Icons.Outlined.Image, onClick = {})
+    }
+}
+
+@Composable
+private fun RowScope.TakeImageButtonItemView(
+    title: String,
+    icon: ImageVector,
+    onClick: () -> Unit
+) {
+    CustomOutlinedButton(
+        modifier = Modifier.Companion.weight(1f),
+        contentPadding = PaddingValues(16.dp),
+        onClick = onClick,
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = title)
+                Icon(imageVector = icon, contentDescription = null)
             }
         }
     )
