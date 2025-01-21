@@ -74,7 +74,11 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
         viewModel.initializeData(transactionId)
     }
 
-    AddTransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+    if (uiState.isCameraPreviewShown){
+        CameraPreviewContent(viewModel = cameraViewModel, modifier = Modifier.fillMaxSize())
+    } else {
+        AddTransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+    }
 
     if (uiState.isShowDialog) {
         CustomDatePickerDialog(
@@ -92,9 +96,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
         )
     }
 
-    if (uiState.isCameraPreviewShown){
-        CameraPreviewContent(viewModel = cameraViewModel, modifier = Modifier.fillMaxSize())
-    }
+
 }
 
 @Composable

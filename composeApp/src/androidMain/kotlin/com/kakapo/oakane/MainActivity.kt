@@ -73,7 +73,7 @@ private fun OakaneApp(
 
     ModalNavigationDrawer(
         drawerState = drawerState,
-        gesturesEnabled = appState.isDashboardRoute,
+        gesturesEnabled = false,
         content = {
             OakaneNavHost(
                 navController = appState.navController,

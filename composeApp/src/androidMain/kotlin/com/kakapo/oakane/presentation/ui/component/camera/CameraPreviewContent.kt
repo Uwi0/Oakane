@@ -4,6 +4,7 @@ import androidx.camera.compose.CameraXViewfinder
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,7 +23,6 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraPreviewContent(
@@ -38,10 +38,21 @@ fun CameraPreviewContent(
     }
     if (cameraPermission.status.isGranted) {
         surfaceRequest?.let { request ->
-            CameraXViewfinder(
-                surfaceRequest = request,
-                modifier = modifier
-            )
+            Column(modifier = modifier) {
+                CameraXViewfinder(
+                    surfaceRequest = request,
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                CustomButton(
+                    onClick = {
+                        viewModel.captureImage(context)
+                    },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Text("Capture Image")
+                }
+            }
         }
     } else {
         Surface {
@@ -60,5 +71,4 @@ fun CameraPreviewContent(
             }
         }
     }
-
 }
