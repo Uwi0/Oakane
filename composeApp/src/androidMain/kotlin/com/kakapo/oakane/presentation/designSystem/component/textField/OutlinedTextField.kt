@@ -22,7 +22,7 @@ fun CustomOutlinedTextField(
 ) {
     OutlinedTextField(
         modifier = modifier,
-        shape = MaterialTheme.shapes.medium,
+        shape = MaterialTheme.shapes.small,
         value = value,
         onValueChange = onValueChange,
         placeholder = { Text(text = placeHolder) },
@@ -44,7 +44,7 @@ fun CustomClickableOutlinedTextField(
         readOnly = true,
         modifier = modifier,
         value = value,
-        shape = MaterialTheme.shapes.medium,
+        shape = MaterialTheme.shapes.small,
         onValueChange = {},
         placeholder = {
             Text(text = placeHolder)
