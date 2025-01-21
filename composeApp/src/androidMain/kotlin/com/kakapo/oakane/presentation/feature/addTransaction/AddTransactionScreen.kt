@@ -42,6 +42,8 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.currency.
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
+import com.kakapo.oakane.presentation.ui.component.camera.CameraPreviewContent
+import com.kakapo.oakane.presentation.ui.component.camera.CameraPreviewViewModel
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEffect
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEvent
@@ -55,6 +57,7 @@ import java.util.Locale
 internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) {
     val context = LocalContext.current
     val viewModel = koinViewModel<AddTransactionViewModel>()
+    val cameraViewModel = CameraPreviewViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -87,6 +90,10 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
             uiState = uiState,
             onEvent = viewModel::handleEvent
         )
+    }
+
+    if (uiState.isCameraPreviewShown){
+        CameraPreviewContent(viewModel = cameraViewModel, modifier = Modifier.fillMaxSize())
     }
 }
 
@@ -139,7 +146,7 @@ private fun AddTransactionScreen(
                     value = uiState.note,
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangeNote(it)) }
                 )
-                TakeImageButtonView()
+                TakeImageButtonView(onEvent = onEvent)
                 Spacer(Modifier.weight(1f))
                 val buttonTitle = if (uiState.isEditMode) "Save" else "Add"
                 CustomButton(
@@ -156,10 +163,18 @@ private fun AddTransactionScreen(
 }
 
 @Composable
-private fun TakeImageButtonView() {
+private fun TakeImageButtonView(onEvent: (AddTransactionEvent) -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        TakeImageButtonItemView(title = "Camera", icon = Icons.Outlined.PhotoCamera, onClick = {})
-        TakeImageButtonItemView(title = "Gallery", icon = Icons.Outlined.Image, onClick = {})
+        TakeImageButtonItemView(
+            title = "Camera",
+            icon = Icons.Outlined.PhotoCamera,
+            onClick = { onEvent.invoke(AddTransactionEvent.TakePhoto) }
+        )
+        TakeImageButtonItemView(
+            title = "Gallery",
+            icon = Icons.Outlined.Image,
+            onClick = { onEvent.invoke(AddTransactionEvent.PickImage) }
+        )
     }
 }
 

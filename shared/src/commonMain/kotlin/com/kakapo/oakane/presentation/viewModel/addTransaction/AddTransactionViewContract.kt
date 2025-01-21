@@ -22,7 +22,8 @@ data class AddTransactionState(
     val isShowDialog: Boolean = false,
     val sheetShown: Boolean = false,
     val categories: List<CategoryModel> = emptyList(),
-    val currency: Currency = Currency.IDR
+    val currency: Currency = Currency.IDR,
+    val isCameraPreviewShown: Boolean = false,
 ) {
     val isEditMode get() = transactionId != 0L
 
@@ -80,4 +81,6 @@ sealed class AddTransactionEvent {
     data class Sheet(val shown: Boolean) : AddTransactionEvent()
     data object SaveTransaction : AddTransactionEvent()
     data class SetCategory(val value: CategoryModel) : AddTransactionEvent()
+    data object TakePhoto : AddTransactionEvent()
+    data object PickImage : AddTransactionEvent()
 }

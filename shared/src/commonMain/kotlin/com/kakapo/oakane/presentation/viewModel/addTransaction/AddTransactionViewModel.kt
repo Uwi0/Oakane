@@ -62,6 +62,8 @@ class AddTransactionViewModel(
             is AddTransactionEvent.SetCategory -> _uiState.update { it.update(category = event.value) }
             AddTransactionEvent.NavigateBack -> emit(AddTransactionEffect.NavigateBack)
             AddTransactionEvent.SaveTransaction -> onClickButton()
+            AddTransactionEvent.PickImage -> {}
+            AddTransactionEvent.TakePhoto -> _uiState.update { it.copy(isCameraPreviewShown = true) }
         }
     }
 

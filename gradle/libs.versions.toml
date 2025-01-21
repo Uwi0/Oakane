@@ -1,4 +1,5 @@
 [versions]
+accompanist = "0.36.0"
 agp = "8.7.3"
 android-compileSdk = "35"
 android-minSdk = "26"
@@ -11,6 +12,7 @@ androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.6"
 androidx-navigation = "2.8.5"
 androidx-test-junit = "1.2.1"
+camera = "1.5.0-alpha05"
 coil = "2.7.0"
 colorpicker = "1.1.2"
 compose-plugin = "1.7.0"
@@ -29,7 +31,7 @@ material-design = "1.12.0"
 open-csv = "5.7.1"
 project-version = "1.0.0"
 skie = "0.10.0"
-splash-screen = "1.0.0"
+splash-screen = "1.0.1"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.6"
 
@@ -37,10 +39,15 @@ uiTextGoogleFonts = "1.7.6"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+androidx-camera = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
+androidx-camera-compose = { group = "androidx.camera", name = "camera-compose", version.ref = "camera" }
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camera" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }

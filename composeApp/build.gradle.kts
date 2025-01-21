@@ -92,6 +92,16 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.compose.colorpicker)
     implementation(libs.splash.screen)
+
+    //camera
+    implementation(libs.androidx.camera)
+    implementation(libs.androidx.camera.compose)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.lifecycle)
+
+    //accompanist
+    implementation(libs.accompanist.permissions)
+
     implementation(kotlin("reflect"))
 }
 
