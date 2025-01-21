@@ -75,7 +75,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
     }
 
     if (uiState.isCameraPreviewShown){
-        CameraPreviewContent(viewModel = cameraViewModel, modifier = Modifier.fillMaxSize())
+        CameraPreviewContent()
     } else {
         AddTransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
     }

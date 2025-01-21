@@ -95,9 +95,9 @@ dependencies {
 
     //camera
     implementation(libs.androidx.camera)
-    implementation(libs.androidx.camera.compose)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
 
     //accompanist
     implementation(libs.accompanist.permissions)

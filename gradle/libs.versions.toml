@@ -1,5 +1,5 @@
 [versions]
-accompanist = "0.36.0"
+accompanist = "0.37.0"
 agp = "8.7.3"
 android-compileSdk = "35"
 android-minSdk = "26"
@@ -12,7 +12,7 @@ androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.6"
 androidx-navigation = "2.8.5"
 androidx-test-junit = "1.2.1"
-camera = "1.5.0-alpha05"
+camera = "1.4.1"
 coil = "2.7.0"
 colorpicker = "1.1.2"
 compose-plugin = "1.7.0"
@@ -45,9 +45,9 @@ androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-camera = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
-androidx-camera-compose = { group = "androidx.camera", name = "camera-compose", version.ref = "camera" }
 androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camera" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
