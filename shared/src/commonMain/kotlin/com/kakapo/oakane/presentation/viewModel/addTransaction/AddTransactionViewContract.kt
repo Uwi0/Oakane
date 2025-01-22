@@ -1,6 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.addTransaction
 
-import com.kakapo.common.asDouble
+import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.data.model.TransactionParam
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryModel
@@ -57,7 +57,7 @@ data class AddTransactionState(
     fun asTransactionParam() = TransactionParam(
         id = transactionId,
         title = title,
-        amount = transactionAmount.asDouble(),
+        amount = transactionAmount.asRealCurrencyValue(),
         type = transactionType.ordinal.toLong(),
         category = category,
         dateCreated = date,
