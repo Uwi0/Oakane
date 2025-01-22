@@ -46,7 +46,8 @@ fun TransactionEntity.toModel(currency: Currency) = TransactionModel(
     category = category.toCategoryModel(),
     amount = amount,
     note = note ?: "",
-    currency = currency
+    currency = currency,
+    imageFileName = imageFile ?: ""
 )
 
 fun TransactionCategoryEntity.toReportModel(currency: Currency) = ReportModel(

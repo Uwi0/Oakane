@@ -50,7 +50,8 @@ data class AddTransactionState(
         transactionAmount = transaction.amount.toInt().toString(),
         transactionType = transaction.type,
         category = transaction.category,
-        note = transaction.note
+        note = transaction.note,
+        imageFileName = transaction.imageFileName
     )
 
     fun asTransactionParam() = TransactionParam(

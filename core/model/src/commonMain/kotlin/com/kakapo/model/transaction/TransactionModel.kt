@@ -13,7 +13,8 @@ data class TransactionModel(
     val dateCreated: Long = 1729214280000,
     val amount: Double = 0.0,
     val note: String = "",
-    val currency: Currency = Currency.IDR
+    val currency: Currency = Currency.IDR,
+    val imageFileName: String = ""
 ) {
     val formattedDate: String
         get() {
