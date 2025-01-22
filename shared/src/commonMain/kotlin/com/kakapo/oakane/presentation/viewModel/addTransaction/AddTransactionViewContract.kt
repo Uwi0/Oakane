@@ -67,6 +67,7 @@ data class AddTransactionState(
 sealed class AddTransactionEffect {
     data object NavigateBack : AddTransactionEffect()
     data class ShowError(val message: String) : AddTransactionEffect()
+    data object TakePhoto : AddTransactionEffect()
 }
 
 sealed class AddTransactionEvent {

@@ -1,5 +1,14 @@
 package com.kakapo.oakane.presentation.feature.addTransaction
 
+import android.Manifest
+import android.content.ContentValues
+import android.content.Context
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,11 +31,18 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.touchlab.kermit.Logger
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.kakapo.common.showToast
 import com.kakapo.common.toDateWith
 import com.kakapo.model.Currency
@@ -42,30 +58,70 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.currency.
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
-import com.kakapo.oakane.presentation.ui.component.camera.CameraPreviewContent
-import com.kakapo.oakane.presentation.ui.component.camera.CameraPreviewViewModel
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEffect
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEvent
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionState
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import org.koin.androidx.compose.koinViewModel
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) {
     val context = LocalContext.current
     val viewModel = koinViewModel<AddTransactionViewModel>()
-    val cameraViewModel = CameraPreviewViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val permissionsState = rememberMultiplePermissionsState(permissions = listOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    ))
+    var photoUri by remember { mutableStateOf<Uri?>(null) }
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) {
+            context.showToast("Photo saved successfully at: $photoUri")
+        } else {
+            context.showToast("Failed to capture photo")
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.uiSideEffect.collect { effect ->
             when (effect) {
                 AddTransactionEffect.NavigateBack -> navigateBack.invoke()
                 is AddTransactionEffect.ShowError -> context.showToast(effect.message)
+                AddTransactionEffect.TakePhoto -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        if (permissionsState.permissions[0].status.isGranted) {
+                            val uri = createImageUri(context)
+                            if (uri != null) {
+                                photoUri = uri
+                                launcher.launch(uri)
+                            } else {
+                                Logger.e { "Failed to create file for photo" }
+                            }
+                        } else {
+                            permissionsState.launchMultiplePermissionRequest()
+                        }
+                    } else {
+                        if (permissionsState.allPermissionsGranted) {
+                            val uri = createImageUri(context)
+                            if (uri != null) {
+                                photoUri = uri
+                                launcher.launch(uri)
+                            } else {
+                                Logger.e { "Failed to create file for photo" }
+                            }
+                        } else {
+                            permissionsState.launchMultiplePermissionRequest()
+                        }
+                    }
+                }
             }
         }
     }
@@ -74,11 +130,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
         viewModel.initializeData(transactionId)
     }
 
-    if (uiState.isCameraPreviewShown){
-        CameraPreviewContent()
-    } else {
-        AddTransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
-    }
+    AddTransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 
     if (uiState.isShowDialog) {
         CustomDatePickerDialog(
@@ -95,8 +147,29 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
             onEvent = viewModel::handleEvent
         )
     }
+}
 
+private fun createImageUri(context: Context): Uri? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, generateFilename())
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/Oakane")
+        }
+        context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+    } else {
+        val picturesDir = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Oakane")
+        if (!picturesDir.exists()) {
+            picturesDir.mkdirs()
+        }
+        val file = File(picturesDir, "${generateFilename()}.jpg")
+        Uri.fromFile(file)
+    }
+}
 
+private fun generateFilename(): String {
+    val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+    return "IMG_T_$timestamp"
 }
 
 @Composable

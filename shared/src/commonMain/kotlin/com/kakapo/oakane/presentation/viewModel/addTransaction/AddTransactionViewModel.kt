@@ -63,7 +63,7 @@ class AddTransactionViewModel(
             AddTransactionEvent.NavigateBack -> emit(AddTransactionEffect.NavigateBack)
             AddTransactionEvent.SaveTransaction -> onClickButton()
             AddTransactionEvent.PickImage -> {}
-            AddTransactionEvent.TakePhoto -> _uiState.update { it.copy(isCameraPreviewShown = true) }
+            AddTransactionEvent.TakePhoto -> emit(AddTransactionEffect.TakePhoto)
         }
     }
 
