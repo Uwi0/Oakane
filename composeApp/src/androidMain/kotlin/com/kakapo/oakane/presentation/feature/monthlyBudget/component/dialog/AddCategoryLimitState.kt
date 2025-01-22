@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.kakapo.common.asDouble
+import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.category.CategoryModel
 import kotlinx.coroutines.delay
@@ -30,7 +30,7 @@ class AddCategoryLimitState(
     var filteredOptions = emptyList<CategoryModel>()
 
     val categoryId get() = selectedCategory.id
-    val formattedAmount get() = limitAmount.asDouble()
+    val formattedAmount get() = limitAmount.asRealCurrencyValue()
 
     private var expenseCategory = expenseCategories
     private var defaultCategory = expenseCategories.first()

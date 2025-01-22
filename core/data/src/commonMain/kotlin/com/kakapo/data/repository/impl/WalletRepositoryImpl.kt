@@ -32,8 +32,10 @@ class WalletRepositoryImpl(
         }
     }
 
-    override suspend fun loadWalletId(): Result<Long> {
-        return runCatching { preferenceDatasource.getWalletId() }
+    override suspend fun loadSelectedWallet(): Result<WalletModel> {
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        val walletId = preferenceDatasource.getWalletId()
+        return localDatasource.getWalletBy(walletId).mapCatching { it.toWalletModel(currency) }
     }
 
     override suspend fun update(balance: Double): Result<Unit> {
@@ -61,11 +63,18 @@ class WalletRepositoryImpl(
         return localDatasource.insert(walletEntity)
     }
 
-    override fun loadWallets(): Flow<Result<List<WalletItemModel>>> = flow {
+    override fun loadWalletItems(): Flow<Result<List<WalletItemModel>>> = flow {
         val walletId = preferenceDatasource.getWalletId()
         val currency = preferenceDatasource.getSavedCurrency().asCurrency()
         val toWalletItem: (WalletEntity) -> WalletItemModel = { it.toWalletItemModel(walletId, currency) }
         val result = localDatasource.getWallets().mapCatching { it.map(toWalletItem) }
+        emit(result)
+    }
+
+    override fun loadWallets(): Flow<Result<List<WalletModel>>> = flow {
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        val toWalletModel: (WalletEntity) -> WalletModel = { it.toWalletModel(currency) }
+        val result = localDatasource.getWallets().mapCatching { it.map(toWalletModel) }
         emit(result)
     }
 

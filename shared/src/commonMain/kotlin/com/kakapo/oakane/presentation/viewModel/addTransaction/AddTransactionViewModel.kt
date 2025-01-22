@@ -2,15 +2,19 @@ package com.kakapo.oakane.presentation.viewModel.addTransaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.common.asCustomResult
+import com.kakapo.common.subscribe
 import com.kakapo.data.model.TransactionParam
 import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
+import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
+import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,7 +31,8 @@ class AddTransactionViewModel(
     private val categoryRepository: CategoryRepository,
     private val systemRepository: SystemRepository,
     private val saveTransactionUseCase: SaveTransactionUseCase,
-    private val updateTransactionUseCase: UpdateTransactionUseCase
+    private val updateTransactionUseCase: UpdateTransactionUseCase,
+    private val walletRepository: WalletRepository,
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -43,10 +48,12 @@ class AddTransactionViewModel(
 
     fun initializeData(id: Long) {
         loadCurrency()
+        loadWallets()
         loadCategories().invokeOnCompletion {
             if (id != 0L) loadTransactionBy(id)
             else setDefaultCategory()
         }
+        if (id == 0L) loadSelectedWallet()
     }
 
     fun handleEvent(event: AddTransactionEvent) {
@@ -118,6 +125,26 @@ class AddTransactionViewModel(
     private fun loadCurrency() = viewModelScope.launch {
         systemRepository.loadSavedCurrency().fold(
             onSuccess = { currency -> _uiState.update { it.copy(currency = currency) } },
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadWallets() = viewModelScope.launch {
+        val onSuccess: (List<WalletModel>) -> Unit = { wallets ->
+            _uiState.update { it.copy(wallets = wallets) }
+        }
+        walletRepository.loadWallets().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
+    private fun loadSelectedWallet() = viewModelScope.launch {
+        val onSuccess: (WalletModel) -> Unit = { wallet ->
+            _uiState.update { it.copy(selectedWallet = wallet) }
+        }
+        walletRepository.loadSelectedWallet().fold(
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }

@@ -6,6 +6,7 @@ import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
+import com.kakapo.model.wallet.WalletModel
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
 
@@ -25,7 +26,9 @@ data class AddTransactionState(
     val currency: Currency = Currency.IDR,
     val imageFileName: String = "",
     val titleFieldError: Boolean = false,
-    val amountFieldError: Boolean = false
+    val amountFieldError: Boolean = false,
+    val wallets: List<WalletModel> = emptyList(),
+    val selectedWallet: WalletModel = WalletModel()
 ) {
     val isEditMode get() = transactionId != 0L
 

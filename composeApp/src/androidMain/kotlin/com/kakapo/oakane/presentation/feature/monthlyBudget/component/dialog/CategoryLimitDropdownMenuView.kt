@@ -44,10 +44,11 @@ fun CategoryLimitDropdownMenuView(state: AddCategoryLimitState) {
             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
             value = state.selectedOptionText,
             onValueChange = state::changeSelectedOptionText,
-            shape = MaterialTheme.shapes.medium,
+            shape = MaterialTheme.shapes.small,
             placeholder = { Text(state.selectedCategory.name) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(state.expanded) },
-            leadingIcon = { LeadingIcon(state.selectedCategory) }
+            leadingIcon = { LeadingIcon(state.selectedCategory) },
+            singleLine = true
         )
 
         if (state.filteredOptions.isNotEmpty()) {

@@ -26,7 +26,7 @@ class SaveTransactionUseCaseImpl(
     private suspend fun saveWallet(transaction: TransactionParam): Long? {
         val balance = transaction.saveBalance
         walletRepository.update(balance).getOrNull()
-        return walletRepository.loadWalletId().getOrNull()
+        return walletRepository.loadSelectedWallet().getOrNull()?.id
     }
 
     private suspend fun getMonthlyBudgetId(): Long? {

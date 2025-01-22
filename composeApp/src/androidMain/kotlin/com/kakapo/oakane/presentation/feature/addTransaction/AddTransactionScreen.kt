@@ -62,6 +62,8 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.currency.
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.ImageReceiptView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
+import com.kakapo.oakane.presentation.feature.addTransaction.component.dropdown.SelectWalletDropdownMenuView
+import com.kakapo.oakane.presentation.feature.addTransaction.component.dropdown.rememberSelectWalletDropdownMenuState
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEffect
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEvent
@@ -80,6 +82,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
     val viewModel = koinViewModel<AddTransactionViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
     val permissionsState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.CAMERA,
@@ -222,6 +225,11 @@ private fun AddTransactionScreen(
     uiState: AddTransactionState,
     onEvent: (AddTransactionEvent) -> Unit,
 ) {
+    val selectWalletState = rememberSelectWalletDropdownMenuState(
+        uiState.wallets,
+        uiState.selectedWallet.id
+    )
+
     Scaffold(
         topBar = {
             val screenTitle = if (uiState.isEditMode) "Edit Transaction" else "Add Transaction"
@@ -266,6 +274,7 @@ private fun AddTransactionScreen(
                     value = uiState.date.toDateWith(format = "dd MMM yyyy"),
                     onClick = { onEvent.invoke(AddTransactionEvent.Dialog(shown = true)) }
                 )
+                SelectWalletDropdownMenuView(state = selectWalletState)
                 CustomOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Note",
@@ -294,23 +303,20 @@ private fun AddTransactionScreen(
 
 @Composable
 private fun TakeImageButtonView(onEvent: (AddTransactionEvent) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(text = "Image Transaction")
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TakeImageButtonItemView(
-                title = "Camera",
-                icon = Icons.Outlined.PhotoCamera,
-                onClick = { onEvent.invoke(AddTransactionEvent.TakePhoto) }
-            )
-            TakeImageButtonItemView(
-                title = "Gallery",
-                icon = Icons.Outlined.Image,
-                onClick = { onEvent.invoke(AddTransactionEvent.PickImage) }
-            )
-        }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        TakeImageButtonItemView(
+            title = "Camera",
+            icon = Icons.Outlined.PhotoCamera,
+            onClick = { onEvent.invoke(AddTransactionEvent.TakePhoto) }
+        )
+        TakeImageButtonItemView(
+            title = "Gallery",
+            icon = Icons.Outlined.Image,
+            onClick = { onEvent.invoke(AddTransactionEvent.PickImage) }
+        )
     }
 }
 

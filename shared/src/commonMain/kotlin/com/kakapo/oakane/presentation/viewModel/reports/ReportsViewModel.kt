@@ -122,7 +122,7 @@ class ReportsViewModel(
             _uiState.update { it.copy(wallets = wallets) }
         }
 
-        walletRepository.loadWallets().asCustomResult().subscribe(
+        walletRepository.loadWalletItems().asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )
