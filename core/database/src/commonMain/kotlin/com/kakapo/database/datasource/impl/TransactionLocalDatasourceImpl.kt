@@ -27,7 +27,8 @@ class TransactionLocalDatasourceImpl(
                 type = entity.type,
                 category = entity.category.id,
                 dateCreated = entity.dateCreated,
-                note = entity.note
+                note = entity.note,
+                imageFile = entity.imageFile
             )
         }
     }
@@ -55,7 +56,8 @@ class TransactionLocalDatasourceImpl(
                 category = entity.category.id,
                 dateCreated = entity.dateCreated,
                 note = entity.note,
-                id = entity.id
+                imageFile = entity.imageFile,
+                id = entity.id,
             )
         }
     }
@@ -138,7 +140,8 @@ class TransactionLocalDatasourceImpl(
                     type = transaction.type,
                     category = transaction.categoryId,
                     dateCreated = transaction.dateCreated,
-                    note = transaction.note
+                    note = transaction.note,
+                    imageFile = transaction.imageFile
                 )
 
             }

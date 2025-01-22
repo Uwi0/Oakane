@@ -56,9 +56,7 @@ internal fun ReportsRoute(
                 is ReportsEffect.GenerateReport -> {
                     val fileName = uiState.toReportName()
                     val fileReport = effect.reports.toCsvUseCase(context, fileName).await()
-                    fileReport?.let {
-                        saveToDownloads(context, it)
-                    }
+                    fileReport?.let { saveToDownloads(context, it) }
                 }
             }
         }

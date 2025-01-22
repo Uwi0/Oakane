@@ -9,7 +9,7 @@ import com.kakapo.oakane.presentation.feature.onboarding.OnBoardingRoute
 const val ON_BOARDING_ROUTE = "on_boarding_route"
 
 fun NavController.navigateToOnBoarding(navOptions: NavOptions? = null) {
-    navigate(ON_BOARDING_ROUTE)
+    navigate(ON_BOARDING_ROUTE, navOptions)
 }
 
 fun NavGraphBuilder.onBoardingScreen(navigateToHome: () -> Unit) {

@@ -60,7 +60,8 @@ data class AddTransactionState(
         type = transactionType.ordinal.toLong(),
         category = category,
         dateCreated = date,
-        note = note
+        note = note,
+        imageFile = imageFileName
     )
 }
 

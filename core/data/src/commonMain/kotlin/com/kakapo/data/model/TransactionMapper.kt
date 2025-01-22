@@ -17,7 +17,8 @@ data class TransactionParam(
     val type: Long,
     val category: CategoryModel,
     val dateCreated: Long,
-    val note: String?
+    val note: String?,
+    val imageFile: String?
 ) {
     val saveBalance: Double get() {
         return if(type == 0L) amount else -amount
@@ -31,7 +32,8 @@ data class TransactionParam(
         type = type,
         category = category.toCategoryEntity(),
         dateCreated = dateCreated,
-        note = note
+        note = note,
+        imageFile = imageFile
     )
 }
 

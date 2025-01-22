@@ -17,7 +17,8 @@ data class TransactionEntity(
     val type: Long,
     val category: CategoryEntity = CategoryEntity(),
     val dateCreated: Long,
-    val note: String?
+    val note: String?,
+    val imageFile: String?
 )
 
 data class TransactionCategoryEntity(
@@ -39,7 +40,8 @@ fun TransactionTable.toTransactionEntity(): TransactionEntity {
         amount = amount,
         type = type,
         dateCreated = dateCreated,
-        note = note
+        note = note,
+        imageFile = imageFile
     )
 }
 
@@ -59,7 +61,8 @@ fun GetTransactions.toTransactionEntity(): TransactionEntity {
         type = transactionType,
         category = category,
         dateCreated = dateCreated,
-        note = note
+        note = note,
+        imageFile = imageFile
     )
 
     return transactionEntity
@@ -82,7 +85,8 @@ fun GetTransactionBy.toTransactionEntity(): TransactionEntity {
         type = transactionType,
         category = category,
         dateCreated = dateCreated,
-        note = note
+        note = note,
+        imageFile = imageFile
     )
 
     return transactionEntity
