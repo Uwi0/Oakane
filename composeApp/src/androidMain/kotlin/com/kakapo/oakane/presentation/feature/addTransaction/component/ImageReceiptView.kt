@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation.feature.addTransaction.component
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,13 +17,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEvent
+import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionState
 
 @Composable
-internal fun ImageReceiptView(uri: Uri?, onDismiss: () -> Unit) {
+internal fun ImageReceiptView(state: AddTransactionState, onEvent: (AddTransactionEvent) -> Unit) {
+    val context = LocalContext.current
+    val uri = context.getImageUriFromFileName(state.imageFileName).getOrNull()
     uri?.let { safeUri ->
         Box(
             modifier = Modifier
@@ -43,7 +48,7 @@ internal fun ImageReceiptView(uri: Uri?, onDismiss: () -> Unit) {
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(12.dp),
-                onDismiss = onDismiss
+                onDismiss = { onEvent.invoke(AddTransactionEvent.ClearImage)}
             )
         }
     }

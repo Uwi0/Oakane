@@ -1,7 +1,6 @@
 package com.kakapo.oakane.domain.usecase
 
 import android.content.Context
-import co.touchlab.kermit.Logger
 import com.kakapo.model.report.ReportCsvModel
 import com.opencsv.CSVWriter
 import kotlinx.coroutines.Deferred
@@ -28,11 +27,9 @@ suspend fun List<ReportCsvModel>.toCsvUseCase(context: Context, fileName: String
     val reports = this@toCsvUseCase
     val deferredAsync = async {
         if(reports.isEmpty()){
-            Logger.d("List is empty, can't write report")
             return@async null
         }
 
-        Logger.d("Writing report to CSV file $this")
         val outputDir = context.getExternalFilesDir(null)
         val outputFile = File(outputDir, fileName)
 
@@ -58,7 +55,6 @@ suspend fun List<ReportCsvModel>.toCsvUseCase(context: Context, fileName: String
             }
         }
 
-        Logger.d("Report written to file ${outputFile.name}, size: ${outputFile.length()}")
         return@async outputFile
     }
 

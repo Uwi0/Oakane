@@ -28,7 +28,7 @@ class AddTransactionViewModel(
     private val systemRepository: SystemRepository,
     private val saveTransactionUseCase: SaveTransactionUseCase,
     private val updateTransactionUseCase: UpdateTransactionUseCase
-) : ViewModel(){
+) : ViewModel() {
 
     @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
@@ -64,6 +64,8 @@ class AddTransactionViewModel(
             AddTransactionEvent.SaveTransaction -> onClickButton()
             AddTransactionEvent.PickImage -> emit(AddTransactionEffect.PickImage)
             AddTransactionEvent.TakePhoto -> emit(AddTransactionEffect.TakePhoto)
+            is AddTransactionEvent.SaveImageFile -> _uiState.update { it.copy(imageFileName = event.name) }
+            AddTransactionEvent.ClearImage -> _uiState.update { it.copy(imageFileName = "") }
         }
     }
 
@@ -75,7 +77,7 @@ class AddTransactionViewModel(
     }
 
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {
-        val onSuccess : (TransactionModel) -> Unit = { transaction ->
+        val onSuccess: (TransactionModel) -> Unit = { transaction ->
             spentBefore = transaction.amount
             walletId = transaction.walletId
             _uiState.update { it.copy(transaction) }

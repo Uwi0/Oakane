@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import co.touchlab.kermit.Logger
 import com.kakapo.common.showToast
 import com.kakapo.common.toDateWith
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
@@ -156,7 +155,6 @@ private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit
 
 @Composable
 private fun GoalCurrencyTextField(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit) {
-    Logger.d("Currency: ${uiState.currency.symbol}")
     val currencyTextFieldState = rememberCurrencyTextFieldState(
         config = CurrencyTextFieldConfig(
             Locale(uiState.currency.languageCode, uiState.currency.countryCode),

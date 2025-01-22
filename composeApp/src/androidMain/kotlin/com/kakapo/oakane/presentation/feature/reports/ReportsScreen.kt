@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import co.touchlab.kermit.Logger
 import com.kakapo.common.getCurrentDateWith
 import com.kakapo.common.showToast
 import com.kakapo.oakane.domain.usecase.toCsvUseCase
@@ -56,7 +55,6 @@ internal fun ReportsRoute(
                 is ReportsEffect.ShowError -> context.showToast(message = effect.message)
                 is ReportsEffect.GenerateReport -> {
                     val fileName = uiState.toReportName()
-                    Logger.d("reports ${effect.reports}")
                     val fileReport = effect.reports.toCsvUseCase(context, fileName).await()
                     fileReport?.let {
                         saveToDownloads(context, it)

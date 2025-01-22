@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
@@ -115,7 +114,6 @@ private fun StartBalanceContent(
     onChangeBalance: (String) -> Unit
 ) {
     val state = rememberCurrencyTextFieldState(textFieldConfig) { balance ->
-        Logger.d("StartBalanceContent: $balance")
         onChangeBalance.invoke(balance)
     }
     ColumnContent(title = "Start Balance") {

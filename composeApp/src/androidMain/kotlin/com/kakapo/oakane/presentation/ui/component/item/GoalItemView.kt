@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
 import com.kakapo.common.formatDateWith
 import com.kakapo.common.getSavedImageUri
 import com.kakapo.model.GoalModel
@@ -32,7 +31,6 @@ internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
     val imageUri: Uri? = context.getSavedImageUri(goal.fileName).getOrNull()
     val currency = goal.currency
     val savedMoney = goal.savedMoney.toFormatCurrency(currency)
-    Logger.d("currency $currency")
     RowWrapper(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         onClick = onClicked

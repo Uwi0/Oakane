@@ -87,12 +87,14 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
         )
     )
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var imageFileName by remember { mutableStateOf("") }
 
     val photoLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
             if (success) {
                 context.showToast("Photo saved successfully at: $imageUri")
+                viewModel.handleEvent(AddTransactionEvent.SaveImageFile(imageFileName))
             } else {
                 context.showToast("Failed to capture photo")
             }
@@ -107,6 +109,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
                 context.saveImageUriToPublicDirectory(uri).fold(
                     onSuccess = { file ->
                         context.showToast("Image saved successfully at: $file")
+                        viewModel.handleEvent(AddTransactionEvent.SaveImageFile(file))
                     },
                     onFailure = {
                         context.showToast("Failed to save image")
@@ -116,28 +119,27 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
         }
     )
 
+    val launchPhotoLauncher = {
+        val uri = createImageUri(context)
+        if (uri.first != null) {
+            imageUri = uri.first
+            imageFileName = uri.second
+            photoLauncher.launch(uri.first!!)
+        } else {
+            Logger.e { "Failed to create file for photo" }
+        }
+    }
+
     val savePhoto = {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (permissionsState.permissions[0].status.isGranted) {
-                val uri = createImageUri(context)
-                if (uri != null) {
-                    imageUri = uri
-                    photoLauncher.launch(uri)
-                } else {
-                    Logger.e { "Failed to create file for photo" }
-                }
+                launchPhotoLauncher.invoke()
             } else {
                 permissionsState.launchMultiplePermissionRequest()
             }
         } else {
             if (permissionsState.allPermissionsGranted) {
-                val uri = createImageUri(context)
-                if (uri != null) {
-                    imageUri = uri
-                    photoLauncher.launch(uri)
-                } else {
-                    Logger.e { "Failed to create file for photo" }
-                }
+                launchPhotoLauncher.invoke()
             } else {
                 permissionsState.launchMultiplePermissionRequest()
             }
@@ -164,9 +166,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
 
     AddTransactionScreen(
         uiState = uiState,
-        imageUri = imageUri,
         onEvent = viewModel::handleEvent,
-        onDismissImage = { imageUri = null }
     )
 
     if (uiState.isShowDialog) {
@@ -186,36 +186,41 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
     }
 }
 
-private fun createImageUri(context: Context): Uri? {
+private fun createImageUri(context: Context): Pair<Uri?, String> {
+    val fileName = generateFilename()
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, generateFilename())
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
             put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/Oakane")
         }
-        context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        val uri = context.contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            contentValues
+        )
+        uri to "${fileName}.jpg"
     } else {
-        val picturesDir =
-            File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Oakane")
+        val picturesDir = File(
+            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "Oakane"
+        )
         if (!picturesDir.exists()) {
             picturesDir.mkdirs()
         }
-        val file = File(picturesDir, "${generateFilename()}.jpg")
-        Uri.fromFile(file)
+        val file = File(picturesDir, "${fileName}.jpg")
+        Uri.fromFile(file) to fileName
     }
 }
 
 private fun generateFilename(): String {
     val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    return "IMG_T_$timestamp"
+    return "IMG_OAKANE_$timestamp"
 }
 
 @Composable
 private fun AddTransactionScreen(
     uiState: AddTransactionState,
-    imageUri: Uri? = null,
     onEvent: (AddTransactionEvent) -> Unit,
-    onDismissImage: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -263,13 +268,15 @@ private fun AddTransactionScreen(
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangeNote(it)) }
                 )
                 TakeImageButtonView(onEvent = onEvent)
-                ImageReceiptView(uri = imageUri, onDismiss = onDismissImage)
+                ImageReceiptView(uiState, onEvent)
             }
         },
         bottomBar = {
             val buttonTitle = if (uiState.isEditMode) "Save" else "Add"
             CustomButton(
-                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
                 contentPadding = PaddingValues(vertical = 16.dp),
                 onClick = { onEvent.invoke(AddTransactionEvent.SaveTransaction) },
                 content = {

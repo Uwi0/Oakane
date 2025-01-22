@@ -2,7 +2,6 @@ package com.kakapo.oakane.presentation.viewModel.wallets
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.CategoryRepository
@@ -98,7 +97,6 @@ class WalletsViewModel(
 
     private fun saveWallet() {
         val walletModel = uiState.value.toWalletModel()
-        Logger.d("WalletsViewModel: saveWallet: $walletModel")
         if (walletModel.id == 0L) add(walletModel)
         else update(walletModel)
     }

@@ -39,7 +39,7 @@ fun CustomDynamicAsyncImage(
     contentScale: ContentScale = ContentScale.Fit
 ) {
     var isLoading by remember { mutableStateOf(true) }
-
+    
     Box(modifier = modifier) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)

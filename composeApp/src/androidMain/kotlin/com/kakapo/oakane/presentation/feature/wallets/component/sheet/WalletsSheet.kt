@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import co.touchlab.kermit.Logger
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
@@ -90,7 +89,6 @@ private fun onCreateWalletEvent(
 ) {
     when (createWalletEvent) {
         is CreateWalletSheetEvent.ChangeStartBalance -> {
-            Logger.d("WalletsSheet: onCreateWalletEvent: ChangeStartBalance: ${createWalletEvent.balance}")
             onEvent.invoke(WalletsEvent.ChangeStart(createWalletEvent.balance))
         }
 

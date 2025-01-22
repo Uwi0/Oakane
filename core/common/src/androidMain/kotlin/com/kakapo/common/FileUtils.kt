@@ -64,6 +64,38 @@ fun Context.getSavedImageUri(fileName: String): Result<Uri> = runCatching {
     FileProvider.getUriForFile(this, "$packageName.provider", file)
 }
 
+fun Context.getImageUriFromFileName(fileName: String): Result<Uri> = runCatching {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        val projection = arrayOf(MediaStore.Images.Media._ID)
+        val selection = "${MediaStore.Images.Media.DISPLAY_NAME} = ?"
+        val selectionArgs = arrayOf(fileName)
+        val cursor = contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        ) ?: throw FileNotFoundException("MediaStore query failed for file: $fileName")
+
+        cursor.use {
+            if (it.moveToFirst()) {
+                val id = it.getLong(it.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
+                Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
+            } else {
+                throw FileNotFoundException("File not found in MediaStore: $fileName")
+            }
+        }
+    } else {
+        val picturesDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Oakane")
+        val file = File(picturesDir, fileName)
+        if (file.exists()) {
+            Uri.fromFile(file)
+        } else {
+            throw FileNotFoundException("File not found at path: ${file.absolutePath}")
+        }
+    }
+}
+
 fun Context.copyFileToUri(sourceFile: File, destinationUri: Uri) {
     try {
         contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
