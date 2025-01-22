@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ import co.touchlab.kermit.Logger
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.kakapo.common.saveImageUriToPublicDirectory
 import com.kakapo.common.showToast
 import com.kakapo.common.toDateWith
 import com.kakapo.model.Currency
@@ -76,52 +78,76 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
     val viewModel = koinViewModel<AddTransactionViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val permissionsState = rememberMultiplePermissionsState(permissions = listOf(
-        Manifest.permission.CAMERA,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    ))
+    val permissionsState = rememberMultiplePermissionsState(
+        permissions = listOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+    )
     var photoUri by remember { mutableStateOf<Uri?>(null) }
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            context.showToast("Photo saved successfully at: $photoUri")
+    val photoLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                context.showToast("Photo saved successfully at: $photoUri")
+            } else {
+                context.showToast("Failed to capture photo")
+            }
+        }
+
+    val imageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            uri?.let {
+                context.saveImageUriToPublicDirectory(uri).fold(
+                    onSuccess = { file ->
+                        context.showToast("Image saved successfully at: $file")
+                    },
+                    onFailure = {
+                        context.showToast("Failed to save image")
+                    }
+                )
+            }
+        }
+    )
+
+    val savePhoto = {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (permissionsState.permissions[0].status.isGranted) {
+                val uri = createImageUri(context)
+                if (uri != null) {
+                    photoUri = uri
+                    photoLauncher.launch(uri)
+                } else {
+                    Logger.e { "Failed to create file for photo" }
+                }
+            } else {
+                permissionsState.launchMultiplePermissionRequest()
+            }
         } else {
-            context.showToast("Failed to capture photo")
+            if (permissionsState.allPermissionsGranted) {
+                val uri = createImageUri(context)
+                if (uri != null) {
+                    photoUri = uri
+                    photoLauncher.launch(uri)
+                } else {
+                    Logger.e { "Failed to create file for photo" }
+                }
+            } else {
+                permissionsState.launchMultiplePermissionRequest()
+            }
         }
     }
+
+    val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
 
     LaunchedEffect(Unit) {
         viewModel.uiSideEffect.collect { effect ->
             when (effect) {
                 AddTransactionEffect.NavigateBack -> navigateBack.invoke()
                 is AddTransactionEffect.ShowError -> context.showToast(effect.message)
-                AddTransactionEffect.TakePhoto -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        if (permissionsState.permissions[0].status.isGranted) {
-                            val uri = createImageUri(context)
-                            if (uri != null) {
-                                photoUri = uri
-                                launcher.launch(uri)
-                            } else {
-                                Logger.e { "Failed to create file for photo" }
-                            }
-                        } else {
-                            permissionsState.launchMultiplePermissionRequest()
-                        }
-                    } else {
-                        if (permissionsState.allPermissionsGranted) {
-                            val uri = createImageUri(context)
-                            if (uri != null) {
-                                photoUri = uri
-                                launcher.launch(uri)
-                            } else {
-                                Logger.e { "Failed to create file for photo" }
-                            }
-                        } else {
-                            permissionsState.launchMultiplePermissionRequest()
-                        }
-                    }
-                }
+                AddTransactionEffect.TakePhoto -> savePhoto.invoke()
+                AddTransactionEffect.PickImage -> imageLauncher.launch(PickVisualMediaRequest(mediaType))
             }
         }
     }
@@ -158,7 +184,8 @@ private fun createImageUri(context: Context): Uri? {
         }
         context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
     } else {
-        val picturesDir = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Oakane")
+        val picturesDir =
+            File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Oakane")
         if (!picturesDir.exists()) {
             picturesDir.mkdirs()
         }

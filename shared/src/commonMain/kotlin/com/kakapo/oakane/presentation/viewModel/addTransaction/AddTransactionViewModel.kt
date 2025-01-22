@@ -62,7 +62,7 @@ class AddTransactionViewModel(
             is AddTransactionEvent.SetCategory -> _uiState.update { it.update(category = event.value) }
             AddTransactionEvent.NavigateBack -> emit(AddTransactionEffect.NavigateBack)
             AddTransactionEvent.SaveTransaction -> onClickButton()
-            AddTransactionEvent.PickImage -> {}
+            AddTransactionEvent.PickImage -> emit(AddTransactionEffect.PickImage)
             AddTransactionEvent.TakePhoto -> emit(AddTransactionEffect.TakePhoto)
         }
     }
