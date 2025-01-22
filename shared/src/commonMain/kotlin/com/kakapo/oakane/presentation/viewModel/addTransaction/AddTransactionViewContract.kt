@@ -23,7 +23,9 @@ data class AddTransactionState(
     val sheetShown: Boolean = false,
     val categories: List<CategoryModel> = emptyList(),
     val currency: Currency = Currency.IDR,
-    val imageFileName: String = ""
+    val imageFileName: String = "",
+    val titleFieldError: Boolean = false,
+    val amountFieldError: Boolean = false
 ) {
     val isEditMode get() = transactionId != 0L
 
@@ -64,6 +66,7 @@ data class AddTransactionState(
         note = note,
         imageFile = imageFileName
     )
+
 }
 
 sealed class AddTransactionEffect {

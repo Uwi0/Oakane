@@ -63,8 +63,8 @@ private fun AddSavingTextField(currency: Currency, onEvent: (GoalEvent) -> Unit)
         onEvent(GoalEvent.Change(amount))
     }
     OutlinedCurrencyTextFieldView(
-        modifier = Modifier.fillMaxWidth(),
         state = state,
+        modifier = Modifier.fillMaxWidth(),
         label = { Text("Saving Amount...") }
     )
 }

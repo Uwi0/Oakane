@@ -23,9 +23,10 @@ fun OutlinedCurrencyTextFieldView(
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
     maxLines: Int = 1,
-    label: @Composable (() -> Unit)? = null,
+    label: @Composable() (() -> Unit)? = null,
     errorColor: Color = LocalTextStyle.current.color,
-    errorText: String? = null
+    errorText: String? = null,
+    isError: Boolean = state.isError
 ) {
 
     Column(
@@ -41,7 +42,7 @@ fun OutlinedCurrencyTextFieldView(
             maxLines = maxLines,
             singleLine = true,
             textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Start),
-            isError = state.isError,
+            isError = isError,
             prefix = { Text(state.config.currencySymbol) },
             placeholder = { Text("0") }
         )

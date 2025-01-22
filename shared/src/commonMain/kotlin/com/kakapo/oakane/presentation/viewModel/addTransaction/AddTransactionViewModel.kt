@@ -52,8 +52,8 @@ class AddTransactionViewModel(
     fun handleEvent(event: AddTransactionEvent) {
         when (event) {
             is AddTransactionEvent.ChangeNote -> _uiState.update { it.copy(note = event.value) }
-            is AddTransactionEvent.ChangedAmount -> _uiState.update { it.copy(transactionAmount = event.value) }
-            is AddTransactionEvent.ChangedTitle -> _uiState.update { it.copy(title = event.value) }
+            is AddTransactionEvent.ChangedAmount -> _uiState.update { it.copy(transactionAmount = event.value, amountFieldError = false) }
+            is AddTransactionEvent.ChangedTitle -> _uiState.update { it.copy(title = event.value, titleFieldError = false) }
             is AddTransactionEvent.DropDownTypeIs -> _uiState.update { it.dropDownType(event.expanded) }
             is AddTransactionEvent.ChangeType -> updateTransactionType(value = event.value)
             is AddTransactionEvent.Dialog -> _uiState.update { it.copy(isShowDialog = event.shown) }
@@ -72,8 +72,23 @@ class AddTransactionViewModel(
     private fun onClickButton() {
         val transaction = uiState.value.asTransactionParam()
         val transactionId = uiState.value.transactionId
+        if (validate(transaction)) return
         if (transactionId == 0L) create(transaction)
         else update(transaction)
+    }
+
+    private fun validate(transaction: TransactionParam): Boolean {
+        if (transaction.title.isEmpty() && transaction.amount == 0.0) {
+            if (transaction.title.isEmpty()) {
+                _uiState.update { it.copy(titleFieldError = true) }
+            }
+            if (transaction.amount == 0.0) {
+                _uiState.update { it.copy(amountFieldError = true) }
+            }
+            emit(AddTransactionEffect.ShowError("Please fill in the title and amount"))
+            return true
+        }
+        return false
     }
 
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {

@@ -242,10 +242,15 @@ private fun AddTransactionScreen(
                 CustomOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     placeHolder = "Title",
+                    isError = uiState.titleFieldError,
                     value = uiState.title,
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangedTitle(it)) }
                 )
-                AddTransactionCurrencyTextField(currency = uiState.currency, onEvent = onEvent)
+                AddTransactionCurrencyTextField(
+                    currency = uiState.currency,
+                    isError = uiState.amountFieldError,
+                    onEvent = onEvent
+                )
                 TransactionTypeDropDown(uiState, onEvent)
                 CustomClickableOutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -334,6 +339,7 @@ private fun RowScope.TakeImageButtonItemView(
 @Composable
 private fun AddTransactionCurrencyTextField(
     currency: Currency,
+    isError: Boolean,
     onEvent: (AddTransactionEvent) -> Unit
 ) {
     val textFieldConfig = CurrencyTextFieldConfig(
@@ -344,8 +350,9 @@ private fun AddTransactionCurrencyTextField(
         onEvent(AddTransactionEvent.ChangedAmount(amount))
     }
     OutlinedCurrencyTextFieldView(
-        modifier = Modifier.fillMaxWidth(),
         state = state,
+        isError = isError,
+        modifier = Modifier.fillMaxWidth(),
         label = { Text("Amount") }
     )
 }
