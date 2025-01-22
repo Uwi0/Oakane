@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
-
 @Composable
 fun CustomDynamicAsyncImage(
     imageUrl: Any?,

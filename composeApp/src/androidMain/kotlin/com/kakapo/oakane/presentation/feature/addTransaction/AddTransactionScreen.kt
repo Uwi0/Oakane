@@ -15,10 +15,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.outlined.Category
@@ -59,6 +60,7 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.currency.
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.feature.addTransaction.component.ImageReceiptView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEffect
@@ -84,21 +86,24 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
     )
-    var photoUri by remember { mutableStateOf<Uri?>(null) }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
 
-    val photoLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+    val photoLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
             if (success) {
-                context.showToast("Photo saved successfully at: $photoUri")
+                context.showToast("Photo saved successfully at: $imageUri")
             } else {
                 context.showToast("Failed to capture photo")
             }
         }
+    )
 
     val imageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             uri?.let {
+                imageUri = uri
                 context.saveImageUriToPublicDirectory(uri).fold(
                     onSuccess = { file ->
                         context.showToast("Image saved successfully at: $file")
@@ -116,7 +121,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
             if (permissionsState.permissions[0].status.isGranted) {
                 val uri = createImageUri(context)
                 if (uri != null) {
-                    photoUri = uri
+                    imageUri = uri
                     photoLauncher.launch(uri)
                 } else {
                     Logger.e { "Failed to create file for photo" }
@@ -128,7 +133,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
             if (permissionsState.allPermissionsGranted) {
                 val uri = createImageUri(context)
                 if (uri != null) {
-                    photoUri = uri
+                    imageUri = uri
                     photoLauncher.launch(uri)
                 } else {
                     Logger.e { "Failed to create file for photo" }
@@ -140,6 +145,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
     }
 
     val mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+    val mediaRequest = PickVisualMediaRequest(mediaType)
 
     LaunchedEffect(Unit) {
         viewModel.uiSideEffect.collect { effect ->
@@ -147,7 +153,7 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
                 AddTransactionEffect.NavigateBack -> navigateBack.invoke()
                 is AddTransactionEffect.ShowError -> context.showToast(effect.message)
                 AddTransactionEffect.TakePhoto -> savePhoto.invoke()
-                AddTransactionEffect.PickImage -> imageLauncher.launch(PickVisualMediaRequest(mediaType))
+                AddTransactionEffect.PickImage -> imageLauncher.launch(mediaRequest)
             }
         }
     }
@@ -156,7 +162,12 @@ internal fun AddTransactionRoute(transactionId: Long, navigateBack: () -> Unit) 
         viewModel.initializeData(transactionId)
     }
 
-    AddTransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+    AddTransactionScreen(
+        uiState = uiState,
+        imageUri = imageUri,
+        onEvent = viewModel::handleEvent,
+        onDismissImage = { imageUri = null }
+    )
 
     if (uiState.isShowDialog) {
         CustomDatePickerDialog(
@@ -202,7 +213,9 @@ private fun generateFilename(): String {
 @Composable
 private fun AddTransactionScreen(
     uiState: AddTransactionState,
-    onEvent: (AddTransactionEvent) -> Unit
+    imageUri: Uri? = null,
+    onEvent: (AddTransactionEvent) -> Unit,
+    onDismissImage: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -217,7 +230,8 @@ private fun AddTransactionScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(vertical = 24.dp, horizontal = 16.dp),
+                    .padding(vertical = 24.dp, horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 CustomOutlinedTextField(
@@ -249,34 +263,42 @@ private fun AddTransactionScreen(
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangeNote(it)) }
                 )
                 TakeImageButtonView(onEvent = onEvent)
-                Spacer(Modifier.weight(1f))
-                val buttonTitle = if (uiState.isEditMode) "Save" else "Add"
-                CustomButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(vertical = 16.dp),
-                    onClick = { onEvent.invoke(AddTransactionEvent.SaveTransaction) },
-                    content = {
-                        Text(text = buttonTitle)
-                    }
-                )
+                ImageReceiptView(uri = imageUri, onDismiss = onDismissImage)
             }
+        },
+        bottomBar = {
+            val buttonTitle = if (uiState.isEditMode) "Save" else "Add"
+            CustomButton(
+                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
+                contentPadding = PaddingValues(vertical = 16.dp),
+                onClick = { onEvent.invoke(AddTransactionEvent.SaveTransaction) },
+                content = {
+                    Text(text = buttonTitle)
+                }
+            )
         }
     )
 }
 
 @Composable
 private fun TakeImageButtonView(onEvent: (AddTransactionEvent) -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        TakeImageButtonItemView(
-            title = "Camera",
-            icon = Icons.Outlined.PhotoCamera,
-            onClick = { onEvent.invoke(AddTransactionEvent.TakePhoto) }
-        )
-        TakeImageButtonItemView(
-            title = "Gallery",
-            icon = Icons.Outlined.Image,
-            onClick = { onEvent.invoke(AddTransactionEvent.PickImage) }
-        )
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(text = "Image Transaction")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            TakeImageButtonItemView(
+                title = "Camera",
+                icon = Icons.Outlined.PhotoCamera,
+                onClick = { onEvent.invoke(AddTransactionEvent.TakePhoto) }
+            )
+            TakeImageButtonItemView(
+                title = "Gallery",
+                icon = Icons.Outlined.Image,
+                onClick = { onEvent.invoke(AddTransactionEvent.PickImage) }
+            )
+        }
     }
 }
 
