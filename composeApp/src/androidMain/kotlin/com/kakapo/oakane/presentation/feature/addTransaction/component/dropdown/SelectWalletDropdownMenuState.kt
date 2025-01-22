@@ -11,14 +11,16 @@ import kotlinx.coroutines.delay
 @Composable
 internal fun rememberSelectWalletDropdownMenuState(
     wallets: List<WalletModel>,
-    selectedWalletId: Long
+    selectedWalletId: Long,
+    onClickedWallet: (WalletModel) -> Unit
 ) = remember(wallets, selectedWalletId) {
-    SelectWalletDropdownMenuState(wallets, selectedWalletId)
+    SelectWalletDropdownMenuState(wallets, selectedWalletId, onClickedWallet)
 }
 
 class SelectWalletDropdownMenuState(
     val wallets: List<WalletModel>,
-    private val selectedWalletId: Long
+    private val selectedWalletId: Long,
+    private val onClickedWallet: (WalletModel) -> Unit
 ) {
 
     var expanded: Boolean by mutableStateOf(false)
@@ -56,6 +58,8 @@ class SelectWalletDropdownMenuState(
 
     fun onClicked(wallet: WalletModel) {
         selectedWallet = wallet
+        selectedOptionText = wallet.name
         expanded = false
+        onClickedWallet.invoke(wallet)
     }
 }

@@ -227,7 +227,8 @@ private fun AddTransactionScreen(
 ) {
     val selectWalletState = rememberSelectWalletDropdownMenuState(
         uiState.wallets,
-        uiState.selectedWallet.id
+        uiState.selectedWallet.id,
+        onClickedWallet = { onEvent.invoke(AddTransactionEvent.ChangeWallet(it)) }
     )
 
     Scaffold(

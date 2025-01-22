@@ -44,7 +44,6 @@ class AddTransactionViewModel(
     private val _uiSideEffect = MutableSharedFlow<AddTransactionEffect>()
 
     private var spentBefore: Double = 0.0
-    private var walletId: Long = 0
 
     fun initializeData(id: Long) {
         loadCurrency()
@@ -73,6 +72,7 @@ class AddTransactionViewModel(
             AddTransactionEvent.TakePhoto -> emit(AddTransactionEffect.TakePhoto)
             is AddTransactionEvent.SaveImageFile -> _uiState.update { it.copy(imageFileName = event.name) }
             AddTransactionEvent.ClearImage -> _uiState.update { it.copy(imageFileName = "") }
+            is AddTransactionEvent.ChangeWallet -> _uiState.update { it.copy(selectedWallet = event.wallet) }
         }
     }
 
@@ -101,7 +101,6 @@ class AddTransactionViewModel(
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {
         val onSuccess: (TransactionModel) -> Unit = { transaction ->
             spentBefore = transaction.amount
-            walletId = transaction.walletId
             _uiState.update { it.copy(transaction) }
         }
         transactionRepository.loadTransactionBy(id).fold(
@@ -159,8 +158,7 @@ class AddTransactionViewModel(
     }
 
     private fun update(transaction: TransactionParam) = viewModelScope.launch {
-        val transactionParam = transaction.copy(walletId = walletId)
-        updateTransactionUseCase.executed(transactionParam, spentBefore).fold(
+        updateTransactionUseCase.executed(transaction, spentBefore).fold(
             onSuccess = { emit(AddTransactionEffect.NavigateBack) },
             onFailure = ::handleError
         )

@@ -4,29 +4,20 @@ import com.kakapo.data.model.TransactionParam
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.TransactionRepository
-import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 
 class SaveTransactionUseCaseImpl(
     private val transactionRepository: TransactionRepository,
     private val monthlyBudgetRepository: MonthlyBudgetRepository,
     private val categoryLimitRepository: CategoryLimitRepository,
-    private val walletRepository: WalletRepository
 ) : SaveTransactionUseCase {
 
     override suspend fun execute(transaction: TransactionParam): Result<Unit> = runCatching {
-        val walletId = saveWallet(transaction) ?: return@runCatching
-        transactionRepository.save(transaction.copy(walletId = walletId)).getOrThrow()
+        transactionRepository.save(transaction).getOrThrow()
         val monthlyBudgetId = getMonthlyBudgetId() ?: return@runCatching
         val categoryId = transaction.category.id
-        val categoryLimitId = getCategoryLimit(categoryId, monthlyBudgetId) ?: return@runCatching
+        val categoryLimitId = getCategoryLimit(categoryId, monthlyBudgetId) ?: return Result.failure(Exception("Transaction exceeds category limit"))
         categoryLimitRepository.updateIncrement(transaction.amount, categoryLimitId).getOrNull()
-    }
-
-    private suspend fun saveWallet(transaction: TransactionParam): Long? {
-        val balance = transaction.saveBalance
-        walletRepository.update(balance).getOrNull()
-        return walletRepository.loadSelectedWallet().getOrNull()?.id
     }
 
     private suspend fun getMonthlyBudgetId(): Long? {

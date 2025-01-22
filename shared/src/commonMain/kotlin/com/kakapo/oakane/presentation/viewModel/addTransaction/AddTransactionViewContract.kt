@@ -66,6 +66,7 @@ data class AddTransactionState(
         type = transactionType.ordinal.toLong(),
         category = category,
         dateCreated = date,
+        walletId = selectedWallet.id,
         note = note,
         imageFile = imageFileName
     )
@@ -95,4 +96,5 @@ sealed class AddTransactionEvent {
     data object PickImage : AddTransactionEvent()
     data class SaveImageFile(val name: String) : AddTransactionEvent()
     data object ClearImage : AddTransactionEvent()
+    data class ChangeWallet(val wallet: WalletModel): AddTransactionEvent()
 }
