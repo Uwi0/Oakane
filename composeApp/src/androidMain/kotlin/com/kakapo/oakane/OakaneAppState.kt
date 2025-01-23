@@ -50,7 +50,7 @@ class OakaneAppState(val navController: NavHostController) {
         }
     }
 
-    private fun navOptionsPopBackStack() = navOptions {
+    fun navOptionsPopBackStack() = navOptions {
         popUpTo(navController.graph.findStartDestination().id) {
             saveState = true
             inclusive = true

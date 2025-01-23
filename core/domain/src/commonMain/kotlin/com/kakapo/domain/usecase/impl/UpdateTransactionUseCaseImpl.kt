@@ -1,6 +1,5 @@
 package com.kakapo.domain.usecase.impl
 
-import co.touchlab.kermit.Logger
 import com.kakapo.data.model.TransactionParam
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
@@ -25,7 +24,6 @@ class UpdateTransactionUseCaseImpl(
         updateCurrentWallet(transaction)
         updateOldWallet(transactionBefore)
         transactionRepository.update(transaction).getOrThrow()
-        Logger.d("Transaction updated: $transactionBefore, $transaction")
         val monthlyId = getMonthlyBudgetId() ?: return@runCatching
         val categoryLimit = getCategoryLimit(monthlyId, transaction.category.id) ?: return@runCatching
         val spentAmount = (categoryLimit.spent - transactionBefore.amount) + transaction.amount

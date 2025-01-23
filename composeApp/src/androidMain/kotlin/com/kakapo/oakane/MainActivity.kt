@@ -76,7 +76,7 @@ private fun OakaneApp(
         gesturesEnabled = false,
         content = {
             OakaneNavHost(
-                navController = appState.navController,
+                appState = appState,
                 openDrawer = openDrawer,
                 onSelectedTheme = onSelectedTheme
             )

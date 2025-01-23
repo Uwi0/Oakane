@@ -1,9 +1,9 @@
 package com.kakapo.oakane.presentation.feature.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.kakapo.model.system.Theme
+import com.kakapo.oakane.OakaneAppState
 import com.kakapo.oakane.presentation.feature.addGoal.navigation.addGoalScreen
 import com.kakapo.oakane.presentation.feature.addGoal.navigation.navigateToAddGoal
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTransactionScreen
@@ -32,18 +32,19 @@ import com.kakapo.oakane.presentation.feature.wallets.navigation.walletsScreen
 
 @Composable
 internal fun OakaneNavHost(
-    navController: NavHostController,
+    appState: OakaneAppState,
     startDestination: String = SPLASH_ROUTE,
     openDrawer: () -> Unit,
     onSelectedTheme: (Theme) -> Unit
 ) {
+    val navController = appState.navController
     NavHost(navController = navController, startDestination = startDestination) {
         splashScreen(
-            navigateToHome = navController::navigateToHome,
-            navigateToOnBoarding = navController::navigateToOnBoarding
+            navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) },
+            navigateToOnBoarding = { navController.navigateToOnBoarding(appState.navOptionsPopBackStack()) }
         )
         onBoardingScreen(
-            navigateToHome = navController::navigateToHome
+            navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) }
         )
         homeScreen(
             openDrawer = openDrawer,
