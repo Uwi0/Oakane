@@ -4,6 +4,7 @@ import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.data.model.TransactionParam
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.toFormatNumber
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.model.wallet.WalletModel
@@ -14,7 +15,8 @@ import kotlin.native.ObjCName
 data class AddTransactionState(
     val transactionId: Long = 0,
     val title: String = "",
-    val transactionAmount: String = "0",
+    val transactionAmount: String = "",
+    val transactionAmountUpdate: String = "",
     val transactionType: TransactionType = TransactionType.Income,
     val category: CategoryModel = CategoryModel(),
     val date: Long = Clock.System.now().toEpochMilliseconds(),
@@ -49,14 +51,16 @@ data class AddTransactionState(
         isShowDialog = false
     )
 
-    fun copy(transaction: TransactionModel) = copy(
+    fun copy(transaction: TransactionModel, wallet: WalletModel) = copy(
         transactionId = transaction.id,
         title = transaction.title,
-        transactionAmount = transaction.amount.toInt().toString(),
+        transactionAmount = transaction.amount.toFormatNumber(currency),
+        transactionAmountUpdate = transaction.amount.toFormatNumber(currency),
         transactionType = transaction.type,
         category = transaction.category,
         note = transaction.note,
-        imageFileName = transaction.imageFileName
+        imageFileName = transaction.imageFileName,
+        selectedWallet = wallet
     )
 
     fun asTransactionParam() = TransactionParam(
@@ -68,7 +72,7 @@ data class AddTransactionState(
         dateCreated = date,
         walletId = selectedWallet.id,
         note = note,
-        imageFile = imageFileName
+        imageFile = imageFileName,
     )
 
 }

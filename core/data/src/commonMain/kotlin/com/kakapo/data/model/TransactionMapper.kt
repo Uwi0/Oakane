@@ -35,6 +35,13 @@ data class TransactionParam(
         note = note,
         imageFile = imageFile
     )
+
+    fun asTransactionAmount(): Double {
+        return when (type.asTransactionType()) {
+            TransactionType.Income -> amount
+            TransactionType.Expense -> -amount
+        }
+    }
 }
 
 fun TransactionEntity.toModel(currency: Currency) = TransactionModel(

@@ -21,6 +21,13 @@ data class TransactionModel(
             return dateCreated.formatDateWith(pattern = DATE_FORMAT)
         }
 
+    fun asTransactionAmount(): Double {
+        return when (type) {
+            TransactionType.Income -> amount
+            TransactionType.Expense -> -amount
+        }
+    }
+
     companion object {
         private const val DATE_FORMAT = "dd MMM yyyy"
     }

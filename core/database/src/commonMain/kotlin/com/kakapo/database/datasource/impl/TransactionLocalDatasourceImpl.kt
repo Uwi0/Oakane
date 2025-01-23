@@ -57,6 +57,7 @@ class TransactionLocalDatasourceImpl(
                 dateCreated = entity.dateCreated,
                 note = entity.note,
                 imageFile = entity.imageFile,
+                walletId = entity.walletId,
                 id = entity.id,
             )
         }

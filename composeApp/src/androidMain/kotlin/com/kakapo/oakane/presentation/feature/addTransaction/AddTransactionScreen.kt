@@ -27,6 +27,7 @@ import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -36,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -48,7 +50,6 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.kakapo.common.saveImageUriToPublicDirectory
 import com.kakapo.common.showToast
 import com.kakapo.common.toDateWith
-import com.kakapo.model.Currency
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.model.transaction.asTransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
@@ -256,7 +257,7 @@ private fun AddTransactionScreen(
                     onValueChange = { onEvent.invoke(AddTransactionEvent.ChangedTitle(it)) }
                 )
                 AddTransactionCurrencyTextField(
-                    currency = uiState.currency,
+                    uiState = uiState,
                     isError = uiState.amountFieldError,
                     onEvent = onEvent
                 )
@@ -334,9 +335,10 @@ private fun RowScope.TakeImageButtonItemView(
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = title)
+                Text(text = title, style = MaterialTheme.typography.titleMedium)
                 Icon(imageVector = icon, contentDescription = null)
             }
         }
@@ -345,14 +347,17 @@ private fun RowScope.TakeImageButtonItemView(
 
 @Composable
 private fun AddTransactionCurrencyTextField(
-    currency: Currency,
+    uiState: AddTransactionState,
     isError: Boolean,
     onEvent: (AddTransactionEvent) -> Unit
 ) {
-    val textFieldConfig = CurrencyTextFieldConfig(
-        Locale(currency.languageCode, currency.countryCode),
-        currencySymbol = currency.symbol
-    )
+    val textFieldConfig by remember(uiState.transactionAmountUpdate) { mutableStateOf(
+        CurrencyTextFieldConfig(
+            Locale(uiState.currency.languageCode,uiState.currency.countryCode),
+            initialText = uiState.transactionAmount,
+            currencySymbol = uiState.currency.symbol
+        )
+    ) }
     val state = rememberCurrencyTextFieldState(textFieldConfig) { amount ->
         onEvent(AddTransactionEvent.ChangedAmount(amount))
     }

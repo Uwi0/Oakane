@@ -42,7 +42,8 @@ SET title = ?,
     category = ?,
     dateCreated = ?,
     note = ?,
-    imageFile = ?
+    imageFile = ?,
+    walletId = ?
 WHERE id = ?;
 
 deleteTransaction:

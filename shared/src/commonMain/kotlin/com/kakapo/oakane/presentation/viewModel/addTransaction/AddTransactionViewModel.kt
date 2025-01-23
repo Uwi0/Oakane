@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.addTransaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.model.TransactionParam
@@ -43,7 +44,7 @@ class AddTransactionViewModel(
     val uiSideEffect get() = _uiSideEffect.asSharedFlow()
     private val _uiSideEffect = MutableSharedFlow<AddTransactionEffect>()
 
-    private var spentBefore: Double = 0.0
+    private var transactionBefore = TransactionModel()
 
     fun initializeData(id: Long) {
         loadCurrency()
@@ -100,8 +101,10 @@ class AddTransactionViewModel(
 
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {
         val onSuccess: (TransactionModel) -> Unit = { transaction ->
-            spentBefore = transaction.amount
-            _uiState.update { it.copy(transaction) }
+            transactionBefore = transaction
+            val wallet = _uiState.value.wallets.first { it.id == transaction.walletId }
+            Logger.d("Transaction Before: $transaction")
+            _uiState.update { it.copy(transaction, wallet) }
         }
         transactionRepository.loadTransactionBy(id).fold(
             onSuccess = onSuccess,
@@ -158,7 +161,7 @@ class AddTransactionViewModel(
     }
 
     private fun update(transaction: TransactionParam) = viewModelScope.launch {
-        updateTransactionUseCase.executed(transaction, spentBefore).fold(
+        updateTransactionUseCase.executed(transaction, transactionBefore).fold(
             onSuccess = { emit(AddTransactionEffect.NavigateBack) },
             onFailure = ::handleError
         )

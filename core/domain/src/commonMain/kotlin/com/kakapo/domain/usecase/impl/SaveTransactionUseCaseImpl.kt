@@ -6,8 +6,6 @@ import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
-import com.kakapo.model.transaction.TransactionType
-import com.kakapo.model.transaction.asTransactionType
 
 class SaveTransactionUseCaseImpl(
     private val transactionRepository: TransactionRepository,
@@ -40,10 +38,4 @@ class SaveTransactionUseCaseImpl(
         return result?.id
     }
 
-    private fun TransactionParam.asTransactionAmount(): Double {
-        return when (type.asTransactionType()) {
-            TransactionType.Income -> amount
-            TransactionType.Expense -> -amount
-        }
-    }
 }
