@@ -24,7 +24,7 @@ class SaveTransactionUseCaseImpl(
 
         val monthlyBudgetId = getMonthlyBudgetId() ?: return@runCatching
         val categoryId = transaction.category.id
-        val categoryLimitId = getCategoryLimit(categoryId, monthlyBudgetId) ?: return Result.failure(Exception("Transaction exceeds category limit"))
+        val categoryLimitId = getCategoryLimit(categoryId, monthlyBudgetId) ?: return@runCatching
         categoryLimitRepository.updateIncrement(transaction.amount, categoryLimitId).getOrNull()
     }
 
