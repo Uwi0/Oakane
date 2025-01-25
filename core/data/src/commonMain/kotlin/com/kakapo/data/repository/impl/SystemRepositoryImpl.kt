@@ -8,6 +8,7 @@ import com.kakapo.model.system.asTheme
 import com.kakapo.preference.constant.BooleanKey
 import com.kakapo.preference.constant.IntKey
 import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.utils.isBalanceVisible
 
 class SystemRepositoryImpl(
     private val preferenceDatasource: PreferenceDatasource
@@ -47,6 +48,19 @@ class SystemRepositoryImpl(
     override suspend fun loadOnBoardingAlreadyRead(): Result<Boolean> {
         return runCatching {
             preferenceDatasource.getBooleanValue(BooleanKey.ON_BOARDING_ALREADY_READ)
+        }
+    }
+
+    override suspend fun changeBalanceVisibility(visibility: Boolean): Result<Boolean> {
+        return runCatching {
+            preferenceDatasource.saveBooleanValue(BooleanKey.IS_BALANCE_VISIBLE, visibility)
+            visibility
+        }
+    }
+
+    override suspend fun isBalanceVisible(): Result<Boolean> {
+        return runCatching {
+            preferenceDatasource.isBalanceVisible()
         }
     }
 }

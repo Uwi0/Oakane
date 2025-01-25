@@ -6,6 +6,7 @@ import co.touchlab.kermit.Logger
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
@@ -28,7 +29,8 @@ class HomeViewModel(
     private val transactionRepository: TransactionRepository,
     private val goalRepository: GoalRepository,
     private val walletRepository: WalletRepository,
-    private val monthlyBudgetOverviewUseCase: GetMonthlyBudgetOverviewUseCase
+    private val monthlyBudgetOverviewUseCase: GetMonthlyBudgetOverviewUseCase,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -44,6 +46,7 @@ class HomeViewModel(
         loadGoals()
         loadWalletBalance()
         loadBudgetOverView()
+        loadIsBalanceVisible()
     }
 
     fun handleEvent(event: HomeEvent) {
@@ -57,6 +60,7 @@ class HomeViewModel(
             HomeEvent.ToGoals -> emit(HomeEffect.ToGoals)
             HomeEvent.ToMonthlyBudget -> emit(HomeEffect.ToMonthlyBudget)
             HomeEvent.ToWallets -> emit(HomeEffect.ToWallets)
+            HomeEvent.ChangeBalanceVisibility -> changeBalanceVisibility()
         }
     }
 
@@ -96,6 +100,27 @@ class HomeViewModel(
         }
         monthlyBudgetOverviewUseCase.execute().fold(
             onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadIsBalanceVisible() = viewModelScope.launch {
+        val onSuccess: (Boolean) -> Unit = { isBalanceVisible ->
+            _uiState.update { it.copy(isBalanceVisible = isBalanceVisible) }
+        }
+        systemRepository.isBalanceVisible().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun changeBalanceVisibility() = viewModelScope.launch {
+        val currentVisibility = _uiState.value.isBalanceVisible
+        val onSuccess: (Boolean) -> Unit = { isBalanceVisible ->
+            _uiState.update { it.copy(isBalanceVisible = isBalanceVisible) }
+        }
+        systemRepository.changeBalanceVisibility(!currentVisibility).fold(
+            onSuccess =onSuccess,
             onFailure = ::handleError
         )
     }

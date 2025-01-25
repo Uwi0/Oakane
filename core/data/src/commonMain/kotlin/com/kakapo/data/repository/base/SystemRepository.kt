@@ -17,4 +17,8 @@ interface SystemRepository {
     suspend fun saveOnBoardingAlreadyRead(): Result<Unit>
     @NativeCoroutines
     suspend fun loadOnBoardingAlreadyRead(): Result<Boolean>
+    @NativeCoroutines
+    suspend fun changeBalanceVisibility(visibility: Boolean): Result<Boolean>
+    @NativeCoroutines
+    suspend fun isBalanceVisible(): Result<Boolean>
 }

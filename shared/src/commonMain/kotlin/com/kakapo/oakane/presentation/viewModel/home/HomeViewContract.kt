@@ -12,6 +12,7 @@ data class HomeState(
     val transactions: List<TransactionModel> = emptyList(),
     val goals: List<GoalModel> = emptyList(),
     val monthlyBudgetOverView: MonthlyBudgetOverView = MonthlyBudgetOverView(),
+    val isBalanceVisible: Boolean = true
 )
 
 sealed class HomeEffect {
@@ -37,4 +38,5 @@ sealed class HomeEvent {
     data class ToGoalWith(val id: Long): HomeEvent()
     data object ToMonthlyBudget: HomeEvent()
     data object ToWallets: HomeEvent()
+    data object ChangeBalanceVisibility: HomeEvent()
 }

@@ -37,3 +37,7 @@ fun String.asRealCurrencyValue(): Double {
         0.0
     }
 }
+
+fun String.maskText(): String {
+    return this.replaceRange(0, this.length, "•".repeat(this.length))
+}

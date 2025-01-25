@@ -35,5 +35,4 @@ fun CustomNavigationTopAppBarView(
             actions = actions
         )
     }
-
 }

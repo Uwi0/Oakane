@@ -107,7 +107,7 @@ object CommonModule {
         viewModel { SplashViewModel(get())}
         viewModel { MainViewModel(get())}
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { HomeViewModel(get(), get(), get(), get()) }
+        viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get()) }
         viewModel { TransactionViewModel(get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }

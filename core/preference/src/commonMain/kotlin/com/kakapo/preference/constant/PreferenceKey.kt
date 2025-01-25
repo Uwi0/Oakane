@@ -6,6 +6,7 @@ object LongKey {
 
 object BooleanKey {
     const val ON_BOARDING_ALREADY_READ = "on_boarding_already_read"
+    const val IS_BALANCE_VISIBLE = "is_balance_visible"
 }
 
 object IntKey {
