@@ -29,7 +29,7 @@ class DeleteTransactionUseCaseImpl(
     private suspend fun deleteWallet(transaction: TransactionModel) {
         val amount = transaction.amount
         val balance = if (transaction.type == TransactionType.Income) -amount else amount
-        walletRepository.update(balance).getOrNull()
+        walletRepository.update(balance, transaction.walletId).getOrNull()
     }
 
     private suspend fun getMonthlyBudgetId(): Long? {
