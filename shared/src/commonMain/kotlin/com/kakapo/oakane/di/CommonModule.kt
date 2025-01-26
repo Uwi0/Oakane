@@ -109,7 +109,7 @@ object CommonModule {
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get()) }
-        viewModel { TransactionViewModel(get(), get(), get()) }
+        viewModel { TransactionViewModel(get(), get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }
         viewModel { AddGoalViewModel(get(), get()) }
         viewModel { GoalViewModel(get(), get()) }

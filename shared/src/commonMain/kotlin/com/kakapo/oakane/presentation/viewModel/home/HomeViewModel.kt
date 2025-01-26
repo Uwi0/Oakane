@@ -88,7 +88,7 @@ class HomeViewModel(
         val onSuccess: (WalletModel) -> Unit = { wallet ->
             _uiState.update { it.copy(wallet = wallet) }
         }
-        walletRepository.loadWalletById().fold(
+        walletRepository.loadSelectedWallet().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
