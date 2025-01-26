@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
+import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.model.Currency
+import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +23,8 @@ import kotlin.native.ObjCName
 class TransactionViewModel(
     private val transactionRepository: TransactionRepository,
     private val systemRepository: SystemRepository,
-    private val deleteTransactionUseCase: DeleteTransactionUseCase
+    private val deleteTransactionUseCase: DeleteTransactionUseCase,
+    private val walletRepository: WalletRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -33,7 +36,9 @@ class TransactionViewModel(
     private val _uiEffect = MutableSharedFlow<TransactionEffect>()
 
     fun initializeData(id: Long) {
-        loadTransactionBy(id)
+        loadTransactionBy(id).invokeOnCompletion {
+            loadWalletBy(uiState.value.transaction.walletId)
+        }
         loadCurrency()
     }
 
@@ -66,6 +71,16 @@ class TransactionViewModel(
             _uiState.update { it.copy(currency = currency) }
         }
         systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadWalletBy(id: Long) = viewModelScope.launch {
+        val onSuccess: (WalletModel) -> Unit = { wallet ->
+            _uiState.update { it.copy(wallet = wallet) }
+        }
+        walletRepository.loadWalletBy(id).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

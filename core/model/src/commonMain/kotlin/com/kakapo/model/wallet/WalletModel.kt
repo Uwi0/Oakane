@@ -7,7 +7,7 @@ data class WalletModel(
     val id: Long = 0,
     val currency: Currency = Currency.IDR,
     val balance: Double = 0.0,
-    val name: String = "",
+    val name: String = "Mah Wallet",
     val isDefaultIcon: Boolean = false,
     val icon: String = "",
     val color: String = ""

@@ -15,7 +15,7 @@ interface WalletRepository {
     @NativeCoroutines
     suspend fun update(balance: Double, id: Long): Result<Unit>
     @NativeCoroutines
-    suspend fun loadWalletById(): Result<WalletModel>
+    suspend fun loadWalletBy(id: Long): Result<WalletModel>
     @NativeCoroutines
     suspend fun save(wallet: WalletModel): Result<Unit>
     @NativeCoroutines

@@ -43,8 +43,7 @@ class WalletRepositoryImpl(
         return localDatasource.update(balance, currentTime, id)
     }
 
-    override suspend fun loadWalletById(): Result<WalletModel> {
-        val id = preferenceDatasource.getWalletId()
+    override suspend fun loadWalletBy(id: Long): Result<WalletModel> {
         val currency = preferenceDatasource.getSavedCurrency().asCurrency()
         return localDatasource.getWalletBy(id).mapCatching { walletEntity ->
             walletEntity.toWalletModel(currency)
