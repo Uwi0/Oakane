@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation.viewModel.addGoal
 
+import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.model.Currency
 import com.kakapo.model.GoalModel
 import kotlinx.datetime.Clock
@@ -53,7 +54,7 @@ data class AddGoalState(
 
     fun asGoalModel() = GoalModel(
         goalName = goalName,
-        amount = targetAmount.ifEmpty { "0" }.toDouble(),
+        amount = targetAmount.ifEmpty { "0" }.asRealCurrencyValue(),
         note = note,
         startDate = startDate,
         endDate = endDate,
