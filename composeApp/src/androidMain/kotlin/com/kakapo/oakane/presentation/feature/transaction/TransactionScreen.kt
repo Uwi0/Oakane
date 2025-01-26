@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -21,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.common.getSavedImageUri
 import com.kakapo.common.showToast
 import com.kakapo.model.category.CategoryIconName
@@ -107,7 +110,7 @@ private fun TransactionScreen(
                 TopContentView(state = uiState)
                 DetailContentView(state = uiState)
                 NoteContentView(uiState.transaction.note)
-                Text("Add Another feature in the future")
+                ImageTransaction(uiState.transaction.imageFileName)
             }
 
         }
@@ -256,7 +259,22 @@ private fun RowText(title: String, value: String, iconContent: @Composable () ->
             )
             iconContent.invoke()
         }
+    }
+}
 
+@Composable
+private fun ImageTransaction(imageUrl: String) {
+    val context = LocalContext.current
+    val imageUri = context.getImageUriFromFileName(imageUrl).getOrNull()
+    if (imageUri != null) {
+        CustomDynamicAsyncImage(
+            imageUrl = imageUri,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(256.dp)
+                .clip(MaterialTheme.shapes.small),
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
