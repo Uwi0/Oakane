@@ -68,16 +68,18 @@ fun AddGoalRoute(
 
     AddGoalScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 
+    val onConfirm: (Long) -> Unit = { date ->
+        when (uiState.dialogContent) {
+            GoalDateContent.Start -> viewModel.handleEvent(AddGoalEvent.SetStart(date))
+            GoalDateContent.End -> viewModel.handleEvent(AddGoalEvent.SetEnd(date))
+        }
+    }
+
     if (uiState.dialogShown) {
         CustomDatePickerDialog(
             initialValue = uiState.initialDateDialog,
             onDismiss = { viewModel.handleEvent(AddGoalEvent.HideDialog) },
-            onConfirm = { date ->
-                when (uiState.dialogContent) {
-                    GoalDateContent.Start -> viewModel.handleEvent(AddGoalEvent.SetStart(date))
-                    GoalDateContent.End -> viewModel.handleEvent(AddGoalEvent.SetEnd(date))
-                }
-            }
+            onConfirm = onConfirm
         )
     }
 }
@@ -86,57 +88,10 @@ fun AddGoalRoute(
 private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit) {
     Scaffold(
         topBar = {
-            val title = if (uiState.isEditMode) "Edit Goal" else "Add Goal"
-            CustomNavigationTopAppBarView(
-                title = title,
-                onNavigateBack = { onEvent.invoke(AddGoalEvent.NavigateBack) }
-            )
+            AddGoalTopAppBar(uiState, onEvent)
         },
         content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(vertical = 24.dp, horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ImageGoalPicker(
-                    imageUrl = uiState.fileName,
-                    onSelectedImage = { onEvent.invoke(AddGoalEvent.SetFile(it)) }
-                )
-                Spacer(modifier = Modifier.size(4.dp))
-                GoalCurrencyTextField(uiState, onEvent)
-                CustomOutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Goal Name",
-                    placeHolder = "My Goal",
-                    value = uiState.goalName,
-                    onValueChange = { onEvent.invoke(AddGoalEvent.SetName(it)) }
-                )
-                CustomOutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "Note",
-                    placeHolder = "Some Note",
-                    value = uiState.note,
-                    onValueChange = { onEvent.invoke(AddGoalEvent.SetNote(it)) }
-                )
-                CustomClickableOutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = uiState.startDate.toDateWith(format = "dd MMM yyyy"),
-                    placeHolder = "Starting Date",
-                    trailingIcon = Icons.Outlined.CalendarToday,
-                    onClick = { onEvent.invoke(AddGoalEvent.ShowDialog(GoalDateContent.Start)) }
-                )
-                CustomClickableOutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = uiState.endDate.toDateWith(format = "dd MMM yyyy"),
-                    placeHolder = "End Date",
-                    trailingIcon = Icons.Outlined.Event,
-                    onClick = { onEvent.invoke(AddGoalEvent.ShowDialog(GoalDateContent.End)) }
-                )
-            }
+            AddGoalScreenContent(paddingValues, uiState, onEvent)
         },
         bottomBar = {
             CustomButton(
@@ -151,6 +106,70 @@ private fun AddGoalScreen(uiState: AddGoalState, onEvent: (AddGoalEvent) -> Unit
             )
         }
     )
+}
+
+@Composable
+private fun AddGoalTopAppBar(
+    uiState: AddGoalState,
+    onEvent: (AddGoalEvent) -> Unit
+) {
+    val title = if (uiState.isEditMode) "Edit Goal" else "Add Goal"
+    CustomNavigationTopAppBarView(
+        title = title,
+        onNavigateBack = { onEvent.invoke(AddGoalEvent.NavigateBack) }
+    )
+}
+
+@Composable
+private fun AddGoalScreenContent(
+    paddingValues: PaddingValues,
+    uiState: AddGoalState,
+    onEvent: (AddGoalEvent) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .padding(vertical = 24.dp, horizontal = 16.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ImageGoalPicker(
+            imageUrl = uiState.fileName,
+            onSelectedImage = { onEvent.invoke(AddGoalEvent.SetFile(it)) }
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        GoalCurrencyTextField(uiState, onEvent)
+        CustomOutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            label = "Goal Name",
+            placeHolder = "My Goal",
+            value = uiState.goalName,
+            onValueChange = { onEvent.invoke(AddGoalEvent.SetName(it)) }
+        )
+        CustomOutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            label = "Note",
+            placeHolder = "Some Note",
+            value = uiState.note,
+            onValueChange = { onEvent.invoke(AddGoalEvent.SetNote(it)) }
+        )
+        CustomClickableOutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = uiState.startDate.toDateWith(format = "dd MMM yyyy"),
+            placeHolder = "Starting Date",
+            trailingIcon = Icons.Outlined.CalendarToday,
+            onClick = { onEvent.invoke(AddGoalEvent.ShowDialog(GoalDateContent.Start)) }
+        )
+        CustomClickableOutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = uiState.endDate.toDateWith(format = "dd MMM yyyy"),
+            placeHolder = "End Date",
+            trailingIcon = Icons.Outlined.Event,
+            onClick = { onEvent.invoke(AddGoalEvent.ShowDialog(GoalDateContent.End)) }
+        )
+    }
 }
 
 @Composable
