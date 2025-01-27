@@ -4,6 +4,7 @@ import com.kakapo.data.repository.base.BackupRepository
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.GoalRepository
+import com.kakapo.data.repository.base.GoalTransactionRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.ReportRepository
 import com.kakapo.data.repository.base.SystemRepository
@@ -13,6 +14,7 @@ import com.kakapo.data.repository.impl.BackupRepositoryImpl
 import com.kakapo.data.repository.impl.CategoryLimitRepositoryImpl
 import com.kakapo.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.data.repository.impl.GoalRepositoryImpl
+import com.kakapo.data.repository.impl.GoalTransactionRepositoryImpl
 import com.kakapo.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.data.repository.impl.ReportRepositoryImpl
 import com.kakapo.data.repository.impl.SystemRepositoryImpl
@@ -34,11 +36,13 @@ import com.kakapo.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.ReportLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.TransactionLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.WalletLocalDatasourceImpl
+import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.domain.usecase.base.ValidateCategoryLimitUseCase
+import com.kakapo.domain.usecase.impl.AddGoalSavingUseCaseImpl
 import com.kakapo.domain.usecase.impl.DeleteTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.GetMonthlyBudgetOverviewUseCaseImpl
 import com.kakapo.domain.usecase.impl.SaveTransactionUseCaseImpl
@@ -61,15 +65,20 @@ import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewMod
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 expect val platformModule: Module
 
 object CommonModule {
+
+    private const val IO = "IO"
 
     val localDatasourceModule: Module = module {
         factory<TransactionLocalDatasource> { TransactionLocalDatasourceImpl(get()) }
@@ -96,6 +105,7 @@ object CommonModule {
         factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
         factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
+        factory<GoalTransactionRepository> { GoalTransactionRepositoryImpl(get()) }
     }
 
     val domainModule: Module = module {
@@ -104,6 +114,7 @@ object CommonModule {
         factory<UpdateTransactionUseCase> { UpdateTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<GetMonthlyBudgetOverviewUseCase> { GetMonthlyBudgetOverviewUseCaseImpl(get(), get(), get()) }
+        factory<AddGoalSavingUseCase> { AddGoalSavingUseCaseImpl(get(), get(), get(), get(named(IO))) }
     }
 
     val viewModel: Module = module {
@@ -115,7 +126,7 @@ object CommonModule {
         viewModel { TransactionViewModel(get(), get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }
         viewModel { AddGoalViewModel(get(), get()) }
-        viewModel { GoalViewModel(get(), get(), get()) }
+        viewModel { GoalViewModel(get(), get(), get(), get()) }
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get(), get())}
@@ -124,6 +135,9 @@ object CommonModule {
         viewModel { OnBoardingViewModel(get(), get(), get()) }
     }
 
+    val coroutineModule: Module = module {
+        single(qualifier = named(IO)) { Dispatchers.IO }
+    }
 }
 
 fun initKoin(
@@ -133,6 +147,7 @@ fun initKoin(
     repositoryModule: Module = CommonModule.repositoryModule,
     domainModules: Module = CommonModule.domainModule,
     viewModel: Module = CommonModule.viewModel,
+    coroutineModule: Module = CommonModule.coroutineModule
 ): KoinApplication = startKoin {
     modules(
         appModule,
@@ -141,6 +156,7 @@ fun initKoin(
         repositoryModule,
         domainModules,
         viewModel,
+        coroutineModule,
         platformModule
     )
 }

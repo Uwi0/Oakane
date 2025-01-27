@@ -8,6 +8,7 @@ import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
+import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
 import com.kakapo.model.Currency
 import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -24,7 +25,8 @@ import kotlin.native.ObjCName
 class GoalViewModel(
     private val goalRepository: GoalRepository,
     private val systemRepository: SystemRepository,
-    private val walletRepository: WalletRepository
+    private val walletRepository: WalletRepository,
+    private val addGoalSavingUseCaseImpl: AddGoalSavingUseCase
 ) : ViewModel() {
 
     @NativeCoroutinesState
