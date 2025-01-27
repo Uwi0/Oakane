@@ -1,0 +1,60 @@
+package com.kakapo.oakane.presentation.feature.goal.component
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.kakapo.model.Currency
+import com.kakapo.model.goal.GoalSavingModel
+import com.kakapo.model.toFormatCurrency
+import com.kakapo.model.transaction.TransactionType
+import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.ui.component.RowWrapper
+import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
+
+@Composable
+internal fun GoalSavingItemView(item: GoalSavingModel, currency: Currency) {
+    RowWrapper(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp, horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        TransactionTypeIcon(type = TransactionType.Income)
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = item.amount.toFormatCurrency(currency),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = "Note: ${item.note}",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.outline
+            )
+        }
+        Text(item.dateCreated, style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable
+@Preview
+private fun GoalSavingItemPreview() {
+    AppTheme {
+        GoalSavingItemView(
+            item = GoalSavingModel(
+                id = 1933,
+                amount = 500_000.0,
+                note = "just Note",
+                dateCreated = "27 jan 2025"
+            ),
+            currency = Currency.IDR
+        )
+    }
+}

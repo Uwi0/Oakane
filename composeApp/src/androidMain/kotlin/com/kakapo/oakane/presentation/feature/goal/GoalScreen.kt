@@ -2,15 +2,21 @@ package com.kakapo.oakane.presentation.feature.goal
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +28,7 @@ import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.goal.component.DialogGoalView
+import com.kakapo.oakane.presentation.feature.goal.component.GoalSavingItemView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardGoalView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardNoteView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardTimeView
@@ -70,12 +77,27 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(vertical = 24.dp, horizontal = 16.dp),
+                    .padding(vertical = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CardGoalView(uiState = uiState)
-                CardTimeView(uiState = uiState)
-                CardNoteView(uiState = uiState)
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    CardGoalView(uiState = uiState)
+                    CardTimeView(uiState = uiState)
+                    CardNoteView(uiState = uiState)
+                    Text(text = "Log Saving", style = MaterialTheme.typography.titleMedium)
+                }
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 4.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(uiState.goalSavings, key = { it.id }) { saving ->
+                        GoalSavingItemView(item = saving, currency = uiState.currency)
+                    }
+                }
             }
         },
         floatingActionButton = {

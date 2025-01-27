@@ -62,12 +62,10 @@ class GoalViewModel(
     }
 
     private fun loadGoalBy(id: Long) = viewModelScope.launch {
-        goalRepository.loadGoalBy(id).collect { result ->
-            result.fold(
-                onSuccess = { goal -> _uiState.update { it.copy(goal = goal) } },
-                onFailure = ::handleError
-            )
-        }
+        goalRepository.loadGoalBy(id).asCustomResult().subscribe(
+            onSuccess = { goal -> _uiState.update { it.copy(goal = goal) } },
+            onError = ::handleError
+        )
     }
 
     private fun loadCurrency() = viewModelScope.launch {

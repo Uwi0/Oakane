@@ -105,7 +105,7 @@ object CommonModule {
         factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
         factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
-        factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get(), get()) }
+        factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get(), get(named(IO))) }
     }
 
     val domainModule: Module = module {
