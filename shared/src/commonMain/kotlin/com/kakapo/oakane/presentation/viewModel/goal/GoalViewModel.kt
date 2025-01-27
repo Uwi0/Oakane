@@ -26,7 +26,7 @@ class GoalViewModel(
     private val goalRepository: GoalRepository,
     private val systemRepository: SystemRepository,
     private val walletRepository: WalletRepository,
-    private val addGoalSavingUseCaseImpl: AddGoalSavingUseCase
+    private val addGoalSavingUseCase: AddGoalSavingUseCase
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -97,6 +97,7 @@ class GoalViewModel(
     private fun addSaving() = viewModelScope.launch {
         val id = uiState.value.goal.id
         val amount = uiState.value.savingAmount.asDouble()
+        addGoalSavingUseCase
         goalRepository.addSaved(amount, id).fold(
             onSuccess = { updateGoal(amount) },
             onFailure = ::handleError

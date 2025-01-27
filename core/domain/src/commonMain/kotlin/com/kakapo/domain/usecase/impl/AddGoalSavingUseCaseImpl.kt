@@ -2,7 +2,7 @@ package com.kakapo.domain.usecase.impl
 
 import com.kakapo.data.model.GoalTransactionParam
 import com.kakapo.data.repository.base.GoalRepository
-import com.kakapo.data.repository.base.GoalTransactionRepository
+import com.kakapo.data.repository.base.GoalSavingsRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
 import com.kakapo.model.wallet.WalletModel
@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 class AddGoalSavingUseCaseImpl(
     private val goalRepository: GoalRepository,
     private val walletRepository: WalletRepository,
-    private val goalTransactionRepository: GoalTransactionRepository,
+    private val goalSavingsRepository: GoalSavingsRepository,
     private val dispatcher: CoroutineDispatcher
 ) : AddGoalSavingUseCase {
 
@@ -24,7 +24,7 @@ class AddGoalSavingUseCaseImpl(
                     goalRepository.addSaved(param.amount, param.goalId)
                 }
                 val saveGoalTransactionDeferred = async(dispatcher) {
-                    goalTransactionRepository.saveGoal(param)
+                    goalSavingsRepository.saveGoal(param)
                 }
                 val updateWalletDeferred = async(dispatcher) {
                     walletRepository.update(-param.amount, param.walletId)

@@ -1,6 +1,6 @@
 package com.kakapo.data.model
 
-import com.kakapo.database.model.GoalTransactionEntity
+import com.kakapo.database.model.GoalSavingsEntity
 
 data class GoalTransactionParam(
     val goalId: Long,
@@ -10,8 +10,8 @@ data class GoalTransactionParam(
     val note: String
 ){
 
-    fun toGoalTransactionEntity(): GoalTransactionEntity {
-        return GoalTransactionEntity(
+    fun toGoalTransactionEntity(): GoalSavingsEntity {
+        return GoalSavingsEntity(
             goalId = goalId,
             dateCreated = dateCreated,
             amount = amount,

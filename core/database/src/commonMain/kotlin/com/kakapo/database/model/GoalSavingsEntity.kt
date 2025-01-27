@@ -1,6 +1,6 @@
 package com.kakapo.database.model
 
-data class GoalTransactionEntity(
+data class GoalSavingsEntity(
     val id: Long = 0,
     val goalId: Long,
     val walletId: Long,

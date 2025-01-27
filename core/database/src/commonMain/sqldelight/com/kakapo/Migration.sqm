@@ -8,3 +8,14 @@ CREATE TABLE IF NOT EXISTS GoalTransactionHistoryTable (
     FOREIGN KEY (goalId) REFERENCES GoalTable(id),
     FOREIGN KEY (walletId) REFERENCES WalletTable(id)
 );
+
+CREATE TABLE IF NOT EXISTS GoalSavingsTable (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    goalId INTEGER NOT NULL,
+    dateCreated INTEGER NOT NULL,
+    amount REAL NOT NULL,
+    walletId INTEGER NOT NULL,
+    note TEXT,
+    FOREIGN KEY (goalId) REFERENCES GoalTable(id),
+    FOREIGN KEY (walletId) REFERENCES WalletTable(id)
+);

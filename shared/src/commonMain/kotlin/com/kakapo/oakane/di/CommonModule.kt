@@ -4,7 +4,7 @@ import com.kakapo.data.repository.base.BackupRepository
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.GoalRepository
-import com.kakapo.data.repository.base.GoalTransactionRepository
+import com.kakapo.data.repository.base.GoalSavingsRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.ReportRepository
 import com.kakapo.data.repository.base.SystemRepository
@@ -14,7 +14,7 @@ import com.kakapo.data.repository.impl.BackupRepositoryImpl
 import com.kakapo.data.repository.impl.CategoryLimitRepositoryImpl
 import com.kakapo.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.data.repository.impl.GoalRepositoryImpl
-import com.kakapo.data.repository.impl.GoalTransactionRepositoryImpl
+import com.kakapo.data.repository.impl.GoalSavingsRepositoryImpl
 import com.kakapo.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.data.repository.impl.ReportRepositoryImpl
 import com.kakapo.data.repository.impl.SystemRepositoryImpl
@@ -23,7 +23,7 @@ import com.kakapo.data.repository.impl.WalletRepositoryImpl
 import com.kakapo.database.datasource.base.CategoryLimitLocalDatasource
 import com.kakapo.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.database.datasource.base.GoalLocalDatasource
-import com.kakapo.database.datasource.base.GoalTransactionLocalDatasource
+import com.kakapo.database.datasource.base.GoalSavingsLocalDatasource
 import com.kakapo.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.database.datasource.base.ReportLocalDatasource
 import com.kakapo.database.datasource.base.TransactionLocalDatasource
@@ -31,7 +31,7 @@ import com.kakapo.database.datasource.base.WalletLocalDatasource
 import com.kakapo.database.datasource.impl.CategoryLimitLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.CategoryLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.GoalLocalDatasourceImpl
-import com.kakapo.database.datasource.impl.GoalTransactionLocalDatasourceImpl
+import com.kakapo.database.datasource.impl.GoalSavingsLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.ReportLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.TransactionLocalDatasourceImpl
@@ -88,7 +88,7 @@ object CommonModule {
         factory<CategoryLimitLocalDatasource> { CategoryLimitLocalDatasourceImpl(get()) }
         factory<WalletLocalDatasource> { WalletLocalDatasourceImpl(get()) }
         factory<ReportLocalDatasource> { ReportLocalDatasourceImpl(get()) }
-        factory<GoalTransactionLocalDatasource> { GoalTransactionLocalDatasourceImpl(get()) }
+        factory<GoalSavingsLocalDatasource> { GoalSavingsLocalDatasourceImpl(get()) }
     }
 
     val preferenceModule: Module = module {
@@ -105,7 +105,7 @@ object CommonModule {
         factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
         factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
-        factory<GoalTransactionRepository> { GoalTransactionRepositoryImpl(get()) }
+        factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get()) }
     }
 
     val domainModule: Module = module {
