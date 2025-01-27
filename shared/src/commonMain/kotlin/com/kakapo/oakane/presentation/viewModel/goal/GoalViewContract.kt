@@ -2,9 +2,10 @@ package com.kakapo.oakane.presentation.viewModel.goal
 
 import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.daysBetween
-import com.kakapo.data.model.GoalTransactionParam
+import com.kakapo.data.model.GoalSavingParam
 import com.kakapo.model.Currency
-import com.kakapo.model.GoalModel
+import com.kakapo.model.goal.GoalModel
+import com.kakapo.model.goal.GoalSavingModel
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletModel
 import kotlinx.datetime.Clock
@@ -19,7 +20,8 @@ data class GoalState(
     val currency: Currency = Currency.IDR,
     val wallets: List<WalletModel> = emptyList(),
     val selectedWallet: WalletModel = WalletModel(),
-    val note: String = ""
+    val note: String = "",
+    val goalSavings: List<GoalSavingModel> = emptyList()
 ) {
 
     val dayLeft: Long
@@ -37,9 +39,9 @@ data class GoalState(
             return goal.amount.toFormatCurrency(currency)
         }
 
-    fun goalSavingParam(): GoalTransactionParam {
+    fun goalSavingParam(): GoalSavingParam {
         val currentTime = Clock.System.now().toEpochMilliseconds()
-        return GoalTransactionParam(
+        return GoalSavingParam(
             goalId = goal.id,
             dateCreated = currentTime,
             amount = savingAmount.asRealCurrencyValue(),

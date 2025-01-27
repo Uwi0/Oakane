@@ -1,6 +1,6 @@
 package com.kakapo.data.repository.base
 
-import com.kakapo.model.GoalModel
+import com.kakapo.model.goal.GoalModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 

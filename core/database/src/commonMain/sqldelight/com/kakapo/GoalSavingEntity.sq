@@ -12,3 +12,7 @@ CREATE TABLE IF NOT EXISTS GoalSavingTable (
 insertGoalSaving:
 INSERT OR REPLACE INTO GoalSavingTable(goalId, dateCreated, amount, walletId, note)
 VALUES (?, ?, ?, ?, ?);
+
+getGoalSavingsById:
+SELECT * FROM GoalSavingTable
+WHERE goalId = ?;

@@ -12,6 +12,9 @@ kotlin {
             implementation(projects.core.model)
             implementation(projects.core.database)
             implementation(projects.core.preference)
+
+            //coroutine
+            implementation(libs.kotlinx.coroutines.core)
         }
     }
 

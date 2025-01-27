@@ -1,8 +1,10 @@
 package com.kakapo.data.model
 
+import com.kakapo.common.toDateWith
 import com.kakapo.database.model.GoalSavingsEntity
+import com.kakapo.model.goal.GoalSavingModel
 
-data class GoalTransactionParam(
+data class GoalSavingParam(
     val goalId: Long,
     val dateCreated: Long,
     val amount: Double,
@@ -20,3 +22,10 @@ data class GoalTransactionParam(
         )
     }
 }
+
+fun GoalSavingsEntity.toGoalSavingModel() = GoalSavingModel(
+    id = id,
+    amount = amount,
+    note = note,
+    dateCreated = dateCreated.toDateWith("dd MMM yyyy")
+)

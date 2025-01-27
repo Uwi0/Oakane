@@ -4,7 +4,7 @@ import com.kakapo.data.model.toGoalEntity
 import com.kakapo.data.model.toGoalModel
 import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.database.datasource.base.GoalLocalDatasource
-import com.kakapo.model.GoalModel
+import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.asCurrency
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.utils.getSavedCurrency

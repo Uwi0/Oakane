@@ -16,6 +16,7 @@ camera = "1.4.1"
 coil = "2.7.0"
 colorpicker = "1.1.2"
 compose-plugin = "1.7.0"
+coroutine-core = "1.10.1"
 datastore = "1.1.2"
 dependency-analys = "2.6.1"
 googleServicePlugin = "4.4.2"
@@ -69,6 +70,7 @@ koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-compose-viewmodel-navigation" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine-core" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxdatetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 material-design = { group = "com.google.android.material", name = "material", version.ref = "material-design" }

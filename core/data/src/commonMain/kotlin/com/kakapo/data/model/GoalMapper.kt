@@ -2,7 +2,7 @@ package com.kakapo.data.model
 
 import com.kakapo.database.model.GoalEntity
 import com.kakapo.model.Currency
-import com.kakapo.model.GoalModel
+import com.kakapo.model.goal.GoalModel
 
 fun GoalModel.toGoalEntity(): GoalEntity {
     return GoalEntity(

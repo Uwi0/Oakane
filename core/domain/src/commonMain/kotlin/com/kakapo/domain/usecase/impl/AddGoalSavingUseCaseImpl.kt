@@ -1,6 +1,6 @@
 package com.kakapo.domain.usecase.impl
 
-import com.kakapo.data.model.GoalTransactionParam
+import com.kakapo.data.model.GoalSavingParam
 import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.data.repository.base.GoalSavingsRepository
 import com.kakapo.data.repository.base.WalletRepository
@@ -17,8 +17,9 @@ class AddGoalSavingUseCaseImpl(
     private val dispatcher: CoroutineDispatcher
 ) : AddGoalSavingUseCase {
 
-    override suspend fun execute(param: GoalTransactionParam): Result<Unit> =
+    override suspend fun execute(param: GoalSavingParam): Result<Unit> =
         withContext(dispatcher) {
+            if (param.amount <= 0) return@withContext Result.failure(Exception("Balance must be greater than 0"))
             if (hasSufficientBalance(param.walletId, param.amount)) runCatching {
                 val addSavedGoalDeferred = async(dispatcher) {
                     goalRepository.addSaved(param.amount, param.goalId)

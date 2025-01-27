@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
+import com.kakapo.data.repository.base.GoalSavingsRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
 import com.kakapo.model.Currency
+import com.kakapo.model.goal.GoalSavingModel
 import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -23,6 +25,7 @@ import kotlin.native.ObjCName
 @ObjCName("GoalViewModelKt")
 class GoalViewModel(
     private val goalRepository: GoalRepository,
+    private val goalSavingRepository: GoalSavingsRepository,
     private val systemRepository: SystemRepository,
     private val walletRepository: WalletRepository,
     private val addGoalSavingUseCase: AddGoalSavingUseCase
@@ -37,7 +40,9 @@ class GoalViewModel(
     private val _uiEffect = MutableSharedFlow<GoalEffect>()
 
     fun initializeData(goalId: Long) {
-        loadGoalBy(goalId)
+        loadGoalBy(goalId).invokeOnCompletion {
+            loadGoalSavingsBy(goalId)
+        }
         loadCurrency()
         loadWallets()
         loadSelectedWallet()
@@ -95,10 +100,25 @@ class GoalViewModel(
         )
     }
 
+    private fun loadGoalSavingsBy(id: Long) = viewModelScope.launch {
+        val onSuccess: (List<GoalSavingModel>) -> Unit = { savings ->
+            _uiState.update { it.copy(goalSavings = savings) }
+        }
+        goalSavingRepository.loadGoalSavingBy(id).asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
     private fun addSaving() = viewModelScope.launch {
         val param = uiState.value.goalSavingParam()
+        val onSuccess: (Unit) -> Unit = {
+            updateGoal(param.amount)
+            loadGoalSavingsBy(param.goalId)
+        }
+
         addGoalSavingUseCase.execute(param).fold(
-            onSuccess = { updateGoal(param.amount) },
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }

@@ -88,7 +88,7 @@ object CommonModule {
         factory<CategoryLimitLocalDatasource> { CategoryLimitLocalDatasourceImpl(get()) }
         factory<WalletLocalDatasource> { WalletLocalDatasourceImpl(get()) }
         factory<ReportLocalDatasource> { ReportLocalDatasourceImpl(get()) }
-        factory<GoalSavingsLocalDatasource> { GoalSavingsLocalDatasourceImpl(get()) }
+        factory<GoalSavingsLocalDatasource> { GoalSavingsLocalDatasourceImpl(get(), get(named(IO))) }
     }
 
     val preferenceModule: Module = module {
@@ -105,7 +105,7 @@ object CommonModule {
         factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
         factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
-        factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get()) }
+        factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get(), get()) }
     }
 
     val domainModule: Module = module {
@@ -126,7 +126,7 @@ object CommonModule {
         viewModel { TransactionViewModel(get(), get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }
         viewModel { AddGoalViewModel(get(), get()) }
-        viewModel { GoalViewModel(get(), get(), get(), get()) }
+        viewModel { GoalViewModel(get(), get(), get(), get(), get()) }
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get(), get())}

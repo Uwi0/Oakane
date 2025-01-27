@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.formatDateWith
 import com.kakapo.common.getSavedImageUri
-import com.kakapo.model.GoalModel
+import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage

@@ -10,7 +10,7 @@ import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
-import com.kakapo.model.GoalModel
+import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.wallet.WalletModel

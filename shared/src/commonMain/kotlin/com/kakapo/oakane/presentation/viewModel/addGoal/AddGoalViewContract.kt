@@ -2,7 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.addGoal
 
 import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.model.Currency
-import com.kakapo.model.GoalModel
+import com.kakapo.model.goal.GoalModel
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
 

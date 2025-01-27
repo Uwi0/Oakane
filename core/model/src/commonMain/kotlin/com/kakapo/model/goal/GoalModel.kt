@@ -1,4 +1,6 @@
-package com.kakapo.model
+package com.kakapo.model.goal
+
+import com.kakapo.model.Currency
 
 data class GoalModel(
     val id: Long = 0,
