@@ -28,11 +28,10 @@ kotlin {
 sqldelight {
     databases {
         create("Database") {
-            srcDirs.setFrom("src/commonMain/sqldelight")
             packageName.set("com.kakapo")
-
-            schemaOutputDirectory = file("src/commonMain/sqldelight/databases")
-            verifyMigrations = true
+            srcDirs("src/commonMain/sqldelight")
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+            verifyMigrations.set(true)
             version = 2
         }
     }

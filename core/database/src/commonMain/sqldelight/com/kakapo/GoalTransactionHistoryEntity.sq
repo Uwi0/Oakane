@@ -8,3 +8,7 @@ CREATE TABLE IF NOT EXISTS GoalTransactionHistoryTable (
     FOREIGN KEY (goalId) REFERENCES GoalTable(id),
     FOREIGN KEY (walletId) REFERENCES WalletTable(id)
 );
+
+insertGoalTransaction:
+INSERT OR REPLACE INTO GoalTransactionHistoryTable(goalId, dateCreated, amount, walletId, note)
+VALUES (?, ?, ?, ?, ?);

@@ -21,6 +21,7 @@ import com.kakapo.data.repository.impl.WalletRepositoryImpl
 import com.kakapo.database.datasource.base.CategoryLimitLocalDatasource
 import com.kakapo.database.datasource.base.CategoryLocalDatasource
 import com.kakapo.database.datasource.base.GoalLocalDatasource
+import com.kakapo.database.datasource.base.GoalTransactionLocalDatasource
 import com.kakapo.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.database.datasource.base.ReportLocalDatasource
 import com.kakapo.database.datasource.base.TransactionLocalDatasource
@@ -28,6 +29,7 @@ import com.kakapo.database.datasource.base.WalletLocalDatasource
 import com.kakapo.database.datasource.impl.CategoryLimitLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.CategoryLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.GoalLocalDatasourceImpl
+import com.kakapo.database.datasource.impl.GoalTransactionLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.ReportLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.TransactionLocalDatasourceImpl
@@ -77,6 +79,7 @@ object CommonModule {
         factory<CategoryLimitLocalDatasource> { CategoryLimitLocalDatasourceImpl(get()) }
         factory<WalletLocalDatasource> { WalletLocalDatasourceImpl(get()) }
         factory<ReportLocalDatasource> { ReportLocalDatasourceImpl(get()) }
+        factory<GoalTransactionLocalDatasource> { GoalTransactionLocalDatasourceImpl(get()) }
     }
 
     val preferenceModule: Module = module {
@@ -112,7 +115,7 @@ object CommonModule {
         viewModel { TransactionViewModel(get(), get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }
         viewModel { AddGoalViewModel(get(), get()) }
-        viewModel { GoalViewModel(get(), get()) }
+        viewModel { GoalViewModel(get(), get(), get()) }
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get(), get())}

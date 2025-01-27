@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.addTransaction.component.dropdown
+package com.kakapo.oakane.presentation.ui.component.dropdown.wallet
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

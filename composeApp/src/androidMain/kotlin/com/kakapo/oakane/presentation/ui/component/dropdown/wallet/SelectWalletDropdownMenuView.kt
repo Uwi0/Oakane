@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.addTransaction.component.dropdown
+package com.kakapo.oakane.presentation.ui.component.dropdown.wallet
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn

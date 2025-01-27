@@ -4,6 +4,7 @@ import com.kakapo.common.daysBetween
 import com.kakapo.model.Currency
 import com.kakapo.model.GoalModel
 import com.kakapo.model.toFormatCurrency
+import com.kakapo.model.wallet.WalletModel
 import kotlin.native.ObjCName
 
 @ObjCName("GoalStateKt")
@@ -12,7 +13,10 @@ data class GoalState(
     val savingAmount: String = "",
     val dialogShown: Boolean = false,
     val dialogContent: GoalDialogContent = GoalDialogContent.UpdateAmount,
-    val currency: Currency = Currency.IDR
+    val currency: Currency = Currency.IDR,
+    val wallets: List<WalletModel> = emptyList(),
+    val selectedWallet: WalletModel = WalletModel(),
+    val note: String = ""
 ) {
 
     val dayLeft: Long

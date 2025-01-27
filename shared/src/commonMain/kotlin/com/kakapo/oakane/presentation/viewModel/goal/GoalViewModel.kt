@@ -2,10 +2,14 @@ package com.kakapo.oakane.presentation.viewModel.goal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.common.asCustomResult
 import com.kakapo.common.asDouble
+import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.model.Currency
+import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,8 +22,9 @@ import kotlin.native.ObjCName
 
 @ObjCName("GoalViewModelKt")
 class GoalViewModel(
-    private val repository: GoalRepository,
-    private val systemRepository: SystemRepository
+    private val goalRepository: GoalRepository,
+    private val systemRepository: SystemRepository,
+    private val walletRepository: WalletRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -33,6 +38,8 @@ class GoalViewModel(
     fun initializeData(goalId: Long) {
         loadGoalBy(goalId)
         loadCurrency()
+        loadWallets()
+        loadSelectedWallet()
     }
 
     fun handleEvent(event: GoalEvent) {
@@ -47,7 +54,7 @@ class GoalViewModel(
     }
 
     private fun loadGoalBy(id: Long) = viewModelScope.launch {
-        repository.loadGoalBy(id).collect { result ->
+        goalRepository.loadGoalBy(id).collect { result ->
             result.fold(
                 onSuccess = { goal -> _uiState.update { it.copy(goal = goal) } },
                 onFailure = ::handleError
@@ -65,10 +72,30 @@ class GoalViewModel(
         )
     }
 
+    private fun loadWallets() = viewModelScope.launch {
+        val onSuccess: (List<WalletModel>) -> Unit = { wallets ->
+            _uiState.update { it.copy(wallets = wallets) }
+        }
+        walletRepository.loadWallets().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
+    private fun loadSelectedWallet() = viewModelScope.launch {
+        val onSuccess: (WalletModel) -> Unit = { wallet ->
+            _uiState.update { it.copy(selectedWallet = wallet) }
+        }
+        walletRepository.loadSelectedWallet().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
     private fun addSaving() = viewModelScope.launch {
         val id = uiState.value.goal.id
         val amount = uiState.value.savingAmount.asDouble()
-        repository.addSaved(amount, id).fold(
+        goalRepository.addSaved(amount, id).fold(
             onSuccess = { updateGoal(amount) },
             onFailure = ::handleError
         )
@@ -87,7 +114,7 @@ class GoalViewModel(
 
     private fun deleteGoal() = viewModelScope.launch {
         val id = uiState.value.goal.id
-        repository.deleteGoalBy(id).fold(
+        goalRepository.deleteGoalBy(id).fold(
             onSuccess = {
                 _uiState.update { it.copy(dialogShown = false) }
                 emit(GoalEffect.NavigateBack)

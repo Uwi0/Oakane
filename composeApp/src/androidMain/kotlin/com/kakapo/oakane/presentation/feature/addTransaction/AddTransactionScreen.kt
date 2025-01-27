@@ -63,9 +63,9 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.currency.
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.ImageReceiptView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
-import com.kakapo.oakane.presentation.feature.addTransaction.component.dropdown.SelectWalletDropdownMenuView
-import com.kakapo.oakane.presentation.feature.addTransaction.component.dropdown.rememberSelectWalletDropdownMenuState
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
+import com.kakapo.oakane.presentation.ui.component.dropdown.wallet.SelectWalletDropdownMenuView
+import com.kakapo.oakane.presentation.ui.component.dropdown.wallet.rememberSelectWalletDropdownMenuState
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEffect
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionEvent
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionState
