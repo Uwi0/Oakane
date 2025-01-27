@@ -35,7 +35,7 @@ internal fun DialogAddSavingView(uiState: GoalState, onEvent: (GoalEvent) -> Uni
         wallets = uiState.wallets,
         selectedWalletId = uiState.selectedWallet.id
     ) { selectedWallet ->
-
+        onEvent.invoke(GoalEvent.ChangeWallet(selectedWallet))
     }
     Surface(shape = MaterialTheme.shapes.medium) {
         Column(
@@ -66,7 +66,7 @@ private fun DialogContent(
             CustomOutlinedTextField(
                 value = uiState.note,
                 placeHolder = "Note",
-                onValueChange = {}
+                onValueChange = { onEvent.invoke(GoalEvent.AddNote(it)) },
             )
         }
     }
@@ -74,11 +74,12 @@ private fun DialogContent(
 
 @Composable
 private fun AddSavingTextField(currency: Currency, onEvent: (GoalEvent) -> Unit) {
-    val textFieldConfig = CurrencyTextFieldConfig(
-        Locale(currency.languageCode, currency.countryCode),
-        currencySymbol = currency.symbol
-    )
-    val state = rememberCurrencyTextFieldState(textFieldConfig) { amount ->
+    val state = rememberCurrencyTextFieldState(
+        config = CurrencyTextFieldConfig(
+            Locale(currency.languageCode, currency.countryCode),
+            currencySymbol = currency.symbol
+        )
+    ) { amount ->
         onEvent(GoalEvent.Change(amount))
     }
     OutlinedCurrencyTextFieldView(

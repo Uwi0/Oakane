@@ -29,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import co.touchlab.kermit.Logger
 import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.common.getSavedImageUri
 import com.kakapo.common.showToast
@@ -205,7 +204,6 @@ private fun TrailingIcon(
 ) {
     val context = LocalContext.current
     val icon = context.getSavedImageUri(fileName).getOrNull()
-    Logger.d("TrailingIcon: $isDefaultIcon, $categoryIcon, $fileName")
     if (isDefaultIcon) {
         Icon(
             modifier = Modifier.size(18.dp),

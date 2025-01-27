@@ -1,10 +1,13 @@
 package com.kakapo.oakane.presentation.viewModel.goal
 
+import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.daysBetween
+import com.kakapo.data.model.GoalTransactionParam
 import com.kakapo.model.Currency
 import com.kakapo.model.GoalModel
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletModel
+import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
 
 @ObjCName("GoalStateKt")
@@ -24,7 +27,7 @@ data class GoalState(
             return goal.endDate.daysBetween(goal.startDate)
         }
 
-    val savedAmount: String
+    val currentAmount: String
         get() {
             return goal.savedMoney.toFormatCurrency(currency)
         }
@@ -33,6 +36,17 @@ data class GoalState(
         get() {
             return goal.amount.toFormatCurrency(currency)
         }
+
+    fun goalSavingParam(): GoalTransactionParam {
+        val currentTime = Clock.System.now().toEpochMilliseconds()
+        return GoalTransactionParam(
+            goalId = goal.id,
+            dateCreated = currentTime,
+            amount = savingAmount.asRealCurrencyValue(),
+            walletId = selectedWallet.id,
+            note = note
+        )
+    }
 
     fun updateDialog(shown: Boolean, content: GoalDialogContent) = copy(
         dialogShown = shown,
@@ -61,4 +75,6 @@ sealed class GoalEvent {
     data object AddSaving : GoalEvent()
     data object DeleteGoal : GoalEvent()
     data object UpdateGoal : GoalEvent()
+    data class ChangeWallet(val wallet: WalletModel) : GoalEvent()
+    data class AddNote(val note: String) : GoalEvent()
 }

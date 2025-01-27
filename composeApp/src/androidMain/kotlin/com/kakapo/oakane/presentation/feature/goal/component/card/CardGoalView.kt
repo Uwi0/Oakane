@@ -71,7 +71,7 @@ private fun SavingProgressView(uiState: GoalState) {
             modifier = Modifier.weight(1f),
             icon = Icons.Outlined.AccountBalanceWallet,
             title = "Saved",
-            content = uiState.savedAmount
+            content = uiState.currentAmount
         )
         VerticalDivider(modifier = Modifier.height(30.dp))
         CardContentWithIconView(

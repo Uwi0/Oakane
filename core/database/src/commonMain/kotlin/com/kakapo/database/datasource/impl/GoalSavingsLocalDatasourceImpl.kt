@@ -7,7 +7,7 @@ import com.kakapo.database.model.GoalSavingsEntity
 
 class GoalSavingsLocalDatasourceImpl(sqlDriver: SqlDriver): GoalSavingsLocalDatasource {
 
-    private var goalSavingsTable = Database(sqlDriver).goalTransactionHistoryEntityQueries
+    private var goalSavingsTable = Database(sqlDriver).goalSavingEntityQueries
 
     override suspend fun insert(goalTransaction: GoalSavingsEntity): Result<Unit> {
         return runCatching {

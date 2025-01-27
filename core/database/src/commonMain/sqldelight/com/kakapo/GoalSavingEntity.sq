@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS GoalSavingsTable (
+CREATE TABLE IF NOT EXISTS GoalSavingTable (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     goalId INTEGER NOT NULL,
     dateCreated INTEGER NOT NULL,
@@ -10,5 +10,5 @@ CREATE TABLE IF NOT EXISTS GoalSavingsTable (
 );
 
 insertGoalSaving:
-INSERT OR REPLACE INTO GoalSavingsTable(goalId, dateCreated, amount, walletId, note)
+INSERT OR REPLACE INTO GoalSavingTable(goalId, dateCreated, amount, walletId, note)
 VALUES (?, ?, ?, ?, ?);

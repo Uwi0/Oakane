@@ -3,7 +3,6 @@ package com.kakapo.oakane.presentation.viewModel.goal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
-import com.kakapo.common.asDouble
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.data.repository.base.SystemRepository
@@ -52,6 +51,8 @@ class GoalViewModel(
             GoalEvent.AddSaving -> addSaving()
             GoalEvent.DeleteGoal -> deleteGoal()
             GoalEvent.UpdateGoal -> updateGoal()
+            is GoalEvent.AddNote -> _uiState.update { it.copy(note = event.note) }
+            is GoalEvent.ChangeWallet -> _uiState.update { it.copy(selectedWallet = event.wallet) }
         }
     }
 
@@ -95,11 +96,9 @@ class GoalViewModel(
     }
 
     private fun addSaving() = viewModelScope.launch {
-        val id = uiState.value.goal.id
-        val amount = uiState.value.savingAmount.asDouble()
-        addGoalSavingUseCase
-        goalRepository.addSaved(amount, id).fold(
-            onSuccess = { updateGoal(amount) },
+        val param = uiState.value.goalSavingParam()
+        addGoalSavingUseCase.execute(param).fold(
+            onSuccess = { updateGoal(param.amount) },
             onFailure = ::handleError
         )
     }
