@@ -50,6 +50,13 @@ class WalletRepositoryImpl(
         }
     }
 
+    override suspend fun loadWalletItemBy(id: Long): Result<WalletItemModel> {
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        return localDatasource.getWalletBy(id).mapCatching { walletEntity ->
+            walletEntity.toWalletItemModel(id, currency)
+        }
+    }
+
     override suspend fun save(wallet: WalletModel): Result<Unit> {
         val currentTime = Clock.System.now().toEpochMilliseconds()
         val walletEntity = wallet.toWalletEntity(currentTime)

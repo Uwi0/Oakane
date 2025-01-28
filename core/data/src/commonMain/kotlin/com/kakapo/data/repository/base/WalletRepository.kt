@@ -17,6 +17,8 @@ interface WalletRepository {
     @NativeCoroutines
     suspend fun loadWalletBy(id: Long): Result<WalletModel>
     @NativeCoroutines
+    suspend fun loadWalletItemBy(id: Long): Result<WalletItemModel>
+    @NativeCoroutines
     suspend fun save(wallet: WalletModel): Result<Unit>
     @NativeCoroutines
     fun loadWalletItems(): Flow<Result<List<WalletItemModel>>>

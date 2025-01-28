@@ -68,6 +68,7 @@ import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
 import com.kakapo.oakane.presentation.viewModel.splash.SplashViewModel
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsViewModel
+import com.kakapo.oakane.presentation.viewModel.wallet.WalletViewModel
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsViewModel
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
@@ -142,6 +143,7 @@ object CommonModule {
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
         viewModel { OnBoardingViewModel(get(), get(), get()) }
+        viewModel { WalletViewModel(get()) }
     }
 
     val coroutineModule: Module = module {
