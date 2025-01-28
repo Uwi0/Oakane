@@ -30,8 +30,8 @@ import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNav
 import com.kakapo.oakane.presentation.feature.goal.component.DialogGoalView
 import com.kakapo.oakane.presentation.feature.goal.component.GoalSavingItemView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardGoalView
-import com.kakapo.oakane.presentation.feature.goal.component.card.CardNoteView
 import com.kakapo.oakane.presentation.feature.goal.component.card.CardTimeView
+import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.viewModel.goal.GoalDialogContent
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEffect
 import com.kakapo.oakane.presentation.viewModel.goal.GoalEvent
@@ -86,7 +86,7 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
                 ) {
                     CardGoalView(uiState = uiState)
                     CardTimeView(uiState = uiState)
-                    CardNoteView(uiState = uiState)
+                    CardNoteView(note = uiState.goal.note)
                     Text(text = "Log Saving", style = MaterialTheme.typography.titleMedium)
                 }
                 LazyColumn(

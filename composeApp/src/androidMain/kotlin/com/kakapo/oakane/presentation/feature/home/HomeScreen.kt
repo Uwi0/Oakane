@@ -29,8 +29,8 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconBu
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.home.component.GoalHeaderView
 import com.kakapo.oakane.presentation.feature.home.component.MonthlyBudgetView
+import com.kakapo.oakane.presentation.feature.home.component.PrimaryWalletView
 import com.kakapo.oakane.presentation.feature.home.component.ShowMoreButtonView
-import com.kakapo.oakane.presentation.feature.home.component.WalletBalanceView
 import com.kakapo.oakane.presentation.ui.component.item.GoalItemView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.viewModel.home.HomeEffect
@@ -128,7 +128,7 @@ private fun HomeContentView(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            WalletBalanceView(uiState, onEvent)
+            PrimaryWalletView(uiState, onEvent)
         }
         item {
             MonthlyBudgetView(uiState = uiState, onEvent = onEvent)
