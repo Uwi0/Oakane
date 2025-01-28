@@ -90,7 +90,7 @@ internal fun OakaneNavHost(
             navigateBack = navController::navigateUp,
             navigateToWallet = navController::navigateToWallet
         )
-        walletScreen()
+        walletScreen(navigateBack = navController::navigateUp)
         reportsScreen(
             navigateBack = navController::navigateUp
         )
