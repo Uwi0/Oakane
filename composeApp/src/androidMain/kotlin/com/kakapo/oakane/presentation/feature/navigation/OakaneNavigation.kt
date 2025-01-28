@@ -27,6 +27,8 @@ import com.kakapo.oakane.presentation.feature.transaction.navigation.navigateToT
 import com.kakapo.oakane.presentation.feature.transaction.navigation.transactionScreen
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
 import com.kakapo.oakane.presentation.feature.transactions.navigation.transactionsScreen
+import com.kakapo.oakane.presentation.feature.wallet.navigation.navigateToWallet
+import com.kakapo.oakane.presentation.feature.wallet.navigation.walletScreen
 import com.kakapo.oakane.presentation.feature.wallets.navigation.navigateToWallets
 import com.kakapo.oakane.presentation.feature.wallets.navigation.walletsScreen
 
@@ -85,8 +87,10 @@ internal fun OakaneNavHost(
             navigateBack = navController::navigateUp
         )
         walletsScreen(
-            navigateBack = navController::navigateUp
+            navigateBack = navController::navigateUp,
+            navigateToWallet = navController::navigateToWallet
         )
+        walletScreen()
         reportsScreen(
             navigateBack = navController::navigateUp
         )

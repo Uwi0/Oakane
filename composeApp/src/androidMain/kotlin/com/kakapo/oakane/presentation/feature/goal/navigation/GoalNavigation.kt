@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kakapo.oakane.presentation.feature.goal.GoalRoute
-import com.kakapo.oakane.presentation.feature.navigation.NavigationArgs.GOAL_ID_ARGS
+import com.kakapo.oakane.presentation.feature.navigation.NavArgs.GOAL_ID_ARGS
 
 const val GOAL_ROUTE = "goal"
 

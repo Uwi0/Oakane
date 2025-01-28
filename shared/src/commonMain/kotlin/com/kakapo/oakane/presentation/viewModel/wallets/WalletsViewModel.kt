@@ -54,8 +54,8 @@ class WalletsViewModel(
             is WalletsEvent.ChangeStart -> _uiState.update { it.copy(startBalance = event.balance) }
             is WalletsEvent.SelectedIcon -> _uiState.update { it.copy(selectedIcon = event.name) }
             is WalletsEvent.SelectedImage -> _uiState.update { it.updateImage(event.file) }
-            is WalletsEvent.SelectWalletBy -> selectWalletBy(event.id)
-            is WalletsEvent.ClickedItem -> _uiState.update { it.onClickedItem(event.wallet) }
+            is WalletsEvent.SelectPrimaryWalletBy -> selectWalletBy(event.id)
+            is WalletsEvent.ClickedWallet -> emit(WalletsEffect.NavigateToWallet(event.item.id))
             is WalletsEvent.Dialog -> _uiState.update { it.copy(dialogShown = event.shown) }
             WalletsEvent.FeatureNotAvailable -> emit(WalletsEffect.ShowError("Feature not available yet"))
             WalletsEvent.ConfirmIcon -> _uiState.update { it.copy(sheetContent = WalletSheetContent.Create) }

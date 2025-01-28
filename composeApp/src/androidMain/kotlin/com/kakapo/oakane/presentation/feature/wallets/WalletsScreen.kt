@@ -34,7 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WalletsRoute(
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigateToWallet: (Long) -> Unit
 ) {
     val context = LocalContext.current
     val viewModel = koinViewModel<WalletsViewModel>()
@@ -54,6 +55,7 @@ internal fun WalletsRoute(
                 is WalletsEffect.NavigateBack -> navigateBack.invoke()
                 WalletsEffect.DismissBottomSheet -> sheetState.hide()
                 is WalletsEffect.ShowError -> context.showToast(effect.message)
+                is WalletsEffect.NavigateToWallet -> navigateToWallet.invoke(effect.id)
             }
         }
     }

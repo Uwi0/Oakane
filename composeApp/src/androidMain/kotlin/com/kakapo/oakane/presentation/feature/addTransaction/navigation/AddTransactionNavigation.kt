@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kakapo.oakane.presentation.feature.addTransaction.AddTransactionRoute
-import com.kakapo.oakane.presentation.feature.navigation.NavigationArgs
+import com.kakapo.oakane.presentation.feature.navigation.NavArgs
 
 const val ADD_TRANSACTION_ROUTE = "add_transaction"
 
@@ -20,10 +20,10 @@ fun NavController.navigateToAddTransaction(
 }
 
 fun NavGraphBuilder.addTransactionScreen(navigateBack: () -> Unit) {
-    val route = "$ADD_TRANSACTION_ROUTE/{${NavigationArgs.TRANSACTION_ID}}"
-    val arguments = listOf(navArgument(NavigationArgs.TRANSACTION_ID) { type = NavType.LongType })
+    val route = "$ADD_TRANSACTION_ROUTE/{${NavArgs.TRANSACTION_ID}}"
+    val arguments = listOf(navArgument(NavArgs.TRANSACTION_ID) { type = NavType.LongType })
     composable(route = route, arguments = arguments) { backStackEntry ->
-        val transactionId = backStackEntry.arguments?.getLong(NavigationArgs.TRANSACTION_ID) ?: 0L
+        val transactionId = backStackEntry.arguments?.getLong(NavArgs.TRANSACTION_ID) ?: 0L
         AddTransactionRoute(transactionId, navigateBack = navigateBack)
     }
 }

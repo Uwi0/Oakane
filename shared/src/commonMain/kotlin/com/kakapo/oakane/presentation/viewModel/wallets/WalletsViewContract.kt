@@ -4,7 +4,6 @@ import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.toColorLong
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
-import com.kakapo.model.toFormatNumber
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.model.WalletSheetContent
@@ -55,16 +54,6 @@ data class WalletsState(
         dialogShown = false
     )
 
-    fun onClickedItem(wallet: WalletItemModel): WalletsState = copy(
-        walletId = wallet.id,
-        walletName = wallet.name,
-        selectedColor = wallet.color,
-        startBalance = wallet.balance.toFormatNumber(currency),
-        selectedIcon = wallet.iconName,
-        imageFile = wallet.icon,
-        isSheetShown = true
-    )
-
     fun toWalletModel(): WalletModel {
         val icon = imageFile.ifEmpty { selectedIcon.displayName }
         return WalletModel(
@@ -82,6 +71,7 @@ sealed class WalletsEffect{
     data object NavigateBack: WalletsEffect()
     data class ShowError(val message: String): WalletsEffect()
     data object DismissBottomSheet: WalletsEffect()
+    data class NavigateToWallet(val id: Long): WalletsEffect()
 }
 
 sealed class WalletsEvent{
@@ -97,8 +87,8 @@ sealed class WalletsEvent{
     data class SelectedImage(val file: String): WalletsEvent()
     data object ConfirmIcon: WalletsEvent()
     data object SaveWallet: WalletsEvent()
-    data class SelectWalletBy(val id: Long): WalletsEvent()
-    data class ClickedItem(val wallet: WalletItemModel): WalletsEvent()
+    data class SelectPrimaryWalletBy(val id: Long): WalletsEvent()
+    data class ClickedWallet(val item: WalletItemModel): WalletsEvent()
     data class Dialog(val shown: Boolean): WalletsEvent()
     data object ConfirmDelete: WalletsEvent()
 }

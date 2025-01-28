@@ -34,7 +34,7 @@ internal fun WalletItemView(wallet: WalletItemModel, onEvent: (WalletsEvent) -> 
     ColumnWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        onClick = { onEvent.invoke(WalletsEvent.ClickedItem(wallet)) }
+        onClick = { onEvent.invoke(WalletsEvent.ClickedWallet(wallet)) }
     ) {
         WalletTopContent(wallet = wallet, onEvent = onEvent)
         Text(
@@ -62,7 +62,7 @@ private fun WalletTopContent(wallet: WalletItemModel, onEvent: (WalletsEvent) ->
         Spacer(modifier = Modifier.weight(1f))
         OutlinedCheckmarkRadioButton(
             selected = wallet.isSelected,
-            onClick = { onEvent.invoke(WalletsEvent.SelectWalletBy(wallet.id)) },
+            onClick = { onEvent.invoke(WalletsEvent.SelectPrimaryWalletBy(wallet.id)) },
         )
     }
 }

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS GoalSavingTable (
     FOREIGN KEY (walletId) REFERENCES WalletTable(id)
 );
 
-CREATE TABLE WalletTransferTable (
+CREATE TABLE IF NOT EXISTS WalletTransferTable (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     fromWalletId INTEGER NOT NULL,
     toWalletId INTEGER NOT NULL,
