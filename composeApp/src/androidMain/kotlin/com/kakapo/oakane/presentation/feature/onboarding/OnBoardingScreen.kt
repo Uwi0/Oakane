@@ -7,10 +7,11 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
+import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.onboarding.content.AccountContentView
 import com.kakapo.oakane.presentation.feature.onboarding.content.ImportBackupContentView
 import com.kakapo.oakane.presentation.feature.onboarding.content.createWallet.CreateWalletView
@@ -27,7 +28,6 @@ internal fun OnBoardingRoute(navigateToHome: () -> Unit) {
     val context = LocalContext.current
     val viewModel = koinViewModel<OnBoardingViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
 
     val retrieveJsonLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -78,5 +78,12 @@ private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) 
             OnBoardingContent.CreateWallet -> CreateWalletView(uiState = state, onEvent = onEvent)
         }
     }
+}
 
+@Composable
+@Preview
+private fun OnBoardingScreenPreview() {
+    AppTheme {
+        OnBoardingScreen(state = OnBoardingState())
+    }
 }

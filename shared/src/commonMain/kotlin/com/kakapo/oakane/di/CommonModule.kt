@@ -28,6 +28,7 @@ import com.kakapo.database.datasource.base.MonthlyBudgetLocalDatasource
 import com.kakapo.database.datasource.base.ReportLocalDatasource
 import com.kakapo.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.database.datasource.base.WalletLocalDatasource
+import com.kakapo.database.datasource.base.WalletTransferLocalDatasource
 import com.kakapo.database.datasource.impl.CategoryLimitLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.CategoryLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.GoalLocalDatasourceImpl
@@ -36,6 +37,7 @@ import com.kakapo.database.datasource.impl.MonthlyBudgetLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.ReportLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.TransactionLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.WalletLocalDatasourceImpl
+import com.kakapo.database.datasource.impl.WalletTransferLocalDatasourceImpl
 import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
@@ -89,6 +91,7 @@ object CommonModule {
         factory<WalletLocalDatasource> { WalletLocalDatasourceImpl(get()) }
         factory<ReportLocalDatasource> { ReportLocalDatasourceImpl(get()) }
         factory<GoalSavingsLocalDatasource> { GoalSavingsLocalDatasourceImpl(get(), get(named(IO))) }
+        factory<WalletTransferLocalDatasource> { WalletTransferLocalDatasourceImpl(get()) }
     }
 
     val preferenceModule: Module = module {

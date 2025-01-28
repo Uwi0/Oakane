@@ -32,7 +32,7 @@ sqldelight {
             srcDirs("src/commonMain/sqldelight")
             schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
             verifyMigrations.set(true)
-            version = 1
+            version = 2
         }
     }
 }
