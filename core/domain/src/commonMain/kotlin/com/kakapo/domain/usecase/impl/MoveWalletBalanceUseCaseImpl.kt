@@ -3,17 +3,17 @@ package com.kakapo.domain.usecase.impl
 import com.kakapo.data.model.WalletTransferParam
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.data.repository.base.WalletTransferRepository
-import com.kakapo.domain.usecase.base.AddWalletTransferUseCase
+import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.model.wallet.WalletModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class AddWalletTransferUseCaseImpl(
+class MoveWalletBalanceUseCaseImpl(
     private val walletRepository: WalletRepository,
     private val walletTransferRepository: WalletTransferRepository,
     private val dispatcher: CoroutineDispatcher
-) : AddWalletTransferUseCase {
+) : MoveWalletBalanceUseCase {
 
     override suspend fun execute(walletTransfer: WalletTransferParam): Result<Unit> = withContext(dispatcher) {
         if (walletTransfer.amount <= 0) {

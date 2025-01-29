@@ -41,14 +41,14 @@ import com.kakapo.database.datasource.impl.TransactionLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.WalletLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.WalletTransferLocalDatasourceImpl
 import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
-import com.kakapo.domain.usecase.base.AddWalletTransferUseCase
+import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.domain.usecase.base.ValidateCategoryLimitUseCase
 import com.kakapo.domain.usecase.impl.AddGoalSavingUseCaseImpl
-import com.kakapo.domain.usecase.impl.AddWalletTransferUseCaseImpl
+import com.kakapo.domain.usecase.impl.MoveWalletBalanceUseCaseImpl
 import com.kakapo.domain.usecase.impl.DeleteTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.GetMonthlyBudgetOverviewUseCaseImpl
 import com.kakapo.domain.usecase.impl.SaveTransactionUseCaseImpl
@@ -124,7 +124,7 @@ object CommonModule {
         factory<DeleteTransactionUseCase> { DeleteTransactionUseCaseImpl(get(), get(), get(), get()) }
         factory<GetMonthlyBudgetOverviewUseCase> { GetMonthlyBudgetOverviewUseCaseImpl(get(), get(), get()) }
         factory<AddGoalSavingUseCase> { AddGoalSavingUseCaseImpl(get(), get(), get(), get(named(IO))) }
-        factory<AddWalletTransferUseCase> { AddWalletTransferUseCaseImpl(get(), get(), get(named(IO))) }
+        factory<MoveWalletBalanceUseCase> { MoveWalletBalanceUseCaseImpl(get(), get(), get(named(IO))) }
     }
 
     val viewModel: Module = module {

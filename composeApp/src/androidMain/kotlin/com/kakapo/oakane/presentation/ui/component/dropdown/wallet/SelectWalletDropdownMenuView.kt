@@ -20,7 +20,10 @@ import androidx.compose.ui.window.PopupProperties
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SelectWalletDropdownMenuView(state: SelectWalletDropdownMenuState) {
+internal fun SelectWalletDropdownMenuView(
+    state: SelectWalletDropdownMenuState,
+    label: @Composable (() -> Unit)? = null
+) {
 
     LaunchedEffect(state.selectedOptionText) {
         state.filterWallets(state.selectedOptionText)
@@ -38,6 +41,7 @@ internal fun SelectWalletDropdownMenuView(state: SelectWalletDropdownMenuState) 
             onValueChange = state::changeSelectedOptionText,
             shape = MaterialTheme.shapes.small,
             placeholder = { Text(state.selectedWallet.name) },
+            label = label,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(state.expanded) },
             singleLine = true,
             enabled = state.wallets.size > 1,

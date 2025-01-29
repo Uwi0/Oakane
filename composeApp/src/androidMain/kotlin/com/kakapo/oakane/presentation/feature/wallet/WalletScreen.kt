@@ -6,7 +6,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.SyncAlt
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,7 +23,7 @@ import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
-import com.kakapo.oakane.presentation.feature.wallet.content.WalletDetailItemView
+import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemView
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEffect
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEvent
@@ -60,7 +64,20 @@ private fun WalletScreen(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
                     .padding(vertical = 24.dp, horizontal = 16.dp),
                 uiState = uiState
             )
-        }
+        },
+        floatingActionButton = { WalletFabButtonView() }
+    )
+}
+
+@Composable
+private fun WalletScreenTopAppBar(onEvent: (WalletEvent) -> Unit) {
+    CustomNavigationTopAppBarView(
+        title = "Wallet",
+        actions = {
+            CustomIconButton(icon = Icons.Outlined.Edit) { onEvent.invoke(WalletEvent.EditWallet) }
+            CustomIconButton(icon = Icons.Outlined.Delete) { onEvent.invoke(WalletEvent.DeleteWallet) }
+        },
+        onNavigateBack = { onEvent.invoke(WalletEvent.NavigateBack) }
     )
 }
 
@@ -79,14 +96,11 @@ private fun WalletContentView(
 }
 
 @Composable
-private fun WalletScreenTopAppBar(onEvent: (WalletEvent) -> Unit) {
-    CustomNavigationTopAppBarView(
-        title = "Wallet",
-        actions = {
-            CustomIconButton(icon = Icons.Outlined.Edit) { onEvent.invoke(WalletEvent.EditWallet) }
-            CustomIconButton(icon = Icons.Outlined.Delete) { onEvent.invoke(WalletEvent.DeleteWallet) }
-        },
-        onNavigateBack = { onEvent.invoke(WalletEvent.NavigateBack) }
+private fun WalletFabButtonView() {
+    ExtendedFloatingActionButton(
+        onClick = {},
+        icon = { Icon(imageVector = Icons.Outlined.SyncAlt, contentDescription = null) },
+        text = { Text(text = "Move Balance")}
     )
 }
 

@@ -1,10 +1,15 @@
 package com.kakapo.oakane.presentation.viewModel.wallet
 
 import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletModel
 
 data class WalletState(
-    val wallet: WalletItemModel = WalletItemModel()
-)
+    val wallet: WalletItemModel = WalletItemModel(),
+    val wallets: List<WalletModel> = emptyList(),
+    val moveBalanceNote: String = ""
+) {
+    val selectedWalletId: Long get() = wallet.id
+}
 
 sealed class WalletEffect {
     data object NavigateBack : WalletEffect()

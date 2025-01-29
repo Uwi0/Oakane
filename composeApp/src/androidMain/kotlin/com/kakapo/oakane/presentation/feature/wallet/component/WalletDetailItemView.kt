@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.wallet.content
+package com.kakapo.oakane.presentation.feature.wallet.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
