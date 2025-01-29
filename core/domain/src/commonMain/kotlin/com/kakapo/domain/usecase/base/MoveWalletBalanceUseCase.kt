@@ -5,5 +5,5 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 
 interface MoveWalletBalanceUseCase {
     @NativeCoroutines
-    suspend fun execute(walletTransfer: WalletTransferParam): Result<Unit>
+    suspend fun execute(moveBalance: WalletTransferParam): Result<Unit>
 }

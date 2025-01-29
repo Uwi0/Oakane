@@ -15,16 +15,18 @@ class MoveWalletBalanceUseCaseImpl(
     private val dispatcher: CoroutineDispatcher
 ) : MoveWalletBalanceUseCase {
 
-    override suspend fun execute(walletTransfer: WalletTransferParam): Result<Unit> = withContext(dispatcher) {
-        if (walletTransfer.amount <= 0) {
+    override suspend fun execute(moveBalance: WalletTransferParam): Result<Unit> = withContext(dispatcher) {
+        if (moveBalance.amount <= 0) {
             return@withContext Result.failure(IllegalArgumentException("Amount must be greater than 0"))
-        } else if (walletFromHasBalance(walletTransfer)) {
+        } else if (walletFromHasBalance(moveBalance)) {
             return@withContext Result.failure(IllegalArgumentException("Insufficient balance"))
-        } else {
+        } else if(moveBalance.fromWalletId == moveBalance.toWalletId) {
+            return@withContext Result.failure(IllegalArgumentException("Cannot transfer to the same wallet"))
+        }else {
             runCatching {
-                val walletTransferLogDeferred = async(dispatcher) { walletTransferRepository.save(walletTransfer) }
-                walletRepository.update(walletTransfer.amount, walletTransfer.toWalletId).getOrThrow()
-                walletRepository.update(-walletTransfer.amount, walletTransfer.fromWalletId).getOrThrow()
+                val walletTransferLogDeferred = async(dispatcher) { walletTransferRepository.save(moveBalance) }
+                walletRepository.update(moveBalance.amount, moveBalance.toWalletId).getOrThrow()
+                walletRepository.update(-moveBalance.amount, moveBalance.fromWalletId).getOrThrow()
                 walletTransferLogDeferred.await().getOrThrow()
             }
         }

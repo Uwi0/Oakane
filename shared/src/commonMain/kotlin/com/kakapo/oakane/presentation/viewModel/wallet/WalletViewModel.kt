@@ -2,17 +2,23 @@ package com.kakapo.oakane.presentation.viewModel.wallet
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.common.asCustomResult
+import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.WalletRepository
+import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WalletViewModel(
-    private val walletRepository: WalletRepository
+    private val walletRepository: WalletRepository,
+    private val moveBalanceUseCase: MoveWalletBalanceUseCase
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -25,6 +31,7 @@ class WalletViewModel(
 
     fun initData(walletId: Long) {
         loadWalletBy(walletId)
+        loadWallets()
     }
 
     fun handleEvent(event: WalletEvent) {
@@ -32,6 +39,12 @@ class WalletViewModel(
             WalletEvent.NavigateBack -> emit(WalletEffect.NavigateBack)
             WalletEvent.EditWallet -> {}
             WalletEvent.DeleteWallet -> {}
+            WalletEvent.MoveBalance -> moveBalance()
+            is WalletEvent.DialogShown -> _uiState.update { it.copy(dialogVisible = event.shown) }
+            is WalletEvent.AddNote -> _uiState.update { it.copy(moveBalanceNote = event.note) }
+            is WalletEvent.AddSelectedWalletFrom -> _uiState.update { it.copy(selectedWalletFrom = event.wallet) }
+            is WalletEvent.AddSelectedWalletTo -> _uiState.update { it.copy(selectedWalletTo = event.wallet) }
+            is WalletEvent.AddBalance -> _uiState.update { it.copy(movedBalance = event.balance) }
         }
     }
 
@@ -40,6 +53,27 @@ class WalletViewModel(
             _uiState.value = _uiState.value.copy(wallet = wallet)
         }
         walletRepository.loadWalletItemBy(id).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadWallets() = viewModelScope.launch {
+        val onSuccess: (List<WalletModel>) -> Unit = { wallets ->
+            _uiState.value = _uiState.value.copy(wallets = wallets)
+        }
+        walletRepository.loadWallets().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
+    private fun moveBalance() = viewModelScope.launch {
+        val moveBalance = _uiState.value.asWalletTransfer()
+        val onSuccess: (Unit) -> Unit =  {
+            _uiState.update { it.copy(dialogVisible = false) }
+        }
+        moveBalanceUseCase.execute(moveBalance).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

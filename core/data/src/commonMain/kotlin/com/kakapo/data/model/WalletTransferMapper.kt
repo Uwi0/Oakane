@@ -3,7 +3,7 @@ package com.kakapo.data.model
 import com.kakapo.database.model.WalletTransferEntity
 
 data class WalletTransferParam(
-    val id: Long,
+    val id: Long = 0,
     val fromWalletId: Long,
     val toWalletId: Long,
     val amount: Double,

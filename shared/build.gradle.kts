@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.datastore.preferences)
 
             implementation(libs.kermit)
+            implementation(libs.kotlinx.coroutines.core)
         }
         sourceSets.androidMain.dependencies {
             implementation(libs.koin.android)

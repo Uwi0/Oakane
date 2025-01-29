@@ -41,16 +41,16 @@ import com.kakapo.database.datasource.impl.TransactionLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.WalletLocalDatasourceImpl
 import com.kakapo.database.datasource.impl.WalletTransferLocalDatasourceImpl
 import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
-import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
+import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.domain.usecase.base.ValidateCategoryLimitUseCase
 import com.kakapo.domain.usecase.impl.AddGoalSavingUseCaseImpl
-import com.kakapo.domain.usecase.impl.MoveWalletBalanceUseCaseImpl
 import com.kakapo.domain.usecase.impl.DeleteTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.GetMonthlyBudgetOverviewUseCaseImpl
+import com.kakapo.domain.usecase.impl.MoveWalletBalanceUseCaseImpl
 import com.kakapo.domain.usecase.impl.SaveTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.UpdateTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.ValidateCategoryLimitUseCaseImpl
@@ -93,7 +93,7 @@ object CommonModule {
         factory<GoalLocalDatasource> { GoalLocalDatasourceImpl(get()) }
         factory<MonthlyBudgetLocalDatasource> { MonthlyBudgetLocalDatasourceImpl(get()) }
         factory<CategoryLimitLocalDatasource> { CategoryLimitLocalDatasourceImpl(get()) }
-        factory<WalletLocalDatasource> { WalletLocalDatasourceImpl(get()) }
+        factory<WalletLocalDatasource> { WalletLocalDatasourceImpl(get(), get(named(IO))) }
         factory<ReportLocalDatasource> { ReportLocalDatasourceImpl(get()) }
         factory<GoalSavingsLocalDatasource> { GoalSavingsLocalDatasourceImpl(get(), get(named(IO))) }
         factory<WalletTransferLocalDatasource> { WalletTransferLocalDatasourceImpl(get()) }
@@ -109,7 +109,7 @@ object CommonModule {
         factory<GoalRepository> { GoalRepositoryImpl(get(), get()) }
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
         factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get(), get()) }
-        factory<WalletRepository> { WalletRepositoryImpl(get(), get()) }
+        factory<WalletRepository> { WalletRepositoryImpl(get(), get(), get(named(IO))) }
         factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
         factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
@@ -143,7 +143,7 @@ object CommonModule {
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
         viewModel { OnBoardingViewModel(get(), get(), get()) }
-        viewModel { WalletViewModel(get()) }
+        viewModel { WalletViewModel(get(), get()) }
     }
 
     val coroutineModule: Module = module {

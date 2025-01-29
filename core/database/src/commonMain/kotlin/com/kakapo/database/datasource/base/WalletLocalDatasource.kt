@@ -2,6 +2,7 @@ package com.kakapo.database.datasource.base
 
 import com.kakapo.database.model.WalletEntity
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import kotlinx.coroutines.flow.Flow
 
 interface WalletLocalDatasource {
     @NativeCoroutines
@@ -13,7 +14,7 @@ interface WalletLocalDatasource {
     @NativeCoroutines
     suspend fun insert(wallet: WalletEntity): Result<Unit>
     @NativeCoroutines
-    suspend fun getWallets(): Result<List<WalletEntity>>
+    fun getWallets(): Flow<Result<List<WalletEntity>>>
     @NativeCoroutines
     suspend fun update(wallet: WalletEntity): Result<Unit>
     @NativeCoroutines

@@ -23,6 +23,7 @@ import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.feature.wallet.component.MoveBalanceDialogView
 import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemView
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEffect
@@ -51,6 +52,10 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     }
 
     WalletScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+
+    if(uiState.dialogVisible) {
+        MoveBalanceDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
+    }
 }
 
 @Composable
@@ -65,7 +70,7 @@ private fun WalletScreen(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
                 uiState = uiState
             )
         },
-        floatingActionButton = { WalletFabButtonView() }
+        floatingActionButton = { WalletFabButtonView(onEvent = onEvent) }
     )
 }
 
@@ -96,9 +101,9 @@ private fun WalletContentView(
 }
 
 @Composable
-private fun WalletFabButtonView() {
+private fun WalletFabButtonView(onEvent: (WalletEvent) -> Unit) {
     ExtendedFloatingActionButton(
-        onClick = {},
+        onClick = { onEvent.invoke(WalletEvent.DialogShown(true))},
         icon = { Icon(imageVector = Icons.Outlined.SyncAlt, contentDescription = null) },
         text = { Text(text = "Move Balance")}
     )

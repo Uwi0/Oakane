@@ -1,5 +1,7 @@
 package com.kakapo.database.datasource.impl
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.GetWallets
@@ -7,15 +9,19 @@ import com.kakapo.WalletTable
 import com.kakapo.database.datasource.base.WalletLocalDatasource
 import com.kakapo.database.model.WalletEntity
 import com.kakapo.database.model.toWalletEntity
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class WalletLocalDatasourceImpl(
-    driver: SqlDriver
+    driver: SqlDriver,
+    private val dispatcher: CoroutineDispatcher
 ) : WalletLocalDatasource {
 
     private val walletTable = Database.invoke(driver).walletEntityQueries
 
     override suspend fun createDefaultWallet(): Result<Unit> {
-        return kotlin.runCatching { walletTable.createDefaultWallet() }
+        return runCatching { walletTable.createDefaultWallet() }
     }
 
     override suspend fun update(
@@ -46,9 +52,9 @@ class WalletLocalDatasourceImpl(
         }
     }
 
-    override suspend fun getWallets(): Result<List<WalletEntity>> {
-        return runCatching {
-            walletTable.getWallets().executeAsList().map(GetWallets::toWalletEntity)
+    override fun getWallets(): Flow<Result<List<WalletEntity>>> {
+        return walletTable.getWallets().asFlow().mapToList(dispatcher).map { wallets ->
+            runCatching { wallets.map(GetWallets::toWalletEntity) }
         }
     }
 

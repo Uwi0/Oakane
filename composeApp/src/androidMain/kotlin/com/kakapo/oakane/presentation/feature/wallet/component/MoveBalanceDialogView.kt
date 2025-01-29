@@ -21,42 +21,52 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.dropdown.wallet.SelectWalletDropdownMenuView
 import com.kakapo.oakane.presentation.ui.component.dropdown.wallet.rememberSelectWalletDropdownMenuState
+import com.kakapo.oakane.presentation.viewModel.wallet.WalletEvent
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletState
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MoveBalanceDialogView(
     uiState: WalletState,
-    onDismiss: () -> Unit
+    onEvent: (WalletEvent) -> Unit,
 ) {
     BasicAlertDialog(
-        onDismissRequest = onDismiss
+        onDismissRequest = { onEvent.invoke(WalletEvent.DialogShown(false)) }
     ) {
         Surface(shape = MaterialTheme.shapes.medium) {
-            MoveBalanceDialogContentView(uiState = uiState)
+            MoveBalanceDialogContentView(uiState = uiState, onEvent)
         }
     }
 }
 
 @Composable
-private fun MoveBalanceDialogContentView(uiState: WalletState) {
+private fun MoveBalanceDialogContentView(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-        MoveBalanceDialogTopContentView(uiState = uiState)
-        MoveBalanceDialogBottomContentView()
+        MoveBalanceDialogTopContentView(uiState = uiState, onEvent = onEvent)
+        MoveBalanceDialogBottomContentView(onEvent = onEvent)
     }
 }
 
 @Composable
 private fun MoveBalanceDialogTopContentView(
-    uiState: WalletState
+    uiState: WalletState,
+    onEvent: (WalletEvent) -> Unit
 ) {
     val wallets = uiState.wallets
     val selectedWalletId = uiState.selectedWalletId
-    val fromWalletState = rememberSelectWalletDropdownMenuState(wallets, selectedWalletId) { }
-    val toWalletState = rememberSelectWalletDropdownMenuState(wallets, selectedWalletId) { }
+    val fromWalletState = rememberSelectWalletDropdownMenuState(wallets, selectedWalletId) {
+        onEvent.invoke(WalletEvent.AddSelectedWalletFrom(it))
+    }
+    val toWalletState = rememberSelectWalletDropdownMenuState(wallets, selectedWalletId) {
+        onEvent.invoke(WalletEvent.AddSelectedWalletTo(it))
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -65,27 +75,44 @@ private fun MoveBalanceDialogTopContentView(
         Text(text = "Move balance", style = MaterialTheme.typography.titleLarge)
         SelectWalletDropdownMenuView(fromWalletState, label = { Text("From") })
         SelectWalletDropdownMenuView(toWalletState, label = { Text("To") })
+        MoveBalanceCurrencyTextFieldView(uiState, onEvent)
         CustomOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             placeHolder = "Note",
             value = uiState.moveBalanceNote,
-            onValueChange = {}
+            onValueChange = { onEvent.invoke(WalletEvent.AddNote(it)) }
         )
     }
 }
 
 @Composable
-private fun MoveBalanceDialogBottomContentView() {
+private fun MoveBalanceCurrencyTextFieldView(state: WalletState, onEvent: (WalletEvent) -> Unit) {
+    val currencyTextFieldState = rememberCurrencyTextFieldState(
+        CurrencyTextFieldConfig(
+            Locale(state.wallet.currency.languageCode, state.wallet.currency.countryCode),
+            currencySymbol = state.wallet.currency.symbol,
+        )
+    ) {
+        onEvent.invoke(WalletEvent.AddBalance(it))
+    }
+    OutlinedCurrencyTextFieldView(
+        modifier = Modifier.fillMaxWidth(),
+        state = currencyTextFieldState
+    )
+}
+
+@Composable
+private fun MoveBalanceDialogBottomContentView(onEvent: (WalletEvent) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Spacer(Modifier.weight(1f))
         CustomTextButton(
-            onClick = {},
+            onClick = { onEvent.invoke(WalletEvent.DialogShown(false)) },
             contentPadding = PaddingValues(16.dp),
             content = { Text("Cancel") }
         )
         CustomButton(
             modifier = Modifier.widthIn(min = 120.dp),
-            onClick = {},
+            onClick = { onEvent.invoke(WalletEvent.MoveBalance)},
             contentPadding = PaddingValues(16.dp),
             content = { Text("Move") }
         )
@@ -97,7 +124,9 @@ private fun MoveBalanceDialogBottomContentView() {
 private fun MoveBalanceDialogContentPreview() {
     AppTheme {
         Surface {
-            MoveBalanceDialogContentView(uiState = WalletState())
+            MoveBalanceDialogContentView(uiState = WalletState()) {
+
+            }
         }
     }
 
