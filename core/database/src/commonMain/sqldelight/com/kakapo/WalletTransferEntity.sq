@@ -23,3 +23,38 @@ INSERT OR REPLACE INTO WalletTransferTable(
     ?,
     ?
 );
+
+getTransfersBy:
+SELECT *
+FROM (
+    SELECT
+        wt.id AS id,
+        w1.name AS from_wallet_name,
+        w2.name AS to_wallet_name,
+        -(wt.amount) AS transfer_amount,
+        wt.notes AS notes,
+        wt.createdAt AS created_at,
+        w1.id AS wallet_id,
+        'OUTGOING' AS transfer_type
+    FROM WalletTransferTable wt
+    JOIN WalletTable w1 ON wt.fromWalletId = w1.id
+    JOIN WalletTable w2 ON wt.toWalletId = w2.id
+    WHERE w1.id = ?
+
+    UNION ALL
+
+    SELECT
+        wt.id AS id,
+        w1.name AS from_wallet_name,
+        w2.name AS to_wallet_name,
+        wt.amount AS transfer_amount,
+        wt.notes AS notes,
+        wt.createdAt AS created_at,
+        w2.id AS wallet_id,
+        'INCOMING' AS transfer_type
+    FROM WalletTransferTable wt
+    JOIN WalletTable w1 ON wt.fromWalletId = w1.id
+    JOIN WalletTable w2 ON wt.toWalletId = w2.id
+    WHERE w2.id = ?
+)
+ORDER BY created_at DESC;

@@ -61,9 +61,6 @@ private fun MoveBalanceDialogTopContentView(
 ) {
     val wallets = uiState.wallets
     val selectedWalletId = uiState.selectedWalletId
-    val fromWalletState = rememberSelectWalletDropdownMenuState(wallets, selectedWalletId) {
-        onEvent.invoke(WalletEvent.AddSelectedWalletFrom(it))
-    }
     val toWalletState = rememberSelectWalletDropdownMenuState(wallets, selectedWalletId) {
         onEvent.invoke(WalletEvent.AddSelectedWalletTo(it))
     }
@@ -73,7 +70,6 @@ private fun MoveBalanceDialogTopContentView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Move balance", style = MaterialTheme.typography.titleLarge)
-        SelectWalletDropdownMenuView(fromWalletState, label = { Text("From") })
         SelectWalletDropdownMenuView(toWalletState, label = { Text("To") })
         MoveBalanceCurrencyTextFieldView(uiState, onEvent)
         CustomOutlinedTextField(

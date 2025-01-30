@@ -33,8 +33,7 @@ class MoveWalletBalanceUseCaseImpl(
     }
 
     private suspend fun walletFromHasBalance(param: WalletTransferParam): Boolean {
-        val walletFrom =
-            walletRepository.loadWalletBy(param.fromWalletId).getOrElse { WalletModel() }
-        return walletFrom.balance >= param.amount
+        val walletFrom = walletRepository.loadWalletBy(param.fromWalletId).getOrElse { WalletModel() }
+        return walletFrom.balance <= param.amount
     }
 }

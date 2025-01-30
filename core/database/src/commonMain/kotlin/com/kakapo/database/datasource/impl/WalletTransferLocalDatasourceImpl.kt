@@ -1,11 +1,22 @@
 package com.kakapo.database.datasource.impl
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
+import com.kakapo.GetTransfersBy
 import com.kakapo.database.datasource.base.WalletTransferLocalDatasource
 import com.kakapo.database.model.WalletTransferEntity
+import com.kakapo.database.model.WalletTransferItemEntity
+import com.kakapo.database.model.toWalletTransferItemEntity
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class WalletTransferLocalDatasourceImpl(sqlDriver: SqlDriver): WalletTransferLocalDatasource {
+class WalletTransferLocalDatasourceImpl(
+    sqlDriver: SqlDriver,
+    private val dispatcher: CoroutineDispatcher
+) : WalletTransferLocalDatasource {
 
     private val walletTransferQueries = Database(sqlDriver).walletTransferEntityQueries
 
@@ -19,5 +30,14 @@ class WalletTransferLocalDatasourceImpl(sqlDriver: SqlDriver): WalletTransferLoc
                 createdAt = walletTransfer.createdAt
             )
         }
+    }
+
+    override fun getWalletTransferBy(id: Long): Flow<Result<List<WalletTransferItemEntity>>> {
+        return walletTransferQueries.getTransfersBy(id, id)
+            .asFlow()
+            .mapToList(dispatcher)
+            .map { transactions ->
+                runCatching { transactions.map(GetTransfersBy::toWalletTransferItemEntity) }
+            }
     }
 }

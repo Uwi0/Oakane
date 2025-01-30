@@ -17,9 +17,17 @@ data class WalletState(
 ) {
     val selectedWalletId: Long get() = wallet.id
 
+    private val toWalletId: Long get() {
+        return if (selectedWalletTo.id == 0L) {
+            wallet.id
+        } else {
+            selectedWalletTo.id
+        }
+    }
+
     fun asWalletTransfer() = WalletTransferParam(
-        fromWalletId = selectedWalletFrom.id,
-        toWalletId = selectedWalletTo.id,
+        fromWalletId = selectedWalletId,
+        toWalletId = toWalletId,
         amount = movedBalance.asRealCurrencyValue(),
         notes = moveBalanceNote,
         createdAt = Clock.System.now().toEpochMilliseconds()
