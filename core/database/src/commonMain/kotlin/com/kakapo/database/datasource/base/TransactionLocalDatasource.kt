@@ -3,6 +3,7 @@ package com.kakapo.database.datasource.base
 import com.kakapo.database.model.TransactionCategoryEntity
 import com.kakapo.database.model.TransactionEntity
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import kotlinx.coroutines.flow.Flow
 
 interface TransactionLocalDatasource {
     @NativeCoroutines
@@ -53,4 +54,7 @@ interface TransactionLocalDatasource {
 
     @NativeCoroutines
     suspend fun restoreTransactions(transactions: List<TransactionEntity>): Result<Unit>
+
+    @NativeCoroutines
+    fun getTransactionsByWalletId(walletId: Long): Flow<Result<List<TransactionEntity>>>
 }

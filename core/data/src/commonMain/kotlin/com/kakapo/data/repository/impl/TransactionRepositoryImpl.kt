@@ -11,12 +11,17 @@ import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.utils.getSavedCurrency
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class TransactionRepositoryImpl(
     private val localDatasource: TransactionLocalDatasource,
-    private val preferenceDatasource: PreferenceDatasource
+    private val preferenceDatasource: PreferenceDatasource,
+    private val dispatcher: CoroutineDispatcher
 ) : TransactionRepository {
 
     override suspend fun save(transaction: TransactionParam): Result<Unit> {
@@ -52,7 +57,12 @@ class TransactionRepositoryImpl(
     ): Result<Double> {
         val typeExpense = TransactionType.Expense.ordinal.toLong()
         return if (walletId != null) {
-            localDatasource.getTotalTransactionBy(walletId, typeExpense, startDateOfMonth, endDateOfMonth)
+            localDatasource.getTotalTransactionBy(
+                walletId,
+                typeExpense,
+                startDateOfMonth,
+                endDateOfMonth
+            )
         } else {
             localDatasource.getTotalTransactionBaseOn(typeExpense, startDateOfMonth, endDateOfMonth)
         }
@@ -65,7 +75,12 @@ class TransactionRepositoryImpl(
     ): Result<Double> {
         val typeIncome = TransactionType.Income.ordinal.toLong()
         return if (walletId != null) {
-            localDatasource.getTotalTransactionBy(walletId, typeIncome, startDateOfMonth, endDateOfMonth)
+            localDatasource.getTotalTransactionBy(
+                walletId,
+                typeIncome,
+                startDateOfMonth,
+                endDateOfMonth
+            )
         } else {
             localDatasource.getTotalTransactionBaseOn(typeIncome, startDateOfMonth, endDateOfMonth)
         }
@@ -78,7 +93,7 @@ class TransactionRepositoryImpl(
         val currency = preferenceDatasource.getSavedCurrency().asCurrency()
         val result = localDatasource.getTransactionCategories(startDateOfMonth, endDateOfMonth)
             .mapCatching { transactionResult ->
-                transactionResult.map{ transaction ->
+                transactionResult.map { transaction ->
                     transaction.toReportModel(currency)
                 }
             }
@@ -96,9 +111,17 @@ class TransactionRepositoryImpl(
             startDateOfMonth,
             endDateOfMonth
         ).mapCatching { transactionResult ->
-            transactionResult.map{ transaction -> transaction.toReportModel(currency)}
+            transactionResult.map { transaction -> transaction.toReportModel(currency) }
         }
 
         emit(result)
     }
+
+    override fun loadTransactionByWallet(id: Long): Flow<Result<List<TransactionModel>>> = flow {
+        emit(preferenceDatasource.getSavedCurrency().asCurrency())
+    }.flatMapLatest { currency ->
+        localDatasource.getTransactionsByWalletId(id).map { result ->
+            result.mapCatching { transactions -> transactions.map { it.toModel(currency) } }
+        }
+    }.flowOn(dispatcher)
 }

@@ -1,19 +1,26 @@
 package com.kakapo.database.datasource.impl
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.GetTransactionCategory
 import com.kakapo.GetTransactionCategoryBy
 import com.kakapo.GetTransactions
+import com.kakapo.GetTransactionsByWalletId
 import com.kakapo.TransactionTable
 import com.kakapo.database.datasource.base.TransactionLocalDatasource
 import com.kakapo.database.model.TransactionCategoryEntity
 import com.kakapo.database.model.TransactionEntity
 import com.kakapo.database.model.toTransactionCategoryEntity
 import com.kakapo.database.model.toTransactionEntity
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class TransactionLocalDatasourceImpl(
-    driver: SqlDriver
+    driver: SqlDriver,
+    private val dispatcher: CoroutineDispatcher
 ) : TransactionLocalDatasource {
 
     private val transactionDb = Database.invoke(driver).transactionEntityQueries
@@ -147,6 +154,17 @@ class TransactionLocalDatasourceImpl(
 
             }
         }
+    }
+
+    override fun getTransactionsByWalletId(walletId: Long): Flow<Result<List<TransactionEntity>>> {
+        return transactionDb.getTransactionsByWalletId(walletId)
+            .asFlow()
+            .mapToList(dispatcher)
+            .map { transaction ->
+                runCatching {
+                    transaction.map(GetTransactionsByWalletId::toTransactionEntity)
+                }
+            }
     }
 
 }

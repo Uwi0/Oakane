@@ -1,6 +1,5 @@
 package com.kakapo.data.model
 
-import com.kakapo.common.toDateWith
 import com.kakapo.database.model.GoalSavingsEntity
 import com.kakapo.model.goal.GoalSavingModel
 
@@ -27,5 +26,5 @@ fun GoalSavingsEntity.toGoalSavingModel() = GoalSavingModel(
     id = id,
     amount = amount,
     note = note,
-    dateCreated = dateCreated.toDateWith("dd MMM yyyy")
+    createdAt = dateCreated
 )

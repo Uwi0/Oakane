@@ -28,6 +28,10 @@ data class TransactionModel(
         }
     }
 
+    val uniqueId: String get() {
+        return "transaction_$id"
+    }
+
     companion object {
         private const val DATE_FORMAT = "dd MMM yyyy"
     }

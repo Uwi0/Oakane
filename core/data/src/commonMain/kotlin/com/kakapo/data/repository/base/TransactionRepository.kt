@@ -48,4 +48,7 @@ interface TransactionRepository {
         startDateOfMonth: Long,
         endDateOfMonth: Long
     ): Flow<Result<List<ReportModel>>>
+
+    @NativeCoroutines
+    fun loadTransactionByWallet(id: Long): Flow<Result<List<TransactionModel>>>
 }

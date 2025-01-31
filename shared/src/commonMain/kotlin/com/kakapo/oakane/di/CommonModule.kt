@@ -47,6 +47,7 @@ import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.domain.usecase.base.UpdateTransactionUseCase
 import com.kakapo.domain.usecase.base.ValidateCategoryLimitUseCase
+import com.kakapo.domain.usecase.base.WalletLogItemsUseCase
 import com.kakapo.domain.usecase.impl.AddGoalSavingUseCaseImpl
 import com.kakapo.domain.usecase.impl.DeleteTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.GetMonthlyBudgetOverviewUseCaseImpl
@@ -54,6 +55,7 @@ import com.kakapo.domain.usecase.impl.MoveWalletBalanceUseCaseImpl
 import com.kakapo.domain.usecase.impl.SaveTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.UpdateTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.ValidateCategoryLimitUseCaseImpl
+import com.kakapo.domain.usecase.impl.WalletLogItemsUseCaseImpl
 import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalViewModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
@@ -88,7 +90,7 @@ object CommonModule {
     private const val IO = "IO"
 
     val localDatasourceModule: Module = module {
-        factory<TransactionLocalDatasource> { TransactionLocalDatasourceImpl(get()) }
+        factory<TransactionLocalDatasource> { TransactionLocalDatasourceImpl(get(), get(named(IO))) }
         factory<CategoryLocalDatasource> { CategoryLocalDatasourceImpl(get()) }
         factory<GoalLocalDatasource> { GoalLocalDatasourceImpl(get()) }
         factory<MonthlyBudgetLocalDatasource> { MonthlyBudgetLocalDatasourceImpl(get()) }
@@ -96,7 +98,7 @@ object CommonModule {
         factory<WalletLocalDatasource> { WalletLocalDatasourceImpl(get(), get(named(IO))) }
         factory<ReportLocalDatasource> { ReportLocalDatasourceImpl(get()) }
         factory<GoalSavingsLocalDatasource> { GoalSavingsLocalDatasourceImpl(get(), get(named(IO))) }
-        factory<WalletTransferLocalDatasource> { WalletTransferLocalDatasourceImpl(get()) }
+        factory<WalletTransferLocalDatasource> { WalletTransferLocalDatasourceImpl(get(), get(named(IO))) }
     }
 
     val preferenceModule: Module = module {
@@ -104,7 +106,7 @@ object CommonModule {
     }
 
     val repositoryModule: Module = module {
-        factory<TransactionRepository> { TransactionRepositoryImpl(get(), get()) }
+        factory<TransactionRepository> { TransactionRepositoryImpl(get(), get(), get(named(IO))) }
         factory<CategoryRepository> { CategoryRepositoryImpl(get()) }
         factory<GoalRepository> { GoalRepositoryImpl(get(), get()) }
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
@@ -114,7 +116,7 @@ object CommonModule {
         factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
         factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get(), get(named(IO))) }
-        factory<WalletTransferRepository> { WalletTransferRepositoryImpl(get()) }
+        factory<WalletTransferRepository> { WalletTransferRepositoryImpl(get(), get(), get(named(IO))) }
     }
 
     val domainModule: Module = module {
@@ -125,6 +127,7 @@ object CommonModule {
         factory<GetMonthlyBudgetOverviewUseCase> { GetMonthlyBudgetOverviewUseCaseImpl(get(), get(), get()) }
         factory<AddGoalSavingUseCase> { AddGoalSavingUseCaseImpl(get(), get(), get(), get(named(IO))) }
         factory<MoveWalletBalanceUseCase> { MoveWalletBalanceUseCaseImpl(get(), get(), get(named(IO))) }
+        factory<WalletLogItemsUseCase> { WalletLogItemsUseCaseImpl(get(), get(), get(named(IO))) }
     }
 
     val viewModel: Module = module {

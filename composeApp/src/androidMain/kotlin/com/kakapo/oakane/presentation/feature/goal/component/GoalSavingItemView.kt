@@ -39,7 +39,7 @@ internal fun GoalSavingItemView(item: GoalSavingModel, currency: Currency) {
                 color = MaterialTheme.colorScheme.outline
             )
         }
-        Text(item.dateCreated, style = MaterialTheme.typography.titleMedium)
+        Text(item.formattedDateCreated, style = MaterialTheme.typography.titleMedium)
     }
 }
 
@@ -52,7 +52,7 @@ private fun GoalSavingItemPreview() {
                 id = 1933,
                 amount = 500_000.0,
                 note = "just Note",
-                dateCreated = "27 jan 2025"
+                createdAt = 1738291013
             ),
             currency = Currency.IDR
         )
