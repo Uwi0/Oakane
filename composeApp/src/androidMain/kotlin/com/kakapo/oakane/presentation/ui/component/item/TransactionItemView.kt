@@ -22,7 +22,7 @@ import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 import com.kakapo.oakane.presentation.ui.component.transactionColor
 
 @Composable
-internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> Unit) {
+internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> Unit = {}) {
     val selectedIcon = SelectedIconModel(
         imageFile = transaction.category.icon,
         defaultIcon = transaction.category.iconName,

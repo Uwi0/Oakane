@@ -13,6 +13,10 @@ data class GoalSavingModel(
         return createdAt.formatDateWith(DATE_FORMAT)
     }
 
+    val uniqueId: String get() {
+        return "goal_saving$id"
+    }
+
     companion object{
         private const val DATE_FORMAT = "dd MMM yyyy"
     }

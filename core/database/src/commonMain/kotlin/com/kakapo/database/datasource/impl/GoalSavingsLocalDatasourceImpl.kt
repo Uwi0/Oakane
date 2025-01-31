@@ -30,9 +30,21 @@ class GoalSavingsLocalDatasourceImpl(
         }
     }
 
-    override fun getGoalSavingsBy(id: Long): Flow<Result<List<GoalSavingsEntity>>> {
-        return goalSavingsTable.getGoalSavingsById(id).asFlow().mapToList(dispatcher).map { savings ->
-            runCatching { savings.map { it.toGoalSavingEntity() } }
-        }
+    override fun getGoalSavingsByGoal(id: Long): Flow<Result<List<GoalSavingsEntity>>> {
+        return goalSavingsTable.getGoalSavingsById(id).asFlow().mapToList(dispatcher)
+            .map { savings ->
+                runCatching { savings.map { it.toGoalSavingEntity() } }
+            }
+    }
+
+    override fun getGoalSavingsByWallet(id: Long): Flow<Result<List<GoalSavingsEntity>>> {
+        return goalSavingsTable.getGoalSavingsByWalletId(id)
+            .asFlow()
+            .mapToList(dispatcher)
+            .map { savings ->
+                runCatching {
+                    savings.map { it.toGoalSavingEntity() }
+                }
+            }
     }
 }

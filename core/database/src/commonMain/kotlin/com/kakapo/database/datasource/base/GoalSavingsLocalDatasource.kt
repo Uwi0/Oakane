@@ -8,5 +8,7 @@ interface GoalSavingsLocalDatasource {
     @NativeCoroutines
     suspend fun insert(goalTransaction: GoalSavingsEntity): Result<Unit>
     @NativeCoroutines
-    fun getGoalSavingsBy(id: Long): Flow<Result<List<GoalSavingsEntity>>>
+    fun getGoalSavingsByGoal(id: Long): Flow<Result<List<GoalSavingsEntity>>>
+    @NativeCoroutines
+    fun getGoalSavingsByWallet(id: Long): Flow<Result<List<GoalSavingsEntity>>>
 }

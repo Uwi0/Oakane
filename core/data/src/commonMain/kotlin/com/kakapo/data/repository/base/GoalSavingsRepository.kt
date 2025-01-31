@@ -9,5 +9,7 @@ interface GoalSavingsRepository {
     @NativeCoroutines
     suspend fun saveGoal(saving: GoalSavingParam): Result<Unit>
     @NativeCoroutines
-    fun loadGoalSavingBy(id: Long): Flow<Result<List<GoalSavingModel>>>
+    fun loadGoalSavingByGoal(id: Long): Flow<Result<List<GoalSavingModel>>>
+    @NativeCoroutines
+    fun loadGoalSavingByWallet(id: Long): Flow<Result<List<GoalSavingModel>>>
 }

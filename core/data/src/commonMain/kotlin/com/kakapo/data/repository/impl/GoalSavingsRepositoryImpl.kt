@@ -19,8 +19,14 @@ class GoalSavingsRepositoryImpl(
         return goalSavingsLocalDatasource.insert(saving.toGoalTransactionEntity())
     }
 
-    override fun loadGoalSavingBy(id: Long): Flow<Result<List<GoalSavingModel>>> {
-        return goalSavingsLocalDatasource.getGoalSavingsBy(id).map { result ->
+    override fun loadGoalSavingByGoal(id: Long): Flow<Result<List<GoalSavingModel>>> {
+        return goalSavingsLocalDatasource.getGoalSavingsByGoal(id).map { result ->
+            result.map { savings -> savings.map { it.toGoalSavingModel() } }
+        }.flowOn(dispatcher)
+    }
+
+    override fun loadGoalSavingByWallet(id: Long): Flow<Result<List<GoalSavingModel>>> {
+        return goalSavingsLocalDatasource.getGoalSavingsByWallet(id).map { result ->
             result.map { savings -> savings.map { it.toGoalSavingModel() } }
         }.flowOn(dispatcher)
     }

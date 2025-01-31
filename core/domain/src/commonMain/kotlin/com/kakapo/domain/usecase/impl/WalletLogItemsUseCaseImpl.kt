@@ -1,5 +1,6 @@
 package com.kakapo.domain.usecase.impl
 
+import com.kakapo.data.repository.base.GoalSavingsRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletTransferRepository
 import com.kakapo.domain.usecase.base.WalletLogItemsUseCase
@@ -20,6 +21,7 @@ typealias WalletCollector = FlowCollector<Result<List<WalletLogItem<*>>>>
 class WalletLogItemsUseCaseImpl(
     private val walletTransferRepository: WalletTransferRepository,
     private val transactionRepository: TransactionRepository,
+    private val goalSavingsRepository: GoalSavingsRepository,
     private val dispatcher: CoroutineDispatcher
 ) : WalletLogItemsUseCase {
 
@@ -41,13 +43,19 @@ class WalletLogItemsUseCaseImpl(
             mapTransactionWith(walletId)
         }
 
+        val goalSavingLogDeferred = async {
+            mapGoalSavingWith(walletId)
+        }
+
         supervisorScope {
             val transferLog = transferLogDeferred.await()
             val transactionLog = transactionLogDeferred.await()
+            val goalSavingLog = goalSavingLogDeferred.await()
 
             emit(Result.success(buildList {
                 transferLog.onSuccess { addAll(it) }
                 transactionLog.onSuccess { addAll(it) }
+                goalSavingLog.onSuccess { addAll(it) }
             }))
         }
     }
@@ -66,6 +74,15 @@ class WalletLogItemsUseCaseImpl(
         .map { result ->
             result.mapCatching { transactions ->
                 transactions.map { WalletLogItem.TransactionLogItem(it) }
+            }
+        }
+        .first()
+
+    private suspend fun mapGoalSavingWith(walletId: Long) = goalSavingsRepository
+        .loadGoalSavingByWallet(walletId)
+        .map { result ->
+            result.mapCatching { goalSavings ->
+                goalSavings.map { WalletLogItem.GoalSavingLogItem(it) }
             }
         }
         .first()

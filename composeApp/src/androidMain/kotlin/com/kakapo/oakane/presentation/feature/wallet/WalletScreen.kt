@@ -23,14 +23,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
+import com.kakapo.model.Currency
 import com.kakapo.model.wallet.WalletLogItem
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.feature.goal.component.GoalSavingItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.MoveBalanceDialogView
 import com.kakapo.oakane.presentation.feature.wallet.component.TransferLogItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemView
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
+import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEffect
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEvent
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletState
@@ -114,16 +117,26 @@ private fun WalletTopContentView(uiState: WalletState) {
 
 @Composable
 private fun LogsView(uiState: WalletState) {
+    val currency = uiState.wallet.currency
     LazyColumn(
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(uiState.logItems) { log ->
-            when (log) {
-                is WalletLogItem.TransactionLogItem -> Text(text = log.data.title)
-                is WalletLogItem.WalletTransferLogItem -> TransferLogItemView(item = log)
-            }
+        items(uiState.logItems, key = { log -> log.uniqueId }) { log ->
+            LogItemView(log, currency)
         }
+    }
+}
+
+@Composable
+private fun LogItemView(
+    log: WalletLogItem<*>,
+    currency: Currency
+) {
+    when (log) {
+        is WalletLogItem.TransactionLogItem -> TransactionItemView(log.data)
+        is WalletLogItem.WalletTransferLogItem -> TransferLogItemView(log)
+        is WalletLogItem.GoalSavingLogItem -> GoalSavingItemView(log.data, currency)
     }
 }
 

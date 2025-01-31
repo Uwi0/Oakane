@@ -16,3 +16,7 @@ VALUES (?, ?, ?, ?, ?);
 getGoalSavingsById:
 SELECT * FROM GoalSavingTable
 WHERE goalId = ?;
+
+getGoalSavingsByWalletId:
+SELECT * FROM GoalSavingTable
+WHERE walletId = ?;

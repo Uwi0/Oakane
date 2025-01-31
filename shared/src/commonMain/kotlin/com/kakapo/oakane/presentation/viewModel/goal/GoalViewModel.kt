@@ -102,7 +102,7 @@ class GoalViewModel(
         val onSuccess: (List<GoalSavingModel>) -> Unit = { savings ->
             _uiState.update { it.copy(goalSavings = savings) }
         }
-        goalSavingRepository.loadGoalSavingBy(id).asCustomResult().subscribe(
+        goalSavingRepository.loadGoalSavingByGoal(id).asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )
