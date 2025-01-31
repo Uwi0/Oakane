@@ -27,7 +27,7 @@ internal fun WalletsTopAppbarView(uiState: WalletsState, event: (WalletsEvent) -
         SearchTextFieldView(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             value = uiState.searchQuery,
-            placeHolder = "Search Wallet...",
+            placeholder = "Search Wallet...",
             onValueChange = { query -> event.invoke(WalletsEvent.OnSearchBy(query)) }
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))

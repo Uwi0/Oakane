@@ -93,7 +93,7 @@ private fun CurrencyTopContentView(
                     modifier = Modifier.fillMaxWidth(),
                     value = query,
                     onValueChange = onQueryChange,
-                    placeHolder = "Search Currency...",
+                    placeholder = "Search Currency...",
                 )
                 Spacer(Modifier.size(8.dp))
                 Text(

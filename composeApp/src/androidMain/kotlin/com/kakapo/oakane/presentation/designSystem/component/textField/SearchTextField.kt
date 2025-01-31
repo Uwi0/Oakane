@@ -23,7 +23,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SearchTextFieldView(
     modifier: Modifier = Modifier,
-    placeHolder: String = "",
+    placeholder: String = "",
     value: String,
     onValueChange: (String) -> Unit,
     debounceTime: Long = 500L
@@ -42,7 +42,7 @@ fun SearchTextFieldView(
         onValueChange = { newText ->
             text = newText
         },
-        placeholder = { Text(text = placeHolder) },
+        placeholder = { Text(text = placeholder) },
         leadingIcon = {
             Icon(imageVector = Icons.Default.Search, contentDescription = null)
         },

@@ -127,7 +127,7 @@ object CommonModule {
         factory<GetMonthlyBudgetOverviewUseCase> { GetMonthlyBudgetOverviewUseCaseImpl(get(), get(), get()) }
         factory<AddGoalSavingUseCase> { AddGoalSavingUseCaseImpl(get(), get(), get(), get(named(IO))) }
         factory<MoveWalletBalanceUseCase> { MoveWalletBalanceUseCaseImpl(get(), get(), get(named(IO))) }
-        factory<WalletLogItemsUseCase> { WalletLogItemsUseCaseImpl(get(), get(), get(named(IO))) }
+        factory<WalletLogItemsUseCase> { WalletLogItemsUseCaseImpl(get(), get(), get(), get(named(IO))) }
     }
 
     val viewModel: Module = module {

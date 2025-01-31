@@ -61,7 +61,7 @@ internal fun SelectCategorySheet(
                 SearchTextFieldView(
                     modifier = Modifier.fillMaxWidth(),
                     value = query,
-                    placeHolder = "Search Categories...",
+                    placeholder = "Search Categories...",
                     onValueChange = { query = it }
                 )
                 SelectCategoryTabView(uiState, onEvent)

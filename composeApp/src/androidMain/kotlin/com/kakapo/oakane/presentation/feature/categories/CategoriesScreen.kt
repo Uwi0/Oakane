@@ -99,7 +99,7 @@ private fun CategoriesScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     value = uiState.searchQuery,
-                    placeHolder = "Search Categories...",
+                    placeholder = "Search Categories...",
                     onValueChange = { onEvent.invoke(CategoriesEvent.Search(it)) }
                 )
                 CategoriesTabView(uiState.selectedTab, onEvent)

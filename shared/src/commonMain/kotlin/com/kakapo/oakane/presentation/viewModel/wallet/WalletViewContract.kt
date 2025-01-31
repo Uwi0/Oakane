@@ -15,7 +15,8 @@ data class WalletState(
     val selectedWalletFrom: WalletModel = WalletModel(),
     val selectedWalletTo: WalletModel = WalletModel(),
     val movedBalance: String = "",
-    val logItems: List<WalletLogItem<*>> = emptyList()
+    val logItems: List<WalletLogItem<*>> = emptyList(),
+    val searchQuery: String = ""
 ) {
     val selectedWalletId: Long get() = wallet.id
 
@@ -51,4 +52,5 @@ sealed class WalletEvent {
     data class AddSelectedWalletFrom(val wallet: WalletModel) : WalletEvent()
     data class AddSelectedWalletTo(val wallet: WalletModel) : WalletEvent()
     data object MoveBalance: WalletEvent()
+    data class SearchLog(val query: String) : WalletEvent()
 }

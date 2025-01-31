@@ -40,7 +40,7 @@ internal fun TransactionTopAppBarView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 4.dp),
-            placeHolder = "Search Transaction...",
+            placeholder = "Search Transaction...",
             value = state.searchQuery,
             onValueChange = { query -> onEvent.invoke(TransactionsEvent.FilterBy(query)) }
         )

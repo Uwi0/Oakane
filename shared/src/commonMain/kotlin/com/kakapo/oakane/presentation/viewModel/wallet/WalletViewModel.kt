@@ -50,6 +50,7 @@ class WalletViewModel(
             is WalletEvent.AddSelectedWalletFrom -> _uiState.update { it.copy(selectedWalletFrom = event.wallet) }
             is WalletEvent.AddSelectedWalletTo -> _uiState.update { it.copy(selectedWalletTo = event.wallet) }
             is WalletEvent.AddBalance -> _uiState.update { it.copy(movedBalance = event.balance) }
+            is WalletEvent.SearchLog -> _uiState.update { it.copy(searchQuery = event.query) }
         }
     }
 

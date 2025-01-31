@@ -27,7 +27,7 @@ internal fun GoalsTopAppbarView(uiState: GoalsState, onEvent: (GoalsEvent) -> Un
         SearchTextFieldView(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             value = uiState.searchQuery,
-            placeHolder = "Search Goal...",
+            placeholder = "Search Goal...",
             onValueChange = { query -> onEvent.invoke(GoalsEvent.FilterBy(query))}
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))

@@ -55,7 +55,7 @@ private fun TransferLogIconView(transferType: WalletTransferType) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(4.dp)
+                .padding(8.dp)
         ) {
             Icon(
                 modifier = Modifier.fillMaxSize(),
@@ -89,9 +89,9 @@ private fun TransferLogContentView(
 @Composable
 private fun TransferLogTrailingContent(date: String) {
     val color = MaterialTheme.colorScheme.outline
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.End) {
+    Column(horizontalAlignment = Alignment.End) {
         CustomIconButton(icon = Icons.Outlined.Info, onClick = {})
-        Text(date, style = MaterialTheme.typography.labelSmall, color = color)
+        Text(date, style = MaterialTheme.typography.labelMedium, color = color)
     }
 }
 
