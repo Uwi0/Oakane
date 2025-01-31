@@ -3,8 +3,11 @@ package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 import com.kakapo.common.asDouble
 import com.kakapo.common.getEndOfMonthUnixTime
 import com.kakapo.data.model.MonthlyBudgetParam
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
+import com.kakapo.model.toFormatNumber
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
 
@@ -16,13 +19,20 @@ data class MonthlyBudgetState(
     val isEditMode: Boolean = false,
     val dialogShown: Boolean = false,
     val categoryLimits: List<CategoryLimitModel> = emptyList(),
-    val selectedCategoryLimit: CategoryLimitModel? = null
+    val selectedCategoryLimit: CategoryLimitModel? = null,
+    val currency: Currency = Currency.IDR
 ){
 
     val realAmount: Int get() {
         val doubleValue = amount.toDoubleOrNull() ?: 0.0
         return doubleValue.toInt()
     }
+
+    fun copy(budget: MonthlyBudgetModel) = copy(
+        id = budget.id,
+        amount = budget.totalBudget.toFormatNumber(budget.currency),
+        currency = budget.currency
+    )
 
     fun asMonthlyBudgetParam(): MonthlyBudgetParam {
         val currentTime = Clock.System.now().toEpochMilliseconds()

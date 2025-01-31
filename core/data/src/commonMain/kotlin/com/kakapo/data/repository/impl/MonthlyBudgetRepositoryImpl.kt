@@ -4,11 +4,15 @@ import com.kakapo.data.model.MonthlyBudgetParam
 import com.kakapo.data.model.toMonthlyBudgetModel
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.database.datasource.base.MonthlyBudgetLocalDatasource
+import com.kakapo.model.asCurrency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
+import com.kakapo.preference.datasource.base.PreferenceDatasource
+import com.kakapo.preference.datasource.utils.getSavedCurrency
 import kotlinx.datetime.Clock
 
 class MonthlyBudgetRepositoryImpl(
-    private val localDatasource: MonthlyBudgetLocalDatasource
+    private val localDatasource: MonthlyBudgetLocalDatasource,
+    private val preferenceDatasource: PreferenceDatasource
 ): MonthlyBudgetRepository {
 
     override suspend fun add(monthlyBudget: MonthlyBudgetParam): Result<Unit> {
@@ -21,7 +25,8 @@ class MonthlyBudgetRepositoryImpl(
     }
 
     override suspend fun loadMonthlyBudget(): Result<MonthlyBudgetModel> {
-        return localDatasource.getMonthlyBudget().mapCatching { it.toMonthlyBudgetModel() }
+        val currency = preferenceDatasource.getSavedCurrency().asCurrency()
+        return localDatasource.getMonthlyBudget().mapCatching { it.toMonthlyBudgetModel(currency) }
     }
 
     override suspend fun update(monthlyBudget: MonthlyBudgetParam): Result<Unit> {

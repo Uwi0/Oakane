@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import com.kakapo.common.toColorLong
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.wallet.WalletModel
-import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.theme.colorsSelector
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.ColorSelector
@@ -31,7 +30,6 @@ class CreateWalletState(
     var walletName by mutableStateOf("")
     var color by mutableStateOf("0xFF4CAF50")
     var isSheetVisible by mutableStateOf(false)
-    var currencyConfig = CurrencyTextFieldConfig(currencySymbol = "RP")
     var selectedIcon by mutableStateOf(SelectedIconModel("", CategoryIconName.WALLET, color.toColorLong()))
     var colorSelector by mutableStateOf(ColorSelector(
         defaultColor = color.ifEmpty { "0xFF4CAF50" }.toColorLong(),

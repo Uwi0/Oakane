@@ -6,21 +6,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.kakapo.common.asRealCurrencyValue
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.toFormatNumber
 import kotlinx.coroutines.delay
 
 @Composable
 fun rememberAddCategoryLimitState(
     expenseCategories: List<CategoryModel>,
-    categoryLimit: CategoryLimitModel?
+    categoryLimit: CategoryLimitModel?,
+    currency: Currency
 ) = remember {
-    AddCategoryLimitState(expenseCategories, categoryLimit)
+    AddCategoryLimitState(expenseCategories, categoryLimit, currency)
 }
 
 class AddCategoryLimitState(
     expenseCategories: List<CategoryModel> = emptyList(),
-    categoryLimit: CategoryLimitModel? = null
+    categoryLimit: CategoryLimitModel? = null,
+    val currency: Currency
 ) {
 
     var limitAmount: String by mutableStateOf("")
@@ -41,11 +45,10 @@ class AddCategoryLimitState(
             selectedCategory = defaultCategory
             filteredOptions = expenseCategory
         } else {
-            limitAmount = categoryLimit.limit.toString()
+            limitAmount = categoryLimit.limit.toFormatNumber(currency)
             selectedCategory = categoryLimit.category
             filteredOptions = listOf(categoryLimit.category)
         }
-
     }
 
     fun changedLimitAmount(amount: String) {

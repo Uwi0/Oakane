@@ -10,6 +10,7 @@ import com.kakapo.data.model.MonthlyBudgetParam
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.domain.usecase.base.ValidateCategoryLimitUseCase
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
@@ -28,7 +29,8 @@ class MonthlyBudgetViewModel(
     private val monthlyBudgetRepository: MonthlyBudgetRepository,
     private val categoryRepository: CategoryRepository,
     private val categoryLimitRepository: CategoryLimitRepository,
-    private val validateCategoryLimitUseCase: ValidateCategoryLimitUseCase
+    private val validateCategoryLimitUseCase: ValidateCategoryLimitUseCase,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -60,7 +62,6 @@ class MonthlyBudgetViewModel(
             _uiState.update { it.copy(isEditMode = tableNotEmpty) }
             if (tableNotEmpty) {
                 loadMonthlyBudget()
-                loadCategoryLimits()
             }
         }
         monthlyBudgetRepository.hasCurrentMonthlyBudgetAtTheTime().fold(
@@ -71,8 +72,8 @@ class MonthlyBudgetViewModel(
 
     private fun loadMonthlyBudget() = viewModelScope.launch {
         val onSuccess: (MonthlyBudgetModel) -> Unit = { monthlyBudget ->
-            val totalBudget = monthlyBudget.totalBudget.toInt().toString()
-            _uiState.update { it.copy(amount = totalBudget, id = monthlyBudget.id) }
+            _uiState.update { it.copy(monthlyBudget) }
+            loadCategoryLimitsWith(monthlyBudget.id)
         }
         monthlyBudgetRepository.loadMonthlyBudget().fold(
             onSuccess = onSuccess,
@@ -123,7 +124,7 @@ class MonthlyBudgetViewModel(
 
         val onSuccess: (Unit) -> Unit = { _ ->
             _uiState.update { it.dialog(shown = false) }
-            loadCategoryLimits()
+            loadCategoryLimitsWith(uiState.value.id)
         }
 
         validateCategoryLimitUseCase.execute(categoryLimit, isEditMode).fold(
@@ -132,8 +133,7 @@ class MonthlyBudgetViewModel(
         )
     }
 
-    private fun loadCategoryLimits() = viewModelScope.launch {
-        val monthlyBudgetId = uiState.value.id
+    private fun loadCategoryLimitsWith(monthlyBudgetId: Long) = viewModelScope.launch {
         val onSuccess: (List<CategoryLimitModel>) -> Unit = { categoryLimits ->
             _uiState.update { it.copy(categoryLimits = categoryLimits) }
         }
@@ -144,6 +144,7 @@ class MonthlyBudgetViewModel(
                 onError = ::handleError
             )
     }
+
 
     private fun handleError(throwable: Throwable?) {
         val message = throwable?.message ?: "Unknown error"

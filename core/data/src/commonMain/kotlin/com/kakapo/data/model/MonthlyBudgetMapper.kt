@@ -1,6 +1,7 @@
 package com.kakapo.data.model
 
 import com.kakapo.database.model.MonthlyBudgetEntity
+import com.kakapo.model.Currency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
 
 data class MonthlyBudgetParam(
@@ -24,7 +25,8 @@ data class MonthlyBudgetParam(
     )
 }
 
-fun MonthlyBudgetEntity.toMonthlyBudgetModel() = MonthlyBudgetModel(
+fun MonthlyBudgetEntity.toMonthlyBudgetModel(currency: Currency) = MonthlyBudgetModel(
     id = id,
-    totalBudget = totalBudget
+    totalBudget = totalBudget,
+    currency = currency
 )

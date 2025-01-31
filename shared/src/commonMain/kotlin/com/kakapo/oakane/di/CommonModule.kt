@@ -109,7 +109,7 @@ object CommonModule {
         factory<TransactionRepository> { TransactionRepositoryImpl(get(), get(), get(named(IO))) }
         factory<CategoryRepository> { CategoryRepositoryImpl(get()) }
         factory<GoalRepository> { GoalRepositoryImpl(get(), get()) }
-        factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get()) }
+        factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get(), get()) }
         factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get(), get()) }
         factory<WalletRepository> { WalletRepositoryImpl(get(), get(), get(named(IO))) }
         factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
@@ -141,7 +141,7 @@ object CommonModule {
         viewModel { AddGoalViewModel(get(), get()) }
         viewModel { GoalViewModel(get(), get(), get(), get(), get()) }
         viewModel { GoalsViewModel(get()) }
-        viewModel { MonthlyBudgetViewModel(get(), get(), get(), get()) }
+        viewModel { MonthlyBudgetViewModel(get(), get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}

@@ -14,13 +14,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
-import com.kakapo.oakane.presentation.feature.monthlyBudget.component.BudgetTextFieldView
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetState
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +34,11 @@ internal fun AddCategoryLimitDialogView(
     uiState: MonthlyBudgetState,
     onEvent: (MonthlyBudgetEvent) -> Unit
 ) {
-    val state = rememberAddCategoryLimitState(uiState.expenseCategories, uiState.selectedCategoryLimit)
+    val state = rememberAddCategoryLimitState(
+        uiState.expenseCategories,
+        uiState.selectedCategoryLimit,
+        uiState.currency
+    )
     BasicAlertDialog(
         onDismissRequest = { onEvent.invoke(MonthlyBudgetEvent.Dialog(shown = false)) }
     ) {
@@ -42,7 +52,8 @@ private fun AddCategoryLimitDialogContentView(
     onEvent: (MonthlyBudgetEvent) -> Unit
 ) {
     val onClick: () -> Unit = {
-        val event = MonthlyBudgetEvent.CreateCategoryLimitBy(state.categoryId, state.formattedAmount)
+        val event =
+            MonthlyBudgetEvent.CreateCategoryLimitBy(state.categoryId, state.formattedAmount)
         onEvent.invoke(event)
     }
     Surface(shape = RoundedCornerShape(28.dp)) {
@@ -53,10 +64,7 @@ private fun AddCategoryLimitDialogContentView(
         ) {
             Text("Add your Category Limit")
             Spacer(modifier = Modifier.size(16.dp))
-            BudgetTextFieldView(
-                value = state.limitAmount,
-                onValueChange = state::changedLimitAmount
-            )
+            CategoryLimitCurrencyTextFieldView(state = state)
             Spacer(modifier = Modifier.size(8.dp))
             CategoryLimitDropdownMenuView(state = state)
             Spacer(modifier = Modifier.size(24.dp))
@@ -79,4 +87,28 @@ private fun AddCategoryLimitDialogContentView(
             }
         }
     }
+}
+
+@Composable
+private fun CategoryLimitCurrencyTextFieldView(
+    state: AddCategoryLimitState,
+) {
+    val config by remember{ mutableStateOf(
+        CurrencyTextFieldConfig(
+            Locale(state.currency.languageCode, state.currency.countryCode),
+            initialText = state.limitAmount,
+            currencySymbol = state.currency.symbol
+        )
+    )}
+
+    val currencyTextFieldState = rememberCurrencyTextFieldState(
+        config = config,
+    ) {
+        state.changedLimitAmount(it)
+    }
+
+    OutlinedCurrencyTextFieldView(
+        modifier = Modifier.fillMaxWidth(),
+        state = currencyTextFieldState
+    )
 }
