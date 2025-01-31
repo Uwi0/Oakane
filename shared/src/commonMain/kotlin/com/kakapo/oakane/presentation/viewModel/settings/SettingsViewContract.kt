@@ -10,7 +10,8 @@ data class SettingsState(
     val themeMode: Theme = Theme.System,
     val isDialogShown: Boolean = false,
     val currency: Currency = Currency.USD,
-    val isSheetShown: Boolean = false
+    val isSheetShown: Boolean = false,
+    val isRecurringBudget: Boolean = false
 ) {
     fun update(theme: Int) = copy(
         themeMode = theme.asTheme()
@@ -36,4 +37,5 @@ sealed class SettingsEvent {
     data class OnSelected(val theme: Int): SettingsEvent()
     data object OnConfirmTheme: SettingsEvent()
     data class ChangeCurrency(val currency: Currency): SettingsEvent()
+    data class ToggleRecurringBudget(val isRecurring: Boolean): SettingsEvent()
 }

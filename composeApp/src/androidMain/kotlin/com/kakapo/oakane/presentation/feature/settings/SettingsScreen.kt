@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -189,6 +190,7 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
                     theme = uiState.themeMode,
                     onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
                 )
+                RecurringMonthlyBudgetView(uiState = uiState, onEvent = onEvent)
                 HorizontalDivider()
                 ButtonSettingsView(
                     title = "Back Up Data",
@@ -258,5 +260,22 @@ private fun ThemeButtonView(theme: Theme, onClick: () -> Unit) {
             }
         }
     }
+}
 
+@Composable
+private fun RecurringMonthlyBudgetView(
+    uiState: SettingsState,
+    onEvent: (SettingsEvent) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text("Recurring Monthly Budget", style = MaterialTheme.typography.titleMedium)
+        Switch(
+            checked = uiState.isRecurringBudget,
+            onCheckedChange = { onEvent.invoke(SettingsEvent.ToggleRecurringBudget(it)) }
+        )
+    }
 }

@@ -127,11 +127,11 @@ private fun SupportContent(spent: Double, left: Double, currency: Currency) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Spent Rp ${spent.toFormatCurrency(currency)}",
+            text = "Spent ${spent.toFormatCurrency(currency)}",
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = "Left Rp ${left.toFormatCurrency(currency)}",
+            text = "Left ${left.toFormatCurrency(currency)}",
             style = MaterialTheme.typography.bodyMedium
         )
     }

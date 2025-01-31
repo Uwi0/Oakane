@@ -32,6 +32,7 @@ class SettingsViewModel(
     fun initData() {
         loadIsDarkMode()
         loadCurrency()
+        loadIsBudgetRecurring()
     }
 
     fun handleEvent(event: SettingsEvent) {
@@ -39,12 +40,13 @@ class SettingsViewModel(
             SettingsEvent.NavigateBack -> emit(SettingsEffect.NavigateBack)
             SettingsEvent.GenerateBackupFile -> createBackupFile()
             SettingsEvent.RestoreBackupFile -> emit(SettingsEffect.RestoreBackupFile)
+            SettingsEvent.OnConfirmTheme -> confirmTheme()
             is SettingsEvent.RetrieveBackupFile -> retrieveBackupFile(event.json)
             is SettingsEvent.OnDialog -> _uiState.update { it.copy(isDialogShown = event.shown) }
             is SettingsEvent.OnSelected -> _uiState.update { it.update(event.theme) }
-            SettingsEvent.OnConfirmTheme -> confirmTheme()
             is SettingsEvent.OnSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
             is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
+            is SettingsEvent.ToggleRecurringBudget -> setMonthlyBudget(event.isRecurring)
         }
     }
 
@@ -96,6 +98,16 @@ class SettingsViewModel(
         )
     }
 
+    private fun loadIsBudgetRecurring() = viewModelScope.launch {
+        val onSuccess: (Boolean) -> Unit = { isRecurring ->
+            _uiState.value = _uiState.value.copy(isRecurringBudget = isRecurring)
+        }
+        systemRepository.isMonthlyBudgetRecurring().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
     private fun changeCurrency(currency: Currency) = viewModelScope.launch {
         val onSuccess: (Unit) -> Unit = {
             _uiState.update { it.copy(currency = currency, isSheetShown = false) }
@@ -106,6 +118,15 @@ class SettingsViewModel(
             onFailure = ::handleError
         )
     }
+
+    private fun setMonthlyBudget(isRecurring: Boolean) = viewModelScope.launch {
+        _uiState.update { it.copy(isRecurringBudget = isRecurring) }
+        systemRepository.setMonthlyBudget(isRecurring).fold(
+            onSuccess = {},
+            onFailure = ::handleError
+        )
+    }
+
 
     private fun handleError(throwable: Throwable? = null) {
         emit(SettingsEffect.ShowError(throwable?.message ?: "Unknown error"))

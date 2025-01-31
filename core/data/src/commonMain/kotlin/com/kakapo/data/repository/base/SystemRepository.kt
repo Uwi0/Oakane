@@ -18,7 +18,19 @@ interface SystemRepository {
     @NativeCoroutines
     suspend fun loadOnBoardingAlreadyRead(): Result<Boolean>
     @NativeCoroutines
-    suspend fun changeBalanceVisibility(visibility: Boolean): Result<Boolean>
+    suspend fun changeBalance(visibility: Boolean): Result<Boolean>
     @NativeCoroutines
     suspend fun isBalanceVisible(): Result<Boolean>
+    @NativeCoroutines
+    suspend fun setMonthlyBudget(isRecurring: Boolean): Result<Unit>
+    @NativeCoroutines
+    suspend fun isMonthlyBudgetRecurring(): Result<Boolean>
+    @NativeCoroutines
+    suspend fun saveRecurringBudget(budget: String): Result<Unit>
+    @NativeCoroutines
+    suspend fun loadRecurringBudget(): Result<String>
+    @NativeCoroutines
+    suspend fun saveRecurringCategory(category: String): Result<Unit>
+    @NativeCoroutines
+    suspend fun loadRecurringCategory(): Result<String>
 }

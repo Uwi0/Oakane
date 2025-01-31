@@ -119,7 +119,7 @@ class HomeViewModel(
         val onSuccess: (Boolean) -> Unit = { isBalanceVisible ->
             _uiState.update { it.copy(isBalanceVisible = isBalanceVisible) }
         }
-        systemRepository.changeBalanceVisibility(!currentVisibility).fold(
+        systemRepository.changeBalance(!currentVisibility).fold(
             onSuccess =onSuccess,
             onFailure = ::handleError
         )

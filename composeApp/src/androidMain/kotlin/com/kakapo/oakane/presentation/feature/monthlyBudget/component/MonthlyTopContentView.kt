@@ -33,5 +33,6 @@ internal fun MonthlyTopContentView(
             value = uiState.amount,
             onValueChange = { onEvent.invoke(MonthlyBudgetEvent.Changed(it)) }
         )
+
     }
 }

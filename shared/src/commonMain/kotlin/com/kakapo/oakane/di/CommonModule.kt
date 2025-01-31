@@ -131,8 +131,8 @@ object CommonModule {
     }
 
     val viewModel: Module = module {
-        viewModel { SplashViewModel(get())}
-        viewModel { MainViewModel(get())}
+        viewModel { SplashViewModel(get()) }
+        viewModel { MainViewModel(get()) }
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get()) }

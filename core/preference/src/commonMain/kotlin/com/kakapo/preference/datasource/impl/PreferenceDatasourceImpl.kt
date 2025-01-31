@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -28,6 +29,12 @@ class PreferenceDatasourceImpl(
     override suspend fun saveIntValue(key: String, value: Int) {
         dataStore.edit { preferences ->
             preferences[intPreferencesKey(key)] = value
+        }
+    }
+
+    override suspend fun saveStringValue(key: String, value: String) {
+        dataStore.edit { preferences ->
+            preferences[stringPreferencesKey(key)] = value
         }
     }
 
@@ -55,9 +62,18 @@ class PreferenceDatasourceImpl(
         return preferences.first()
     }
 
+    override suspend fun getStringValue(key: String): String {
+        val preferences = dataStore.data.map { preferences ->
+            preferences[stringPreferencesKey(key)] ?: DEFAULT_STRING_VALUE
+        }
+
+        return preferences.first()
+    }
+
     companion object {
         private const val DEFAULT_LONG_VALUE: Long = 0
         private const val DEFAULT_BOOLEAN_VALUE: Boolean = false
         private const val DEFAULT_INT_VALUE: Int = 0
+        private const val DEFAULT_STRING_VALUE: String = ""
     }
 }
