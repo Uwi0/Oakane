@@ -146,7 +146,7 @@ object CommonModule {
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
         viewModel { OnBoardingViewModel(get(), get(), get()) }
-        viewModel { WalletViewModel(get(), get()) }
+        viewModel { WalletViewModel(get(), get(), get()) }
     }
 
     val coroutineModule: Module = module {

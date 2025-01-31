@@ -2,7 +2,10 @@ package com.kakapo.oakane.presentation.feature.wallet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
@@ -20,10 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
+import com.kakapo.model.wallet.WalletLogItem
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.wallet.component.MoveBalanceDialogView
+import com.kakapo.oakane.presentation.feature.wallet.component.TransferLogItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemView
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEffect
@@ -44,7 +49,7 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 WalletEffect.NavigateBack -> navigateBack.invoke()
                 is WalletEffect.ShowError -> context.showToast(effect.message)
             }
@@ -53,7 +58,7 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
 
     WalletScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 
-    if(uiState.dialogVisible) {
+    if (uiState.dialogVisible) {
         MoveBalanceDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
     }
 }
@@ -65,8 +70,7 @@ private fun WalletScreen(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
         content = { paddingValues ->
             WalletContentView(
                 modifier = Modifier
-                    .padding(paddingValues)
-                    .padding(vertical = 24.dp, horizontal = 16.dp),
+                    .padding(paddingValues),
                 uiState = uiState
             )
         },
@@ -91,8 +95,16 @@ private fun WalletContentView(
     modifier: Modifier = Modifier,
     uiState: WalletState
 ) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        WalletTopContentView(uiState = uiState)
+        LogsView(uiState = uiState)
+    }
+}
+
+@Composable
+private fun WalletTopContentView(uiState: WalletState) {
     Column(
-        modifier = modifier,
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         WalletDetailItemView(item = uiState.wallet)
@@ -101,11 +113,26 @@ private fun WalletContentView(
 }
 
 @Composable
+private fun LogsView(uiState: WalletState) {
+    LazyColumn(
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        items(uiState.logItems) { log ->
+            when (log) {
+                is WalletLogItem.TransactionLogItem -> Text(text = log.data.title)
+                is WalletLogItem.WalletTransferLogItem -> TransferLogItemView(item = log)
+            }
+        }
+    }
+}
+
+@Composable
 private fun WalletFabButtonView(onEvent: (WalletEvent) -> Unit) {
     ExtendedFloatingActionButton(
-        onClick = { onEvent.invoke(WalletEvent.DialogShown(true))},
+        onClick = { onEvent.invoke(WalletEvent.DialogShown(true)) },
         icon = { Icon(imageVector = Icons.Outlined.SyncAlt, contentDescription = null) },
-        text = { Text(text = "Move Balance")}
+        text = { Text(text = "Move Balance") }
     )
 }
 

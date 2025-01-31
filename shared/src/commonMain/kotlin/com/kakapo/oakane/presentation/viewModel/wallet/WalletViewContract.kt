@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.wallet
 import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.data.model.WalletTransferParam
 import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletLogItem
 import com.kakapo.model.wallet.WalletModel
 import kotlinx.datetime.Clock
 
@@ -13,7 +14,8 @@ data class WalletState(
     val dialogVisible: Boolean = false,
     val selectedWalletFrom: WalletModel = WalletModel(),
     val selectedWalletTo: WalletModel = WalletModel(),
-    val movedBalance: String = ""
+    val movedBalance: String = "",
+    val logItems: List<WalletLogItem<*>> = emptyList()
 ) {
     val selectedWalletId: Long get() = wallet.id
 

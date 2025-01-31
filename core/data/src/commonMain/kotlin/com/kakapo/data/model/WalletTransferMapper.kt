@@ -36,11 +36,11 @@ fun WalletTransferItemEntity.toWalletTransferModel(currency: Currency): WalletTr
     }
     return WalletTransferModel(
         id = id,
-        walletName = walletName,
+        name = walletName,
         amount = transferAmount,
         notes = note,
         createdAt = createdAt,
-        transferType = transferType,
+        type = transferType,
         currency = currency
     )
 }
