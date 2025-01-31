@@ -157,7 +157,7 @@ private fun LogsView(uiState: WalletState) {
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(uiState.logItems, key = { log -> log.uniqueId }) { log ->
+        items(uiState.filteredLogItems, key = { log -> log.uniqueId }) { log ->
             LogItemView(log, currency)
         }
     }

@@ -20,6 +20,16 @@ data class WalletState(
 ) {
     val selectedWalletId: Long get() = wallet.id
 
+    val filteredLogItems: List<WalletLogItem<*>> get() {
+        return if (searchQuery.isEmpty()) {
+            logItems
+        } else {
+            logItems.filter {
+                it.name.contains(searchQuery, ignoreCase = true)
+            }
+        }
+    }
+
     private val toWalletId: Long get() {
         return if (selectedWalletTo.id == 0L) {
             wallet.id

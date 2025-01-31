@@ -3,13 +3,11 @@ package com.kakapo.model.wallet
 import com.kakapo.model.goal.GoalSavingModel
 import com.kakapo.model.transaction.TransactionModel
 
-sealed class WalletLogItem<T>(
-    open val data: T,
-
-) {
+sealed class WalletLogItem<T>(open val data: T) {
     abstract val id: Long
     abstract val uniqueId: String
     abstract val dateCreated: Long
+    abstract val name: String
 
     data class WalletTransferLogItem(
         override val data: WalletTransferModel
@@ -21,6 +19,8 @@ sealed class WalletLogItem<T>(
             get() = data.uniqueId
         override val dateCreated: Long
             get() = data.createdAt
+        override val name: String
+            get() = data.name
     }
 
     data class TransactionLogItem(
@@ -33,6 +33,8 @@ sealed class WalletLogItem<T>(
             get() = data.uniqueId
         override val dateCreated: Long
             get() = data.dateCreated
+        override val name: String
+            get() = data.title
     }
 
     data class GoalSavingLogItem(
@@ -45,5 +47,7 @@ sealed class WalletLogItem<T>(
             get() = data.uniqueId
         override val dateCreated: Long
             get() = data.createdAt
+        override val name: String
+            get() = ""
     }
 }
