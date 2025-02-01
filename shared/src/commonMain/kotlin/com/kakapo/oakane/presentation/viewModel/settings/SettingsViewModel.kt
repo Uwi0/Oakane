@@ -33,6 +33,7 @@ class SettingsViewModel(
         loadIsDarkMode()
         loadCurrency()
         loadIsBudgetRecurring()
+        loadIsCategoryLimitRecurring()
     }
 
     fun handleEvent(event: SettingsEvent) {
@@ -47,6 +48,7 @@ class SettingsViewModel(
             is SettingsEvent.OnSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
             is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
             is SettingsEvent.ToggleRecurringBudget -> setMonthlyBudget(event.isRecurring)
+            is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
         }
     }
 
@@ -108,6 +110,16 @@ class SettingsViewModel(
         )
     }
 
+    private fun loadIsCategoryLimitRecurring() = viewModelScope.launch {
+        val onSuccess: (Boolean) -> Unit = { isRecurring ->
+            _uiState.value = _uiState.value.copy(isRecurringCategoryLimit = isRecurring)
+        }
+        systemRepository.isCategoryLimitRecurring().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
     private fun changeCurrency(currency: Currency) = viewModelScope.launch {
         val onSuccess: (Unit) -> Unit = {
             _uiState.update { it.copy(currency = currency, isSheetShown = false) }
@@ -120,13 +132,25 @@ class SettingsViewModel(
     }
 
     private fun setMonthlyBudget(isRecurring: Boolean) = viewModelScope.launch {
-        _uiState.update { it.copy(isRecurringBudget = isRecurring) }
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.copy(isRecurringBudget = isRecurring) }
+            if (!isRecurring)setCategoryLimit(isRecurring = false)
+        }
         systemRepository.setMonthlyBudget(isRecurring).fold(
-            onSuccess = {},
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }
 
+    private fun setCategoryLimit(isRecurring: Boolean) = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.copy(isRecurringCategoryLimit = isRecurring) }
+        }
+        systemRepository.saveCategoryLimit(isRecurring).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
 
     private fun handleError(throwable: Throwable? = null) {
         emit(SettingsEffect.ShowError(throwable?.message ?: "Unknown error"))

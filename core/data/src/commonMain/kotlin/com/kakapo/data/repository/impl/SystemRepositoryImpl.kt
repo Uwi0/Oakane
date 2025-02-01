@@ -56,6 +56,14 @@ class SystemRepositoryImpl(
         preferenceDatasource.getBooleanValue(BooleanKey.IS_RECURRING_BUDGET)
     }
 
+    override suspend fun saveCategoryLimit(isRecurring: Boolean): Result<Unit> = runCatching {
+        preferenceDatasource.saveBooleanValue(BooleanKey.IS_RECURRING_CATEGORY_LIMIT, isRecurring)
+    }
+
+    override suspend fun isCategoryLimitRecurring(): Result<Boolean> = runCatching {
+        preferenceDatasource.getBooleanValue(BooleanKey.IS_RECURRING_CATEGORY_LIMIT)
+    }
+
     override suspend fun saveRecurringBudget(budget: String): Result<Unit> {
         TODO("Not yet implemented")
     }

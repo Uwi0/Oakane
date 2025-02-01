@@ -26,6 +26,10 @@ interface SystemRepository {
     @NativeCoroutines
     suspend fun isMonthlyBudgetRecurring(): Result<Boolean>
     @NativeCoroutines
+    suspend fun saveCategoryLimit(isRecurring: Boolean): Result<Unit>
+    @NativeCoroutines
+    suspend fun isCategoryLimitRecurring(): Result<Boolean>
+    @NativeCoroutines
     suspend fun saveRecurringBudget(budget: String): Result<Unit>
     @NativeCoroutines
     suspend fun loadRecurringBudget(): Result<String>

@@ -179,32 +179,55 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
             )
         },
         content = { paddingValues ->
-            Column(
+            SettingContentView(
                 modifier = Modifier
                     .padding(paddingValues)
                     .padding(vertical = 24.dp, horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                ChangeCurrencyButtonView(onEvent, uiState)
-                ThemeButtonView(
-                    theme = uiState.themeMode,
-                    onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
-                )
-                RecurringMonthlyBudgetView(uiState = uiState, onEvent = onEvent)
-                HorizontalDivider()
-                ButtonSettingsView(
-                    title = "Back Up Data",
-                    icon = Icons.Outlined.Backup,
-                    onClick = { onEvent.invoke(SettingsEvent.GenerateBackupFile) }
-                )
-                ButtonSettingsView(
-                    title = "Import Data",
-                    icon = Icons.Outlined.ImportExport,
-                    onClick = { onEvent.invoke(SettingsEvent.RestoreBackupFile) }
-                )
-            }
+                uiState = uiState,
+                onEvent = onEvent
+            )
         }
     )
+}
+
+@Composable
+private fun SettingContentView(
+    modifier: Modifier = Modifier,
+    uiState: SettingsState,
+    onEvent: (SettingsEvent) -> Unit
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        ChangeCurrencyButtonView(onEvent, uiState)
+        ThemeButtonView(
+            theme = uiState.themeMode,
+            onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
+        )
+        ToggleSwitchComponentView(
+            title = "Recurring Monthly Budget",
+            checked = uiState.isRecurringBudget,
+            onCheckedChange = { onEvent.invoke(SettingsEvent.ToggleRecurringBudget(it)) }
+        )
+        ToggleSwitchComponentView(
+            title = "Recurring Category Limit",
+            checked = uiState.isRecurringCategoryLimit,
+            enable = uiState.isRecurringBudget,
+            onCheckedChange = { onEvent.invoke(SettingsEvent.ToggleRecurringCategoryLimit(it)) }
+        )
+        HorizontalDivider()
+        ButtonSettingsView(
+            title = "Back Up Data",
+            icon = Icons.Outlined.Backup,
+            onClick = { onEvent.invoke(SettingsEvent.GenerateBackupFile) }
+        )
+        ButtonSettingsView(
+            title = "Import Data",
+            icon = Icons.Outlined.ImportExport,
+            onClick = { onEvent.invoke(SettingsEvent.RestoreBackupFile) }
+        )
+    }
 }
 
 @Composable
@@ -263,19 +286,22 @@ private fun ThemeButtonView(theme: Theme, onClick: () -> Unit) {
 }
 
 @Composable
-private fun RecurringMonthlyBudgetView(
-    uiState: SettingsState,
-    onEvent: (SettingsEvent) -> Unit
+private fun ToggleSwitchComponentView(
+    title: String,
+    checked: Boolean,
+    enable: Boolean = true,
+    onCheckedChange: (Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text("Recurring Monthly Budget", style = MaterialTheme.typography.titleMedium)
+        Text(title, style = MaterialTheme.typography.titleMedium)
         Switch(
-            checked = uiState.isRecurringBudget,
-            onCheckedChange = { onEvent.invoke(SettingsEvent.ToggleRecurringBudget(it)) }
+            checked = checked,
+            enabled = enable,
+            onCheckedChange = { onCheckedChange.invoke(it) }
         )
     }
 }

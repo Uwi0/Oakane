@@ -13,6 +13,7 @@ object BooleanKey {
     const val ON_BOARDING_ALREADY_READ = "on_boarding_already_read"
     const val IS_BALANCE_VISIBLE = "is_balance_visible"
     const val IS_RECURRING_BUDGET = "is_recurring_budget"
+    const val IS_RECURRING_CATEGORY_LIMIT = "is_recurring_category_limit"
 }
 
 object IntKey {
