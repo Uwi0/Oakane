@@ -2,7 +2,6 @@ package com.kakapo.oakane.presentation.viewModel.wallet
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.WalletRepository
@@ -76,7 +75,6 @@ class WalletViewModel(
 
     private fun loadWalletTransactionsLogs(walletId: Long) = viewModelScope.launch {
         val onSuccess: (List<WalletLogItem<*>>) -> Unit  = { logs ->
-            Logger.d("Wallet logs: $logs")
             _uiState.update { it.copy(logItems = logs) }
         }
         walletLogItemsUseCase.execute(walletId).asCustomResult().subscribe(

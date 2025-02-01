@@ -19,7 +19,7 @@ import kotlin.native.ObjCName
 class SettingsViewModel(
     private val backupRepository: BackupRepository,
     private val systemRepository: SystemRepository
-): ViewModel() {
+) : ViewModel() {
 
     @NativeCoroutinesState
     val uiState get() = _uiState
@@ -37,7 +37,7 @@ class SettingsViewModel(
     }
 
     fun handleEvent(event: SettingsEvent) {
-        when(event) {
+        when (event) {
             SettingsEvent.NavigateBack -> emit(SettingsEffect.NavigateBack)
             SettingsEvent.GenerateBackupFile -> createBackupFile()
             SettingsEvent.RestoreBackupFile -> emit(SettingsEffect.RestoreBackupFile)
@@ -65,7 +65,7 @@ class SettingsViewModel(
 
     private fun createBackupFile() = viewModelScope.launch {
         backupRepository.createBackup().fold(
-            onSuccess = { emit(SettingsEffect.GenerateBackupFile(it))},
+            onSuccess = { emit(SettingsEffect.GenerateBackupFile(it)) },
             onFailure = ::handleError
         )
     }
@@ -134,7 +134,7 @@ class SettingsViewModel(
     private fun setMonthlyBudget(isRecurring: Boolean) = viewModelScope.launch {
         val onSuccess: (Unit) -> Unit = {
             _uiState.update { it.copy(isRecurringBudget = isRecurring) }
-            if (!isRecurring)setCategoryLimit(isRecurring = false)
+            if (!isRecurring) setCategoryLimit(isRecurring = false)
         }
         systemRepository.setMonthlyBudget(isRecurring).fold(
             onSuccess = onSuccess,

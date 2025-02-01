@@ -10,9 +10,10 @@ import com.kakapo.data.model.MonthlyBudgetParam
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
-import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.domain.usecase.base.SetRecurringBudgetUseCase
 import com.kakapo.domain.usecase.base.ValidateCategoryLimitUseCase
 import com.kakapo.model.category.CategoryLimitModel
+import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -30,7 +31,7 @@ class MonthlyBudgetViewModel(
     private val categoryRepository: CategoryRepository,
     private val categoryLimitRepository: CategoryLimitRepository,
     private val validateCategoryLimitUseCase: ValidateCategoryLimitUseCase,
-    private val systemRepository: SystemRepository
+    private val setRecurringBudgetUseCase: SetRecurringBudgetUseCase
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -82,11 +83,12 @@ class MonthlyBudgetViewModel(
     }
 
     private fun loadExpenseCategory() = viewModelScope.launch {
+        val onSuccess: (List<CategoryModel>) -> Unit = { category ->
+            _uiState.update { it.copy(expenseCategories = category) }
+        }
         categoryRepository.loadExpenseCategories().collect { result ->
             result.fold(
-                onSuccess = { categories ->
-                    _uiState.update { it.copy(expenseCategories = categories) }
-                },
+                onSuccess = onSuccess,
                 onFailure = ::handleError
             )
         }
@@ -97,6 +99,7 @@ class MonthlyBudgetViewModel(
         val isEditMode = uiState.value.isEditMode
         if (isEditMode) update(monthlyBudget)
         else add(monthlyBudget)
+        saveRecurringBudget()
     }
 
     private fun add(monthlyBudget: MonthlyBudgetParam) = viewModelScope.launch {
@@ -145,6 +148,14 @@ class MonthlyBudgetViewModel(
             )
     }
 
+    private fun saveRecurringBudget() = viewModelScope.launch {
+        val budgets = uiState.value.asMonthlyBudgetReCurring()
+        val categoryLimits = uiState.value.asCategoryLimitRecurring()
+        setRecurringBudgetUseCase.execute(budgets, categoryLimits).fold(
+            onSuccess = { Logger.d("Recurring budget saved") },
+            onFailure = ::handleError
+        )
+    }
 
     private fun handleError(throwable: Throwable?) {
         val message = throwable?.message ?: "Unknown error"

@@ -7,6 +7,7 @@ import com.kakapo.model.system.Theme
 import com.kakapo.model.system.asTheme
 import com.kakapo.preference.constant.BooleanKey
 import com.kakapo.preference.constant.IntKey
+import com.kakapo.preference.constant.StringKey
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.utils.isBalanceVisible
 
@@ -64,19 +65,19 @@ class SystemRepositoryImpl(
         preferenceDatasource.getBooleanValue(BooleanKey.IS_RECURRING_CATEGORY_LIMIT)
     }
 
-    override suspend fun saveRecurringBudget(budget: String): Result<Unit> {
-        TODO("Not yet implemented")
+    override suspend fun saveRecurringBudget(budget: String): Result<Unit> = runCatching {
+        preferenceDatasource.saveStringValue(StringKey.RECURRING_BUDGET_LIMIT, budget)
     }
 
-    override suspend fun loadRecurringBudget(): Result<String> {
-        TODO("Not yet implemented")
+    override suspend fun loadRecurringBudget(): Result<String> = runCatching {
+        preferenceDatasource.getStringValue(StringKey.RECURRING_BUDGET_LIMIT)
     }
 
-    override suspend fun saveRecurringCategory(category: String): Result<Unit> {
-        TODO("Not yet implemented")
+    override suspend fun saveRecurringCategory(category: String): Result<Unit> = runCatching {
+        preferenceDatasource.saveStringValue(StringKey.RECURRING_CATEGORY_LIMIT, category)
     }
 
-    override suspend fun loadRecurringCategory(): Result<String> {
-        TODO("Not yet implemented")
+    override suspend fun loadRecurringCategory(): Result<String> = runCatching {
+        preferenceDatasource.getStringValue(StringKey.RECURRING_CATEGORY_LIMIT)
     }
 }

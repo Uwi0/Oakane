@@ -1,8 +1,10 @@
 package com.kakapo.oakane.presentation.viewModel.monthlyBudget
 
-import com.kakapo.common.asDouble
+import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.getEndOfMonthUnixTime
 import com.kakapo.data.model.MonthlyBudgetParam
+import com.kakapo.data.model.MonthlyBudgetRecurring
+import com.kakapo.data.model.toCategoryLimitParamEncodedString
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.category.CategoryModel
@@ -15,12 +17,13 @@ import kotlin.native.ObjCName
 data class MonthlyBudgetState(
     val id: Long = 0,
     val amount: String = "",
+    val amountUpdated: String = "",
     val expenseCategories: List<CategoryModel> = emptyList(),
     val isEditMode: Boolean = false,
     val dialogShown: Boolean = false,
     val categoryLimits: List<CategoryLimitModel> = emptyList(),
     val selectedCategoryLimit: CategoryLimitModel? = null,
-    val currency: Currency = Currency.IDR
+    val currency: Currency = Currency.IDR,
 ){
 
     val realAmount: Int get() {
@@ -31,6 +34,7 @@ data class MonthlyBudgetState(
     fun copy(budget: MonthlyBudgetModel) = copy(
         id = budget.id,
         amount = budget.totalBudget.toFormatNumber(budget.currency),
+        amountUpdated = budget.totalBudget.toFormatNumber(budget.currency),
         currency = budget.currency
     )
 
@@ -38,13 +42,22 @@ data class MonthlyBudgetState(
         val currentTime = Clock.System.now().toEpochMilliseconds()
         return MonthlyBudgetParam(
             id = id,
-            totalBudget = amount.asDouble(),
+            totalBudget = amount.asRealCurrencyValue(),
             spentAmount = 0.0,
             startDate = currentTime,
             endDate = getEndOfMonthUnixTime(),
             createdAt = currentTime,
             updatedAt = currentTime
         )
+    }
+
+    fun asMonthlyBudgetReCurring(): String {
+        val value =  MonthlyBudgetRecurring(amount = amount.asRealCurrencyValue())
+        return value.toEncodeString()
+    }
+
+    fun asCategoryLimitRecurring(): String {
+        return categoryLimits.toCategoryLimitParamEncodedString()
     }
 
     fun showDialog(categoryLimit: CategoryLimitModel) = copy(

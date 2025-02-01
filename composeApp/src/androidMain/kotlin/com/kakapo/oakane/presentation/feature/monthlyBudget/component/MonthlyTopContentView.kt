@@ -47,7 +47,7 @@ internal fun BudgetCurrencyTextFieldView(
     uiState: MonthlyBudgetState,
     onEvent: (MonthlyBudgetEvent) -> Unit
 ) {
-    val config by remember(uiState.amount) {
+    val config by remember(uiState.amountUpdated) {
         mutableStateOf(
             CurrencyTextFieldConfig(
                 Locale(uiState.currency.languageCode, uiState.currency.countryCode),

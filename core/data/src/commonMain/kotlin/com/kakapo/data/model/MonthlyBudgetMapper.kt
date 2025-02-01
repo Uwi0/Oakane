@@ -3,6 +3,8 @@ package com.kakapo.data.model
 import com.kakapo.database.model.MonthlyBudgetEntity
 import com.kakapo.model.Currency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 data class MonthlyBudgetParam(
     val id: Long = 0,
@@ -23,6 +25,21 @@ data class MonthlyBudgetParam(
         createdAt = createdAt,
         updatedAt = updatedAt
     )
+}
+
+@Serializable
+data class MonthlyBudgetRecurring(
+    val amount: Double = 0.0,
+) {
+    fun toEncodeString(): String {
+        return Json.encodeToString(this)
+    }
+
+    companion object {
+        fun fromEncodeString(encodedString: String): MonthlyBudgetRecurring {
+            return Json.decodeFromString(encodedString)
+        }
+    }
 }
 
 fun MonthlyBudgetEntity.toMonthlyBudgetModel(currency: Currency) = MonthlyBudgetModel(
