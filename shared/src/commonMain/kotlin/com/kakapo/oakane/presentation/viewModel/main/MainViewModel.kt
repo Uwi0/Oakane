@@ -2,7 +2,9 @@ package com.kakapo.oakane.presentation.viewModel.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.domain.usecase.base.ImportRecurringBudgetUseCase
 import com.kakapo.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -13,7 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val systemRepository: SystemRepository
+    private val systemRepository: SystemRepository,
+    private val importRecurringBudgetUseCase: ImportRecurringBudgetUseCase
 ): ViewModel() {
 
     @NativeCoroutinesState
@@ -26,6 +29,7 @@ class MainViewModel(
 
     fun initData() {
         loadTheme()
+        importRecurringBudget()
     }
 
     fun handleEvent(event: MainEvent) {
@@ -34,16 +38,19 @@ class MainViewModel(
         }
     }
 
-    suspend fun isOnboardingAlreadyRead(): Boolean {
-        return systemRepository.loadOnBoardingAlreadyRead().getOrElse { false }
-    }
-
     private fun loadTheme() = viewModelScope.launch {
         val onSuccess: (Theme) -> Unit = { theme ->
             _uiState.update { it.copy(theme = theme) }
         }
         systemRepository.loadSavedTheme().fold(
             onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun importRecurringBudget() = viewModelScope.launch {
+        importRecurringBudgetUseCase.execute().fold(
+            onSuccess = { Logger.d("ImportRecurringBudgetUseCaseImpl called") },
             onFailure = ::handleError
         )
     }

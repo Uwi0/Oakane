@@ -11,7 +11,10 @@ class SetRecurringBudgetUseCaseImpl(
     private val dispatcher: CoroutineDispatcher
 ) : SetRecurringBudgetUseCase {
 
-    override suspend fun execute(budget: String, categoryLimit: String): Result<Unit> = withContext(dispatcher) {
+    override suspend fun execute(
+        budget: String,
+        categoryLimit: String
+    ): Result<Unit> = withContext(dispatcher) {
         runCatching {
             val isRecurringBudgetDeferred = async(dispatcher) {
                 systemRepository.isMonthlyBudgetRecurring()

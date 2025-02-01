@@ -43,6 +43,7 @@ import com.kakapo.database.datasource.impl.WalletTransferLocalDatasourceImpl
 import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
+import com.kakapo.domain.usecase.base.ImportRecurringBudgetUseCase
 import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.domain.usecase.base.SetRecurringBudgetUseCase
@@ -52,6 +53,7 @@ import com.kakapo.domain.usecase.base.WalletLogItemsUseCase
 import com.kakapo.domain.usecase.impl.AddGoalSavingUseCaseImpl
 import com.kakapo.domain.usecase.impl.DeleteTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.GetMonthlyBudgetOverviewUseCaseImpl
+import com.kakapo.domain.usecase.impl.ImportRecurringBudgetUseCaseImpl
 import com.kakapo.domain.usecase.impl.MoveWalletBalanceUseCaseImpl
 import com.kakapo.domain.usecase.impl.SaveTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.SetRecurringBudgetUseCaseImpl
@@ -131,11 +133,12 @@ object CommonModule {
         factory<MoveWalletBalanceUseCase> { MoveWalletBalanceUseCaseImpl(get(), get(), get(named(IO))) }
         factory<WalletLogItemsUseCase> { WalletLogItemsUseCaseImpl(get(), get(), get(), get(named(IO))) }
         factory<SetRecurringBudgetUseCase> { SetRecurringBudgetUseCaseImpl(get(), get(named(IO))) }
+        factory<ImportRecurringBudgetUseCase> { ImportRecurringBudgetUseCaseImpl(get(), get(), get(named(IO))) }
     }
 
     val viewModel: Module = module {
         viewModel { SplashViewModel(get()) }
-        viewModel { MainViewModel(get()) }
+        viewModel { MainViewModel(get(), get()) }
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get()) }

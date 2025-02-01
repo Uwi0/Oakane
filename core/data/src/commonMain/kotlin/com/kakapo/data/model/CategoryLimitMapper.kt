@@ -35,6 +35,10 @@ fun List<CategoryLimitModel>.toCategoryLimitParamEncodedString(): String {
     return Json.encodeToString(params)
 }
 
+fun String.decodeToCategoryLimitParams(): List<CategoryLimitParam> {
+    return Json.decodeFromString(this)
+}
+
 fun CategoryLimitEntity.toCategoryLimitModel(currency: Currency) = CategoryLimitModel(
     id = id,
     category = categoryEntity.toCategoryModel(),
