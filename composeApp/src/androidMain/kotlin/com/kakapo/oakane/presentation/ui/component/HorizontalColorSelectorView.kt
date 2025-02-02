@@ -11,15 +11,12 @@ import com.kakapo.common.toColorLong
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconView
 
-data class ColorSelector(
-    val defaultColor: Long,
-    val colorsHex: List<String>
-)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalColorSelectorView(
-    colorSelector: ColorSelector,
+    defaultColor: Long,
+    colorsHex: List<String>,
     onClickBrush: () -> Unit,
     onClickColor: (String) -> Unit
 ) {
@@ -27,11 +24,11 @@ fun HorizontalColorSelectorView(
         stickyHeader {
             CategoryIconView(
                 icon = R.drawable.ic_rounded_brush,
-                color = Color(colorSelector.defaultColor),
+                color = Color(defaultColor),
                 onClick = { onClickBrush.invoke() }
             )
         }
-        items(colorSelector.colorsHex) { hex ->
+        items(colorsHex) { hex ->
             CategoryIconView(
                 icon = R.drawable.ic_empty,
                 color = Color(hex.ifEmpty { "0xFF4CAF50" }.toColorLong()),

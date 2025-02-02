@@ -22,8 +22,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletItemView
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletsTopAppbarView
-import com.kakapo.oakane.presentation.feature.wallets.component.sheet.WalletsSheet
-import com.kakapo.oakane.presentation.model.WalletSheetContent
+import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
+import com.kakapo.oakane.presentation.ui.component.sheet.wallet.rememberWalletSheetState
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEffect
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
@@ -39,10 +39,8 @@ internal fun WalletsRoute(
     val context = LocalContext.current
     val viewModel = koinViewModel<WalletsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
-        confirmValueChange = { uiState.sheetContent == WalletSheetContent.Create }
-    )
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val walletsSheetState = rememberWalletSheetState(currency = uiState.currency)
 
     LaunchedEffect(Unit) {
         viewModel.initializeData()
@@ -62,10 +60,10 @@ internal fun WalletsRoute(
     WalletsScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 
     if (uiState.isSheetShown) {
-        WalletsSheet(
+        WalletsSheetView(
             sheetState = sheetState,
-            uiState = uiState,
-            onEvent = viewModel::handleEvent
+            state = walletsSheetState,
+            onDismiss = { viewModel.handleEvent(WalletsEvent.ShowSheet(shown = false)) }
         )
     }
 }
@@ -88,7 +86,7 @@ private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onEvent.invoke(WalletsEvent.IsSheet(shown = true)) }) {
+            FloatingActionButton(onClick = { onEvent.invoke(WalletsEvent.ShowSheet(shown = true)) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null

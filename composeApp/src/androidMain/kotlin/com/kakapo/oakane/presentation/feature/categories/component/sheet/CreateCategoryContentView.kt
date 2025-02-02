@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
-import com.kakapo.oakane.presentation.ui.component.ColorSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
@@ -33,10 +32,6 @@ fun CreateCategoryContentView(
     uiState: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit
 ) {
-    val colorSelector = ColorSelector(
-        defaultColor = uiState.defaultColor,
-        colorsHex = uiState.categoriesColor
-    )
     Column(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -47,7 +42,8 @@ fun CreateCategoryContentView(
         SegmentTransactionTypeView(uiState, onEvent)
         TitleView(text = "Category Color")
         HorizontalColorSelectorView(
-            colorSelector = colorSelector,
+            defaultColor = uiState.defaultColor,
+            colorsHex = uiState.categoriesColor,
             onClickBrush = {
                 onEvent.invoke(CategoriesEvent.ChangeSheet(CategoriesSheetContent.SelectColor))
             },

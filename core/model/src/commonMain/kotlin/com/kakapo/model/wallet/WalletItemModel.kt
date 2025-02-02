@@ -2,10 +2,11 @@ package com.kakapo.model.wallet
 
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
+import com.kakapo.model.toFormatNumber
 
 data class WalletItemModel(
     val id: Long = DEFAULT_ID,
-    val name: String = "All Wallet",
+    val name: String = "",
     val isDefault: Boolean = true,
     val icon: String = "",
     val currency: Currency = Currency.IDR,
@@ -23,8 +24,13 @@ data class WalletItemModel(
 
     fun isDefaultWallet() = id == DEFAULT_ID
 
+    val startBalance: String get() {
+        return if(balance == 0.0) ""
+        else balance.toFormatNumber(currency)
+    }
+
     companion object {
-        const val DEFAULT_ID = 9999L
+        const val DEFAULT_ID = 0L
     }
 }
 

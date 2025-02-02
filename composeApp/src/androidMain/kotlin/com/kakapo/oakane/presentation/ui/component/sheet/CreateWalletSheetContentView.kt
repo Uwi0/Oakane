@@ -17,32 +17,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
-import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
-import com.kakapo.oakane.presentation.ui.component.ColorSelector
+import com.kakapo.oakane.presentation.designSystem.theme.colorsSelector
+import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
-
-sealed class CreateWalletSheetEvent {
-    data object ClickedIcon : CreateWalletSheetEvent()
-    data class ChangeWalletName(val name: String) : CreateWalletSheetEvent()
-    data class ChangeStartBalance(val balance: String) : CreateWalletSheetEvent()
-    data object ClickedColorBrush : CreateWalletSheetEvent()
-    data class SelectedColor(val hex: String) : CreateWalletSheetEvent()
-    data object SaveWallet : CreateWalletSheetEvent()
-}
+import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetState
 
 @Composable
 internal fun CreateWalletSheetContentView(
-    walletName: String,
-    selectedIcon: SelectedIconModel,
-    colorSelector: ColorSelector,
-    textFieldConfig: CurrencyTextFieldConfig = CurrencyTextFieldConfig(currencySymbol = "RP"),
-    isEditMode: Boolean,
-    onEvent: (CreateWalletSheetEvent) -> Unit
+    state: WalletsSheetState
 ) {
 
     Column(
@@ -51,41 +38,33 @@ internal fun CreateWalletSheetContentView(
             .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        CreateWalletContent(
-            selectedIcon = selectedIcon,
-            walletName = walletName,
-            onIconClick = { onEvent.invoke(CreateWalletSheetEvent.ClickedIcon) },
-            onChangeWalletName = { name ->
-                onEvent.invoke(CreateWalletSheetEvent.ChangeWalletName(name))
-            }
-        )
+        CreateWalletContent(state = state)
         StartBalanceContent(
-            textFieldConfig = textFieldConfig,
-            onChangeBalance = { balance ->
-                onEvent.invoke(CreateWalletSheetEvent.ChangeStartBalance(balance))
-            }
+            textFieldConfig = state.textFieldConfig,
+            onChangeBalance = { balance -> state.balance = balance }
         )
         ColorContent(
-            colorSelector = colorSelector,
-            onClickBrush = { onEvent.invoke(CreateWalletSheetEvent.ClickedColorBrush) },
-            onClickColor = { hex -> onEvent.invoke(CreateWalletSheetEvent.SelectedColor(hex)) }
+            state = state,
+            onClickBrush = { state.sheetContent = WalletSheetContent.SelectColor },
+            onClickColor = state::onSelectedColor
         )
         Spacer(Modifier.size(48.dp))
         ConfirmButtonView(
-            isEditMode = isEditMode,
-            deleteWallet = {  },
-            saveWallet = { onEvent.invoke(CreateWalletSheetEvent.SaveWallet) }
+            isEditMode = state.isEditMode,
+            saveWallet = { state.confirmSaveWallet() }
         )
     }
 }
 
 @Composable
 private fun CreateWalletContent(
-    selectedIcon: SelectedIconModel,
-    walletName: String,
-    onIconClick: () -> Unit,
-    onChangeWalletName: (String) -> Unit
+    state: WalletsSheetState
 ) {
+    val selectedIcon = SelectedIconModel(
+        imageFile = state.selectedImageFile,
+        defaultIcon = state.selectedIconName,
+        color = state.defaultColor
+    )
     ColumnContent(title = "Create Wallet") {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -93,12 +72,12 @@ private fun CreateWalletContent(
         ) {
             SelectedIconView(
                 selectedIcon = selectedIcon,
-                onClick = onIconClick
+                onClick = { state.sheetContent = WalletSheetContent.SelectIcon }
             )
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
-                value = walletName,
-                onValueChange = onChangeWalletName,
+                value = state.walletName,
+                onValueChange = { state.walletName = it },
                 shape = MaterialTheme.shapes.medium,
                 placeholder = { Text(text = "Wallet Name") },
                 singleLine = true
@@ -125,13 +104,14 @@ private fun StartBalanceContent(
 
 @Composable
 private fun ColorContent(
-    colorSelector: ColorSelector,
+    state: WalletsSheetState,
     onClickBrush: () -> Unit,
     onClickColor: (String) -> Unit
 ) {
     ColumnContent(title = "Wallet Color") {
         HorizontalColorSelectorView(
-            colorSelector = colorSelector,
+            defaultColor = state.defaultColor,
+            colorsHex = colorsSelector,
             onClickBrush = onClickBrush,
             onClickColor = onClickColor
         )
@@ -149,29 +129,13 @@ private fun ColumnContent(title: String, content: @Composable ColumnScope.() -> 
 @Composable
 private fun ConfirmButtonView(
     isEditMode: Boolean,
-    deleteWallet: () -> Unit,
     saveWallet: () -> Unit
 ) {
     val title = if (isEditMode) "Update" else "Create"
-    Row(
+    CustomButton(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        if (isEditMode) {
-            CustomOutlinedButton(
-                modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(16.dp),
-                onClick = deleteWallet,
-                content = { Text("Delete") },
-                color = MaterialTheme.colorScheme.error
-            )
-        }
-        CustomButton(
-            modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(16.dp),
-            onClick = saveWallet,
-            content = { Text(title) }
-        )
-    }
+        contentPadding = PaddingValues(16.dp),
+        onClick = saveWallet,
+        content = { Text(title) }
+    )
 }

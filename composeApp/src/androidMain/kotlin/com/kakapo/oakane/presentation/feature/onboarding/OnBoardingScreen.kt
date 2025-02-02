@@ -75,7 +75,7 @@ private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) 
                 currency = state.currency,
                 onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) }
             )
-            OnBoardingContent.CreateWallet -> CreateWalletView(uiState = state, onEvent = onEvent)
+            OnBoardingContent.CreateWallet -> CreateWalletView(uiState = state,onEvent = onEvent)
         }
     }
 }
