@@ -73,7 +73,7 @@ class ImportRecurringBudgetUseCaseImpl(
     private suspend fun processCategories(categoryLimitBackup: String) {
         val monthlyBudgetId = monthlyBudgetRepository.loadActiveMonthlyBudget().getOrThrow()
         categoryLimitBackup.decodeToCategoryLimitParams().forEach { categoryLimit ->
-            categoryLimitRepository.save(categoryLimit.copy(monthlyBudgetId = monthlyBudgetId))
+            categoryLimitRepository.save(categoryLimit.copy(monthlyBudgetId = monthlyBudgetId)).getOrThrow()
         }
     }
 

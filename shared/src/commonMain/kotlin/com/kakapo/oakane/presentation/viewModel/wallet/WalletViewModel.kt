@@ -42,14 +42,14 @@ class WalletViewModel(
         when (event) {
             WalletEvent.NavigateBack -> emit(WalletEffect.NavigateBack)
             WalletEvent.EditWallet -> {}
-            WalletEvent.DeleteWallet -> {}
             WalletEvent.MoveBalance -> moveBalance()
-            is WalletEvent.DialogShown -> _uiState.update { it.copy(dialogVisible = event.shown) }
+            is WalletEvent.ShowDialog -> _uiState.update { it.showDialog(event) }
             is WalletEvent.AddNote -> _uiState.update { it.copy(moveBalanceNote = event.note) }
             is WalletEvent.AddSelectedWalletFrom -> _uiState.update { it.copy(selectedWalletFrom = event.wallet) }
             is WalletEvent.AddSelectedWalletTo -> _uiState.update { it.copy(selectedWalletTo = event.wallet) }
             is WalletEvent.AddBalance -> _uiState.update { it.copy(movedBalance = event.balance) }
             is WalletEvent.SearchLog -> _uiState.update { it.copy(searchQuery = event.query) }
+            WalletEvent.ConfirmDelete -> _uiState.update { it.copy(dialogVisible = false) }
         }
     }
 

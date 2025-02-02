@@ -16,27 +16,30 @@ data class WalletState(
     val selectedWalletTo: WalletModel = WalletModel(),
     val movedBalance: String = "",
     val logItems: List<WalletLogItem<*>> = emptyList(),
-    val searchQuery: String = ""
+    val searchQuery: String = "",
+    val dialogContent: WalletDialogContent = WalletDialogContent.DeleteWallet,
 ) {
     val selectedWalletId: Long get() = wallet.id
 
-    val filteredLogItems: List<WalletLogItem<*>> get() {
-        return if (searchQuery.isEmpty()) {
-            logItems
-        } else {
-            logItems.filter {
-                it.name.contains(searchQuery, ignoreCase = true)
+    val filteredLogItems: List<WalletLogItem<*>>
+        get() {
+            return if (searchQuery.isEmpty()) {
+                logItems
+            } else {
+                logItems.filter {
+                    it.name.contains(searchQuery, ignoreCase = true)
+                }
             }
         }
-    }
 
-    private val toWalletId: Long get() {
-        return if (selectedWalletTo.id == 0L) {
-            wallet.id
-        } else {
-            selectedWalletTo.id
+    private val toWalletId: Long
+        get() {
+            return if (selectedWalletTo.id == 0L) {
+                wallet.id
+            } else {
+                selectedWalletTo.id
+            }
         }
-    }
 
     fun asWalletTransfer() = WalletTransferParam(
         fromWalletId = selectedWalletId,
@@ -44,6 +47,11 @@ data class WalletState(
         amount = movedBalance.asRealCurrencyValue(),
         notes = moveBalanceNote,
         createdAt = Clock.System.now().toEpochMilliseconds()
+    )
+
+    fun showDialog(event: WalletEvent.ShowDialog) = copy(
+        dialogVisible = event.shown,
+        dialogContent = event.content
     )
 }
 
@@ -55,12 +63,21 @@ sealed class WalletEffect {
 sealed class WalletEvent {
     data object NavigateBack : WalletEvent()
     data object EditWallet : WalletEvent()
-    data object DeleteWallet : WalletEvent()
-    data class DialogShown(val shown: Boolean) : WalletEvent()
+    data class ShowDialog(
+        val content: WalletDialogContent = WalletDialogContent.DeleteWallet,
+        val shown: Boolean
+    ) : WalletEvent()
+
     data class AddNote(val note: String) : WalletEvent()
     data class AddBalance(val balance: String) : WalletEvent()
     data class AddSelectedWalletFrom(val wallet: WalletModel) : WalletEvent()
     data class AddSelectedWalletTo(val wallet: WalletModel) : WalletEvent()
-    data object MoveBalance: WalletEvent()
+    data object MoveBalance : WalletEvent()
     data class SearchLog(val query: String) : WalletEvent()
+    data object ConfirmDelete : WalletEvent()
+}
+
+enum class WalletDialogContent {
+    DeleteWallet,
+    MoveBalance
 }

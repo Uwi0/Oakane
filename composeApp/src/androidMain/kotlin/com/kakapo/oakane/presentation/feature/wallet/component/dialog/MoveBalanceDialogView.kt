@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.wallet.component
+package com.kakapo.oakane.presentation.feature.wallet.component.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,23 +29,8 @@ import com.kakapo.oakane.presentation.viewModel.wallet.WalletEvent
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletState
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun MoveBalanceDialogView(
-    uiState: WalletState,
-    onEvent: (WalletEvent) -> Unit,
-) {
-    BasicAlertDialog(
-        onDismissRequest = { onEvent.invoke(WalletEvent.DialogShown(false)) }
-    ) {
-        Surface(shape = MaterialTheme.shapes.medium) {
-            MoveBalanceDialogContentView(uiState = uiState, onEvent)
-        }
-    }
-}
-
-@Composable
-private fun MoveBalanceDialogContentView(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
+fun MoveBalanceDialogContentView(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
     Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
         MoveBalanceDialogTopContentView(uiState = uiState, onEvent = onEvent)
         MoveBalanceDialogBottomContentView(onEvent = onEvent)
@@ -102,7 +85,7 @@ private fun MoveBalanceDialogBottomContentView(onEvent: (WalletEvent) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Spacer(Modifier.weight(1f))
         CustomTextButton(
-            onClick = { onEvent.invoke(WalletEvent.DialogShown(false)) },
+            onClick = { onEvent.invoke(WalletEvent.ShowDialog(shown = false)) },
             contentPadding = PaddingValues(16.dp),
             content = { Text("Cancel") }
         )

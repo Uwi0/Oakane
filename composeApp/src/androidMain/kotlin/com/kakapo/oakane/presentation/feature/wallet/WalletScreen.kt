@@ -34,11 +34,12 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTex
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.goal.component.GoalSavingItemView
-import com.kakapo.oakane.presentation.feature.wallet.component.MoveBalanceDialogView
 import com.kakapo.oakane.presentation.feature.wallet.component.TransferLogItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemView
+import com.kakapo.oakane.presentation.feature.wallet.component.dialog.WalletDialogView
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
+import com.kakapo.oakane.presentation.viewModel.wallet.WalletDialogContent
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEffect
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEvent
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletState
@@ -67,7 +68,7 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     WalletScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 
     if (uiState.dialogVisible) {
-        MoveBalanceDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
+        WalletDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
     }
 }
 
@@ -93,7 +94,10 @@ private fun WalletScreenTopAppBar(onEvent: (WalletEvent) -> Unit) {
         title = "Wallet",
         actions = {
             CustomIconButton(icon = Icons.Outlined.Edit) { onEvent.invoke(WalletEvent.EditWallet) }
-            CustomIconButton(icon = Icons.Outlined.Delete) { onEvent.invoke(WalletEvent.DeleteWallet) }
+            CustomIconButton(
+                icon = Icons.Outlined.Delete,
+                onClick = { onEvent.invoke(WalletEvent.ShowDialog(WalletDialogContent.DeleteWallet, true))}
+            )
         },
         onNavigateBack = { onEvent.invoke(WalletEvent.NavigateBack) }
     )
@@ -178,7 +182,7 @@ private fun LogItemView(
 @Composable
 private fun WalletFabButtonView(onEvent: (WalletEvent) -> Unit) {
     ExtendedFloatingActionButton(
-        onClick = { onEvent.invoke(WalletEvent.DialogShown(true)) },
+        onClick = { onEvent.invoke(WalletEvent.ShowDialog(WalletDialogContent.MoveBalance, true)) },
         icon = { Icon(imageVector = Icons.Outlined.SyncAlt, contentDescription = null) },
         text = { Text(text = "Move Balance") }
     )

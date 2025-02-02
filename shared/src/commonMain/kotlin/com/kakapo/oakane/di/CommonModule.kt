@@ -133,7 +133,7 @@ object CommonModule {
         factory<MoveWalletBalanceUseCase> { MoveWalletBalanceUseCaseImpl(get(), get(), get(named(IO))) }
         factory<WalletLogItemsUseCase> { WalletLogItemsUseCaseImpl(get(), get(), get(), get(named(IO))) }
         factory<SetRecurringBudgetUseCase> { SetRecurringBudgetUseCaseImpl(get(), get(named(IO))) }
-        factory<ImportRecurringBudgetUseCase> { ImportRecurringBudgetUseCaseImpl(get(), get(), get(named(IO))) }
+        factory<ImportRecurringBudgetUseCase> { ImportRecurringBudgetUseCaseImpl(get(), get(), get(), get(named(IO))) }
     }
 
     val viewModel: Module = module {
