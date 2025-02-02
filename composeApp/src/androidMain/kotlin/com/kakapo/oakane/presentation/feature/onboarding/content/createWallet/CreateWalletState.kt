@@ -62,10 +62,6 @@ class CreateWalletState(
                 colorSelector = colorSelector.copy(defaultColor = event.hex.toColorLong())
             }
 
-            is CreateWalletSheetEvent.DeleteWallet -> {
-
-            }
-
             CreateWalletSheetEvent.SaveWallet -> {
                 confirmWallet()
             }

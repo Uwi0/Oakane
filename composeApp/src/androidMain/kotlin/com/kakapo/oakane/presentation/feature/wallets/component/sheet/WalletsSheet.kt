@@ -103,11 +103,6 @@ private fun onCreateWalletEvent(
         CreateWalletSheetEvent.ClickedIcon -> {
             onEvent.invoke(WalletsEvent.SelectedSheet(WalletSheetContent.SelectIcon))
         }
-
-        CreateWalletSheetEvent.DeleteWallet -> {
-            onEvent.invoke(WalletsEvent.Dialog(shown = true))
-        }
-
         CreateWalletSheetEvent.SaveWallet -> {
             onEvent.invoke(WalletsEvent.SaveWallet)
         }

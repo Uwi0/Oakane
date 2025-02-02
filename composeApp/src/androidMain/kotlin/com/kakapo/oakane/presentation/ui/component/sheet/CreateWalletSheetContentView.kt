@@ -32,7 +32,6 @@ sealed class CreateWalletSheetEvent {
     data class ChangeStartBalance(val balance: String) : CreateWalletSheetEvent()
     data object ClickedColorBrush : CreateWalletSheetEvent()
     data class SelectedColor(val hex: String) : CreateWalletSheetEvent()
-    data object DeleteWallet : CreateWalletSheetEvent()
     data object SaveWallet : CreateWalletSheetEvent()
 }
 
@@ -74,7 +73,7 @@ internal fun CreateWalletSheetContentView(
         Spacer(Modifier.size(48.dp))
         ConfirmButtonView(
             isEditMode = isEditMode,
-            deleteWallet = { onEvent.invoke(CreateWalletSheetEvent.DeleteWallet) },
+            deleteWallet = {  },
             saveWallet = { onEvent.invoke(CreateWalletSheetEvent.SaveWallet) }
         )
     }

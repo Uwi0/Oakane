@@ -56,11 +56,9 @@ class WalletsViewModel(
             is WalletsEvent.SelectedImage -> _uiState.update { it.updateImage(event.file) }
             is WalletsEvent.SelectPrimaryWalletBy -> selectWalletBy(event.id)
             is WalletsEvent.ClickedWallet -> emit(WalletsEffect.NavigateToWallet(event.item.id))
-            is WalletsEvent.Dialog -> _uiState.update { it.copy(dialogShown = event.shown) }
             WalletsEvent.FeatureNotAvailable -> emit(WalletsEffect.ShowError("Feature not available yet"))
             WalletsEvent.ConfirmIcon -> _uiState.update { it.copy(sheetContent = WalletSheetContent.Create) }
             WalletsEvent.SaveWallet -> saveWallet()
-            WalletsEvent.ConfirmDelete -> deleteWallet()
         }
     }
 
@@ -110,14 +108,6 @@ class WalletsViewModel(
 
     private fun update(wallet: WalletModel) = viewModelScope.launch {
         walletRepository.update(wallet).fold(
-            onSuccess = ::handleWalletEvent,
-            onFailure = ::handleError
-        )
-    }
-
-    private fun deleteWallet() = viewModelScope.launch {
-        val walletId = uiState.value.walletId
-        walletRepository.deleteWalletBy(walletId).fold(
             onSuccess = ::handleWalletEvent,
             onFailure = ::handleError
         )

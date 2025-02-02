@@ -22,7 +22,6 @@ data class WalletsState(
     val startBalance: String = "",
     val selectedIcon: CategoryIconName = CategoryIconName.WALLET,
     val imageFile: String = "",
-    val dialogShown: Boolean = false,
     val currency: Currency = Currency.IDR
 ){
 
@@ -51,7 +50,6 @@ data class WalletsState(
         selectedIcon = CategoryIconName.WALLET,
         imageFile = "",
         isSheetShown = false,
-        dialogShown = false
     )
 
     fun toWalletModel(): WalletModel {
@@ -89,6 +87,4 @@ sealed class WalletsEvent{
     data object SaveWallet: WalletsEvent()
     data class SelectPrimaryWalletBy(val id: Long): WalletsEvent()
     data class ClickedWallet(val item: WalletItemModel): WalletsEvent()
-    data class Dialog(val shown: Boolean): WalletsEvent()
-    data object ConfirmDelete: WalletsEvent()
 }

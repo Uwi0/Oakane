@@ -49,7 +49,7 @@ class WalletViewModel(
             is WalletEvent.AddSelectedWalletTo -> _uiState.update { it.copy(selectedWalletTo = event.wallet) }
             is WalletEvent.AddBalance -> _uiState.update { it.copy(movedBalance = event.balance) }
             is WalletEvent.SearchLog -> _uiState.update { it.copy(searchQuery = event.query) }
-            WalletEvent.ConfirmDelete -> _uiState.update { it.copy(dialogVisible = false) }
+            WalletEvent.ConfirmDelete -> deleteWallet()
         }
     }
 
@@ -89,6 +89,19 @@ class WalletViewModel(
             _uiState.update { it.copy(dialogVisible = false) }
         }
         moveBalanceUseCase.execute(moveBalance).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun deleteWallet() = viewModelScope.launch {
+        val walletId = _uiState.value.wallet.id
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.copy(dialogVisible = false) }
+            emit(WalletEffect.ShowError("What is Done cannot be Undone"))
+            emit(WalletEffect.NavigateBack)
+        }
+        walletRepository.deleteWalletBy(walletId).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
