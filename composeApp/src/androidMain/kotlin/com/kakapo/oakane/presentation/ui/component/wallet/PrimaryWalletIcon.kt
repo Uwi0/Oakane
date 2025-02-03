@@ -2,17 +2,18 @@ package com.kakapo.oakane.presentation.ui.component.wallet
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.getSavedImageUri
+import com.kakapo.common.toColorLong
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
@@ -20,7 +21,7 @@ import com.kakapo.oakane.presentation.ui.component.item.category.CategoryIconVie
 import com.kakapo.oakane.presentation.ui.model.asIcon
 
 @Composable
-fun PrimaryWalletIcon(icon: String, iconName: CategoryIconName) {
+fun PrimaryWalletIcon(icon: String, iconName: CategoryIconName, color: String) {
     if (icon.contains("jpg")) {
         val context = LocalContext.current
         val imageUri = context.getSavedImageUri(icon).getOrNull()
@@ -33,9 +34,10 @@ fun PrimaryWalletIcon(icon: String, iconName: CategoryIconName) {
             placeholder = painterResource(R.drawable.mona_empty_wallet)
         )
     } else {
+        val safeColor = color.ifEmpty { "0xFF4CAF5" }
         CategoryIconView(
             icon = iconName.asIcon(),
-            color = MaterialTheme.colorScheme.primary,
+            color = Color(safeColor.toColorLong()),
             size = 30.dp
         )
     }

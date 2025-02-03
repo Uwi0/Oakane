@@ -19,7 +19,7 @@ import java.util.Locale
 fun rememberWalletSheetState(
     currency: Currency = Currency.IDR,
     wallet: WalletItemModel = WalletItemModel()
-) = remember {
+) = remember(wallet, currency) {
     WalletsSheetState(currency,wallet)
 }
 

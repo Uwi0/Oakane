@@ -44,9 +44,9 @@ class WalletsViewModel(
 
     fun handleEvent(event: WalletsEvent) {
         when (event) {
-            is WalletsEvent.NavigateBack -> emit(WalletsEffect.NavigateBack)
+            WalletsEvent.NavigateBack -> emit(WalletsEffect.NavigateBack)
             is WalletsEvent.OnSearchBy -> _uiState.update { it.copy(searchQuery = event.query) }
-            is WalletsEvent.ShowSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
+            is WalletsEvent.ShowSheet -> showSheet(event.shown)
             is WalletsEvent.SelectPrimaryWalletBy -> selectWalletBy(event.id)
             is WalletsEvent.ClickedWallet -> emit(WalletsEffect.NavigateToWallet(event.item.id))
             is WalletsEvent.SaveWallet -> add(event.wallet)
@@ -96,6 +96,13 @@ class WalletsViewModel(
             onSuccess = { _uiState.update { it.copy(wallets = wallets) } },
             onFailure = ::handleError
         )
+    }
+
+    private fun showSheet(shown: Boolean) = viewModelScope.launch {
+        _uiState.update { it.copy(isSheetShown = shown) }
+        if (!shown) {
+            emit(WalletsEffect.DismissBottomSheet)
+        }
     }
 
     private fun handleError(throwable: Throwable?) {

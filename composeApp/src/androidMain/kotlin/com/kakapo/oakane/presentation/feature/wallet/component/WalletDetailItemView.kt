@@ -37,7 +37,7 @@ private fun WalletDetailTopContent(item: WalletItemModel) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            PrimaryWalletIcon(item.icon, item.iconName)
+            PrimaryWalletIcon(item.icon, item.iconName, item.color)
             Text(text = item.name, style = MaterialTheme.typography.titleMedium)
         }
         Row(

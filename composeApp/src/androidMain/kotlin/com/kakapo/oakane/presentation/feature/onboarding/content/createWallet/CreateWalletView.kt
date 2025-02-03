@@ -21,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +48,12 @@ internal fun CreateWalletView(uiState: OnBoardingState,onEvent: (OnBoardingEvent
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val walletSheetState = rememberWalletSheetState(currency = uiState.currency)
     var isSheetVisible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isSheetVisible) {
+        if(!isSheetVisible) {
+            sheetState.hide()
+        }
+    }
 
     CreateWalletContentView(
         onSkip = {onEvent.invoke(OnBoardingEvent.SkippWallet)},

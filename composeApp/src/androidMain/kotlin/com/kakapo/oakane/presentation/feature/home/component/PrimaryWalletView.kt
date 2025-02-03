@@ -37,7 +37,7 @@ internal fun PrimaryWalletView(uiState: HomeState, onEvent: (HomeEvent) -> Unit)
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            PrimaryWalletIcon(walletModel.icon, walletModel.iconName)
+            PrimaryWalletIcon(walletModel.icon, walletModel.iconName, color = walletModel.color)
             Text(text = walletModel.name, style = MaterialTheme.typography.titleMedium)
         }
         Row(

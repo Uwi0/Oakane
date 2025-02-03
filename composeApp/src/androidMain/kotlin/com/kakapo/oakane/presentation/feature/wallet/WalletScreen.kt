@@ -12,11 +12,13 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.SyncAlt
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +41,8 @@ import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemV
 import com.kakapo.oakane.presentation.feature.wallet.component.dialog.WalletDialogView
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
+import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
+import com.kakapo.oakane.presentation.ui.component.sheet.wallet.rememberWalletSheetState
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletDialogContent
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEffect
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEvent
@@ -46,11 +50,17 @@ import com.kakapo.oakane.presentation.viewModel.wallet.WalletState
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     val viewModel = koinViewModel<WalletViewModel>()
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val walletSheetState = rememberWalletSheetState(
+        currency = uiState.wallet.currency,
+        wallet = uiState.wallet
+    )
 
     LaunchedEffect(Unit) {
         viewModel.initData(walletId)
@@ -61,6 +71,7 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
             when (effect) {
                 WalletEffect.NavigateBack -> navigateBack.invoke()
                 is WalletEffect.ShowError -> context.showToast(effect.message)
+                WalletEffect.DismissSheet -> sheetState.hide()
             }
         }
     }
@@ -69,6 +80,14 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
 
     if (uiState.dialogVisible) {
         WalletDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
+    }
+
+    if (uiState.isSheetShown) {
+        WalletsSheetView(
+            sheetState = sheetState,
+            state = walletSheetState,
+            onDismiss = { viewModel.handleEvent(WalletEvent.ShowSheet(shown = false)) }
+        )
     }
 }
 
@@ -90,13 +109,16 @@ private fun WalletScreen(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
 
 @Composable
 private fun WalletScreenTopAppBar(onEvent: (WalletEvent) -> Unit) {
+    val dialogContent = WalletDialogContent.DeleteWallet
     CustomNavigationTopAppBarView(
         title = "Wallet",
         actions = {
-            CustomIconButton(icon = Icons.Outlined.Edit) { onEvent.invoke(WalletEvent.EditWallet) }
+            CustomIconButton(
+                icon = Icons.Outlined.Edit,
+                onClick = { onEvent.invoke(WalletEvent.ShowSheet(true)) })
             CustomIconButton(
                 icon = Icons.Outlined.Delete,
-                onClick = { onEvent.invoke(WalletEvent.ShowDialog(WalletDialogContent.DeleteWallet, true))}
+                onClick = { onEvent.invoke(WalletEvent.ShowDialog(dialogContent, true)) }
             )
         },
         onNavigateBack = { onEvent.invoke(WalletEvent.NavigateBack) }
