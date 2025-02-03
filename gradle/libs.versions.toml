@@ -10,7 +10,7 @@ androidx-constraintlayout = "1.1.0"
 androidx-core-ktx = "1.15.0"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.6"
-androidx-navigation = "2.8.5"
+androidx-navigation = "2.8.6"
 androidx-test-junit = "1.2.1"
 camera = "1.4.1"
 coil = "2.7.0"
@@ -34,7 +34,7 @@ project-version = "1.0.0"
 skie = "0.10.0"
 splash-screen = "1.0.1"
 sqldelight = "2.0.2"
-uiTextGoogleFonts = "1.7.6"
+uiTextGoogleFonts = "1.7.7"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

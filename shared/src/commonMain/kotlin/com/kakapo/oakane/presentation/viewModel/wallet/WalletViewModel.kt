@@ -49,8 +49,9 @@ class WalletViewModel(
             is WalletEvent.AddSelectedWalletTo -> _uiState.update { it.copy(selectedWalletTo = event.wallet) }
             is WalletEvent.AddBalance -> _uiState.update { it.copy(movedBalance = event.balance) }
             is WalletEvent.SearchLog -> _uiState.update { it.copy(searchQuery = event.query) }
-            is WalletEvent.ShowSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
+            is WalletEvent.ShowWalletSheet -> onWalletSheet(event.shown)
             is WalletEvent.UpdateWallet -> update(event.wallet)
+            is WalletEvent.ShowFilterSheet -> onFilterSheet(event.shown)
         }
     }
 
@@ -97,8 +98,8 @@ class WalletViewModel(
 
     private fun update(wallet: WalletModel) = viewModelScope.launch {
         val onSuccess: (Unit) -> Unit = {
-            _uiState.update { it.copy(isSheetShown = false) }
-            emit(WalletEffect.DismissSheet)
+            _uiState.update { it.copy(isWalletSheetShown = false) }
+            emit(WalletEffect.DismissWalletSheet)
             loadWalletBy(wallet.id)
         }
         walletRepository.update(wallet).fold(
@@ -118,6 +119,20 @@ class WalletViewModel(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
+    }
+
+    private fun onWalletSheet(shown: Boolean) {
+        _uiState.update { it.copy(isWalletSheetShown = shown) }
+        if (!shown) {
+            emit(WalletEffect.DismissWalletSheet)
+        }
+    }
+
+    private fun onFilterSheet(shown: Boolean) {
+        _uiState.update { it.copy(isFilterSheetShown = shown) }
+        if (!shown) {
+            emit(WalletEffect.DismissFilterSheet)
+        }
     }
 
     private fun handleError(throwable: Throwable?) {

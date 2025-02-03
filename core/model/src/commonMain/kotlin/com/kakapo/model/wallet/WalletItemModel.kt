@@ -19,7 +19,7 @@ data class WalletItemModel(
     val iconName: CategoryIconName
         get() {
         return if (isDefault) CategoryIconName.fromString(icon)
-        else CategoryIconName.SALARY
+        else CategoryIconName.WALLET
     }
 
     fun isDefaultWallet() = id == DEFAULT_ID

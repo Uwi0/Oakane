@@ -39,6 +39,7 @@ import com.kakapo.oakane.presentation.feature.goal.component.GoalSavingItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.TransferLogItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.dialog.WalletDialogView
+import com.kakapo.oakane.presentation.feature.wallet.component.sheet.FilterLogSheetView
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
@@ -56,13 +57,14 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     val viewModel = koinViewModel<WalletViewModel>()
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val walletSheetState = rememberWalletSheetState(
+    val walletSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val updateWalletSheetState = rememberWalletSheetState(
         currency = uiState.wallet.currency,
         wallet = uiState.wallet
     ){
         viewModel.handleEvent(WalletEvent.UpdateWallet(it))
     }
+    val filterSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     LaunchedEffect(Unit) {
         viewModel.initData(walletId)
@@ -73,7 +75,8 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
             when (effect) {
                 WalletEffect.NavigateBack -> navigateBack.invoke()
                 is WalletEffect.ShowError -> context.showToast(effect.message)
-                WalletEffect.DismissSheet -> sheetState.hide()
+                WalletEffect.DismissWalletSheet -> walletSheetState.hide()
+                WalletEffect.DismissFilterSheet -> filterSheetState.hide()
             }
         }
     }
@@ -84,11 +87,18 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
         WalletDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
     }
 
-    if (uiState.isSheetShown) {
+    if (uiState.isWalletSheetShown) {
         WalletsSheetView(
-            sheetState = sheetState,
-            state = walletSheetState,
-            onDismiss = { viewModel.handleEvent(WalletEvent.ShowSheet(shown = false)) }
+            sheetState = walletSheetState,
+            state = updateWalletSheetState,
+            onDismiss = { viewModel.handleEvent(WalletEvent.ShowWalletSheet(shown = false)) }
+        )
+    }
+
+    if (uiState.isFilterSheetShown) {
+        FilterLogSheetView(
+            sheetState = filterSheetState,
+            onDismiss = {}
         )
     }
 }
@@ -117,7 +127,7 @@ private fun WalletScreenTopAppBar(onEvent: (WalletEvent) -> Unit) {
         actions = {
             CustomIconButton(
                 icon = Icons.Outlined.Edit,
-                onClick = { onEvent.invoke(WalletEvent.ShowSheet(true)) })
+                onClick = { onEvent.invoke(WalletEvent.ShowWalletSheet(true)) })
             CustomIconButton(
                 icon = Icons.Outlined.Delete,
                 onClick = { onEvent.invoke(WalletEvent.ShowDialog(dialogContent, true)) }
@@ -173,7 +183,7 @@ private fun FilterLogComponent(uiState: WalletState, onEvent: (WalletEvent) -> U
         )
         CustomIconButton(
             icon = Icons.Outlined.FilterList,
-            onClick = {}
+            onClick = { onEvent.invoke(WalletEvent.ShowFilterSheet(true)) }
         )
     }
 }

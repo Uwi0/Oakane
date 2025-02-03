@@ -18,7 +18,8 @@ data class WalletState(
     val logItems: List<WalletLogItem<*>> = emptyList(),
     val searchQuery: String = "",
     val dialogContent: WalletDialogContent = WalletDialogContent.DeleteWallet,
-    val isSheetShown: Boolean = false
+    val isWalletSheetShown: Boolean = false,
+    val isFilterSheetShown: Boolean = false
 ) {
     val selectedWalletId: Long get() = wallet.id
 
@@ -59,7 +60,8 @@ data class WalletState(
 sealed class WalletEffect {
     data object NavigateBack : WalletEffect()
     data class ShowError(val message: String) : WalletEffect()
-    data object DismissSheet: WalletEffect()
+    data object DismissWalletSheet: WalletEffect()
+    data object DismissFilterSheet: WalletEffect()
 }
 
 sealed class WalletEvent {
@@ -75,7 +77,8 @@ sealed class WalletEvent {
     data class AddSelectedWalletTo(val wallet: WalletModel) : WalletEvent()
     data object MoveBalance : WalletEvent()
     data class SearchLog(val query: String) : WalletEvent()
-    data class ShowSheet(val shown: Boolean) : WalletEvent()
+    data class ShowWalletSheet(val shown: Boolean) : WalletEvent()
+    data class ShowFilterSheet(val shown: Boolean) : WalletEvent()
     data object ConfirmDelete : WalletEvent()
     data class UpdateWallet(val wallet: WalletModel) : WalletEvent()
 }
