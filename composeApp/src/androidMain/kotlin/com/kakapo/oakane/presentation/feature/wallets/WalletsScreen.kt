@@ -40,7 +40,9 @@ internal fun WalletsRoute(
     val viewModel = koinViewModel<WalletsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val walletsSheetState = rememberWalletSheetState(currency = uiState.currency)
+    val walletsSheetState = rememberWalletSheetState(currency = uiState.currency) { wallet ->
+        viewModel.handleEvent(WalletsEvent.SaveWallet(wallet))
+    }
 
     LaunchedEffect(Unit) {
         viewModel.initializeData()

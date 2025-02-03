@@ -46,7 +46,9 @@ import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingState
 @Composable
 internal fun CreateWalletView(uiState: OnBoardingState,onEvent: (OnBoardingEvent) -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val walletSheetState = rememberWalletSheetState(currency = uiState.currency)
+    val walletSheetState = rememberWalletSheetState(currency = uiState.currency) { wallet ->
+        onEvent.invoke(OnBoardingEvent.ConfirmWallet(wallet))
+    }
     var isSheetVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(isSheetVisible) {

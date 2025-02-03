@@ -5,27 +5,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.toColorLong
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.theme.colorsSelector
 import com.kakapo.oakane.presentation.model.WalletSheetContent
-import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import java.util.Locale
 
 @Composable
 fun rememberWalletSheetState(
     currency: Currency = Currency.IDR,
-    wallet: WalletItemModel = WalletItemModel()
+    wallet: WalletItemModel = WalletItemModel(),
+    onSaveWallet: (WalletModel) -> Unit
 ) = remember(wallet, currency) {
-    WalletsSheetState(currency,wallet)
+    WalletsSheetState(currency,wallet, onSaveWallet = onSaveWallet)
 }
 
 class WalletsSheetState(
-    currency: Currency,
-    wallet: WalletItemModel
+    private val currency: Currency,
+    private val wallet: WalletItemModel,
+    private val onSaveWallet: (WalletModel) -> Unit
 ) {
 
     var walletName by mutableStateOf(wallet.name)
@@ -41,12 +44,6 @@ class WalletsSheetState(
         initialText = wallet.startBalance,
         currencySymbol = currency.symbol
     )
-    val selectedIcon = SelectedIconModel(
-        imageFile = selectedImageFile,
-        defaultIcon = selectedIconName,
-        color = selectedColor.ifEmpty { colorsSelector.first() }.toColorLong()
-    )
-
 
     val defaultColor: Long get() {
         val color = selectedColor.ifEmpty { colorsSelector.first() }
@@ -54,7 +51,17 @@ class WalletsSheetState(
     }
 
     fun confirmSaveWallet() {
-
+        val icon = selectedImageFile.ifEmpty { selectedIconName.displayName }
+        val walletModel = WalletModel(
+            id = wallet.id,
+            currency = currency,
+            balance = balance.asRealCurrencyValue(),
+            name = walletName,
+            isDefaultIcon = selectedImageFile.isEmpty(),
+            icon = icon,
+            color = selectedColor.ifEmpty { "0xFF4CAF5" }
+        )
+        onSaveWallet.invoke(walletModel)
     }
 
     fun onSelectedColor(hex: String) {

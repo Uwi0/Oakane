@@ -50,6 +50,7 @@ class WalletViewModel(
             is WalletEvent.AddBalance -> _uiState.update { it.copy(movedBalance = event.balance) }
             is WalletEvent.SearchLog -> _uiState.update { it.copy(searchQuery = event.query) }
             is WalletEvent.ShowSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
+            is WalletEvent.UpdateWallet -> update(event.wallet)
         }
     }
 
@@ -89,6 +90,18 @@ class WalletViewModel(
             _uiState.update { it.copy(dialogVisible = false) }
         }
         moveBalanceUseCase.execute(moveBalance).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun update(wallet: WalletModel) = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.copy(isSheetShown = false) }
+            emit(WalletEffect.DismissSheet)
+            loadWalletBy(wallet.id)
+        }
+        walletRepository.update(wallet).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

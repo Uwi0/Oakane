@@ -60,7 +60,9 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     val walletSheetState = rememberWalletSheetState(
         currency = uiState.wallet.currency,
         wallet = uiState.wallet
-    )
+    ){
+        viewModel.handleEvent(WalletEvent.UpdateWallet(it))
+    }
 
     LaunchedEffect(Unit) {
         viewModel.initData(walletId)

@@ -77,6 +77,7 @@ sealed class WalletEvent {
     data class SearchLog(val query: String) : WalletEvent()
     data class ShowSheet(val shown: Boolean) : WalletEvent()
     data object ConfirmDelete : WalletEvent()
+    data class UpdateWallet(val wallet: WalletModel) : WalletEvent()
 }
 
 enum class WalletDialogContent {
