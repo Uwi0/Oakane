@@ -1,10 +1,12 @@
 package com.kakapo.oakane.presentation.feature.wallet.component.sheet
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
@@ -23,59 +25,127 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
+import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun FilterLogSheetView(sheetState: SheetState, onDismiss: () -> Unit) {
+internal fun FilterLogSheetView(
+    sheetState: SheetState,
+    filterState: FilterLogSheetState,
+    onDismiss: () -> Unit = {}
+) {
+
+    if (filterState.isDialogShown) {
+        CustomDatePickerDialog(
+            initialValue = filterState.defaultValue,
+            defaultValue = filterState.defaultValue,
+            onDismiss = { filterState.isDialogShown = false },
+            onConfirm = filterState::setFilterDate
+        )
+    }
+
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismiss
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            FilterLogSheetContentView()
-            ApplyFilterButtonView()
+            FilterLogSheetContentView(filterState)
+            ApplyFilterButtonView(filterState)
         }
 
     }
 }
 
 @Composable
-private fun FilterLogSheetContentView() {
-    Column(modifier = Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("Filter Log", style = MaterialTheme.typography.headlineSmall)
-        FilterLogTopContentView()
+private fun FilterLogSheetContentView(state: FilterLogSheetState) {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        TitleSheet(state)
+        FilterLogTopContentView(state)
         HorizontalDivider()
-        FilterLogBottomContentView()
+        FilterLogBottomContentView(state)
     }
 }
 
 @Composable
-private fun FilterLogTopContentView() {
+private fun TitleSheet(state: FilterLogSheetState) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(32.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = "Filter Log",
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        if (state.isResetShown) {
+            CustomTextButton(onClick = state::resetFilter) {
+                Text(
+                    text = "Reset",
+                    color = MaterialTheme.colorScheme.outline
+                )
+            }
+        }
+
+    }
+}
+
+@Composable
+private fun FilterLogTopContentView(state: FilterLogSheetState) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             "Time Range",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.outline
         )
-        FilterRadioButtonView(title = "Last Week", isSelected = true, onClick = {})
-        FilterRadioButtonView(title = "Last Month", isSelected = false, onClick = {})
-        FilterRadioButtonView(title = "Custom", isSelected = false, onClick = {})
-        FiltersCustomDateView()
+        FilterRadioButtonView(
+            title = "Last Week",
+            isSelected = state.isLastWeekSelected,
+            onClick = state::onSelectedWeek
+        )
+        FilterRadioButtonView(
+            title = "Last Month",
+            isSelected = state.isLastMonthSelected,
+            onClick = state::onSelectedMonth
+        )
+        FilterRadioButtonView(
+            title = "Custom",
+            isSelected = state.isCustomSelected,
+            onClick = state::onSelectedCustom
+        )
+        FiltersCustomDateView(state)
     }
 }
 
 @Composable
-private fun FilterLogBottomContentView() {
+private fun FilterLogBottomContentView(state: FilterLogSheetState) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             text = "Category",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.outline
         )
-        FilterRadioButtonView(title = "Transaction", isSelected = true, onClick = {})
-        FilterRadioButtonView(title = "Goal Saving", isSelected = false, onClick = {})
-        FilterRadioButtonView(title = "Wallet Transfer", isSelected = false, onClick = {})
+        FilterRadioButtonView(
+            title = "Transaction",
+            isSelected = state.isTransactionSelected,
+            onClick = state::onSelectedTransaction
+        )
+        FilterRadioButtonView(
+            title = "Goal Saving",
+            isSelected = state.isGoalSavingSelected,
+            onClick = state::onSelectedGoalSaving
+        )
+        FilterRadioButtonView(
+            title = "Wallet Transfer",
+            isSelected = state.isTransferSelected,
+            onClick = state::onSelectedTransfer
+        )
     }
 }
 
@@ -92,19 +162,19 @@ private fun FilterRadioButtonView(title: String, isSelected: Boolean, onClick: (
 }
 
 @Composable
-private fun FiltersCustomDateView() {
+private fun FiltersCustomDateView(state: FilterLogSheetState) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         FilterCustomDateView(
             modifier = Modifier.weight(1f),
             title = "From",
-            date = "2021-01-01",
-            onClick = {}
+            date = state.displayedStartDate,
+            onClick = state::onShowDialogStartDate
         )
         FilterCustomDateView(
             modifier = Modifier.weight(1f),
             title = "To",
-            date = "2021-12-31",
-            onClick = {}
+            date = state.displayedEndDate,
+            onClick = state::onShowDialogEndDate
         )
     }
 }
@@ -121,9 +191,12 @@ private fun FilterCustomDateView(
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.inverseOnSurface,
         onClick = onClick,
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -142,14 +215,13 @@ private fun FilterCustomDateView(
             Icon(
                 imageVector = Icons.Default.Event,
                 contentDescription = null,
-
             )
         }
     }
 }
 
 @Composable
-private fun ApplyFilterButtonView() {
+private fun ApplyFilterButtonView(state: FilterLogSheetState) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -158,7 +230,7 @@ private fun ApplyFilterButtonView() {
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
-            onClick = {},
+            onClick = state::applyFilter,
             content = { Text("Apply Filter") }
         )
     }
@@ -169,7 +241,7 @@ private fun ApplyFilterButtonView() {
 private fun FilterLogSheetPreview() {
     AppTheme {
         Surface {
-            FilterLogSheetContentView()
+            FilterLogSheetContentView(state = rememberFilterLogSheetState())
         }
     }
 }

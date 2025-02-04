@@ -13,6 +13,9 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
+fun getCurrentUnixTime(): Long {
+    return Clock.System.now().toEpochMilliseconds()
+}
 
 fun getCurrentDateWith(format: String): String {
     val instant = Clock.System.now()

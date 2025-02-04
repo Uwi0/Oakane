@@ -101,6 +101,7 @@ dependencies {
 
     //accompanist
     implementation(libs.accompanist.permissions)
+    debugImplementation(libs.leak.canary)
 
     implementation(kotlin("reflect"))
 }

@@ -9,12 +9,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDatePickerDialog(
-    initialValue: Long? = null,
+    initialValue: Long? = System.currentTimeMillis(),
     defaultValue: Long = System.currentTimeMillis(),
     onDismiss: () -> Unit = {},
     onConfirm: (Long) -> Unit
@@ -50,4 +51,10 @@ fun CustomDatePicker(state: DatePickerState) {
         headline = null,
         colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surface)
     )
+}
+
+@Composable
+@Preview
+private fun CustomDatePickerPreview() {
+    CustomDatePickerDialog {  }
 }

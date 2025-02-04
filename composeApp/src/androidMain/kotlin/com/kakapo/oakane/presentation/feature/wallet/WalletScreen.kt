@@ -40,6 +40,7 @@ import com.kakapo.oakane.presentation.feature.wallet.component.TransferLogItemVi
 import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.dialog.WalletDialogView
 import com.kakapo.oakane.presentation.feature.wallet.component.sheet.FilterLogSheetView
+import com.kakapo.oakane.presentation.feature.wallet.component.sheet.rememberFilterLogSheetState
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
@@ -65,6 +66,15 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
         viewModel.handleEvent(WalletEvent.UpdateWallet(it))
     }
     val filterSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val filterLogSheetState = rememberFilterLogSheetState(
+        dateFilter = uiState.filterDate,
+        categoryFilter = uiState.filterCategory,
+        onApplyFilter = { dateFilter, categoryFilter ->
+            context.showToast("Apply filter $dateFilter $categoryFilter")
+            viewModel.handleEvent(WalletEvent.FilterLog(dateFilter, categoryFilter))
+        },
+        onResetFilter = { viewModel.handleEvent(WalletEvent.ResetFilterLog) }
+    )
 
     LaunchedEffect(Unit) {
         viewModel.initData(walletId)
@@ -98,7 +108,8 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     if (uiState.isFilterSheetShown) {
         FilterLogSheetView(
             sheetState = filterSheetState,
-            onDismiss = {}
+            filterState = filterLogSheetState,
+            onDismiss = { viewModel.handleEvent(WalletEvent.ShowFilterSheet(shown = false)) }
         )
     }
 }
