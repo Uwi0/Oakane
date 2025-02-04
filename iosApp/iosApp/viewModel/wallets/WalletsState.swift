@@ -17,12 +17,7 @@ struct WalletsState {
     init (walletsState: WalletsStateKt) {
         self.wallets = walletsState.wallets
         self.sheetShown = walletsState.isSheetShown
-        self.sheetContent = walletsState.sheetContent
-        self.walletName = walletsState.walletName
-        self.imageFile = walletsState.imageFile
-        self.selectedIcon = walletsState.selectedIcon
-        self.selectedColor = walletsState.defaultColor
         self.colors = walletsState.colors
-        self.startBalance = Int(walletsState.startBalanceValue)
+
     }
 }

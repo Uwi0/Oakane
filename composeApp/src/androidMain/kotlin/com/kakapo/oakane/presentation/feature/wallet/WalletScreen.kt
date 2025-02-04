@@ -70,7 +70,6 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
         dateFilter = uiState.filterDate,
         categoryFilter = uiState.filterCategory,
         onApplyFilter = { dateFilter, categoryFilter ->
-            context.showToast("Apply filter $dateFilter $categoryFilter")
             viewModel.handleEvent(WalletEvent.FilterLog(dateFilter, categoryFilter))
         },
         onResetFilter = { viewModel.handleEvent(WalletEvent.ResetFilterLog) }
@@ -182,10 +181,9 @@ private fun FilterLogView(uiState: WalletState, onEvent: (WalletEvent) -> Unit) 
 
 @Composable
 private fun FilterLogComponent(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    val tint = if(uiState.hasFilter) MaterialTheme.colorScheme.primary
+    else MaterialTheme.colorScheme.outline
+    Row(verticalAlignment = Alignment.CenterVertically) {
         SearchTextFieldView(
             modifier = Modifier.weight(1f),
             value = uiState.searchQuery,
@@ -194,6 +192,7 @@ private fun FilterLogComponent(uiState: WalletState, onEvent: (WalletEvent) -> U
         )
         CustomIconButton(
             icon = Icons.Outlined.FilterList,
+            tint = tint,
             onClick = { onEvent.invoke(WalletEvent.ShowFilterSheet(true)) }
         )
     }

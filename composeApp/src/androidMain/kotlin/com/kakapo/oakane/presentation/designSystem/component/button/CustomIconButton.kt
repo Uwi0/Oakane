@@ -7,16 +7,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomIconButton(modifier: Modifier = Modifier, icon: ImageVector, onClick: () -> Unit) {
+fun CustomIconButton(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    tint: Color = MaterialTheme.colorScheme.onSurface,
+    onClick: () -> Unit,
+    ) {
     IconButton(modifier = modifier, onClick = onClick) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.outline
+            tint = tint
         )
     }
 }

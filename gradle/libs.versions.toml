@@ -24,6 +24,7 @@ junit = "4.13.2"
 kermit = "2.0.5"
 kmp-nativecoroutines = "1.0.0-ALPHA-38"
 koin-bom = "4.0.0"
+kotest = "5.9.0"
 kotlin = "2.1.0"
 kotlinxdatetime = "0.6.1"
 kotlinx-serialization = "1.8.0-RC"
@@ -71,6 +72,9 @@ koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-compose-viewmodel-navigation" }
+kotest-framework = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-property = {group = "io.kotest", name = "kotest-property", version.ref = "kotest"}
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine-core" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxdatetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
@@ -100,6 +104,7 @@ kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.re
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 touchlab-skie = { id = "co.touchlab.skie", version.ref = "skie" }
+kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 
 #plugin define by this project
 kakapo-kotlinMultiplatform = { id = "com.kakapo.app.kotlinMultiplatform", version = "unspecified" }

@@ -12,7 +12,7 @@ struct WalletsContentView: View {
                 ForEach(walletItems, id: \.self){ walletItem in
                     WalletItemView(
                         wallet: walletItem,
-                        onSelectWallet: { onEvent(.SelectWalletBy(id: walletItem.id))}
+                        onSelectWallet: { }
                     )
                 }
             }

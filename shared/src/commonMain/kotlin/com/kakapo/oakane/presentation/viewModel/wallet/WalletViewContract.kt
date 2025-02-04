@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.wallet
 
 import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.data.model.WalletTransferParam
+import com.kakapo.domain.usecase.filterWalletLogsBy
 import com.kakapo.model.wallet.FilterWalletLogByCategory
 import com.kakapo.model.wallet.FilterWalletLogByDateModel
 import com.kakapo.model.wallet.WalletItemModel
@@ -30,28 +31,18 @@ data class WalletState(
     val selectedWalletId: Long get() = wallet.id
 
     val filteredLogItems: List<WalletLogItem<*>>
-        get() {
-            return if (searchQuery.isEmpty()) {
-                logItems
-            } else {
-                logItems.filter {
-                    it.name.contains(searchQuery, ignoreCase = true)
-                }
-            }
-        }
+        get()  = logItems.filterWalletLogsBy(
+            query = searchQuery,
+            date = filterDate,
+            category = filterCategory
+        )
 
-    private val toWalletId: Long
-        get() {
-            return if (selectedWalletTo.id == 0L) {
-                wallet.id
-            } else {
-                selectedWalletTo.id
-            }
-        }
+    val hasFilter: Boolean get() = filterDate != FilterWalletLogByDateModel.All ||
+            filterCategory != FilterWalletLogByCategory.All
 
     fun asWalletTransfer() = WalletTransferParam(
         fromWalletId = selectedWalletId,
-        toWalletId = toWalletId,
+        toWalletId = selectedWalletTo.id,
         amount = movedBalance.asRealCurrencyValue(),
         notes = moveBalanceNote,
         createdAt = Clock.System.now().toEpochMilliseconds()

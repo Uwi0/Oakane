@@ -51,7 +51,7 @@ class WalletViewModel(
             is WalletEvent.ShowWalletSheet -> onWalletSheet(event.shown)
             is WalletEvent.UpdateWallet -> update(event.wallet)
             is WalletEvent.ShowFilterSheet -> onFilterSheet(event.shown)
-            is WalletEvent.FilterLog -> _uiState.update { it.applyFilter(event) }
+            is WalletEvent.FilterLog -> applyFilterLog(event)
             WalletEvent.ResetFilterLog -> _uiState.update { it.resetFilter() }
         }
     }
@@ -134,6 +134,11 @@ class WalletViewModel(
         if (!shown) {
             emit(WalletEffect.DismissFilterSheet)
         }
+    }
+
+    private fun applyFilterLog(event: WalletEvent.FilterLog) {
+        _uiState.update { it.applyFilter(event) }
+        emit(WalletEffect.DismissFilterSheet)
     }
 
     private fun handleError(throwable: Throwable?) {

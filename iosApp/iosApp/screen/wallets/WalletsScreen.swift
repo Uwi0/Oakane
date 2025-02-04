@@ -25,7 +25,7 @@ struct WalletsScreen: View {
             }
             .sheet(
                 isPresented: $viewModel.uiState.sheetShown,
-                onDismiss: { viewModel.handle(event: .IsSheet(shown: false))}
+                onDismiss: { }
             ){
                 WalletsSheetContent()
                     .presentationDetents([bottomSheetSize])
@@ -36,7 +36,7 @@ struct WalletsScreen: View {
                 size: FabConstant.size,
                 xPos: proxy.size.width - FabConstant.xOffset,
                 yPos: proxy.size.height - FabConstant.yOffset,
-                onClick: { viewModel.handle(event: .IsSheet(shown: true))}
+                onClick: { }
             )
         }
         .navigationBarBackButtonHidden(true)
@@ -54,6 +54,8 @@ struct WalletsScreen: View {
                 navigation.navigateBack()
             case .showError(let effect):
                 print("error \(effect.message)")
+            case .navigateToWallet(let effect):
+                print("Navigate to wallet")
             }
         }
         viewModel.uiEffect = nil
@@ -68,9 +70,9 @@ struct WalletsScreen: View {
             case .selectIcon: SelectIconView(
                 selectedIcon: uiState.selectedIcon,
                 selectedColor: uiState.selectedColor,
-                onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon)) },
-                onTakImage: { file in viewModel.handle(event: .SelectedImage(file: file)) },
-                onConfirm: { viewModel.handle(event: .ConfirmIcon()) }
+                onPickIcon: { icon in },
+                onTakImage: { file in },
+                onConfirm: {}
             )
             }
         }
@@ -79,18 +81,7 @@ struct WalletsScreen: View {
     @ViewBuilder
     private func CreateWalletSheetContent() -> some View {
         let onEvent: (CreateWalletEvent) -> Void = { walletEvent in
-            switch walletEvent {
-            case .changeWallet(name: let name):
-                viewModel.handle(event: .OnChangeWallet(name: name))
-            case .selectedIcon:
-                viewModel.handle(event: .SelectedSheet(content: .selectIcon))
-            case .changeStart(balance: let balance):
-                viewModel.handle(event: .ChangeStart(balance: balance))
-            case .selectWallet(color: let color):
-                viewModel.handle(event: .SelectWallet(color: color))
-            case .saveWallet:
-                viewModel.handle(event: .SaveWallet())
-            }
+            
         }
         
         CreateWalletSheetView(
