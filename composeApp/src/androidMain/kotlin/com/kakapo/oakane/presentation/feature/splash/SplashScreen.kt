@@ -34,22 +34,32 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun SplashRoute(
+    navigateToTermAndService: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToOnBoarding: () -> Unit
 ) {
     val viewModel = koinViewModel<SplashViewModel>()
-    val isAlreadyRead by viewModel.isAlreadyRead.collectAsStateWithLifecycle()
+    val isAlreadyReadOnBoarding by viewModel.isAlreadyReadOnBoarding.collectAsStateWithLifecycle()
+    val isAlreadyReadTermAndService by viewModel.isAlreadyReadTermAndService.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.initViewModel()
     }
 
-    SplashScreen(isAlreadyRead = isAlreadyRead, navigateToHome, navigateToOnBoarding)
+    SplashScreen(
+        isAlreadyReadOnBoarding = isAlreadyReadOnBoarding,
+        isAlreadyReadTermAndService = isAlreadyReadTermAndService,
+        navigateToTermAndService,
+        navigateToHome,
+        navigateToOnBoarding
+    )
 }
 
 @Composable
 private fun SplashScreen(
-    isAlreadyRead: Boolean,
+    isAlreadyReadOnBoarding: Boolean,
+    isAlreadyReadTermAndService: Boolean,
+    navigateToTermAndService: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToOnboarding: () -> Unit
 ) {
@@ -71,16 +81,26 @@ private fun SplashScreen(
     if (shouldNavigate) {
         LaunchedEffect(Unit) {
             delay(1500)
-            if (isAlreadyRead) {
-                navigateToHome()
+            if (isAlreadyReadTermAndService) {
+                if (isAlreadyReadOnBoarding) {
+                    navigateToHome.invoke()
+                } else {
+                    navigateToOnboarding.invoke()
+                }
             } else {
-                navigateToOnboarding()
+                navigateToTermAndService.invoke()
             }
         }
     }
 
-    val logoAlpha by animateFloatAsState(targetValue = if (isLogoVisible) 1f else 0f, animationSpec = tween(800))
-    val textAlpha by animateFloatAsState(targetValue = if (isTextVisible) 1f else 0f, animationSpec = tween(1000))
+    val logoAlpha by animateFloatAsState(
+        targetValue = if (isLogoVisible) 1f else 0f,
+        animationSpec = tween(800)
+    )
+    val textAlpha by animateFloatAsState(
+        targetValue = if (isTextVisible) 1f else 0f,
+        animationSpec = tween(1000)
+    )
 
     Box(
         modifier = Modifier

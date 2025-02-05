@@ -23,6 +23,8 @@ import com.kakapo.oakane.presentation.feature.reports.navigation.reportsScreen
 import com.kakapo.oakane.presentation.feature.settings.navigation.settingsScreen
 import com.kakapo.oakane.presentation.feature.splash.navigation.SPLASH_ROUTE
 import com.kakapo.oakane.presentation.feature.splash.navigation.splashScreen
+import com.kakapo.oakane.presentation.feature.termAndService.navigation.navigateToTermAndService
+import com.kakapo.oakane.presentation.feature.termAndService.navigation.termAndServiceScreen
 import com.kakapo.oakane.presentation.feature.transaction.navigation.navigateToTransaction
 import com.kakapo.oakane.presentation.feature.transaction.navigation.transactionScreen
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
@@ -42,8 +44,12 @@ internal fun OakaneNavHost(
     val navController = appState.navController
     NavHost(navController = navController, startDestination = startDestination) {
         splashScreen(
+            navigateToTermAndService = { navController.navigateToTermAndService(appState.navOptionsPopBackStack()) },
             navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) },
             navigateToOnBoarding = { navController.navigateToOnBoarding(appState.navOptionsPopBackStack()) }
+        )
+        termAndServiceScreen(
+            navigateToOnBoarding = navController::navigateToOnBoarding
         )
         onBoardingScreen(
             navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) }

@@ -12,16 +12,27 @@ class SplashViewModel(
     private val systemRepository: SystemRepository
 ) : ViewModel() {
 
-    val isAlreadyRead get() = _isAlreadyRead.asStateFlow()
-    private val _isAlreadyRead = MutableStateFlow(false)
+    val isAlreadyReadOnBoarding get() = _isAlreadyReadOnBoarding.asStateFlow()
+    private val _isAlreadyReadOnBoarding = MutableStateFlow(false)
+
+    val isAlreadyReadTermAndService get() = _isAlreadyReadTermAndService.asStateFlow()
+    private val _isAlreadyReadTermAndService = MutableStateFlow(false)
 
     fun initViewModel() {
         isAlreadyReadOnBoarding()
+        isAlreadyReadTermAndService()
     }
 
     private fun isAlreadyReadOnBoarding() = viewModelScope.launch{
         systemRepository.loadOnBoardingAlreadyRead().fold(
-            onSuccess = { alreadyRead -> _isAlreadyRead.update { alreadyRead } },
+            onSuccess = { alreadyRead -> _isAlreadyReadOnBoarding.update { alreadyRead } },
+            onFailure = {}
+        )
+    }
+
+    private fun isAlreadyReadTermAndService() = viewModelScope.launch {
+        systemRepository.loadTermAndServiceCondition().fold(
+            onSuccess = { alreadyRead -> _isAlreadyReadTermAndService.update { alreadyRead } },
             onFailure = {}
         )
     }

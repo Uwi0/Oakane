@@ -17,19 +17,29 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.common.showToast
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.designSystem.theme.ColorScheme
 import com.kakapo.oakane.presentation.designSystem.theme.Typography
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
+import com.kakapo.oakane.presentation.viewModel.termAndService.TermAndServiceEffect
+import com.kakapo.oakane.presentation.viewModel.termAndService.TermAndServiceEvent
+import com.kakapo.oakane.presentation.viewModel.termAndService.TermAndServiceState
+import com.kakapo.oakane.presentation.viewModel.termAndService.TermAndServiceViewModel
+import org.koin.androidx.compose.koinViewModel
 
 const val TERM_TITLE = "Please read and agree to the following terms before using the app:"
 const val TERM_1 =
@@ -42,23 +52,43 @@ const val TERM_4 =
     "I am aware and accept that the app may display misleading information or contain inaccuracies. I assume full responsibility for verifying the integrity of financial data and calculations before making any decisions based on app data"
 
 @Composable
-internal fun TermAndServiceRoute() {
-    TermAndServiceScreen()
+internal fun TermAndServiceRoute(
+    navigateToOnBoarding: () -> Unit
+) {
+    val viewModel = koinViewModel<TermAndServiceViewModel>()
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when(effect) {
+                TermAndServiceEffect.NavigateToOnBoarding -> navigateToOnBoarding.invoke()
+                is TermAndServiceEffect.ShowError -> context.showToast(effect.message)
+            }
+        }
+    }
+
+    TermAndServiceScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 }
 
 @Composable
-private fun TermAndServiceScreen() {
+private fun TermAndServiceScreen(uiState: TermAndServiceState, onEvent: (TermAndServiceEvent) -> Unit) {
     Scaffold(
         topBar = { TopAppBarView() },
         content = { paddingValues ->
             TermAndServiceContent(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .padding(vertical = 24.dp, horizontal = 16.dp)
+                    .padding(vertical = 24.dp, horizontal = 16.dp),
+                uiState = uiState,
+                onEvent = onEvent
             )
         },
         bottomBar = {
-            TermAndServiceButton(enable = true, onClick = {})
+            TermAndServiceButton(
+                enable = uiState.isButtonEnabled,
+                onClick = { onEvent.invoke(TermAndServiceEvent.OnAgreementButtonClicked) }
+            )
         }
     )
 }
@@ -70,17 +100,37 @@ private fun TopAppBarView() {
 }
 
 @Composable
-private fun TermAndServiceContent(modifier: Modifier) {
+private fun TermAndServiceContent(
+    modifier: Modifier,
+    uiState: TermAndServiceState,
+    onEvent: (TermAndServiceEvent) -> Unit
+) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         GithubButton()
         Text(TERM_TITLE, style = Typography.titleMedium)
-        TermAndServiceCheckbox(TERM_1, isChecked = true, onChecked = {})
-        TermAndServiceCheckbox(TERM_2, isChecked = false, onChecked = {})
-        TermAndServiceCheckbox(TERM_3, isChecked = false, onChecked = {})
-        TermAndServiceCheckbox(TERM_4, isChecked = false, onChecked = {})
+        TermAndServiceCheckbox(
+            TERM_1,
+            isChecked = uiState.isTerm1Checked,
+            onChecked = { onEvent.invoke(TermAndServiceEvent.OnTerm1Checked(it)) }
+        )
+        TermAndServiceCheckbox(
+            TERM_2,
+            isChecked = uiState.isTerm2Checked,
+            onChecked = { onEvent.invoke(TermAndServiceEvent.OnTerm2Checked(it)) }
+        )
+        TermAndServiceCheckbox(
+            TERM_3,
+            isChecked = uiState.isTerm3Checked,
+            onChecked = { onEvent.invoke(TermAndServiceEvent.OnTerm3Checked(it)) }
+        )
+        TermAndServiceCheckbox(
+            TERM_4,
+            isChecked = uiState.isTerm4Checked,
+            onChecked = { onEvent.invoke(TermAndServiceEvent.OnTerm4Checked(it)) }
+        )
     }
 }
 
@@ -135,13 +185,17 @@ private fun TermAndServiceCheckbox(
 
 @Composable
 private fun TermAndServiceButton(enable: Boolean, onClick: () -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 24.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, bottom = 24.dp)
+    ) {
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
             enabled = enable,
-            onClick = {},
+            onClick = onClick,
             contentPadding = PaddingValues(16.dp),
-            content = { Text("I Accept and Agree")}
+            content = { Text("I Accept and Agree") }
         )
     }
 }
@@ -150,6 +204,6 @@ private fun TermAndServiceButton(enable: Boolean, onClick: () -> Unit) {
 @Preview
 private fun GithubIconPrev() {
     AppTheme {
-        TermAndServiceScreen()
+        TermAndServiceScreen(uiState = TermAndServiceState(), onEvent = {})
     }
 }
