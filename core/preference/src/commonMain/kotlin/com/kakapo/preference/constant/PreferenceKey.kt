@@ -10,6 +10,7 @@ object LongKey {
 }
 
 object BooleanKey {
+    const val TERMS_ALREADY_READ = "terms_already_read"
     const val ON_BOARDING_ALREADY_READ = "on_boarding_already_read"
     const val IS_BALANCE_VISIBLE = "is_balance_visible"
     const val IS_RECURRING_BUDGET = "is_recurring_budget"

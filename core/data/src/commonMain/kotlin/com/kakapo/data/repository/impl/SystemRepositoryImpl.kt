@@ -80,4 +80,12 @@ class SystemRepositoryImpl(
     override suspend fun loadRecurringCategory(): Result<String> = runCatching {
         preferenceDatasource.getStringValue(StringKey.RECURRING_CATEGORY_LIMIT)
     }
+
+    override suspend fun saveTermAndServiceCondition(): Result<Unit> = runCatching {
+        preferenceDatasource.saveBooleanValue(BooleanKey.TERMS_ALREADY_READ, true)
+    }
+
+    override suspend fun loadTermAndServiceCondition(): Result<Boolean> = runCatching {
+        preferenceDatasource.getBooleanValue(BooleanKey.TERMS_ALREADY_READ)
+    }
 }

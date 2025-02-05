@@ -37,4 +37,8 @@ interface SystemRepository {
     suspend fun saveRecurringCategory(category: String): Result<Unit>
     @NativeCoroutines
     suspend fun loadRecurringCategory(): Result<String>
+    @NativeCoroutines
+    suspend fun saveTermAndServiceCondition(): Result<Unit>
+    @NativeCoroutines
+    suspend fun loadTermAndServiceCondition(): Result<Boolean>
 }
