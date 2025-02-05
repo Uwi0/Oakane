@@ -15,23 +15,26 @@ import com.kakapo.model.goal.GoalSavingModel
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.designSystem.theme.ColorScheme
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
 
 @Composable
-internal fun GoalSavingItemView(item: GoalSavingModel, currency: Currency) {
+internal fun GoalSavingItemView(item: GoalSavingModel, currency: Currency, isInLog: Boolean = false) {
+    val transactionType = if(isInLog) TransactionType.Expense else TransactionType.Income
+    val textColor = if(isInLog) ColorScheme.error else ColorScheme.primary
     RowWrapper(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        TransactionTypeIcon(type = TransactionType.Income)
+        TransactionTypeIcon(type = transactionType)
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = item.amount.toFormatCurrency(currency),
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = textColor
             )
             Text(
                 text = "Note: ${item.note}",

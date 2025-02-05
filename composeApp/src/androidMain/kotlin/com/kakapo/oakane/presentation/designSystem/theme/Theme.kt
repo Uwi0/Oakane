@@ -248,6 +248,12 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+val ColorScheme @Composable
+get() =  MaterialTheme.colorScheme
+
+val Typography @Composable
+get() = MaterialTheme.typography
+
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

@@ -219,7 +219,7 @@ private fun LogItemView(
     when (log) {
         is WalletLogItem.TransactionLogItem -> TransactionItemView(log.data)
         is WalletLogItem.WalletTransferLogItem -> TransferLogItemView(log)
-        is WalletLogItem.GoalSavingLogItem -> GoalSavingItemView(log.data, currency)
+        is WalletLogItem.GoalSavingLogItem -> GoalSavingItemView(log.data, currency, isInLog = true)
     }
 }
 

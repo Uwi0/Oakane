@@ -7,6 +7,7 @@ import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.domain.usecase.base.WalletLogItemsUseCase
+import com.kakapo.domain.usecase.toExpenseAndIncome
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletLogItem
 import com.kakapo.model.wallet.WalletModel
@@ -33,9 +34,8 @@ class WalletViewModel(
     private val _uiEffect = MutableSharedFlow<WalletEffect>()
 
     fun initData(walletId: Long) {
-        loadWalletBy(walletId)
-        loadWallets()
         loadWalletTransactionsLogs(walletId)
+        loadWallets()
     }
 
     fun handleEvent(event: WalletEvent) {
@@ -56,16 +56,6 @@ class WalletViewModel(
         }
     }
 
-    private fun loadWalletBy(id: Long) = viewModelScope.launch {
-        val onSuccess: (WalletItemModel) -> Unit = { wallet ->
-            _uiState.update { it.copy(wallet = wallet) }
-        }
-        walletRepository.loadWalletItemBy(id).fold(
-            onSuccess = onSuccess,
-            onFailure = ::handleError
-        )
-    }
-
     private fun loadWallets() = viewModelScope.launch {
         val onSuccess: (List<WalletModel>) -> Unit = { wallets ->
             _uiState.value = _uiState.value.copy(wallets = wallets)
@@ -79,10 +69,22 @@ class WalletViewModel(
     private fun loadWalletTransactionsLogs(walletId: Long) = viewModelScope.launch {
         val onSuccess: (List<WalletLogItem<*>>) -> Unit  = { logs ->
             _uiState.update { it.copy(logItems = logs) }
+            loadWalletBy(walletId, logs)
         }
         walletLogItemsUseCase.execute(walletId).asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
+        )
+    }
+
+    private fun loadWalletBy(id: Long, logs: List<WalletLogItem<*>>) = viewModelScope.launch {
+        val (expense, income) = logs.toExpenseAndIncome()
+        val onSuccess: (WalletItemModel) -> Unit = { wallet ->
+            _uiState.update { it.copy(wallet = wallet.copy(expense = expense, income = income)) }
+        }
+        walletRepository.loadWalletItemBy(id).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 
@@ -98,10 +100,11 @@ class WalletViewModel(
     }
 
     private fun update(wallet: WalletModel) = viewModelScope.launch {
+        val logs = _uiState.value.logItems
         val onSuccess: (Unit) -> Unit = {
             _uiState.update { it.copy(isWalletSheetShown = false) }
             emit(WalletEffect.DismissWalletSheet)
-            loadWalletBy(wallet.id)
+            loadWalletBy(wallet.id, logs)
         }
         walletRepository.update(wallet).fold(
             onSuccess = onSuccess,
