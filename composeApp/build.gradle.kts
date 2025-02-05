@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.gms.service)
+    alias(libs.plugins.crashlytics)
 }
 
 kotlin {
@@ -58,8 +60,8 @@ android {
         applicationId = "com.kakapo.oakane"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 7
-        versionName = "1.0.6"
+        versionCode = 8
+        versionName = "1.0.7"
     }
     packaging {
         resources {
