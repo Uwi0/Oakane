@@ -82,7 +82,7 @@ private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit
                 contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(uiState.wallets, key = { it.id }) { wallet ->
+                items(uiState.filteredWallets, key = { it.id }) { wallet ->
                     WalletItemView(wallet, onEvent)
                 }
             }

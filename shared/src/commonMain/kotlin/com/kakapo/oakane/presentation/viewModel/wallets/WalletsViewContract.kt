@@ -11,9 +11,14 @@ data class WalletsState(
     val wallets: List<WalletItemModel> = emptyList(),
     val searchQuery: String = "",
     val isSheetShown: Boolean = false,
-    val colors: List<String> = emptyList(),
     val currency: Currency = Currency.IDR
-)
+){
+
+    val filteredWallets: List<WalletItemModel> get() {
+        return if(searchQuery.isEmpty()) wallets
+        else wallets.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    }
+}
 
 sealed class WalletsEffect{
     data object NavigateBack: WalletsEffect()

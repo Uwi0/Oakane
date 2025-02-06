@@ -38,7 +38,6 @@ class WalletsViewModel(
 
     fun initializeData(){
         loadWallets()
-        loadColors()
         loadCurrency()
     }
 
@@ -58,16 +57,6 @@ class WalletsViewModel(
             _uiState.update { it.copy(wallets = wallets) }
         }
         walletRepository.loadWalletItems().asCustomResult().subscribe(
-            onSuccess = onSuccess,
-            onError = ::handleError
-        )
-    }
-
-    private fun loadColors() = viewModelScope.launch {
-        val onSuccess: (List<String>) -> Unit = { colors ->
-            _uiState.update { it.copy(colors = colors) }
-        }
-        categoryRepository.loadCategoryColors().asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )

@@ -28,12 +28,16 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.touchlab.kermit.Logger
 import com.kakapo.common.getCurrentDateWith
 import com.kakapo.common.showToast
 import com.kakapo.model.system.Theme
@@ -65,20 +69,20 @@ internal fun SettingsRoute(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var json = "test"
+    var json by remember { mutableStateOf("test") }
 
     val createJsonLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         val data = result.data
         val uri = data?.data
-        uri?.let {
-            context.contentResolver.openOutputStream(it)?.let { outputStream ->
-                scope.launch {
-                    withContext(Dispatchers.IO) {
-                        outputStream.write(json.toByteArray())
-                        outputStream.flush()
-                        outputStream.close()
+        uri?.let { safeUri ->
+            context.contentResolver.openOutputStream(safeUri)?.let { outputStream ->
+                scope.launch(Dispatchers.IO) {
+                    try {
+                        outputStream.use { it.write(json.toByteArray()) }
+                    } catch (e: Exception) {
+                        context.showToast("Error create back up")
                     }
                 }
             }
@@ -117,10 +121,9 @@ internal fun SettingsRoute(
                 SettingsEffect.SuccessChangeCurrency -> sheetState.hide()
                 is SettingsEffect.GenerateBackupFile -> {
                     json = effect.json
+                    Logger.d("json: $json")
                     createJsonLauncher.launch(createNewDocumentIntent())
                 }
-
-
             }
         }
     }
