@@ -81,6 +81,7 @@ internal fun SettingsRoute(
                 scope.launch(Dispatchers.IO) {
                     try {
                         outputStream.use { it.write(json.toByteArray()) }
+                        context.showToast("Success create back up")
                     } catch (e: Exception) {
                         context.showToast("Error create back up")
                     }

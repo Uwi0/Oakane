@@ -42,6 +42,7 @@ SELECT
     SUM(CASE WHEN t.type = 0 THEN t.amount ELSE 0 END) AS totalExpense
 FROM WalletTable w
 LEFT JOIN TransactionTable t ON w.id = t.walletId
+AND strftime('%Y-%m', t.dateCreated / 1000, 'unixepoch', 'localtime') = strftime('%Y-%m', 'now', 'localtime')
 GROUP BY w.id;
 
 updateWallet:
