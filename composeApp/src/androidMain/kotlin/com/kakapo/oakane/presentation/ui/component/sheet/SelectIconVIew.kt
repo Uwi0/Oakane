@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.saveImageUri
+import com.kakapo.common.saveImageUriToPublicDirectory
 import com.kakapo.common.showToast
 import com.kakapo.common.toColorLong
 import com.kakapo.model.category.CategoryIconName
@@ -52,7 +52,7 @@ internal fun SelectIconSheetView(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             uri?.let {
-                context.saveImageUri(it).fold(
+                context.saveImageUriToPublicDirectory(it).fold(
                     onSuccess = { file ->
                         onPickImage.invoke(file)
                     },

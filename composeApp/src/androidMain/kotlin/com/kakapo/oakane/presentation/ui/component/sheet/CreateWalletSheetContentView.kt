@@ -31,7 +31,6 @@ import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetStat
 internal fun CreateWalletSheetContentView(
     state: WalletsSheetState
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxWidth()

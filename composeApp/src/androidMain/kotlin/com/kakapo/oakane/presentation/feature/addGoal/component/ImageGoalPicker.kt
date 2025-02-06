@@ -14,10 +14,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.R
-import com.kakapo.common.getSavedImageUri
-import com.kakapo.common.saveImageUri
+import com.kakapo.common.getImageUriFromFileName
+import com.kakapo.common.saveImageUriToPublicDirectory
 import com.kakapo.common.showToast
+import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomImagePicker
 
 @Composable
@@ -30,7 +30,7 @@ internal fun ImageGoalPicker(imageUrl: String,onSelectedImage: (String) -> Unit)
         onResult = { uri ->
             selectedImageUri = uri
             uri?.let {
-                context.saveImageUri(it).fold(
+                context.saveImageUriToPublicDirectory(it).fold(
                     onSuccess = { fileName -> onSelectedImage.invoke(fileName) },
                     onFailure = { throwable -> context.showToast(throwable.message ?: "Error") }
                 )
@@ -39,7 +39,7 @@ internal fun ImageGoalPicker(imageUrl: String,onSelectedImage: (String) -> Unit)
     )
 
     LaunchedEffect(imageUrl) {
-        val savedImageUri = context.getSavedImageUri(imageUrl).getOrNull()
+        val savedImageUri = context.getImageUriFromFileName(imageUrl).getOrNull()
         selectedImageUri = savedImageUri
     }
 

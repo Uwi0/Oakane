@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.formatDateWith
-import com.kakapo.common.getSavedImageUri
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.R
@@ -28,7 +28,7 @@ import com.kakapo.oakane.presentation.ui.component.RowWrapper
 @Composable
 internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
     val context = LocalContext.current
-    val imageUri: Uri? = context.getSavedImageUri(goal.fileName).getOrNull()
+    val imageUri: Uri? = context.getImageUriFromFileName(goal.fileName).getOrNull()
     val currency = goal.currency
     val savedMoney = goal.savedMoney.toFormatCurrency(currency)
     RowWrapper(

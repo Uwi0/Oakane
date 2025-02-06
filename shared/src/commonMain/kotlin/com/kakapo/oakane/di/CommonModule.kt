@@ -117,7 +117,7 @@ object CommonModule {
         factory<MonthlyBudgetRepository> { MonthlyBudgetRepositoryImpl(get(), get()) }
         factory<CategoryLimitRepository> { CategoryLimitRepositoryImpl(get(), get()) }
         factory<WalletRepository> { WalletRepositoryImpl(get(), get(), get(named(IO))) }
-        factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
+        factory<BackupRepository> { BackupRepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(named(IO))) }
         factory<ReportRepository> { ReportRepositoryImpl(get(), get()) }
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
         factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get(), get(named(IO))) }

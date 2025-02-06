@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.getSavedImageUri
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
@@ -30,7 +30,7 @@ fun CategoryItemView(category: CategoryModel, onEvent: () -> Unit) {
                 color = Color(category.formattedColor)
             )
         } else {
-            val icon = context.getSavedImageUri(category.icon).getOrNull()
+            val icon = context.getImageUriFromFileName(category.icon).getOrNull()
             CustomDynamicAsyncImage(
                 modifier = Modifier
                     .size(48.dp)

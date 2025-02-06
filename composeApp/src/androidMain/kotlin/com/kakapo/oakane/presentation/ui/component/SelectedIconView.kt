@@ -12,7 +12,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.getSavedImageUri
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
@@ -37,7 +37,7 @@ fun SelectedIconView(selectedIcon: SelectedIconModel, onClick: () -> Unit) {
         )
     } else {
         val context = LocalContext.current
-        val uri = context.getSavedImageUri(selectedIcon.imageFile).getOrNull()
+        val uri = context.getImageUriFromFileName(selectedIcon.imageFile).getOrNull()
         CustomDynamicAsyncImage(
             modifier = Modifier
                 .size(48.dp)

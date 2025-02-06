@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.getImageUriFromFileName
-import com.kakapo.common.getSavedImageUri
 import com.kakapo.common.showToast
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.toFormatCurrency
@@ -203,7 +202,7 @@ private fun TrailingIcon(
     fileName: String
 ) {
     val context = LocalContext.current
-    val icon = context.getSavedImageUri(fileName).getOrNull()
+    val icon = context.getImageUriFromFileName(fileName).getOrNull()
     if (isDefaultIcon) {
         Icon(
             modifier = Modifier.size(18.dp),

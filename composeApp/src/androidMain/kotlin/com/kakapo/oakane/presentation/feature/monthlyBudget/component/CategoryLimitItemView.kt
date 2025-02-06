@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.getSavedImageUri
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
@@ -77,7 +77,7 @@ private fun CategoryLimitIconView(category: CategoryLimitModel) {
         )
     } else {
         val context = LocalContext.current
-        val icon = context.getSavedImageUri(category.fileName).getOrNull()
+        val icon = context.getImageUriFromFileName(category.fileName).getOrNull()
         CustomDynamicAsyncImage(
             modifier = Modifier
                 .size(48.dp)

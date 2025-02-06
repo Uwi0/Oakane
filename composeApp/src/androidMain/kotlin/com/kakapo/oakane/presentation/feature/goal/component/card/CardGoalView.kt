@@ -22,8 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.oakane.R
-import com.kakapo.common.getSavedImageUri
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
@@ -40,7 +40,7 @@ internal fun CardGoalView(uiState: GoalState) {
 @Composable
 private fun CardImageView(fileUrl: String) {
     val context = LocalContext.current
-    val imgUri = context.getSavedImageUri(fileUrl).getOrNull()
+    val imgUri = context.getImageUriFromFileName(fileUrl).getOrNull()
     CustomDynamicAsyncImage(
         modifier = Modifier
             .size(48.dp)

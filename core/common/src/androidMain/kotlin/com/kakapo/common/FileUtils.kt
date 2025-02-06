@@ -2,30 +2,18 @@ package com.kakapo.common
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
-import co.touchlab.kermit.Logger
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.IOException
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
-fun Context.saveImageUri(uri: Uri): Result<String> = runCatching {
-    val fileName = "image-oakane${System.currentTimeMillis()}.jpg"
-    val inputStream = contentResolver.openInputStream(uri)
-    val outputStream = openFileOutput(fileName, MODE_PRIVATE)
-    inputStream?.use { input ->
-        outputStream.use { output ->
-            input.copyTo(output)
-        }
-    }
-    val savedFile = File(filesDir, fileName)
-    if (savedFile.exists()) fileName
-    else throw FileNotFoundException("File not found after saving")
-}
+private const val DIRECTORY = "Oakane"
 
 fun Context.saveImageUriToPublicDirectory(uri: Uri): Result<String> = runCatching {
     val fileName = "image-oakane${System.currentTimeMillis()}.jpg"
@@ -34,7 +22,7 @@ fun Context.saveImageUriToPublicDirectory(uri: Uri): Result<String> = runCatchin
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/Oakane")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/$DIRECTORY")
         }
         val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
             ?: throw FileNotFoundException("Failed to create MediaStore entry")
@@ -45,7 +33,7 @@ fun Context.saveImageUriToPublicDirectory(uri: Uri): Result<String> = runCatchin
         }
         fileName
     } else {
-        val picturesDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Oakane")
+        val picturesDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY)
         if (!picturesDir.exists()) {
             picturesDir.mkdirs()
         }
@@ -59,52 +47,74 @@ fun Context.saveImageUriToPublicDirectory(uri: Uri): Result<String> = runCatchin
     }
 }
 
-fun Context.getSavedImageUri(fileName: String): Result<Uri> = runCatching {
-    val file = getFileStreamPath(fileName)
-    FileProvider.getUriForFile(this, "$packageName.provider", file)
-}
-
 fun Context.getImageUriFromFileName(fileName: String): Result<Uri> = runCatching {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        // First try to get from MediaStore directly
         val projection = arrayOf(MediaStore.Images.Media._ID)
-        val selection = "${MediaStore.Images.Media.DISPLAY_NAME} = ?"
-        val selectionArgs = arrayOf(fileName)
-        val cursor = contentResolver.query(
+        val selection = "${MediaStore.Images.Media.DISPLAY_NAME} LIKE ? AND " +
+                "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ?"
+        val selectionArgs = arrayOf(fileName, "%Pictures/$DIRECTORY%")
+
+        contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             projection,
             selection,
             selectionArgs,
-            null
-        ) ?: throw FileNotFoundException("MediaStore query failed for file: $fileName")
-
-        cursor.use {
-            if (it.moveToFirst()) {
-                val id = it.getLong(it.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
-                Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
-            } else {
-                throw FileNotFoundException("File not found in MediaStore: $fileName")
+            "${MediaStore.Images.Media.DATE_ADDED} DESC"
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
+                return@runCatching Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
             }
         }
+
+        // If not found, try to scan the file
+        val file = File("${Environment.DIRECTORY_PICTURES}/$DIRECTORY/$fileName")
+        if (file.exists()) {
+            var scannedUri: Uri? = null
+            val latch = CountDownLatch(1)
+
+            MediaScannerConnection.scanFile(
+                this,
+                arrayOf(file.absolutePath),
+                arrayOf("image/jpeg")
+            ) { _, uri ->
+                scannedUri = uri
+                latch.countDown()
+            }
+
+            // Wait for scan to complete with timeout
+            if (latch.await(5, TimeUnit.SECONDS) && scannedUri != null) {
+                return@runCatching scannedUri!!
+            }
+
+            // If scanning didn't work, try one more MediaStore query
+            contentResolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                selection,
+                selectionArgs,
+                "${MediaStore.Images.Media.DATE_ADDED} DESC"
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
+                    return@runCatching Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
+                }
+            }
+        }
+
+        throw FileNotFoundException("File not found in MediaStore and physical location: $fileName")
     } else {
-        val picturesDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Oakane")
+        val picturesDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY)
         val file = File(picturesDir, fileName)
         if (file.exists()) {
-            Uri.fromFile(file)
+            FileProvider.getUriForFile(
+                this,
+                "${packageName}.provider",
+                file
+            )
         } else {
             throw FileNotFoundException("File not found at path: ${file.absolutePath}")
         }
-    }
-}
-
-fun Context.copyFileToUri(sourceFile: File, destinationUri: Uri) {
-    try {
-        contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
-            sourceFile.inputStream().use { inputStream ->
-                inputStream.copyTo(outputStream)
-            }
-        }
-    }catch (e: IOException){
-        e.printStackTrace()
-        Logger.e("Error copying file to uri: $e", e)
     }
 }

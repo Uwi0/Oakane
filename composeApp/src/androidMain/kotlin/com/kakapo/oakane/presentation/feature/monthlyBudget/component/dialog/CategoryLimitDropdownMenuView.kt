@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import com.kakapo.common.getSavedImageUri
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.ui.model.asIcon
@@ -86,7 +86,7 @@ private fun LeadingIcon(category: CategoryModel) {
             modifier = Modifier
                 .size(24.dp)
                 .clip(CircleShape),
-            imageUrl = context.getSavedImageUri(category.icon).getOrNull(),
+            imageUrl = context.getImageUriFromFileName(category.icon).getOrNull(),
             contentScale = ContentScale.Crop
         )
     }

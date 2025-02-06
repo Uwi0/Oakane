@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.kakapo.common.getSavedImageUri
+import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.common.toColorLong
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.oakane.R
@@ -24,7 +24,7 @@ import com.kakapo.oakane.presentation.ui.model.asIcon
 fun PrimaryWalletIcon(icon: String, iconName: CategoryIconName, color: String) {
     if (icon.contains("jpg")) {
         val context = LocalContext.current
-        val imageUri = context.getSavedImageUri(icon).getOrNull()
+        val imageUri = context.getImageUriFromFileName(icon).getOrNull()
         val imageUrl by remember { mutableStateOf(imageUri) }
         CustomDynamicAsyncImage(
             imageUrl = imageUrl,
