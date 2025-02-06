@@ -20,3 +20,10 @@ WHERE goalId = ?;
 getGoalSavingsByWalletId:
 SELECT * FROM GoalSavingTable
 WHERE walletId = ?;
+
+getGoalSavingsForBackup:
+SELECT * FROM GoalSavingTable;
+
+insertGoalSavingBackup:
+INSERT OR REPLACE INTO GoalSavingTable(id, goalId, dateCreated, amount, walletId, note)
+VALUES (?, ?, ?, ?, ?, ?);

@@ -11,4 +11,8 @@ interface GoalSavingsLocalDatasource {
     fun getGoalSavingsByGoal(id: Long): Flow<Result<List<GoalSavingsEntity>>>
     @NativeCoroutines
     fun getGoalSavingsByWallet(id: Long): Flow<Result<List<GoalSavingsEntity>>>
+    @NativeCoroutines
+    suspend fun getGoalSavingsForBackup(): Result<List<GoalSavingsEntity>>
+    @NativeCoroutines
+    suspend fun restoreGoalSavings(goalTransactions: List<GoalSavingsEntity>): Result<Unit>
 }

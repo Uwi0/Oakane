@@ -8,6 +8,7 @@ import com.kakapo.GetTransfersBy
 import com.kakapo.database.datasource.base.WalletTransferLocalDatasource
 import com.kakapo.database.model.WalletTransferEntity
 import com.kakapo.database.model.WalletTransferItemEntity
+import com.kakapo.database.model.toWalletTransferEntity
 import com.kakapo.database.model.toWalletTransferItemEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -39,5 +40,27 @@ class WalletTransferLocalDatasourceImpl(
             .map { transactions ->
                 runCatching { transactions.map(GetTransfersBy::toWalletTransferItemEntity) }
             }
+    }
+
+    override fun getWalletTransfersForBackup(): Result<List<WalletTransferEntity>> {
+        return runCatching {
+            walletTransferQueries.getWalletTranfersForBackup()
+                .executeAsList()
+                .map { it.toWalletTransferEntity() }
+        }
+    }
+
+    override suspend fun restoreWalletTransfer(walletTransfers: List<WalletTransferEntity>): Result<Unit> {
+        return runCatching {
+            walletTransfers.forEach { walletTransfer ->
+                walletTransferQueries.insertWalletTransfer(
+                    fromWalletId = walletTransfer.fromWalletId,
+                    toWalletId = walletTransfer.toWalletId,
+                    amount = walletTransfer.amount,
+                    notes = walletTransfer.notes,
+                    createdAt = walletTransfer.createdAt
+                )
+            }
+        }
     }
 }

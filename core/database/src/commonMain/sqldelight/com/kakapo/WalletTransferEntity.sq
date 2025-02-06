@@ -58,3 +58,10 @@ FROM (
     WHERE w2.id = ?
 )
 ORDER BY created_at DESC;
+
+getWalletTranfersForBackup:
+SELECT * FROM WalletTransferTable;
+
+insertWalletTransferBackup:
+INSERT OR REPLACE INTO WalletTransferTable(id, fromWalletId, toWalletId, amount, notes, createdAt)
+VALUES (?, ?, ?, ?, ?, ?);

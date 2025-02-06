@@ -41,10 +41,28 @@ class GoalSavingsLocalDatasourceImpl(
         return goalSavingsTable.getGoalSavingsByWalletId(id)
             .asFlow()
             .mapToList(dispatcher)
-            .map { savings ->
-                runCatching {
-                    savings.map { it.toGoalSavingEntity() }
-                }
+            .map { savings -> runCatching { savings.map { it.toGoalSavingEntity() } } }
+    }
+
+    override suspend fun getGoalSavingsForBackup(): Result<List<GoalSavingsEntity>> {
+        return runCatching {
+            goalSavingsTable.getGoalSavingsForBackup()
+                .executeAsList()
+                .map { it.toGoalSavingEntity() }
+        }
+    }
+
+    override suspend fun restoreGoalSavings(goalTransactions: List<GoalSavingsEntity>): Result<Unit> {
+        return runCatching {
+            goalTransactions.forEach { goalTransaction ->
+                goalSavingsTable.insertGoalSaving(
+                    goalId = goalTransaction.goalId,
+                    dateCreated = goalTransaction.dateCreated,
+                    amount = goalTransaction.amount,
+                    walletId = goalTransaction.walletId,
+                    note = goalTransaction.note
+                )
             }
+        }
     }
 }

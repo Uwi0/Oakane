@@ -1,7 +1,10 @@
 package com.kakapo.database.model
 
 import com.kakapo.GetTransfersBy
+import com.kakapo.WalletTransferTable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class WalletTransferEntity(
     val id: Long = 0,
     val fromWalletId: Long,
@@ -20,6 +23,17 @@ data class WalletTransferItemEntity(
     val createdAt: Long,
     val transferType: String
 )
+
+fun WalletTransferTable.toWalletTransferEntity(): WalletTransferEntity {
+    return WalletTransferEntity(
+        id = id,
+        fromWalletId = fromWalletId,
+        toWalletId = toWalletId,
+        amount = amount,
+        notes = notes ?: "",
+        createdAt = createdAt
+    )
+}
 
 fun GetTransfersBy.toWalletTransferItemEntity(): WalletTransferItemEntity {
     return WalletTransferItemEntity(

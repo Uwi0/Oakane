@@ -10,4 +10,8 @@ interface WalletTransferLocalDatasource {
     suspend fun insert(walletTransfer: WalletTransferEntity): Result<Unit>
     @NativeCoroutines
     fun getWalletTransferBy(id: Long): Flow<Result<List<WalletTransferItemEntity>>>
+    @NativeCoroutines
+    fun getWalletTransfersForBackup(): Result<List<WalletTransferEntity>>
+    @NativeCoroutines
+    suspend fun restoreWalletTransfer(walletTransfers: List<WalletTransferEntity>): Result<Unit>
 }

@@ -1,7 +1,9 @@
 package com.kakapo.database.model
 
 import com.kakapo.GoalSavingTable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GoalSavingsEntity(
     val id: Long = 0,
     val goalId: Long,
