@@ -25,3 +25,4 @@ The name "Oakane" comes from a mix of "oak", symbolizing growth, and "okane", wh
 ⚒️ This repository is my playground where I experiment with different ideas and concepts. Expect there to be bugs and unfinished features from time to time. Enjoy the journey!
 
 Img Source: https://www.pixiv.net/en/users/6567678
+Figma Design: https://www.figma.com/community/file/1469282312265944668/oakane
