@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletItemView
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletsTopAppbarView
+import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
 import com.kakapo.oakane.presentation.ui.component.sheet.wallet.rememberWalletSheetState
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEffect
@@ -39,9 +40,11 @@ internal fun WalletsRoute(
     val context = LocalContext.current
     val viewModel = koinViewModel<WalletsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val walletsSheetState = rememberWalletSheetState(currency = uiState.currency) { wallet ->
         viewModel.handleEvent(WalletsEvent.SaveWallet(wallet))
+    }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true){
+        walletsSheetState.sheetContent == WalletSheetContent.Create
     }
 
     LaunchedEffect(Unit) {

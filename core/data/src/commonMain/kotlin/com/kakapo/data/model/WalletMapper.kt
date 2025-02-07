@@ -14,7 +14,8 @@ fun WalletEntity.toWalletModel(currency: Currency): WalletModel {
         name = name,
         color = color,
         isDefaultIcon = isDefaultIcon == 1L,
-        icon = icon
+        icon = icon,
+        note = note
     )
 }
 
@@ -29,7 +30,8 @@ fun WalletEntity.toWalletItemModel(walletId: Long, currency: Currency): WalletIt
         balance = balance,
         income = income,
         expense = expense,
-        isSelected = walletId == id
+        isSelected = walletId == id,
+        note = note
     )
 }
 
@@ -41,6 +43,7 @@ fun WalletModel.toWalletEntity(time: Long): WalletEntity {
         color = color,
         icon = icon,
         isDefaultIcon = isDefaultIcon.asLong(),
+        note = note,
         createdAt = time,
         updateAt = time
     )

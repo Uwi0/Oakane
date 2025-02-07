@@ -14,7 +14,8 @@ data class WalletItemModel(
     val color: String = "",
     val income: Double = 0.0,
     val expense: Double = 0.0,
-    val isSelected: Boolean = false
+    val isSelected: Boolean = false,
+    val note: String = ""
 ){
     val iconName: CategoryIconName
         get() {

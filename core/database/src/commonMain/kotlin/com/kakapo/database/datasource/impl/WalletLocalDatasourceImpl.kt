@@ -47,7 +47,8 @@ class WalletLocalDatasourceImpl(
                 balance = wallet.balance,
                 color = wallet.color,
                 icon = wallet.icon,
-                isDefaultIcon = wallet.isDefaultIcon
+                isDefaultIcon = wallet.isDefaultIcon,
+                note = wallet.note,
             )
         }
     }
@@ -67,6 +68,7 @@ class WalletLocalDatasourceImpl(
                 icon = wallet.icon,
                 isDefaultIcon = wallet.isDefaultIcon,
                 updateAt = wallet.updateAt,
+                note = wallet.note,
                 id = wallet.id
             )
         }

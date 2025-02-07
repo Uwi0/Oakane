@@ -36,7 +36,7 @@ fun OutlinedCurrencyTextFieldView(
             value = state.textFieldState,
             label = label,
             modifier = modifier,
-            shape = MaterialTheme.shapes.small,
+            shape = MaterialTheme.shapes.medium,
             onValueChange = { newValue -> state.onValueChange(newValue) },
             keyboardOptions = keyboardOptions,
             maxLines = maxLines,

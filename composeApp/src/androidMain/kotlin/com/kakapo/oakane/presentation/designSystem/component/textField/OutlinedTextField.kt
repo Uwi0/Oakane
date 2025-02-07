@@ -23,7 +23,7 @@ fun CustomOutlinedTextField(
 ) {
     OutlinedTextField(
         modifier = modifier,
-        shape = MaterialTheme.shapes.small,
+        shape = MaterialTheme.shapes.medium,
         value = value,
         onValueChange = onValueChange,
         placeholder = { Text(text = placeHolder) },

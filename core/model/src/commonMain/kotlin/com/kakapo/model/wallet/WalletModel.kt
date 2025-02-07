@@ -10,7 +10,8 @@ data class WalletModel(
     val name: String = "Mah Wallet",
     val isDefaultIcon: Boolean = false,
     val icon: String = "",
-    val color: String = ""
+    val color: String = "",
+    val note: String = ""
 ){
     val iconName: CategoryIconName
         get() {

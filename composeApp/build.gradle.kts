@@ -106,6 +106,10 @@ dependencies {
     implementation(libs.accompanist.permissions)
     debugImplementation(libs.leak.canary)
 
+    //firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+
     implementation(kotlin("reflect"))
 }
 

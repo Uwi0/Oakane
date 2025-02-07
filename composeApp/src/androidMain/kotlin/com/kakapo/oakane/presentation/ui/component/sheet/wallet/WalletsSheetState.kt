@@ -37,6 +37,7 @@ class WalletsSheetState(
     var selectedColor by mutableStateOf(wallet.color)
     var selectedIconName by mutableStateOf(CategoryIconName.WALLET)
     var selectedImageFile by mutableStateOf(wallet.icon)
+    var note by mutableStateOf(wallet.note)
 
     val isEditMode = wallet.id != 0L
     val textFieldConfig = CurrencyTextFieldConfig(
@@ -59,9 +60,14 @@ class WalletsSheetState(
             name = walletName,
             isDefaultIcon = selectedImageFile.isEmpty(),
             icon = icon,
-            color = selectedColor.ifEmpty { "0xFF4CAF5" }
+            color = selectedColor.ifEmpty { "0xFF4CAF50" },
+            note = note
         )
         onSaveWallet.invoke(walletModel)
+    }
+
+    fun resetContent() {
+        sheetContent = WalletSheetContent.Create
     }
 
     fun onSelectedColor(hex: String) {

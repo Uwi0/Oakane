@@ -4,6 +4,7 @@ CREATE TABLE  WalletTable (
     balance REAL NOT NULL,
     color TEXT NOT NULL,
     icon TEXT NOT NULL,
+    note TEXT,
     isDefaultIcon INTEGER NOT NULL,
     createdAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000),
     updateAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now') * 1000)
@@ -25,8 +26,8 @@ SELECT * FROM WalletTable
 WHERE id = ?;
 
 insertWallet:
-INSERT OR REPLACE INTO WalletTable(name, balance, color, icon, isDefaultIcon)
-VALUES (?, ?, ?, ?, ?);
+INSERT OR REPLACE INTO WalletTable(name, balance, color, icon, isDefaultIcon, note)
+VALUES (?, ?, ?, ?, ?, ?);
 
 getWallets:
 SELECT
@@ -38,6 +39,7 @@ SELECT
     w.isDefaultIcon AS walletIsDefaultIcon,
     w.createdAt AS walletCreatedAt,
     w.updateAt AS walletUpdateAt,
+    w.note AS walletNote,
     SUM(CASE WHEN t.type = 1 THEN t.amount ELSE 0 END) AS totalIncome,
     SUM(CASE WHEN t.type = 0 THEN t.amount ELSE 0 END) AS totalExpense
 FROM WalletTable w
@@ -52,7 +54,8 @@ SET name = ?,
     color = ?,
     icon = ?,
     isDefaultIcon = ?,
-    updateAt = ?
+    updateAt = ?,
+    note = ?
 WHERE id = ?;
 
 deleteWallet:

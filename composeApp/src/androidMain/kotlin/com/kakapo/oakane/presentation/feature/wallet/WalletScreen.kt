@@ -41,6 +41,7 @@ import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemV
 import com.kakapo.oakane.presentation.feature.wallet.component.dialog.WalletDialogView
 import com.kakapo.oakane.presentation.feature.wallet.component.sheet.FilterLogSheetView
 import com.kakapo.oakane.presentation.feature.wallet.component.sheet.rememberFilterLogSheetState
+import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
@@ -58,14 +59,17 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     val viewModel = koinViewModel<WalletViewModel>()
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val walletSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
     val updateWalletSheetState = rememberWalletSheetState(
         currency = uiState.wallet.currency,
         wallet = uiState.wallet
     ){
         viewModel.handleEvent(WalletEvent.UpdateWallet(it))
     }
-    val filterSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val walletSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) {
+        updateWalletSheetState.sheetContent == WalletSheetContent.Create
+    }
+
     val filterLogSheetState = rememberFilterLogSheetState(
         dateFilter = uiState.filterDate,
         categoryFilter = uiState.filterCategory,
@@ -74,6 +78,7 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
         },
         onResetFilter = { viewModel.handleEvent(WalletEvent.ResetFilterLog) }
     )
+    val filterSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     LaunchedEffect(Unit) {
         viewModel.initData(walletId)
@@ -166,7 +171,7 @@ private fun WalletTopContentView(uiState: WalletState, onEvent: (WalletEvent) ->
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         WalletDetailItemView(item = uiState.wallet)
-        CardNoteView(note = "This is a note")
+        CardNoteView(note = uiState.wallet.note)
         FilterLogView(uiState = uiState, onEvent = onEvent)
     }
 }

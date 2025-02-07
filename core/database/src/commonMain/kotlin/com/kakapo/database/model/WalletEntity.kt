@@ -14,6 +14,7 @@ data class WalletEntity(
     val isDefaultIcon: Long,
     val expense: Double = 0.0,
     val income: Double = 0.0,
+    val note: String = "",
     val createdAt: Long,
     val updateAt: Long
 )
@@ -25,6 +26,7 @@ fun WalletTable.toWalletEntity(): WalletEntity {
         balance = balance,
         color = color,
         icon = icon,
+        note = note ?: "",
         isDefaultIcon = isDefaultIcon,
         createdAt = createdAt,
         updateAt = updateAt
@@ -41,6 +43,7 @@ fun GetWallets.toWalletEntity(): WalletEntity {
         isDefaultIcon = walletIsDefaultIcon,
         expense = totalExpense ?: 0.0,
         income = totalIncome ?: 0.0,
+        note = walletNote ?: "-",
         createdAt = walletCreatedAt,
         updateAt = walletUpdateAt
     )

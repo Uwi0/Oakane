@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
+import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
@@ -42,6 +43,7 @@ internal fun CreateWalletSheetContentView(
             textFieldConfig = state.textFieldConfig,
             onChangeBalance = { balance -> state.balance = balance }
         )
+        NoteContent(state = state)
         ColorContent(
             state = state,
             onClickBrush = { state.sheetContent = WalletSheetContent.SelectColor },
@@ -97,6 +99,17 @@ private fun StartBalanceContent(
         OutlinedCurrencyTextFieldView(
             state = state,
             modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun NoteContent(state: WalletsSheetState) {
+    ColumnContent("Note") {
+        CustomOutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = state.note,
+            onValueChange = { state.note = it}
         )
     }
 }

@@ -37,7 +37,7 @@ fun SearchTextFieldView(
 
     OutlinedTextField(
         modifier = modifier,
-        shape = MaterialTheme.shapes.small,
+        shape = MaterialTheme.shapes.medium,
         value = text,
         onValueChange = { newText ->
             text = newText

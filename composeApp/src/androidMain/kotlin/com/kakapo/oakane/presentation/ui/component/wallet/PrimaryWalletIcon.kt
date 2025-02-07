@@ -34,7 +34,7 @@ fun PrimaryWalletIcon(icon: String, iconName: CategoryIconName, color: String) {
             placeholder = painterResource(R.drawable.mona_empty_wallet)
         )
     } else {
-        val safeColor = color.ifEmpty { "0xFF4CAF5" }
+        val safeColor = color.ifEmpty { "0xFF4CAF50" }
         CategoryIconView(
             icon = iconName.asIcon(),
             color = Color(safeColor.toColorLong()),
