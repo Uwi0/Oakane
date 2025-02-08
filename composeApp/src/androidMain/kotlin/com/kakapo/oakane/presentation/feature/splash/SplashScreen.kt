@@ -112,7 +112,7 @@ private fun SplashScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.shiroko_icon),
+                painter = painterResource(id = R.drawable.oakane_icon),
                 contentDescription = null,
                 modifier = Modifier
                     .size(240.dp)

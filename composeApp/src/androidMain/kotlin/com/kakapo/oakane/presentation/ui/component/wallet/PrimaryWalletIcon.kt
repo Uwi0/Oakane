@@ -31,7 +31,7 @@ fun PrimaryWalletIcon(icon: String, iconName: CategoryIconName, color: String) {
             modifier = Modifier
                 .size(30.dp)
                 .clip(CircleShape),
-            placeholder = painterResource(R.drawable.mona_empty_wallet)
+            placeholder = painterResource(R.drawable.oakane_icon) //TODO change with new icon soon
         )
     } else {
         val safeColor = color.ifEmpty { "0xFF4CAF50" }

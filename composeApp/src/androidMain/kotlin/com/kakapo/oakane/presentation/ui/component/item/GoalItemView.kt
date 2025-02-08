@@ -41,7 +41,7 @@ internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
                 .clip(CircleShape),
             imageUrl = imageUri,
             contentDescription = null,
-            placeholder = painterResource(id = R.drawable.img_goal_default)
+            placeholder = painterResource(id = R.drawable.oakane_icon) // TODO change with new icon soon
         )
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(text = goal.goalName, style = MaterialTheme.typography.titleMedium)

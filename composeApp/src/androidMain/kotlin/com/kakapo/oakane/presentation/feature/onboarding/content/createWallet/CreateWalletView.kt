@@ -92,7 +92,7 @@ private fun CreateWalletContentView(
                     .size(220.dp)
                     .clip(CircleShape)
                     .align(Alignment.CenterHorizontally),
-                painter = painterResource(id = R.drawable.mona_wallet),
+                painter = painterResource(id = R.drawable.oakane_icon), //Todo change with new i con soon
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
             )

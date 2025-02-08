@@ -46,7 +46,7 @@ internal fun ImageGoalPicker(imageUrl: String,onSelectedImage: (String) -> Unit)
     CustomImagePicker(
         modifier = Modifier
             .size(120.dp),
-        defaultImg = R.drawable.img_add_transaction_sample_mona,
+        defaultImg = R.drawable.oakane_icon, //TODO change with new i con soon
         selectedImageUri = selectedImageUri,
         onSelectedImage = { singlePhotoPickerLauncher.launch(PickVisualMediaRequest(mediaType)) }
     )
