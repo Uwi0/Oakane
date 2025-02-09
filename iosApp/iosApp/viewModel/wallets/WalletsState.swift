@@ -17,7 +17,5 @@ struct WalletsState {
     init (walletsState: WalletsStateKt) {
         self.wallets = walletsState.wallets
         self.sheetShown = walletsState.isSheetShown
-        self.colors = walletsState.colors
-
     }
 }

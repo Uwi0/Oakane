@@ -7,11 +7,11 @@ struct AddTransactionScreen: View {
     
     @StateObject private var viewModel = AddTransactionViewModel()
     @EnvironmentObject private var navigation: AppNavigation
+    @State private var showCamera: Bool = false
     
     var body: some View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
-            
             VStack(spacing: 16) {
                 OutlinedTextFieldView(
                     value: $viewModel.uiState.title,
@@ -46,6 +46,7 @@ struct AddTransactionScreen: View {
                     placeHolder: "Note",
                     onValueChange: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }
                 )
+                ButtonAddImage()
                 Spacer()
                 FilledButtonView(
                     text: "Save Transaction",
@@ -70,6 +71,7 @@ struct AddTransactionScreen: View {
                     .presentationDragIndicator(.visible)
                 }
             )
+            .sheet(isPresented: $showCamera, content: { CameraViewController() })
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -91,4 +93,61 @@ struct AddTransactionScreen: View {
             viewModel.initializeData(transactionId: transactionId)
         }
     }
+    
+    @ViewBuilder
+    private func ButtonAddImage() -> some View {
+        HStack(spacing: 16) {
+            OutlinedContentButtonView(
+                onClick: { showCamera = true },
+                content: {
+                    Text("Photo")
+                    Spacer()
+                    Image(systemName: "camera")
+                }
+            )
+            ButtonPickImage()
+        }
+    }
+}
+
+
+struct CameraViewController: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = context.coordinator
+        return imagePicker
+    }
+    
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        var parent: CameraViewController
+        
+        init(_ parent: CameraViewController) {
+            self.parent = parent
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let capturedImage = info[.originalImage] as? UIImage {
+                saveImageToPhotoLibrary(image: capturedImage) { result in
+                    switch result {
+                    case .success(let url):
+                        print(url)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
+            picker.dismiss(animated: true)
+        }
+    }
+}
+
+#Preview {
+    AddTransactionScreen(transactionId: 0)
 }

@@ -42,7 +42,7 @@ class WalletTransferLocalDatasourceImpl(
             }
     }
 
-    override fun getWalletTransfersForBackup(): Result<List<WalletTransferEntity>> {
+    override suspend fun getWalletTransfersForBackup(): Result<List<WalletTransferEntity>> {
         return runCatching {
             walletTransferQueries.getWalletTranfersForBackup()
                 .executeAsList()
