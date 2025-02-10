@@ -16,69 +16,7 @@ struct AddTransactionScreen: View {
     var body: some View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
-            VStack(spacing: 16) {
-                OutlinedTextFieldView(
-                    value: Binding(
-                        get: { uiState.title },
-                        set: { newValue in viewModel.handle(event: .ChangedTitle(value: newValue))}
-                    ),
-                    placeHolder: "Title"
-                )
-                OutlinedCurrencyTextFieldView(
-                    label: "Amount",
-                    value: $viewModel.uiState.amount,
-                    onValueChange: { newValue in viewModel.handle(event: .ChangedAmount(value: newValue))}
-                )
-                SelectionPickerView(
-                    title: "Transaction Type",
-                    selectedOption: $viewModel.uiState.selectedType,
-                    onClick: { option in
-                        viewModel.handle(event: .ChangeType(value: option.asTransactionType()))
-                    }
-                )
-                CategoryButtonView(
-                    uiState: viewModel.uiState,
-                    onEvent: viewModel.handle(event:)
-                )
-                DateButtonView(
-                    title: "Today",
-                    onClick: { date in
-                        let convertedDate = date.toInt64()
-                        viewModel.handle(event: .ChangeDate(value: convertedDate))
-                    }
-                )
-                OutlinedTextFieldView(
-                    value: Binding(
-                        get: { uiState.note },
-                        set: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }),
-                    placeHolder: "Note"
-                )
-                ButtonAddImage()
-                Spacer()
-                FilledButtonView(
-                    text: "Save Transaction",
-                    onClick: {
-                        viewModel.handle(event: .SaveTransaction())
-                        navigation.navigateBack()
-                    }
-                )
-                .frame(height: 48)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 24)
-            .sheet(
-                isPresented: $viewModel.uiState.showSheet,
-                onDismiss: { viewModel.handle(event: .Sheet(shown: false)) },
-                content: {
-                    CategoriesSheetView(
-                        categories: viewModel.uiState.categories,
-                        onEvent: viewModel.handle(event:)
-                    )
-                    .presentationDetents([.height(640)])
-                    .presentationDragIndicator(.visible)
-                }
-            )
-            .sheet(isPresented: $showCamera, content: { CameraViewController() })
+            AddTransactionContentView()
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -99,6 +37,75 @@ struct AddTransactionScreen: View {
         .onAppear {
             viewModel.initializeData(transactionId: transactionId)
         }
+    }
+    
+    @ViewBuilder
+    private func AddTransactionContentView() -> some View {
+        VStack(spacing: 16) {
+            OutlinedTextFieldView(
+                value: Binding(
+                    get: { uiState.title },
+                    set: { newValue in viewModel.handle(event: .ChangedTitle(value: newValue))}
+                ),
+                placeHolder: "Title"
+            )
+            OutlinedCurrencyTextFieldView(
+                label: "Amount",
+                value: $viewModel.uiState.amount,
+                onValueChange: { newValue in viewModel.handle(event: .ChangedAmount(value: newValue))}
+            )
+            SelectionPickerView(
+                title: "Transaction Type",
+                label: "Type",
+                selectedOption: Binding(
+                    get: { uiState.selectedType},
+                    set: { option in viewModel.handle(event: .ChangeType(value: option.asTransactionType()))}
+                )
+            )
+            CategoryButtonView(
+                uiState: viewModel.uiState,
+                onEvent: viewModel.handle(event:)
+            )
+            DateButtonView(
+                title: "Today",
+                label: "Date",
+                onClick: { date in
+                    let convertedDate = date.toInt64()
+                    viewModel.handle(event: .ChangeDate(value: convertedDate))
+                }
+            )
+            OutlinedTextFieldView(
+                value: Binding(
+                    get: { uiState.note },
+                    set: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }),
+                placeHolder: "Note"
+            )
+            ButtonAddImage()
+            Spacer()
+            FilledButtonView(
+                text: "Save Transaction",
+                onClick: {
+                    viewModel.handle(event: .SaveTransaction())
+                    navigation.navigateBack()
+                }
+            )
+            .frame(height: 48)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
+        .sheet(
+            isPresented: $viewModel.uiState.showSheet,
+            onDismiss: { viewModel.handle(event: .Sheet(shown: false)) },
+            content: {
+                CategoriesSheetView(
+                    categories: viewModel.uiState.categories,
+                    onEvent: viewModel.handle(event:)
+                )
+                .presentationDetents([.height(640)])
+                .presentationDragIndicator(.visible)
+            }
+        )
+        .sheet(isPresented: $showCamera, content: { CameraViewController() })
     }
     
     @ViewBuilder

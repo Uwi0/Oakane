@@ -4,35 +4,44 @@ import Shared
 
 struct SelectionPickerView: View {
     let title: String
+    var label: String = ""
     @Binding var selectedOption: String
-    let onClick: (String) -> Void
     
     private let options: [String] = TransactionType.allCases.map(\.self.name)
     
     var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if !label.isEmpty {
+                Text(label).font(Typography.titleSmall)
+            }
+            SelectionPickerContent()
+        }
+    }
+    
+    @ViewBuilder
+    private func SelectionPickerContent() -> some View {
         HStack(alignment: .center) {
             Text(title)
                 .font(Typography.bodyLarge)
                 .foregroundStyle(ColorTheme.outline)
             Spacer()
-            Picker(title, selection: $selectedOption) {
-                ForEach(options, id: \.self) { option in
-                    Text(option)
-                        .tag(option)
-                }
+            PickersContent()
+        }
+        .outlinedTextStyle(borderColor: ColorTheme.outline)
+    }
+    
+    @ViewBuilder
+    private func PickersContent() -> some View {
+        Picker(title, selection: $selectedOption) {
+            ForEach(options, id: \.self) { option in
+                Text(option).tag(option)
             }
-            .pickerStyle(.menu)
-            .tint(ColorTheme.outline)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .background(RoundedRectangle(cornerRadius: 16).stroke(ColorTheme.outline, lineWidth: 2))
-        .onChange(of: selectedOption) {
-            onClick(selectedOption)
-        }
+        .pickerStyle(.menu)
+        .tint(ColorTheme.outline)
     }
 }
 
 #Preview {
-    SelectionPickerView(title: "Select",selectedOption: .constant("") ,onClick: { _ in })
+    SelectionPickerView(title: "Select",selectedOption: .constant(""))
 }
