@@ -5,6 +5,7 @@ struct GoalState {
     var fileName: String = ""
     var title: String = ""
     var savedAmount: String = ""
+    var currentAmount: String = ""
     var targetAmount: String = ""
     var progress: Float = 0.0
     var startDate: Int64 = 0
@@ -27,5 +28,6 @@ struct GoalState {
         note = state.goal.note
         isDialogShown = state.dialogShown
         dialogContent = state.dialogContent
+        currentAmount = state.currentAmount
     }
 }

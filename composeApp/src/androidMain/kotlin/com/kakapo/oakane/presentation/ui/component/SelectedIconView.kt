@@ -50,7 +50,7 @@ fun SelectedIconView(selectedIcon: SelectedIconModel, onClick: () -> Unit) {
                 .clickable(onClick = onClick),
             imageUrl = uri,
             contentScale = ContentScale.FillBounds,
-            placeholder = painterResource(R.drawable.fubuki_stare)
+            placeholder = painterResource(R.drawable.oakane_icon)
         )
     }
 }

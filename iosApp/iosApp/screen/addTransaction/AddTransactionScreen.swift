@@ -127,7 +127,6 @@ struct AddTransactionScreen: View {
     }
 }
 
-
 struct CameraViewController: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let imagePicker = UIImagePickerController()
