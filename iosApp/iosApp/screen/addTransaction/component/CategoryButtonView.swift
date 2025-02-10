@@ -11,7 +11,7 @@ struct CategoryButtonView: View {
             action: { onEvent(.Sheet(shown: true)) },
             label: {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Category")
+                    Text("Category").font(Typography.titleMedium)
                     CategoryButtonContent()
                 }
             }

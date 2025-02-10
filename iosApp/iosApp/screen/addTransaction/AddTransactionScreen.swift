@@ -14,74 +14,9 @@ struct AddTransactionScreen: View {
     }
     
     var body: some View {
-        ZStack {
-            ColorTheme.surface.ignoresSafeArea()
+        VStack {
+            NavigationBar()
             AddTransactionContentView()
-        }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                IconButtonView(
-                    name: "arrow.left",
-                    width: 16,
-                    onClick: {
-                        navigation.navigateBack()
-                    }
-                )
-            }
-            ToolbarItem(placement: .topBarLeading) {
-                Text("Add Transaction")
-                    .font(Typography.titleMedium)
-            }
-        }
-        .onAppear {
-            viewModel.initializeData(transactionId: transactionId)
-        }
-    }
-    
-    @ViewBuilder
-    private func AddTransactionContentView() -> some View {
-        VStack(spacing: 16) {
-            OutlinedTextFieldView(
-                value: Binding(
-                    get: { uiState.title },
-                    set: { newValue in viewModel.handle(event: .ChangedTitle(value: newValue))}
-                ),
-                placeHolder: "Title"
-            )
-            OutlinedCurrencyTextFieldView(
-                label: "Amount",
-                value: $viewModel.uiState.amount,
-                onValueChange: { newValue in viewModel.handle(event: .ChangedAmount(value: newValue))}
-            )
-            SelectionPickerView(
-                title: "Transaction Type",
-                label: "Type",
-                selectedOption: Binding(
-                    get: { uiState.selectedType},
-                    set: { option in viewModel.handle(event: .ChangeType(value: option.asTransactionType()))}
-                )
-            )
-            CategoryButtonView(
-                uiState: viewModel.uiState,
-                onEvent: viewModel.handle(event:)
-            )
-            DateButtonView(
-                title: "Today",
-                label: "Date",
-                onClick: { date in
-                    let convertedDate = date.toInt64()
-                    viewModel.handle(event: .ChangeDate(value: convertedDate))
-                }
-            )
-            OutlinedTextFieldView(
-                value: Binding(
-                    get: { uiState.note },
-                    set: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }),
-                placeHolder: "Note"
-            )
-            ButtonAddImage()
-            Spacer()
             FilledButtonView(
                 text: "Save Transaction",
                 onClick: {
@@ -90,9 +25,72 @@ struct AddTransactionScreen: View {
                 }
             )
             .frame(height: 48)
+            .padding(.horizontal, 16)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 24)
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            viewModel.initializeData(transactionId: transactionId)
+        }
+    }
+    
+    @ViewBuilder
+    private func NavigationBar() -> some View {
+        VStack {
+            NavigationTopAppbar(title: "Add transaction", navigateBack: { navigation.navigateBack() } )
+            Divider()
+        }
+    }
+    
+    @ViewBuilder
+    private func AddTransactionContentView() -> some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                OutlinedTextFieldView(
+                    value: Binding(
+                        get: { uiState.title },
+                        set: { newValue in viewModel.handle(event: .ChangedTitle(value: newValue))}
+                    ),
+                    placeHolder: "Title"
+                )
+                OutlinedCurrencyTextFieldView(
+                    label: "Amount",
+                    value: $viewModel.uiState.amount,
+                    onValueChange: { newValue in viewModel.handle(event: .ChangedAmount(value: newValue))}
+                )
+                SelectionPickerView(
+                    title: "Transaction Type",
+                    label: "Type",
+                    selectedOption: Binding(
+                        get: { uiState.selectedType},
+                        set: { option in viewModel.handle(event: .ChangeType(value: option.asTransactionType()))}
+                    )
+                )
+                CategoryButtonView(
+                    uiState: viewModel.uiState,
+                    onEvent: viewModel.handle(event:)
+                )
+                DateButtonView(
+                    title: "Today",
+                    label: "Date",
+                    onClick: { date in
+                        let convertedDate = date.toInt64()
+                        viewModel.handle(event: .ChangeDate(value: convertedDate))
+                    }
+                )
+                OutlinedTextFieldView(
+                    value: Binding(
+                        get: { uiState.note },
+                        set: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }),
+                    placeHolder: "Note"
+                )
+                ButtonAddImage()
+                Spacer()
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 24)
+        }
+        .scrollIndicators(.hidden)
+        
         .sheet(
             isPresented: $viewModel.uiState.showSheet,
             onDismiss: { viewModel.handle(event: .Sheet(shown: false)) },
@@ -108,6 +106,7 @@ struct AddTransactionScreen: View {
         .sheet(isPresented: $showCamera, content: { CameraViewController() })
     }
     
+    
     @ViewBuilder
     private func ButtonAddImage() -> some View {
         HStack(spacing: 16) {
@@ -119,7 +118,11 @@ struct AddTransactionScreen: View {
                     Image(systemName: "camera")
                 }
             )
-            ButtonPickImage()
+            ButtonPickImage(
+                onSelectedImage: { imageName in
+                    viewModel.handle(event: .SaveImageFile(name: imageName))
+                }
+            )
         }
     }
 }

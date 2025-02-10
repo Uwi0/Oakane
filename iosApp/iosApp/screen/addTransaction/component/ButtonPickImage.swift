@@ -3,6 +3,8 @@ import PhotosUI
 
 struct ButtonPickImage: View {
     
+    let onSelectedImage: (String) -> Void
+    
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
     
@@ -35,8 +37,8 @@ struct ButtonPickImage: View {
                         selectedImage = image
                         saveImageToPhotoLibrary(image: image) { result in
                             switch result {
-                            case .success(let message):
-                                print(message)
+                            case .success(let imageName):
+                                onSelectedImage(imageName)
                             case .failure(let error):
                                 print("Error saving image: \(error.localizedDescription)")
                             }
@@ -51,5 +53,7 @@ struct ButtonPickImage: View {
 }
 
 #Preview {
-    ButtonPickImage()
+    ButtonPickImage { _ in
+        
+    }
 }

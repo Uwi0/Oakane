@@ -25,7 +25,7 @@ struct OutlinedTextFieldView: View {
         VStack(alignment: .leading, spacing: 8) {
             if showLabel {
                 Text(label)
-                    .font(Typography.titleSmall)
+                    .font(Typography.titleMedium)
             }
             
             TextField(placeHolder, text: $value, onEditingChanged: { isEditChange in

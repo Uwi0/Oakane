@@ -17,7 +17,7 @@ struct DateButtonView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if (!label.isEmpty) {
-                Text(label).font(Typography.titleSmall)
+                Text(label).font(Typography.titleMedium)
             }
             DateButtonContent()
         }
