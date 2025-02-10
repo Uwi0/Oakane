@@ -57,10 +57,12 @@ private struct CategoryNameFieldView: View {
             }
             
             OutlinedTextFieldView(
-                value: $categoryName,
+                value: Binding(
+                    get: { uiState.categoryName },
+                    set: {newValue in onEvent(.ChangeCategory(name: newValue)) }
+                ),
                 placeHolder: "Category Name",
-                showLabel: false,
-                onValueChange: { newValue in onEvent(.ChangeCategory(name: newValue)) }
+                showLabel: false
             )
         }
         

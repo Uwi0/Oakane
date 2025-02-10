@@ -9,14 +9,20 @@ struct AddTransactionScreen: View {
     @EnvironmentObject private var navigation: AppNavigation
     @State private var showCamera: Bool = false
     
+    private var uiState: AddTransactionState {
+        viewModel.uiState
+    }
+    
     var body: some View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
             VStack(spacing: 16) {
                 OutlinedTextFieldView(
-                    value: $viewModel.uiState.title,
-                    placeHolder: "Title",
-                    onValueChange: { newValue in viewModel.handle(event: .ChangedTitle(value: newValue)) }
+                    value: Binding(
+                        get: { uiState.title },
+                        set: { newValue in viewModel.handle(event: .ChangedTitle(value: newValue))}
+                    ),
+                    placeHolder: "Title"
                 )
                 OutlinedCurrencyTextFieldView(
                     label: "Amount",
@@ -42,9 +48,10 @@ struct AddTransactionScreen: View {
                     }
                 )
                 OutlinedTextFieldView(
-                    value: $viewModel.uiState.note,
-                    placeHolder: "Note",
-                    onValueChange: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }
+                    value: Binding(
+                        get: { uiState.note },
+                        set: { newValue in viewModel.handle(event: .ChangeNote(value: newValue)) }),
+                    placeHolder: "Note"
                 )
                 ButtonAddImage()
                 Spacer()
