@@ -41,8 +41,7 @@ struct CreateWalletSheetView: View {
                 OutlinedTextFieldView(
                     value: $walletName,
                     placeHolder: "Wallet Name",
-                    showLabel: false,
-                    onValueChange: { name in onEvent(.changeWallet(name: name))}
+                    showLabel: false
                 )
             }
         }

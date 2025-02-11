@@ -32,15 +32,19 @@ struct AddGoalScreen: View {
                 )
                 
                 OutlinedTextFieldView(
-                    value: $viewModel.uiState.goalName,
-                    placeHolder: "Goal Name" ,
-                    onValueChange: { goalName in viewModel.handle(event: .SetName(value: goalName))}
+                    value: Binding(
+                        get: { uiState.goalName},
+                        set: { goalName in viewModel.handle(event: .SetName(value: goalName)) }
+                    ),
+                    placeHolder: "Goal Name"
                 )
                 
                 OutlinedTextFieldView(
-                    value: $viewModel.uiState.note,
-                    placeHolder: "Note",
-                    onValueChange: { note in viewModel.handle(event: .SetNote(value: note))}
+                    value: Binding(
+                        get: { uiState.note },
+                        set: { note in viewModel.handle(event: .SetNote(value: note)) }
+                    ),
+                    placeHolder: "Note"
                 )
                 
                 DateSelectorView(

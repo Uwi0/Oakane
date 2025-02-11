@@ -1,6 +1,5 @@
 package com.kakapo.oakane.presentation.feature.onboarding.content
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,10 +18,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
@@ -38,14 +35,7 @@ internal fun ImportBackupContentView(onEvent: (OnBoardingEvent) -> Unit) {
                 .padding(vertical = 24.dp, horizontal = 16.dp)
         ) {
             Text(text = "Import Your Back Up", style = MaterialTheme.typography.displaySmall)
-            Spacer(Modifier.size(148.dp))
-            Image(
-                modifier = Modifier
-                    .size(236.dp),
-                painter = painterResource(R.drawable.mumei_back_up),
-                contentDescription = "Back Up Image",
-            )
-            Spacer(Modifier.size(16.dp))
+            Spacer(Modifier.weight(1f))
             Text(
                 text = "You can import your back up to restore your data,  if you have one from previous back up or previous device.",
                 style = MaterialTheme.typography.bodyMedium

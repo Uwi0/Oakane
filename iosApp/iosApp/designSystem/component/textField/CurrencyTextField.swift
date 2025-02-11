@@ -57,7 +57,7 @@ struct CurrencyTextField: View {
     @Previewable @State var value: Int = 0
     @Previewable @State var someValue: String = ""
     VStack {
-        OutlinedTextFieldView(value: $someValue, onValueChange: { _ in })
+        OutlinedTextFieldView(value: $someValue)
         CurrencyTextField(value: $value, currency: .idr)
     }
 }

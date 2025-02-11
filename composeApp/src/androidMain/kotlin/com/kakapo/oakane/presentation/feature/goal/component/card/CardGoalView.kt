@@ -46,7 +46,7 @@ private fun CardImageView(fileUrl: String) {
             .size(48.dp)
             .clip(CircleShape),
         imageUrl = imgUri,
-        placeholder = painterResource(R.drawable.fubuki_stare),
+        placeholder = painterResource(R.drawable.oakane_icon),
         contentScale = ContentScale.Crop
     )
 }

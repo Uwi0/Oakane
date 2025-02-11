@@ -14,37 +14,29 @@ struct CardGoalView: View {
                 width: size,
                 height: size
             )
-            CardContentView(uiState: uiState)
+            CardContentView()
         }
         .customBackground(backgroundColor: ColorTheme.surface)
     }
-}
-
-private struct CardContentView: View {
     
-    let uiState: GoalState
-    
-    var body: some View {
+    @ViewBuilder
+    private func CardContentView() -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(uiState.title)
                 .font(Typography.titleMedium)
                 .foregroundStyle(ColorTheme.outline)
-            SavingProgressView(uiState: uiState)
+            SavingProgressView()
             ProgressIndicatorView(value: uiState.progress)
         }
     }
-}
-
-private struct SavingProgressView: View {
     
-    let uiState: GoalState
-    
-    var body: some View {
+    @ViewBuilder
+    private func SavingProgressView() -> some View {
         HStack(spacing: 8) {
             CardContentWithIconView(
                 icon: "wallet.bifold",
                 title: "Balance",
-                content: uiState.savedAmount
+                content: uiState.currentAmount
             )
             .frame(maxWidth: .infinity, alignment: .leading)
             Divider()

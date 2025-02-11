@@ -28,7 +28,8 @@ struct CreateWalletContentView: View {
             name: walletName,
             isDefaultIcon: imageFile.isEmpty,
             icon: imageFile.isEmpty ? selectedIcon.displayName : imageFile,
-            color: selectedColorHex
+            color: selectedColorHex,
+            note: ""
         )
     }
     

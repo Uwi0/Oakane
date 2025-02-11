@@ -5,7 +5,6 @@ struct OutlinedTextFieldView: View {
     private let label: String
     private let placeHolder: String
     private let showLabel: Bool
-    private let onValueChange: (String) -> Void
     
     @Binding var value: String
     @State private var borderColor = ColorTheme.outline
@@ -14,21 +13,19 @@ struct OutlinedTextFieldView: View {
         value: Binding<String>,
         placeHolder: String = "PlaceHolder",
         label: String = "",
-        showLabel: Bool = true,
-        onValueChange: @escaping (String) -> Void
+        showLabel: Bool = true
     ) {
         self._value = value
         self.placeHolder = placeHolder
         self.label = label.isEmpty ? placeHolder : label
         self.showLabel = showLabel
-        self.onValueChange = onValueChange
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if showLabel {
                 Text(label)
-                    .font(Typography.titleSmall)
+                    .font(Typography.titleMedium)
             }
             
             TextField(placeHolder, text: $value, onEditingChanged: { isEditChange in
@@ -38,14 +35,11 @@ struct OutlinedTextFieldView: View {
             .autocorrectionDisabled(true)
             .outlinedTextStyle(borderColor: borderColor)
         }
-        .onChange(of: value) {
-            onValueChange(value)
-        }
     }
 }
 #Preview {
     OutlinedTextFieldView(
         value: .constant("Hello world"),
-        placeHolder: "PlaceHolder", onValueChange: {_ in }
+        placeHolder: "PlaceHolder"
     )
 }

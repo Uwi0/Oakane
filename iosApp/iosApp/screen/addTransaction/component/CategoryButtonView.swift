@@ -10,15 +10,22 @@ struct CategoryButtonView: View {
         Button(
             action: { onEvent(.Sheet(shown: true)) },
             label: {
-                HStack(alignment: .center, spacing: 16) {
-                    Text(uiState.category.name).foregroundStyle(ColorTheme.outline)
-                    Spacer()
-                    Image(systemName: "square.grid.2x2").foregroundStyle(ColorTheme.outline)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Category").font(Typography.titleMedium)
+                    CategoryButtonContent()
                 }
-                .padding(16)
-                .background(RoundedRectangle(cornerRadius: 16).stroke(ColorTheme.outline, lineWidth: 2))
             }
         ).buttonStyle(PlainButtonStyle())
+    }
+    
+    @ViewBuilder
+    private func CategoryButtonContent() -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            Text(uiState.category.name).foregroundStyle(ColorTheme.outline)
+            Spacer()
+            Image(systemName: "square.grid.2x2").foregroundStyle(ColorTheme.outline)
+        }
+        .outlinedTextStyle(borderColor: ColorTheme.outline)
     }
 }
 

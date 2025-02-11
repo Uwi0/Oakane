@@ -46,13 +46,9 @@ class AddTransactionViewModel(
     private var transactionBefore = TransactionModel()
 
     fun initializeData(id: Long) {
-        loadCurrency()
-        loadWallets()
-        loadCategories().invokeOnCompletion {
-            if (id != 0L) loadTransactionBy(id)
-            else setDefaultCategory()
-        }
         if (id == 0L) loadSelectedWallet()
+        loadCurrency()
+        loadCategories(id)
     }
 
     fun handleEvent(event: AddTransactionEvent) {
@@ -98,10 +94,9 @@ class AddTransactionViewModel(
         return false
     }
 
-    private fun loadTransactionBy(id: Long) = viewModelScope.launch {
+    private fun loadTransactionBy(id: Long, wallet: WalletModel) = viewModelScope.launch {
         val onSuccess: (TransactionModel) -> Unit = { transaction ->
             transactionBefore = transaction
-            val wallet = _uiState.value.wallets.first { it.id == transaction.walletId }
             _uiState.update { it.copy(transaction, wallet) }
         }
         transactionRepository.loadTransactionBy(id).fold(
@@ -110,16 +105,15 @@ class AddTransactionViewModel(
         )
     }
 
-    private fun loadCategories() = viewModelScope.launch {
+    private fun loadCategories(id: Long) = viewModelScope.launch {
         val onSuccess: (List<CategoryModel>) -> Unit = { categories ->
             _uiState.update { it.copy(categories = categories) }
+            loadWallets(id)
         }
-        categoryRepository.loadCategories().collect { resultCategories ->
-            resultCategories.fold(
-                onSuccess = onSuccess,
-                onFailure = ::handleError
-            )
-        }
+        categoryRepository.loadCategories().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
     }
 
     private fun loadCurrency() = viewModelScope.launch {
@@ -129,9 +123,12 @@ class AddTransactionViewModel(
         )
     }
 
-    private fun loadWallets() = viewModelScope.launch {
+    private fun loadWallets(id: Long) = viewModelScope.launch {
         val onSuccess: (List<WalletModel>) -> Unit = { wallets ->
+            val wallet = if (wallets.isNotEmpty()) wallets.first() else WalletModel()
             _uiState.update { it.copy(wallets = wallets) }
+            if (id != 0L) loadTransactionBy(id, wallet)
+            else setDefaultCategory()
         }
         walletRepository.loadWallets().asCustomResult().subscribe(
             onSuccess = onSuccess,

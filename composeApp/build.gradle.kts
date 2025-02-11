@@ -60,8 +60,8 @@ android {
         applicationId = "com.kakapo.oakane"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 9
-        versionName = "1.0.8"
+        versionCode = 11
+        versionName = "1.0.10"
     }
     packaging {
         resources {
