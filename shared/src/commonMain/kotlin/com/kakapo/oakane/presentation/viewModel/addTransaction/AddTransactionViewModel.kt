@@ -110,12 +110,10 @@ class AddTransactionViewModel(
             _uiState.update { it.copy(categories = categories) }
             loadWallets(id)
         }
-        categoryRepository.loadCategories().collect { resultCategories ->
-            resultCategories.fold(
-                onSuccess = onSuccess,
-                onFailure = ::handleError
-            )
-        }
+        categoryRepository.loadCategories().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
     }
 
     private fun loadCurrency() = viewModelScope.launch {
@@ -127,7 +125,7 @@ class AddTransactionViewModel(
 
     private fun loadWallets(id: Long) = viewModelScope.launch {
         val onSuccess: (List<WalletModel>) -> Unit = { wallets ->
-            val wallet = if(wallets.isNotEmpty()) wallets.first() else WalletModel()
+            val wallet = if (wallets.isNotEmpty()) wallets.first() else WalletModel()
             _uiState.update { it.copy(wallets = wallets) }
             if (id != 0L) loadTransactionBy(id, wallet)
             else setDefaultCategory()
