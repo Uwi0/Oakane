@@ -10,38 +10,51 @@ struct TransactionScreen: View {
     
     private let toolbarContent = ToolBarContent(title: "Transaction", action1: "square.and.pencil", action2: "trash")
     
-    private var transaction: TransactionModel {
-        viewModel.uiState.transaction
+    private var uiState: TransactionState {
+        viewModel.uiState
     }
     
+    
     var body: some View {
-        ZStack {
-            ColorTheme.surface.ignoresSafeArea()
-            VStack{
-                AddTransactionTopBarView(
-                    title: "Transaction",
-                    onNavigateBack: { viewModel.handle(event: .NavigateBack())},
-                    onEdit: { viewModel.handle(event: .EditTransaction())},
-                    onDelete: { viewModel.handle(event: .DeleteTransaction())}
-                )
-                VStack(spacing: 16) {
-                    TransactionTopContentView(transaction: transaction)
-                    TransactionDetailContentView(transaction: transaction)
-                    TransactionNoteView(note: transaction.note)
-                    Text("Add Another feature soon!")
-                }
-                .padding(.vertical, 24)
-                .padding(.horizontal, 16)
+        VStack{
+            NavigationTopAppBarView()
+            VStack(spacing: 16) {
+                TransactionTopContentView(transaction: uiState.transaction)
+                TransactionDetailContentView(state: uiState)
+                TransactionNoteView(note: uiState.transaction.note)
+                Spacer()
             }
-            .frame(maxHeight: .infinity, alignment: .top)
-            
+            .padding(.vertical, 24)
+            .padding(.horizontal, 16)
         }
+        .background(ColorTheme.surface.ignoresSafeArea())
+        .frame(maxHeight: .infinity, alignment: .top)
         .navigationBarBackButtonHidden(true)
         .onChange(of: viewModel.uiEffect){
             observe(effect:viewModel.uiEffect)
         }
         .onAppear {
             viewModel.initializeData(transactionId: transactionId)
+        }
+    }
+    
+    @ViewBuilder
+    private func NavigationTopAppBarView() -> some View {
+        VStack{
+            NavigationTopAppbar(
+                title: "Transaction",
+                actionContent: {
+                    Image(systemName: "pencil")
+                        .frame(width: 24, height: 24)
+                        .onTapGesture { viewModel.handle(event: .EditTransaction()) }
+                    
+                    Image(systemName: "trash")
+                        .frame(width: 24, height: 24)
+                        .onTapGesture { viewModel.handle(event: .DeleteTransaction()) }
+                },
+                navigateBack: { navigation.navigateBack() }
+            )
+            Divider()
         }
     }
     
@@ -61,31 +74,6 @@ struct TransactionScreen: View {
     
 }
 
-struct AddTransactionTopBarView: View {
-    
-    let title: String
-    let onNavigateBack: () -> Void
-    let onEdit: () -> Void
-    let onDelete: () -> Void
-    
-    var body: some View {
-        VStack{
-            NavigationTopAppbar(
-                title: title,
-                actionContent: {
-                    Image(systemName: "pencil")
-                        .frame(width: 24, height: 24)
-                        .onTapGesture { onEdit() }
-                    
-                    Image(systemName: "trash")
-                        .frame(width: 24, height: 24)
-                        .onTapGesture { onDelete()
-                        }
-                },
-                navigateBack: onNavigateBack
-            )
-            Divider()
-        }
-    }
+#Preview {
+    TransactionScreen(transactionId: 0)
 }
-
