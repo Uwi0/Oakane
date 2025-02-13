@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -19,18 +20,24 @@ import com.kakapo.oakane.presentation.feature.settings.navigation.navigateToSett
 import com.kakapo.oakane.presentation.feature.transactions.navigation.navigateToTransactions
 import com.kakapo.oakane.presentation.feature.wallets.navigation.navigateToWallets
 import com.kakapo.oakane.presentation.navigation.DrawerMenuNavigation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun rememberAppState(
     navController: NavHostController = rememberNavController(),
+    coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) = remember(navController) {
-    OakaneAppState(navController)
+
+    OakaneAppState(navController, coroutineScope)
 }
 
 @Stable
-class OakaneAppState(val navController: NavHostController) {
+class OakaneAppState(val navController: NavHostController, private val coroutineScope: CoroutineScope) {
 
     private var selectedDrawerValue by mutableStateOf(DrawerMenuNavigation.DASHBOARD)
+    private var isNavigateUp = false
 
     val currentRoute get() = _currentRoute.value
     private val _currentRoute = mutableStateOf<String?>(null)
@@ -71,6 +78,17 @@ class OakaneAppState(val navController: NavHostController) {
     fun isDashboardRoute(): Boolean = currentRoute?.let { current ->
         current == HOME_ROUTE
     } == true
+
+    fun safeNavigateUp() {
+        if (!isNavigateUp) {
+            isNavigateUp = true
+            navController.navigateUp()
+            coroutineScope.launch {
+                delay(500)
+                isNavigateUp = false
+            }
+        }
+    }
 
 }
 
