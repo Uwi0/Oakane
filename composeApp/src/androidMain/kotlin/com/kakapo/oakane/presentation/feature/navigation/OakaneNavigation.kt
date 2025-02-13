@@ -49,7 +49,7 @@ internal fun OakaneNavHost(
             navigateToOnBoarding = { navController.navigateToOnBoarding(appState.navOptionsPopBackStack()) }
         )
         termAndServiceScreen(
-            navigateToOnBoarding = navController::navigateToOnBoarding
+            navigateToOnBoarding = { navController.navigateToOnBoarding(appState.navOptionsPopBackStack()) }
         )
         onBoardingScreen(
             navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) }

@@ -9,7 +9,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
                             statusBarDark
                         )
                     },
-                    navigationBarStyle = if(!isDarkTheme){
+                    navigationBarStyle = if (!isDarkTheme) {
                         SystemBarStyle.light(
                             navigationBarLight,
                             navigationBarDark
@@ -111,9 +111,9 @@ private fun OakaneApp(
     val closeDrawer: () -> Unit = { scope.launch { drawerState.close() } }
 
     ModalNavigationDrawer(
-        modifier = Modifier.safeContentPadding(),
+        modifier = Modifier.systemBarsPadding(),
         drawerState = drawerState,
-        gesturesEnabled = false,
+        gesturesEnabled = appState.isDashboardRoute(),
         content = {
             OakaneNavHost(
                 appState = appState,
