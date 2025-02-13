@@ -45,7 +45,7 @@ data class AddGoalState(
 
     fun update(goal: GoalModel) = copy(
         fileName = goal.fileName,
-        goalName = goal.goalName,
+        goalName = goal.name,
         targetAmount = goal.amount.toString(),
         note = goal.note,
         startDate = goal.startDate,
@@ -53,7 +53,8 @@ data class AddGoalState(
     )
 
     fun asGoalModel() = GoalModel(
-        goalName = goalName,
+        id = id,
+        name = goalName,
         amount = targetAmount.ifEmpty { "0" }.asRealCurrencyValue(),
         note = note,
         startDate = startDate,

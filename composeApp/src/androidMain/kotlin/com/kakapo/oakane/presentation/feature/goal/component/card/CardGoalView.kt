@@ -54,7 +54,7 @@ private fun CardImageView(fileUrl: String) {
 @Composable
 private fun CardContentView(modifier: Modifier, uiState: GoalState) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(text = uiState.goal.goalName, style = MaterialTheme.typography.titleMedium)
+        Text(text = uiState.goal.name, style = MaterialTheme.typography.titleMedium)
         SavingProgressView(uiState = uiState)
         CustomProgressIndicatorView(uiState.goal.progress)
     }

@@ -55,7 +55,7 @@ class GoalsViewModel(
 
     private fun filterGoalsBy(query: String) {
         val goals = _uiState.value.goals
-        val filteredGoals = goals.filter { it.goalName.contains(query, ignoreCase = true) }
+        val filteredGoals = goals.filter { it.name.contains(query, ignoreCase = true) }
         _uiState.update { it.copy(filteredGoals = filteredGoals) }
     }
 

@@ -6,6 +6,7 @@ import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.domain.usecase.base.SaveGoalUseCase
 import com.kakapo.model.Currency
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -20,7 +21,8 @@ import kotlin.native.ObjCName
 @ObjCName("AddGoalViewModelKt")
 class AddGoalViewModel(
     private val goalRepository: GoalRepository,
-    private val systemRepository: SystemRepository
+    private val systemRepository: SystemRepository,
+    private val saveGoalUseCase: SaveGoalUseCase
 ): ViewModel() {
 
     @NativeCoroutinesState
@@ -73,24 +75,9 @@ class AddGoalViewModel(
     }
 
     private fun saveGoal() = viewModelScope.launch {
-        val isEditMode = uiState.value.isEditMode
-        if (isEditMode) updateGoal()
-        else addGoal()
-    }
-
-    private fun addGoal() = viewModelScope.launch {
         val goal = uiState.value.asGoalModel()
-        goalRepository.save(goal).fold(
-            onSuccess = { emit(AddGoalEffect.SuccessSaveGoal) },
-            onFailure = ::handleError
-        )
-    }
-
-    private fun updateGoal() = viewModelScope.launch {
-        val goal = uiState.value.asGoalModel()
-        val id = uiState.value.id
-        goalRepository.update(goal, id).fold(
-            onSuccess = { emit(AddGoalEffect.SuccessSaveGoal) },
+        saveGoalUseCase.execute(goal).fold(
+            onSuccess ={ emit(AddGoalEffect.SuccessSaveGoal) },
             onFailure = ::handleError
         )
     }
