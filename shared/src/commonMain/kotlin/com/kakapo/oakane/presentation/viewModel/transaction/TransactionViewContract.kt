@@ -9,7 +9,8 @@ import kotlin.native.ObjCName
 data class TransactionState(
     val transaction: TransactionModel = TransactionModel(),
     val wallet: WalletModel = WalletModel(),
-    val currency: Currency = Currency.IDR
+    val currency: Currency = Currency.IDR,
+    val dialogShown: Boolean = false
 )
 
 sealed class TransactionEffect{
@@ -22,4 +23,5 @@ sealed class TransactionEvent{
     data object NavigateBack: TransactionEvent()
     data object EditTransaction: TransactionEvent()
     data object DeleteTransaction: TransactionEvent()
+    data class DialogShown(val shown: Boolean): TransactionEvent()
 }
