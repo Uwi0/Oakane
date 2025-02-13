@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
-import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.selectedWalletUseCase
@@ -23,7 +22,6 @@ import kotlin.native.ObjCName
 
 @ObjCName("WalletsViewModelKt")
 class WalletsViewModel(
-    private val categoryRepository: CategoryRepository,
     private val walletRepository: WalletRepository,
     private val systemRepository: SystemRepository
 ) : ViewModel() {
