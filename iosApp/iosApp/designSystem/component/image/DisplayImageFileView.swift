@@ -38,25 +38,8 @@ struct DisplayImageFileView: View {
     }
     
     private func loadSavedImage(imageName: String) {
-        guard let fileUrl = FileManager.default.getSavedImageURL(fileName: imageName) else {
-            print("Image file not found")
-            return
-        }
-        
-        DispatchQueue.global(qos: .background).async {
-            do {
-                let data = try Data(contentsOf: fileUrl)
-                guard let loadedImage = UIImage(data: data) else {
-                    print("Failed to create UIImage from data")
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    self.uiImage = loadedImage
-                }
-            } catch {
-                print("Failed to load data from file: \(error.localizedDescription)")
-            }
+        Task {
+            uiImage = await fetchImage(localIdentifier: fileName)
         }
     }
 }

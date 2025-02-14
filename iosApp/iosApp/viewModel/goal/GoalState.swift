@@ -19,7 +19,7 @@ struct GoalState {
     
     init(state: GoalStateKt){
         fileName = state.goal.fileName
-        title = state.goal.goalName
+        title = state.goal.name
         targetAmount = state.targetAmount
         progress = state.goal.progress
         startDate = state.goal.startDate
