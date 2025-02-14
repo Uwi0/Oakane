@@ -116,3 +116,4 @@ touchlab-skie = { id = "co.touchlab.skie", version.ref = "skie" }
 #plugin define by this project
 kakapo-kotlinMultiplatform = { id = "com.kakapo.app.kotlinMultiplatform", version = "unspecified" }
 kakapo-xcFramework = { id = "com.kakapo.app.xcframework", version = "unspecified" }
+kakapo-android-flavors = { id = "com.kakapo.app.androidFlavors", version = "unspecified" }
