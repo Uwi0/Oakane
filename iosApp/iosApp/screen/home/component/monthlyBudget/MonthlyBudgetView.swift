@@ -14,6 +14,7 @@ struct MonthlyBudgetView: View {
         }
         .customBackground(backgroundColor: ColorTheme.surface)
     }
+    
 }
 
 fileprivate struct TopContentView: View {

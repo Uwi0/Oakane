@@ -39,6 +39,7 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconBu
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.feature.transaction.component.DeleteTransactionDialogView
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
 import com.kakapo.oakane.presentation.ui.model.asIcon
@@ -73,6 +74,10 @@ internal fun TransactionRoute(
     }
 
     TransactionScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+
+    if(uiState.dialogShown) {
+        DeleteTransactionDialogView(onEvent = viewModel::handleEvent)
+    }
 }
 
 @Composable
@@ -91,7 +96,7 @@ private fun TransactionScreen(
                     )
                     CustomIconButton(
                         icon = Icons.Default.DeleteOutline,
-                        onClick = { onEvent.invoke(TransactionEvent.DeleteTransaction) }
+                        onClick = { onEvent.invoke(TransactionEvent.DialogShown(true)) }
                     )
                 },
                 onNavigateBack = { onEvent.invoke(TransactionEvent.NavigateBack) }

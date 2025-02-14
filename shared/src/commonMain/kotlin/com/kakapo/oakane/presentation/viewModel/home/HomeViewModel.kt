@@ -2,7 +2,6 @@ package com.kakapo.oakane.presentation.viewModel.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
@@ -128,7 +127,6 @@ class HomeViewModel(
     private fun handleError(throwable: Throwable?){
         val message = throwable?.message ?: "Error"
         emit(HomeEffect.ShowError(message))
-        Logger.e { "Error HomeViewModel: $message" }
     }
 
     private fun emit(effect: HomeEffect) = viewModelScope.launch {

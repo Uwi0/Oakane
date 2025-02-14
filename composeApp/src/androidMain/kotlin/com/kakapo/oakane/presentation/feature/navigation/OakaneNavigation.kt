@@ -49,7 +49,7 @@ internal fun OakaneNavHost(
             navigateToOnBoarding = { navController.navigateToOnBoarding(appState.navOptionsPopBackStack()) }
         )
         termAndServiceScreen(
-            navigateToOnBoarding = navController::navigateToOnBoarding
+            navigateToOnBoarding = { navController.navigateToOnBoarding(appState.navOptionsPopBackStack()) }
         )
         onBoardingScreen(
             navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) }
@@ -67,7 +67,7 @@ internal fun OakaneNavHost(
         )
         addTransactionScreen(navigateBack = navController::navigateUp)
         transactionsScreen(
-            navigateBack = navController::navigateUp,
+            navigateBack = appState::safeNavigateUp,
             navigateToTransaction = navController::navigateToTransaction
         )
         transactionScreen(
@@ -75,13 +75,13 @@ internal fun OakaneNavHost(
             navigateBack = navController::navigateUp
         )
         categoriesScreen(
-            navigateBack = navController::navigateUp
+            navigateBack = appState::safeNavigateUp
         )
         addGoalScreen(
             navigateBack = navController::navigateUp
         )
         goalsScreen(
-            navigateUp = navController::navigateUp,
+            navigateUp = appState::safeNavigateUp,
             navigateToAddGoal = navController::navigateToAddGoal,
             navigateToGoal = navController::navigateToGoal
         )
@@ -93,13 +93,13 @@ internal fun OakaneNavHost(
             navigateBack = navController::navigateUp
         )
         walletsScreen(
-            navigateBack = navController::navigateUp,
+            navigateBack = appState::safeNavigateUp,
             navigateToWallet = navController::navigateToWallet
         )
         walletScreen(navigateBack = navController::navigateUp)
         reportsScreen(
-            navigateBack = navController::navigateUp
+            navigateBack = appState::safeNavigateUp
         )
-        settingsScreen(navigateBack = navController::navigateUp, onSelectedTheme = onSelectedTheme)
+        settingsScreen(navigateBack = appState::safeNavigateUp, onSelectedTheme = onSelectedTheme)
     }
 }

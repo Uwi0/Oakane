@@ -79,26 +79,25 @@ func saveImageToAlbum(image: UIImage, album: PHAssetCollection, photoLibrary: PH
     }
 }
 
-func fetchImage(localIdentifier: String) -> UIImage? {
+func fetchImage(localIdentifier: String) async -> UIImage? {
     let fetchOptions = PHFetchOptions()
     let assets = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: fetchOptions)
     
-    var image: UIImage?
-    assets.enumerateObjects { (asset, _, _) in
+    guard let asset = assets.firstObject else { return nil }
+    
+    return await withCheckedContinuation { continuation in
         let manager = PHImageManager.default()
         let options = PHImageRequestOptions()
         options.version = .current
-        options.isSynchronous = true
+        options.isSynchronous = false
         
         manager.requestImage(for: asset,
                              targetSize: PHImageManagerMaximumSize,
                              contentMode: .aspectFit,
-                             options: options) { (resultImage, _) in
-            image = resultImage
+                             options: options) { (image, _) in
+            continuation.resume(returning: image)
         }
     }
-    
-    return image
 }
 
 extension FileManager {

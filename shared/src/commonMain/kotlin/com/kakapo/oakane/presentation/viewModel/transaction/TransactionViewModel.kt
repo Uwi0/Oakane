@@ -9,6 +9,7 @@ import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.model.Currency
 import com.kakapo.model.wallet.WalletModel
+import com.kakapo.oakane.presentation.viewModel.transaction.TransactionEffect.EditTransactionBy
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -46,15 +47,21 @@ class TransactionViewModel(
         val id = uiState.value.transaction.id
         when (event) {
             is TransactionEvent.DeleteTransaction -> deleteTransactionBy()
-            is TransactionEvent.EditTransaction -> emit(TransactionEffect.EditTransactionBy(id))
+            is TransactionEvent.EditTransaction -> emit(EditTransactionBy(id))
+            is TransactionEvent.DialogShown -> _uiState.update { it.copy(dialogShown = event.shown) }
             TransactionEvent.NavigateBack -> emit(TransactionEffect.NavigateBack)
         }
     }
 
     private fun deleteTransactionBy() = viewModelScope.launch {
         val transaction = uiState.value.transaction
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.copy(dialogShown = false) }
+            emit(TransactionEffect.ShowError("What is done can't be undone"))
+            emit(TransactionEffect.NavigateBack)
+        }
         deleteTransactionUseCase.execute(transaction).fold(
-            onSuccess = { emit(TransactionEffect.NavigateBack) },
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }

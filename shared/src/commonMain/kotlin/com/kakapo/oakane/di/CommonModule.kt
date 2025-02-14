@@ -45,6 +45,7 @@ import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.domain.usecase.base.ImportRecurringBudgetUseCase
 import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
+import com.kakapo.domain.usecase.base.SaveGoalUseCase
 import com.kakapo.domain.usecase.base.SaveTransactionUseCase
 import com.kakapo.domain.usecase.base.SetRecurringBudgetUseCase
 import com.kakapo.domain.usecase.base.UpdateTransactionUseCase
@@ -55,6 +56,7 @@ import com.kakapo.domain.usecase.impl.DeleteTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.GetMonthlyBudgetOverviewUseCaseImpl
 import com.kakapo.domain.usecase.impl.ImportRecurringBudgetUseCaseImpl
 import com.kakapo.domain.usecase.impl.MoveWalletBalanceUseCaseImpl
+import com.kakapo.domain.usecase.impl.SaveGoalUseCaseImpl
 import com.kakapo.domain.usecase.impl.SaveTransactionUseCaseImpl
 import com.kakapo.domain.usecase.impl.SetRecurringBudgetUseCaseImpl
 import com.kakapo.domain.usecase.impl.UpdateTransactionUseCaseImpl
@@ -135,6 +137,7 @@ object CommonModule {
         factory<WalletLogItemsUseCase> { WalletLogItemsUseCaseImpl(get(), get(), get(), get(named(IO))) }
         factory<SetRecurringBudgetUseCase> { SetRecurringBudgetUseCaseImpl(get(), get(named(IO))) }
         factory<ImportRecurringBudgetUseCase> { ImportRecurringBudgetUseCaseImpl(get(), get(), get(), get(named(IO))) }
+        factory<SaveGoalUseCase> { SaveGoalUseCaseImpl(get()) }
     }
 
     val viewModel: Module = module {
@@ -145,11 +148,11 @@ object CommonModule {
         viewModel { TransactionsViewModel(get()) }
         viewModel { TransactionViewModel(get(), get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }
-        viewModel { AddGoalViewModel(get(), get()) }
+        viewModel { AddGoalViewModel(get(), get(), get()) }
         viewModel { GoalViewModel(get(), get(), get(), get(), get()) }
         viewModel { GoalsViewModel(get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get(), get()) }
-        viewModel { WalletsViewModel(get(), get(), get())}
+        viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
         viewModel { OnBoardingViewModel(get(), get(), get()) }

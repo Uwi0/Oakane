@@ -173,9 +173,7 @@ private fun HomeContentView(
 @Composable
 private fun HomeScreenPreview() {
     AppTheme {
-        HomeScreen(uiState = HomeState()) {
-
-        }
+        HomeScreen(uiState = HomeState(), onEvent = {})
     }
 
 }

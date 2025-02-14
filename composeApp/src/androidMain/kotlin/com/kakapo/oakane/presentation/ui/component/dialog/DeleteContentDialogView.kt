@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.wallet.component.dialog
+package com.kakapo.oakane.presentation.ui.component.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,44 +13,43 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
-import com.kakapo.oakane.presentation.viewModel.wallet.WalletEvent
 
 @Composable
-fun DeleteContentView(event: (WalletEvent) -> Unit) {
+fun DeleteContentDialogView(title: String, subtitle: String, onDismiss: () -> Unit, onConfirm: () -> Unit) {
     Column(
         modifier = Modifier.padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        DeleteTopContentView()
-        DeleteBottomContentView(event)
+        DeleteTopContentView(title, subtitle)
+        DeleteBottomContentView(onDismiss, onConfirm)
     }
 }
 
 @Composable
-private fun DeleteTopContentView() {
+private fun DeleteTopContentView(title: String, subtitle: String) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
-            text = "Are you sure want to delete this wallet?",
+            text = title,
             style = MaterialTheme.typography.headlineSmall
         )
         Text(
-            text = "This action can't be undone and will delete all transactions in this wallet",
+            text = subtitle,
             style = MaterialTheme.typography.bodyMedium
         )
     }
 }
 
 @Composable
-private fun DeleteBottomContentView(onEvent: (WalletEvent) -> Unit) {
+private fun DeleteBottomContentView(onDismiss: () -> Unit, onConfirm: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Spacer(modifier = Modifier.weight(1f))
         Spacer(Modifier.weight(1f))
         CustomTextButton(
-            onClick = { onEvent.invoke(WalletEvent.ShowDialog(shown = false)) },
+            onClick = onDismiss,
             content = { Text(text = "Cancel") }
         )
         CustomButton(
-            onClick = { onEvent.invoke(WalletEvent.ConfirmDelete) },
+            onClick = onConfirm,
             containerColor = MaterialTheme.colorScheme.error,
             content = { Text(text = "Delete") }
         )

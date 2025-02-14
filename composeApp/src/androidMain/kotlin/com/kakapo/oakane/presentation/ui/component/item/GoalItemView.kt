@@ -44,7 +44,7 @@ internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
             placeholder = painterResource(id = R.drawable.oakane_icon) // TODO change with new icon soon
         )
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(text = goal.goalName, style = MaterialTheme.typography.titleMedium)
+            Text(text = goal.name, style = MaterialTheme.typography.titleMedium)
             Text(
                 text = goal.amount.toFormatCurrency(currency),
                 style = MaterialTheme.typography.titleMedium

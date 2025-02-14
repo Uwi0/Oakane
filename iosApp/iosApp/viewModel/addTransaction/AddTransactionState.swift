@@ -10,6 +10,7 @@ struct AddTransactionState {
     var note: String = ""
     var showSheet: Bool = false
     var categories: [CategoryModel] = []
+    var imageFile: String = ""
     
     init(){}
     
@@ -22,5 +23,6 @@ struct AddTransactionState {
         note = state.note
         showSheet = state.sheetShown
         categories = state.categories
+        imageFile = state.imageFileName
     }
 }

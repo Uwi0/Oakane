@@ -8,7 +8,7 @@ fun GoalModel.toGoalEntity(): GoalEntity {
     return GoalEntity(
         id = 0,
         imageFile = fileName,
-        name = goalName,
+        name = name,
         targetAmount = amount,
         note = note,
         startDate = startDate,
@@ -20,7 +20,7 @@ fun GoalModel.toGoalEntity(): GoalEntity {
 fun GoalEntity.toGoalModel(currency: Currency) = GoalModel(
     id = id,
     amount = targetAmount,
-    goalName = name,
+    name = name,
     startDate = startDate,
     endDate = endDate,
     fileName = imageFile,

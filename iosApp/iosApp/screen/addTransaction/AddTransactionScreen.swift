@@ -84,6 +84,13 @@ struct AddTransactionScreen: View {
                     placeHolder: "Note"
                 )
                 ButtonAddImage()
+                
+                if !uiState.imageFile.isEmpty {
+                    TransactionImagePreView(
+                        imageUrl: uiState.imageFile,
+                        onDismiss: { viewModel.handle(event: .ClearImage())}
+                    )
+                }
                 Spacer()
             }
             .padding(.horizontal, 16)

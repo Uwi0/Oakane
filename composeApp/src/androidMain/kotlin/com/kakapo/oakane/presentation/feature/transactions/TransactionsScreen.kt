@@ -18,9 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
-import com.kakapo.oakane.presentation.feature.transactions.component.SwipeToDeleteTransactionView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionBottomSheetView
 import com.kakapo.oakane.presentation.feature.transactions.component.TransactionTopAppBarView
+import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEffect
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsState
@@ -90,7 +90,10 @@ private fun TransactionsScreen(
                         Text(date)
                     }
                     items(items = transactions, key = { item -> item.id }) { transaction ->
-                        SwipeToDeleteTransactionView(transaction, onEvent = onEvent)
+                        TransactionItemView(
+                            transaction =  transaction,
+                            onClick = { onEvent.invoke(TransactionsEvent.ToDetail(transaction.id)) }
+                        )
                     }
                 }
             }

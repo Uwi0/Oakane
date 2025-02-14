@@ -143,7 +143,7 @@ private fun AddGoalScreenContent(
         GoalCurrencyTextField(uiState, onEvent)
         CustomOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            label = "Goal Name",
+            label = "Goal Name*",
             placeHolder = "My Goal",
             value = uiState.goalName,
             onValueChange = { onEvent.invoke(AddGoalEvent.SetName(it)) }
@@ -185,6 +185,6 @@ private fun GoalCurrencyTextField(uiState: AddGoalState, onEvent: (AddGoalEvent)
     OutlinedCurrencyTextFieldView(
         state = currencyTextFieldState,
         modifier = Modifier.fillMaxWidth(),
-        label = { Text("Target") },
+        label = { Text("Target*") },
     )
 }
