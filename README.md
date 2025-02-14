@@ -27,3 +27,6 @@ The name "Oakane" comes from a mix of "oak", symbolizing growth, and "okane", wh
 Img Source: https://www.pixiv.net/en/users/6567678
 
 Figma Design: https://www.figma.com/community/file/1469282312265944668/oakane
+
+Play store: https://play.google.com/store/apps/details?id=com.kakapo.oakane
+
