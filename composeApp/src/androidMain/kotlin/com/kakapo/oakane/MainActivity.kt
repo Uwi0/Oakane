@@ -14,6 +14,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -71,9 +72,7 @@ class MainActivity : ComponentActivity() {
                             statusBarDark
                         )
                     } else {
-                        SystemBarStyle.dark(
-                            statusBarDark
-                        )
+                        SystemBarStyle.dark(statusBarDark)
                     },
                     navigationBarStyle = if (!isDarkTheme) {
                         SystemBarStyle.light(
@@ -115,11 +114,13 @@ private fun OakaneApp(
         drawerState = drawerState,
         gesturesEnabled = appState.isDashboardRoute(),
         content = {
-            OakaneNavHost(
-                appState = appState,
-                openDrawer = openDrawer,
-                onSelectedTheme = onSelectedTheme
-            )
+            Surface {
+                OakaneNavHost(
+                    appState = appState,
+                    openDrawer = openDrawer,
+                    onSelectedTheme = onSelectedTheme
+                )
+            }
         },
         drawerContent = {
             DrawerContent(appState, closeDrawer)

@@ -115,7 +115,6 @@ private fun TransactionScreen(
                 NoteContentView(uiState.transaction.note)
                 ImageTransaction(uiState.transaction.imageFileName)
             }
-
         }
     )
 }

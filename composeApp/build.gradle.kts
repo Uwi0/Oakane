@@ -96,6 +96,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.compose.colorpicker)
     implementation(libs.splash.screen)
+    implementation(libs.androidx.compose.animation)
 
     //camera
     implementation(libs.androidx.camera)

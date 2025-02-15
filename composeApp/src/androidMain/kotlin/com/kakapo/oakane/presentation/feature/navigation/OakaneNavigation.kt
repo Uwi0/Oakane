@@ -42,7 +42,10 @@ internal fun OakaneNavHost(
     onSelectedTheme: (Theme) -> Unit
 ) {
     val navController = appState.navController
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+    ) {
         splashScreen(
             navigateToTermAndService = { navController.navigateToTermAndService(appState.navOptionsPopBackStack()) },
             navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) },
