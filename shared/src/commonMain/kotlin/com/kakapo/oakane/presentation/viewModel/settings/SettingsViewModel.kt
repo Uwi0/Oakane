@@ -54,7 +54,7 @@ class SettingsViewModel(
 
     private fun loadIsDarkMode() = viewModelScope.launch {
         val onSuccess: (Theme) -> Unit = { themeMode ->
-            _uiState.value = _uiState.value.copy(themeMode = themeMode)
+            _uiState.value = _uiState.value.copy(theme = themeMode)
         }
 
         systemRepository.loadSavedTheme().fold(
@@ -78,7 +78,7 @@ class SettingsViewModel(
     }
 
     private fun confirmTheme() = viewModelScope.launch {
-        val theme = uiState.value.themeMode
+        val theme = uiState.value.theme
         val onSuccess: (Unit) -> Unit = {
             _uiState.update { it.copy(isDialogShown = false) }
             emit(SettingsEffect.Confirm(theme))

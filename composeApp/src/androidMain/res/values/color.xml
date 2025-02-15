@@ -3,4 +3,5 @@
     <color name="primary">#3B6939</color>
     <color name="primaryVariant">#BCF0B4</color>
     <color name="onPrimary">#FFFFFF</color>
+    <color name="surface">#F7FBF1</color>
 </resources>

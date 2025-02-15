@@ -141,7 +141,7 @@ internal fun SettingsRoute(
 
     if (uiState.isDialogShown) {
         DialogThemeView(
-            theme = uiState.themeMode,
+            theme = uiState.theme,
             onClick = { theme -> viewModel.handleEvent(SettingsEvent.OnSelected(theme)) },
             onConfirm = { viewModel.handleEvent(SettingsEvent.OnConfirmTheme) },
             onDismiss = { viewModel.handleEvent(SettingsEvent.OnDialog(shown = false)) }
@@ -206,7 +206,7 @@ private fun SettingContentView(
     ) {
         ChangeCurrencyButtonView(onEvent, uiState)
         ThemeButtonView(
-            theme = uiState.themeMode,
+            theme = uiState.theme,
             onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
         )
         ToggleSwitchComponentView(
@@ -224,10 +224,12 @@ private fun SettingContentView(
         ButtonSettingsView(
             title = "Back Up Data",
             icon = Icons.Outlined.Backup,
+            theme = uiState.theme,
             onClick = { onEvent.invoke(SettingsEvent.GenerateBackupFile) }
         )
         ButtonSettingsView(
             title = "Import Data",
+            theme = uiState.theme,
             icon = Icons.Outlined.ImportExport,
             onClick = { onEvent.invoke(SettingsEvent.RestoreBackupFile) }
         )

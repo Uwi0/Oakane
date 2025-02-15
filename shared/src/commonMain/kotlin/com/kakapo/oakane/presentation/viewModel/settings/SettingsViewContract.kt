@@ -7,7 +7,7 @@ import kotlin.native.ObjCName
 
 @ObjCName("SettingsStateKt")
 data class SettingsState(
-    val themeMode: Theme = Theme.System,
+    val theme: Theme = Theme.System,
     val isDialogShown: Boolean = false,
     val currency: Currency = Currency.USD,
     val isSheetShown: Boolean = false,
@@ -15,7 +15,7 @@ data class SettingsState(
     val isRecurringCategoryLimit: Boolean = false
 ) {
     fun update(theme: Int) = copy(
-        themeMode = theme.asTheme()
+        theme = theme.asTheme()
     )
 }
 

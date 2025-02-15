@@ -22,6 +22,10 @@ struct TransactionScreen: View {
                 TransactionTopContentView(transaction: uiState.transaction)
                 TransactionDetailContentView(state: uiState)
                 TransactionNoteView(note: uiState.transaction.note)
+                TransactionImagePreView(
+                    imageUrl: uiState.transaction.imageFileName,
+                    showDismissButton: false
+                )
                 Spacer()
             }
             .padding(.vertical, 24)
