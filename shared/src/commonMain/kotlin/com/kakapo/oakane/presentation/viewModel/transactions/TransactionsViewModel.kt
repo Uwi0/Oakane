@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.intoMidnight
 import com.kakapo.common.subscribe
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -23,7 +25,8 @@ import kotlin.native.ObjCName
 
 @ObjCName("TransactionsViewModelKt")
 class TransactionsViewModel(
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -41,6 +44,7 @@ class TransactionsViewModel(
 
     fun initializeData() {
         loadTransactions()
+        loadTheme()
         filterTransactions()
     }
 
@@ -117,6 +121,16 @@ class TransactionsViewModel(
         transactionRepository.loadTransactions().asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 

@@ -1,6 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.transaction
 
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.wallet.WalletModel
 import kotlin.native.ObjCName
@@ -10,7 +11,8 @@ data class TransactionState(
     val transaction: TransactionModel = TransactionModel(),
     val wallet: WalletModel = WalletModel(),
     val currency: Currency = Currency.IDR,
-    val dialogShown: Boolean = false
+    val dialogShown: Boolean = false,
+    val theme: Theme = Theme.System
 )
 
 sealed class TransactionEffect{

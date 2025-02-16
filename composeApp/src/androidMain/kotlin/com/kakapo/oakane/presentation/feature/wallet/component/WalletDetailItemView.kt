@@ -19,10 +19,15 @@ import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 import com.kakapo.oakane.presentation.ui.component.wallet.BudgetItemView
 import com.kakapo.oakane.presentation.ui.component.wallet.PrimaryWalletIcon
+import com.kakapo.oakane.presentation.viewModel.wallet.WalletState
 
 @Composable
-internal fun WalletDetailItemView(item: WalletItemModel) {
-    ColumnWrapper(modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)) {
+internal fun WalletDetailItemView(uiState: WalletState) {
+    val item = uiState.wallet
+    ColumnWrapper(
+        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = uiState.theme
+    ) {
         WalletDetailTopContent(item = item)
         HorizontalDivider()
         WalletDetailBottomContent(item = item)

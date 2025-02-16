@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.toColorLong
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.component.button.OutlinedCheckmarkRadioButton
@@ -29,10 +30,15 @@ import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 
 @Composable
-internal fun WalletItemView(wallet: WalletItemModel, onEvent: (WalletsEvent) -> Unit) {
+internal fun WalletItemView(
+    wallet: WalletItemModel,
+    theme: Theme,
+    onEvent: (WalletsEvent) -> Unit
+) {
     val currency = wallet.currency
     ColumnWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = theme,
         horizontalAlignment = Alignment.CenterHorizontally,
         onClick = { onEvent.invoke(WalletsEvent.ClickedWallet(wallet)) }
     ) {
@@ -106,7 +112,6 @@ private fun BalanceContent(title: String, amount: Double, color: Color, currency
 }
 
 
-
 @Preview
 @Composable
 private fun WalletItemPreview() {
@@ -122,7 +127,8 @@ private fun WalletItemPreview() {
                 income = 50_000.0,
                 expense = 50_000.0,
                 isSelected = false
-            )
+            ),
+            theme = Theme.Light
         ) {
 
         }

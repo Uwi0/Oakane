@@ -14,29 +14,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
-import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
-import com.kakapo.oakane.presentation.ui.component.wallet.BudgetItemView
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
+import com.kakapo.oakane.presentation.ui.component.wallet.BudgetItemView
+import com.kakapo.oakane.presentation.viewModel.reports.ReportsState
 
 @Composable
-internal fun BudgetContentView(item: MonthlyBudgetOverView) {
-    val currency = item.currency
-    val limit = item.limit.toFormatCurrency(currency)
-    val spent = item.spent.toFormatCurrency(currency)
+internal fun BudgetContentView(uiState: ReportsState) {
+    val item = uiState.monthlyOverView
+
     ColumnWrapper(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp, horizontal = 16.dp)
+            .padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = uiState.theme
     ) {
         Text(
-            text = "Budget: $limit",
+            text = "Budget: ${uiState.limit}",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.outline
         )
         CustomProgressIndicatorView(item.progress)
         Text(
-            text = "Spent: $spent)}",
+            text = "Spent: ${uiState.spent})}",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.outline
         )

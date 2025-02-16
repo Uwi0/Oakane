@@ -32,7 +32,7 @@ import com.kakapo.oakane.presentation.viewModel.home.HomeState
 
 @Composable
 internal fun MonthlyBudgetView(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
-    ColumnWrapper(modifier = Modifier.padding(12.dp)) {
+    ColumnWrapper(modifier = Modifier.padding(12.dp), theme = uiState.theme) {
         MonthlyBudgetContent(overView = uiState.monthlyBudgetOverView, onEvent = onEvent)
         HorizontalDivider()
         IncomeAndExpenseContent(overView = uiState.monthlyBudgetOverView)

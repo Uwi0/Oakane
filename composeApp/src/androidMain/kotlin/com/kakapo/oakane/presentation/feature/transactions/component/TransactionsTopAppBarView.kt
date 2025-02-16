@@ -28,7 +28,7 @@ internal fun TransactionTopAppBarView(
     state: TransactionsState,
     onEvent: (TransactionsEvent) -> Unit
 ) {
-    ColumnWrapper(modifier = Modifier.padding(bottom = 8.dp), shapes = RectangleShape) {
+    ColumnWrapper(modifier = Modifier.padding(bottom = 8.dp), shapes = RectangleShape, theme = state.theme) {
         CustomNavigationTopAppBarView(
             title = "Transactions",
             shadowElevation = 0.dp,

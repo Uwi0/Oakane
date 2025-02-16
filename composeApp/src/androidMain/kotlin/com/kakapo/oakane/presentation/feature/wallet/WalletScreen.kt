@@ -170,8 +170,8 @@ private fun WalletTopContentView(uiState: WalletState, onEvent: (WalletEvent) ->
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        WalletDetailItemView(item = uiState.wallet)
-        CardNoteView(note = uiState.wallet.note)
+        WalletDetailItemView(uiState = uiState)
+        CardNoteView(note = uiState.wallet.note, theme = uiState.theme)
         FilterLogView(uiState = uiState, onEvent = onEvent)
     }
 }

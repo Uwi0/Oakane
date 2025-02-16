@@ -13,6 +13,7 @@ import com.kakapo.model.Currency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.report.ReportCsvModel
 import com.kakapo.model.report.ReportModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -47,6 +48,7 @@ class ReportsViewModel(
         loadTotalBalance()
         loadWallets()
         loadCurrency()
+        loadTheme()
     }
 
     fun handleEVent(event: ReportsEvent) {
@@ -133,6 +135,16 @@ class ReportsViewModel(
             _uiState.update { it.copy(currency = currency) }
         }
         systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

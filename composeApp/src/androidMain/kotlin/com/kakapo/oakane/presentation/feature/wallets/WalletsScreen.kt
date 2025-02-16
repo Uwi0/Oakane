@@ -43,7 +43,7 @@ internal fun WalletsRoute(
     val walletsSheetState = rememberWalletSheetState(currency = uiState.currency) { wallet ->
         viewModel.handleEvent(WalletsEvent.SaveWallet(wallet))
     }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true){
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) {
         walletsSheetState.sheetContent == WalletSheetContent.Create
     }
 
@@ -86,7 +86,7 @@ private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(uiState.filteredWallets, key = { it.id }) { wallet ->
-                    WalletItemView(wallet, onEvent)
+                    WalletItemView(wallet, uiState.theme, onEvent)
                 }
             }
         },

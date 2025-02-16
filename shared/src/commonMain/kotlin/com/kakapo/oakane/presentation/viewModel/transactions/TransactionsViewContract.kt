@@ -1,6 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.transactions
 
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
 import kotlin.native.ObjCName
@@ -14,7 +15,8 @@ data class TransactionsState(
     val selectedDate: Long = 0L,
     val selectedCategory: CategoryModel? = null,
     val sheetShown: Boolean = false,
-    val sheetContent: TransactionsContentSheet = TransactionsContentSheet.Type
+    val sheetContent: TransactionsContentSheet = TransactionsContentSheet.Type,
+    val theme: Theme = Theme.System
 ) {
     val typeTile: String
         get() {

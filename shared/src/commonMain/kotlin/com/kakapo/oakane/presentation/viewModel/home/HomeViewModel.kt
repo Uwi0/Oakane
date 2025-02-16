@@ -11,6 +11,7 @@ import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.GetMonthlyBudgetOverviewUseCase
 import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -46,6 +47,7 @@ class HomeViewModel(
         loadWalletBalance()
         loadBudgetOverView()
         loadIsBalanceVisible()
+        loadTheme()
     }
 
     fun handleEvent(event: HomeEvent) {
@@ -120,6 +122,16 @@ class HomeViewModel(
         }
         systemRepository.changeBalance(!currentVisibility).fold(
             onSuccess =onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }

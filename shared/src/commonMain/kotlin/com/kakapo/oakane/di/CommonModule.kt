@@ -145,7 +145,7 @@ object CommonModule {
         viewModel { MainViewModel(get(), get()) }
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
-        viewModel { TransactionsViewModel(get()) }
+        viewModel { TransactionsViewModel(get(), get()) }
         viewModel { TransactionViewModel(get(), get(), get(), get()) }
         viewModel { CategoriesViewModel(get()) }
         viewModel { AddGoalViewModel(get(), get(), get()) }
@@ -156,7 +156,7 @@ object CommonModule {
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
         viewModel { OnBoardingViewModel(get(), get(), get()) }
-        viewModel { WalletViewModel(get(), get(), get()) }
+        viewModel { WalletViewModel(get(), get(), get(), get()) }
         viewModel { TermAndServiceViewModel(get()) }
     }
 

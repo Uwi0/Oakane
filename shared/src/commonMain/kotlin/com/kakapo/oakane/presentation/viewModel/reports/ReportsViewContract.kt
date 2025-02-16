@@ -5,6 +5,8 @@ import com.kakapo.model.Currency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.report.ReportCsvModel
 import com.kakapo.model.report.ReportModel
+import com.kakapo.model.system.Theme
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 import com.kakapo.oakane.presentation.viewModel.reports.model.currentMonth
@@ -19,7 +21,8 @@ data class ReportsState(
     val selectedWalletName: String = "All Wallet",
     val selectedMonth: MonthReport = currentMonth(),
     val selectedWallet: WalletItemModel? = null,
-    val currency: Currency = Currency.IDR
+    val currency: Currency = Currency.IDR,
+    val theme: Theme = Theme.System
 ){
     val proportions: List<Float> get(){
         val total = reports.sumOf { it.amount }
@@ -31,6 +34,10 @@ data class ReportsState(
     val names: List<String> get() = reports.map { it.name }
 
     val monthNumber: Pair<Long, Long> get() = startDateAndEndDateOfMonth(selectedMonth.monthNumber)
+
+    val limit: String get() = monthlyOverView.limit.toFormatCurrency(monthlyOverView.currency)
+    
+    val spent: String get() = monthlyOverView.spent.toFormatCurrency(monthlyOverView.currency)
 
     val displayedWallets: List<WalletItemModel> get() {
         val allWallet = WalletItemModel()

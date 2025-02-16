@@ -1,6 +1,7 @@
 package com.kakapo.oakane.presentation.viewModel.wallets
 
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
 import kotlin.native.ObjCName
@@ -11,7 +12,8 @@ data class WalletsState(
     val wallets: List<WalletItemModel> = emptyList(),
     val searchQuery: String = "",
     val isSheetShown: Boolean = false,
-    val currency: Currency = Currency.IDR
+    val currency: Currency = Currency.IDR,
+    val theme: Theme = Theme.System
 ){
 
     val filteredWallets: List<WalletItemModel> get() {

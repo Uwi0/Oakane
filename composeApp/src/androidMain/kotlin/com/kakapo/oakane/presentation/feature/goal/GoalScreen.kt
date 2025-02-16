@@ -86,7 +86,7 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
                 ) {
                     CardGoalView(uiState = uiState)
                     CardTimeView(uiState = uiState)
-                    CardNoteView(note = uiState.goal.note)
+                    CardNoteView(note = uiState.goal.note, uiState.theme)
                     Text(text = "Log Saving", style = MaterialTheme.typography.titleMedium)
                 }
                 LazyColumn(

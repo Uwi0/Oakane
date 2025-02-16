@@ -13,10 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.kakapo.model.system.Theme
+import com.kakapo.oakane.presentation.ui.util.cardTonalElevation
 
 @Composable
 fun ColumnWrapper(
     modifier: Modifier = Modifier,
+    theme: Theme,
     shapes: Shape = MaterialTheme.shapes.medium,
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
@@ -26,6 +29,7 @@ fun ColumnWrapper(
     Surface(
         shape = shapes,
         shadowElevation = 2.dp,
+        tonalElevation = cardTonalElevation(theme),
         onClick = onClick
     ) {
         Column(

@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.MoveWalletBalanceUseCase
 import com.kakapo.domain.usecase.base.WalletLogItemsUseCase
 import com.kakapo.domain.usecase.toExpenseAndIncome
+import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletLogItem
 import com.kakapo.model.wallet.WalletModel
@@ -21,6 +23,7 @@ import kotlinx.coroutines.launch
 
 class WalletViewModel(
     private val walletRepository: WalletRepository,
+    private val systemRepository: SystemRepository,
     private val moveBalanceUseCase: MoveWalletBalanceUseCase,
     private val walletLogItemsUseCase: WalletLogItemsUseCase
 ) : ViewModel() {
@@ -36,6 +39,7 @@ class WalletViewModel(
     fun initData(walletId: Long) {
         loadWalletTransactionsLogs(walletId)
         loadWallets()
+        loadTheme()
     }
 
     fun handleEvent(event: WalletEvent) {
@@ -83,6 +87,16 @@ class WalletViewModel(
             _uiState.update { it.copy(wallet = wallet.copy(expense = expense, income = income)) }
         }
         walletRepository.loadWalletItemBy(id).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

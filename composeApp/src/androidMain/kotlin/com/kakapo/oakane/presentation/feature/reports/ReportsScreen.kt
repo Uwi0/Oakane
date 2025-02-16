@@ -123,11 +123,12 @@ private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit
                         proportions = uiState.proportions,
                         colors = uiState.colors,
                         categoriesName = uiState.names,
-                        currency = uiState.currency
+                        currency = uiState.currency,
+                        theme = uiState.theme
                     )
                 }
                 item {
-                    BudgetContentView(item = uiState.monthlyOverView)
+                    BudgetContentView(uiState)
                 }
                 items(uiState.reports, key = { it.id }) { report ->
                     ReportsItemView(report)
