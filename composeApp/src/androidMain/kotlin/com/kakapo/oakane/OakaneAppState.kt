@@ -84,7 +84,7 @@ class OakaneAppState(val navController: NavHostController, private val coroutine
             isNavigateUp = true
             navController.navigateUp()
             coroutineScope.launch {
-                delay(500)
+                delay(750)
                 isNavigateUp = false
             }
         }

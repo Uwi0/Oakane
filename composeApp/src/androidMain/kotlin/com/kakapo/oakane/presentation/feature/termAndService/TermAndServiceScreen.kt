@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
@@ -141,6 +142,7 @@ private fun GithubButton() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = Theme.System,
         onClick = {
             uriHandler.openUri("https://github.com/Uwi0/Oakane")
         }

@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletLogItem
 import com.kakapo.model.wallet.WalletTransferModel
@@ -30,12 +31,13 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 
 @Composable
-internal fun TransferLogItemView(item: WalletLogItem.WalletTransferLogItem) {
+internal fun TransferLogItemView(item: WalletLogItem.WalletTransferLogItem, theme: Theme) {
     val transferLog = item.data
     RowWrapper(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = theme,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TransferLogIconView(transferLog.type)

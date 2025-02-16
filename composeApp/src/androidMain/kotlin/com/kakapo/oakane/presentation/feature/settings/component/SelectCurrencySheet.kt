@@ -5,6 +5,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.ui.component.sheet.SelectCurrencyView
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
 
@@ -12,6 +13,7 @@ import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
 @Composable
 internal fun SelectCurrencySheet(
     currency: Currency,
+    theme: Theme,
     sheetState: SheetState,
     onEvent: (SettingsEvent) -> Unit
 ) {
@@ -20,6 +22,7 @@ internal fun SelectCurrencySheet(
         onDismissRequest = { onEvent.invoke(SettingsEvent.OnSheet(shown = false)) }) {
         SelectCurrencyView(
             currency = currency,
+            theme = theme,
             onConfirm = { onEvent.invoke(SettingsEvent.ChangeCurrency(it)) }
         )
     }

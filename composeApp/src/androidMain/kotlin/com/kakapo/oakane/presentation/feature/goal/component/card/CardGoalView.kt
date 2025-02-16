@@ -31,7 +31,10 @@ import com.kakapo.oakane.presentation.viewModel.goal.GoalState
 
 @Composable
 internal fun CardGoalView(uiState: GoalState) {
-    RowWrapper(modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)) {
+    RowWrapper(
+        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = uiState.theme
+    ) {
         CardImageView(fileUrl = uiState.goal.fileName)
         CardContentView(modifier = Modifier.weight(1f), uiState = uiState)
     }

@@ -47,6 +47,7 @@ fun ColumnWrapper(
 @Composable
 fun RowWrapper(
     modifier: Modifier = Modifier,
+    theme: Theme,
     onClick: () -> Unit = {},
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(8.dp),
     content: @Composable RowScope.() -> Unit
@@ -54,6 +55,7 @@ fun RowWrapper(
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 2.dp,
+        tonalElevation = cardTonalElevation(theme),
         onClick = onClick
     ) {
         Row(

@@ -14,15 +14,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.model.asIcon
 
 @Composable
-fun CategoryItemView(category: CategoryModel, onEvent: () -> Unit) {
+fun CategoryItemView(category: CategoryModel, theme: Theme, onEvent: () -> Unit) {
     val context = LocalContext.current
     RowWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = theme,
         onClick = { onEvent.invoke() }) {
         if (category.isDefault) {
             CategoryIconView(

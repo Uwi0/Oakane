@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedIconCircleButton
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
@@ -29,18 +30,18 @@ data class GoalContent(
 )
 
 @Composable
-internal fun GoalHeaderView(isVisible: Boolean = true, onAddItem: () -> Unit) {
+internal fun GoalHeaderView(theme: Theme, isVisible: Boolean = true, onAddItem: () -> Unit) {
     if (isVisible) {
-        AddGoalView(onAddItem = onAddItem)
+        AddGoalView(theme = theme, onAddItem = onAddItem)
     } else {
         SimplifiedAddGoalView(onAddItem = onAddItem)
     }
 }
 
 @Composable
-private fun AddGoalView(onAddItem: () -> Unit) {
+private fun AddGoalView(theme: Theme, onAddItem: () -> Unit) {
     val content = defaultGoalContent()
-    RowWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+    RowWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp), theme = theme) {
         CustomOutlinedIconCircleButton(icon = content.icon, onClick = {})
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(text = content.title, style = MaterialTheme.typography.bodyMedium)

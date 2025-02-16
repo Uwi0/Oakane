@@ -23,9 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.common.showToast
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.animation.slidingContentAnimation
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
@@ -48,6 +51,7 @@ internal fun CategoriesRoute(
 ) {
     val viewModel = koinViewModel<CategoriesViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
         confirmValueChange = { targetValue ->
@@ -64,6 +68,7 @@ internal fun CategoriesRoute(
             when (effect) {
                 CategoriesEffect.HideSheet -> sheetState.hide()
                 CategoriesEffect.NavigateBack -> navigateBack.invoke()
+                is CategoriesEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
@@ -88,7 +93,7 @@ private fun CategoriesScreen(
             CustomNavigationTopAppBarView(
                 title = "Categories",
                 tonalElevation = 0.dp,
-                onNavigateBack = {onEvent.invoke(CategoriesEvent.NavigateBack)}
+                onNavigateBack = { onEvent.invoke(CategoriesEvent.NavigateBack) }
             )
         },
         content = { paddingValues ->
@@ -103,7 +108,12 @@ private fun CategoriesScreen(
                     onValueChange = { onEvent.invoke(CategoriesEvent.Search(it)) }
                 )
                 CategoriesTabView(uiState.selectedTab, onEvent)
-                CategoriesContentView(uiState.selectedTab, uiState.filteredCategories, onEvent)
+                CategoriesContentView(
+                    uiState.selectedTab,
+                    uiState.theme,
+                    uiState.filteredCategories,
+                    onEvent
+                )
             }
         },
         floatingActionButton = {
@@ -120,6 +130,7 @@ private fun CategoriesScreen(
 @Composable
 private fun CategoriesContentView(
     tab: Int,
+    theme: Theme,
     categories: List<CategoryModel>,
     onEvent: (CategoriesEvent) -> Unit
 ) {
@@ -134,7 +145,7 @@ private fun CategoriesContentView(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(selectedCategories, key = { it.id }) { category ->
-                SwipeToDeleteCategoryView(category, onEvent)
+                SwipeToDeleteCategoryView(category, theme, onEvent)
             }
         }
     }

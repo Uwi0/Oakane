@@ -92,6 +92,7 @@ private fun TransactionsScreen(
                     items(items = transactions, key = { item -> item.id }) { transaction ->
                         TransactionItemView(
                             transaction =  transaction,
+                            theme = state.theme,
                             onClick = { onEvent.invoke(TransactionsEvent.ToDetail(transaction.id)) }
                         )
                     }

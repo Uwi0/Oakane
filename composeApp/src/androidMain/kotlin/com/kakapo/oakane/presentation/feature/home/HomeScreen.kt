@@ -142,6 +142,7 @@ private fun HomeContentView(
         items(uiState.transactions, key = { "transaction_${it.id}" }) { transaction ->
             TransactionItemView(
                 transaction = transaction,
+                theme = uiState.theme,
                 onClick = { onEvent.invoke(HomeEvent.ToTransactionWith(transaction.id)) }
             )
         }
@@ -154,11 +155,12 @@ private fun HomeContentView(
         item {
             GoalHeaderView(
                 isVisible = uiState.goals.isEmpty(),
+                theme = uiState.theme,
                 onAddItem = { onEvent.invoke(HomeEvent.ToCreateGoal) }
             )
         }
         items(uiState.goals, key = { "goal_${it.id}" }) { goal ->
-            GoalItemView(goal, onClicked = { onEvent.invoke(HomeEvent.ToGoalWith(id = goal.id)) })
+            GoalItemView(goal, uiState.theme,onClicked = { onEvent.invoke(HomeEvent.ToGoalWith(id = goal.id)) })
         }
         item {
             ShowMoreButtonView(

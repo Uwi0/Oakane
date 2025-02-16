@@ -134,6 +134,7 @@ internal fun SettingsRoute(
     if (uiState.isSheetShown) {
         SelectCurrencySheet(
             currency = uiState.currency,
+            theme = uiState.theme,
             sheetState = sheetState,
             onEvent = viewModel::handleEvent,
         )

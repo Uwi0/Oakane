@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.animation.slidingContentAnimation
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
@@ -68,6 +69,7 @@ internal fun SelectCategorySheet(
             }
             SelectCategoriesContentView(
                 tab = uiState.transactionType.ordinal,
+                theme = uiState.theme,
                 categories = categories,
                 onEvent = onEvent
             )
@@ -101,6 +103,7 @@ private fun SelectCategoryTabView(
 @Composable
 private fun SelectCategoriesContentView(
     tab: Int,
+    theme: Theme,
     categories: List<CategoryModel>,
     onEvent: (AddTransactionEvent) -> Unit
 ) {
@@ -117,6 +120,7 @@ private fun SelectCategoriesContentView(
             items(selectedCategories, key = { it.id }) { category ->
                 CategoryItemView(
                     category,
+                    theme = theme,
                     onEvent = { onEvent.invoke(AddTransactionEvent.SetCategory(value = category)) }
                 )
             }

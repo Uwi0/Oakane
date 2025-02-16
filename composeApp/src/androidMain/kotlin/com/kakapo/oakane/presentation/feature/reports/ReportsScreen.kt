@@ -131,7 +131,7 @@ private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit
                     BudgetContentView(uiState)
                 }
                 items(uiState.reports, key = { it.id }) { report ->
-                    ReportsItemView(report)
+                    ReportsItemView(uiState.theme, report)
                 }
             }
         }

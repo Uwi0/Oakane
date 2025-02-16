@@ -2,8 +2,12 @@ package com.kakapo.oakane.presentation.viewModel.categories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
+import com.kakapo.common.asCustomResult
+import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.CategoryRepository
+import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +20,8 @@ import kotlin.native.ObjCName
 
 @ObjCName("CategoriesViewModelKt")
 class CategoriesViewModel(
-    private val repository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -29,6 +34,7 @@ class CategoriesViewModel(
 
     fun initializeData() {
         loadCategories()
+        loadTheme()
     }
 
     fun handleEvent(event: CategoriesEvent) {
@@ -62,23 +68,28 @@ class CategoriesViewModel(
     }
 
     private fun handleSheet(visibility: Boolean) {
-        _uiState.update {
-            it.updateSheet(visibility)
-        }
+        _uiState.update { it.updateSheet(visibility) }
         if (!visibility) emit(CategoriesEffect.HideSheet)
     }
 
     private fun loadCategories() = viewModelScope.launch {
-        repository.loadCategories().collect { result ->
-            result.fold(
-                onSuccess = { categories ->
-                    _uiState.update { it.updateCategories(categories) }
-                },
-                onFailure = {
-                    Logger.e(it) { "Failed to load categories ${it.message}" }
-                }
-            )
+        val onSuccess: (List<CategoryModel>) -> Unit = { categories ->
+            _uiState.update { it.updateCategories(categories) }
         }
+        categoryRepository.loadCategories().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
     }
 
     private fun saveClicked() {
@@ -89,40 +100,41 @@ class CategoriesViewModel(
 
     private fun saveCategory() = viewModelScope.launch {
         val category = uiState.value.asCategoryModel()
-        repository.save(category).fold(
-            onSuccess = {
-                _uiState.update { it.updateSheet(visibility = false) }
-                loadCategories()
-            },
-            onFailure = {
-                Logger.e(it) { "Failed to create category ${it.message}" }
-            }
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.updateSheet(visibility = false) }
+            loadCategories()
+        }
+        categoryRepository.save(category).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 
     private fun updateCategory() = viewModelScope.launch {
         val category = uiState.value.asCategoryModel()
-        repository.update(category).fold(
+        categoryRepository.update(category).fold(
             onSuccess = {
                 _uiState.update { it.updateSheet(visibility = false) }
                 loadCategories()
             },
-            onFailure = {
-                Logger.e(it) { "Failed to update category ${it.message}" }
-            }
+            onFailure = ::handleError
         )
     }
 
     private fun deleteCategoryBy(id: Long) = viewModelScope.launch {
-        repository.deleteCategoryBy(id).fold(
-            onSuccess = {
-                _uiState.update { it.copy(showSheet = false) }
-                loadCategories()
-            },
-            onFailure = {
-                Logger.e(it) { "Failed to update category ${it.message}" }
-            }
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.copy(showSheet = false) }
+            loadCategories()
+        }
+        categoryRepository.deleteCategoryBy(id).fold(
+            onSuccess = onSuccess,
+            onFailure =::handleError
         )
+    }
+
+    private fun handleError(throwable: Throwable?) {
+        val message = throwable?.message ?: "Unknown error"
+        emit(CategoriesEffect.ShowError(message))
     }
 
     private fun emit(effect: CategoriesEffect) = viewModelScope.launch {

@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.categories
 import com.kakapo.common.toColorLong
 import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
 import kotlin.native.ObjCName
@@ -21,7 +22,8 @@ data class CategoriesState(
     val showSheet: Boolean = false,
     val categoryName: String = "",
     val isEditMode: Boolean = false,
-    val categoryId: Long = 0
+    val categoryId: Long = 0,
+    val theme: Theme = Theme.System
 ) {
     val categoriesColor: List<String>
         get() {
@@ -105,6 +107,7 @@ data class CategoriesState(
 }
 
 sealed class CategoriesEffect {
+    data class ShowError(val message: String) : CategoriesEffect()
     data object NavigateBack: CategoriesEffect()
     data object HideSheet : CategoriesEffect()
 }

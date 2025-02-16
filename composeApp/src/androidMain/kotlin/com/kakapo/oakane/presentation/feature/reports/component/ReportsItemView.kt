@@ -10,13 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.model.report.ReportModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 
 @Composable
-internal fun ReportsItemView(item: ReportModel) {
+internal fun ReportsItemView(theme: Theme, item: ReportModel) {
     val selectedIcon = SelectedIconModel(
         imageFile = item.icon,
         defaultIcon = item.iconName,
@@ -29,7 +30,10 @@ internal fun ReportsItemView(item: ReportModel) {
     val currency = item.currency
 
     RowWrapper(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        theme = theme,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SelectedIconView(selectedIcon = selectedIcon, onClick = {})

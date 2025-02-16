@@ -9,6 +9,7 @@ import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatNumber
 import kotlinx.datetime.Clock
 import kotlin.native.ObjCName
@@ -24,6 +25,7 @@ data class MonthlyBudgetState(
     val categoryLimits: List<CategoryLimitModel> = emptyList(),
     val selectedCategoryLimit: CategoryLimitModel? = null,
     val currency: Currency = Currency.IDR,
+    val theme: Theme = Theme.System
 ){
 
     val realAmount: Int get() {

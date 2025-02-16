@@ -2,8 +2,12 @@ package com.kakapo.oakane.presentation.viewModel.goals
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
+import com.kakapo.common.asCustomResult
+import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
+import com.kakapo.data.repository.base.SystemRepository
+import com.kakapo.model.goal.GoalModel
+import com.kakapo.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +20,8 @@ import kotlin.native.ObjCName
 
 @ObjCName("GoalsViewModelKt")
 class GoalsViewModel(
-    private val repository: GoalRepository
+    private val goalRepository: GoalRepository,
+    private val systemRepository: SystemRepository
 ): ViewModel() {
 
     @NativeCoroutinesState
@@ -29,6 +34,7 @@ class GoalsViewModel(
 
     fun initData() {
         loadGoals()
+        loadTheme()
     }
 
     fun handleEvent(event: GoalsEvent) {
@@ -41,22 +47,33 @@ class GoalsViewModel(
     }
 
     private fun loadGoals() = viewModelScope.launch {
-        repository.loadGoals().collect{ result ->
-            result.fold(
-                onSuccess = { goals ->
-                    _uiState.update { it.copy(goals = goals, filteredGoals = goals) }
-                },
-                onFailure = {
-                    Logger.e(it) { "Error loading goals" }
-                }
-            )
+        val onSuccess: (List<GoalModel>) -> Unit = { goals ->
+            _uiState.update { it.copy(goals = goals, filteredGoals = goals) }
         }
+        goalRepository.loadGoals().asCustomResult().subscribe(
+            onSuccess = onSuccess,
+            onError = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
     }
 
     private fun filterGoalsBy(query: String) {
         val goals = _uiState.value.goals
         val filteredGoals = goals.filter { it.name.contains(query, ignoreCase = true) }
         _uiState.update { it.copy(filteredGoals = filteredGoals) }
+    }
+
+    private fun handleError(throwable: Throwable?) {
+        emit(GoalsEffect.ShowError(throwable?.message ?: "An error occurred"))
     }
 
     private fun emit(effect: GoalsEffect) = viewModelScope.launch {

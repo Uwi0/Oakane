@@ -91,11 +91,20 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
                 }
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 4.dp),
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 16.dp,
+                        top = 4.dp
+                    ),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(uiState.goalSavings, key = { it.id }) { saving ->
-                        GoalSavingItemView(item = saving, currency = uiState.currency)
+                        GoalSavingItemView(
+                            item = saving,
+                            theme = uiState.theme,
+                            currency = uiState.currency
+                        )
                     }
                 }
             }

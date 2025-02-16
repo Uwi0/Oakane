@@ -1,10 +1,13 @@
 package com.kakapo.oakane.presentation.viewModel.termAndService
 
+import com.kakapo.model.system.Theme
+
 data class TermAndServiceState(
     val isTerm1Checked: Boolean = false,
     val isTerm2Checked: Boolean = false,
     val isTerm3Checked: Boolean = false,
     val isTerm4Checked: Boolean = false,
+    val theme: Theme = Theme.System
 ){
     val isButtonEnabled: Boolean get() = isTerm1Checked && isTerm2Checked && isTerm3Checked && isTerm4Checked
 }

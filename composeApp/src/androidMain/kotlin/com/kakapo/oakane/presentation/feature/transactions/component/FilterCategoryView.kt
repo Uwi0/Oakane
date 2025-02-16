@@ -36,6 +36,7 @@ internal fun FilterCategoryView(
             items(items = state.categories, key = { it.id }) { category ->
                 CategoryItemView(
                     category = category,
+                    theme = state.theme,
                     onEvent = { onEvent.invoke(TransactionsEvent.FilterByCategory(value = category))}
                 )
             }

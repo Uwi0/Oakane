@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.model.category.CategoryLimitModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
 import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.CustomProgressIndicatorView
@@ -30,6 +31,7 @@ import java.text.NumberFormat
 
 @Composable
 internal fun CategoryLimitItemView(
+    theme: Theme,
     category: CategoryLimitModel,
     onEvent: (MonthlyBudgetEvent) -> Unit
 ) {
@@ -38,6 +40,7 @@ internal fun CategoryLimitItemView(
     val spent = category.spent.toFormatCurrency(currency)
     RowWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = theme,
         onClick = { onEvent.invoke(MonthlyBudgetEvent.Selected(category)) }) {
         CategoryLimitIconView(category)
         Column(

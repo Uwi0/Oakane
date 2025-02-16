@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.common.formatDateWith
 import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.model.goal.GoalModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.image.CustomDynamicAsyncImage
@@ -26,13 +27,14 @@ import com.kakapo.oakane.presentation.designSystem.component.progressIndicator.C
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 
 @Composable
-internal fun GoalItemView(goal: GoalModel, onClicked: () -> Unit) {
+internal fun GoalItemView(goal: GoalModel, theme: Theme,onClicked: () -> Unit) {
     val context = LocalContext.current
     val imageUri: Uri? = context.getImageUriFromFileName(goal.fileName).getOrNull()
     val currency = goal.currency
     val savedMoney = goal.savedMoney.toFormatCurrency(currency)
     RowWrapper(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+        theme = theme,
         onClick = onClicked
     ) {
         CustomDynamicAsyncImage(
