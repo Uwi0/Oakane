@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.wallet
 import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.data.model.WalletTransferParam
 import com.kakapo.domain.usecase.filterWalletLogsBy
+import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.FilterWalletLogByCategory
 import com.kakapo.model.wallet.FilterWalletLogByDateModel
 import com.kakapo.model.wallet.WalletItemModel
@@ -26,7 +27,8 @@ data class WalletState(
     val isWalletSheetShown: Boolean = false,
     val isFilterSheetShown: Boolean = false,
     val filterDate: FilterDate = FilterWalletLogByDateModel.All,
-    val filterCategory: FilterCategory = FilterWalletLogByCategory.All
+    val filterCategory: FilterCategory = FilterWalletLogByCategory.All,
+    val theme: Theme = Theme.System
 ) {
     val selectedWalletId: Long get() = wallet.id
 

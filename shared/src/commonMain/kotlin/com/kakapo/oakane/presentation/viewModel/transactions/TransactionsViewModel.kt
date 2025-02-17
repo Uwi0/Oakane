@@ -5,10 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.intoMidnight
 import com.kakapo.common.subscribe
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
+import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEffect.ToDetail
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +26,8 @@ import kotlin.native.ObjCName
 
 @ObjCName("TransactionsViewModelKt")
 class TransactionsViewModel(
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val systemRepository: SystemRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -39,8 +43,10 @@ class TransactionsViewModel(
     private val selectedDate = MutableStateFlow(0L)
     private val selectedCategory = MutableStateFlow<CategoryModel?>(null)
 
-    fun initializeData() {
+    fun initializeData(showDrawer: Boolean) {
+        _uiState.update { it.copy(showDrawer = showDrawer) }
         loadTransactions()
+        loadTheme()
         filterTransactions()
     }
 
@@ -64,9 +70,10 @@ class TransactionsViewModel(
 
             is TransactionsEvent.Delete -> delete(event.transaction)
             is TransactionsEvent.ShowSheet -> _uiState.update { it.showSheet(event.content) }
-            is TransactionsEvent.ToDetail -> emit(TransactionsEffect.ToDetail(event.id))
+            is TransactionsEvent.ToDetail -> emit(ToDetail(event.id))
             TransactionsEvent.HideSheet -> hideSheet()
             TransactionsEvent.NavigateBack -> emit(TransactionsEffect.NavigateBack)
+            TransactionsEvent.OpenDrawer -> emit(TransactionsEffect.OpenDrawer)
         }
     }
 
@@ -117,6 +124,16 @@ class TransactionsViewModel(
         transactionRepository.loadTransactions().asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 

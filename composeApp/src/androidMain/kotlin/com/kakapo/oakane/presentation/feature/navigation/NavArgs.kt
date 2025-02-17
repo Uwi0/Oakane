@@ -4,4 +4,5 @@ object NavArgs {
     const val TRANSACTION_ID = "transactionId"
     const val GOAL_ID_ARGS = "goalId"
     const val WALLET_ID = "walletId"
+    const val SHOW_DRAWER = "showDrawer"
 }

@@ -23,15 +23,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.common.showToast
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.animation.slidingContentAnimation
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
-import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
 import com.kakapo.oakane.presentation.feature.categories.component.CategoriesSheetView
 import com.kakapo.oakane.presentation.feature.categories.component.SwipeToDeleteCategoryView
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
@@ -44,10 +47,13 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CategoriesRoute(
+    showDrawer: Boolean,
+    openDrawer: () -> Unit,
     navigateBack: () -> Unit
 ) {
     val viewModel = koinViewModel<CategoriesViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
         confirmValueChange = { targetValue ->
@@ -56,14 +62,16 @@ internal fun CategoriesRoute(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer = showDrawer)
     }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
+                is CategoriesEffect.ShowError -> context.showToast(effect.message)
                 CategoriesEffect.HideSheet -> sheetState.hide()
                 CategoriesEffect.NavigateBack -> navigateBack.invoke()
+                CategoriesEffect.OpenDrawer -> openDrawer.invoke()
             }
         }
     }
@@ -85,10 +93,12 @@ private fun CategoriesScreen(
 ) {
     Scaffold(
         topBar = {
-            CustomNavigationTopAppBarView(
+            CustomNavigationMenuTopAppBarView(
                 title = "Categories",
+                showDrawer = uiState.showDrawer,
                 tonalElevation = 0.dp,
-                onNavigateBack = {onEvent.invoke(CategoriesEvent.NavigateBack)}
+                onNavigateBack = { onEvent.invoke(CategoriesEvent.NavigateBack) },
+                openMenu = { onEvent.invoke(CategoriesEvent.OpenDrawer) }
             )
         },
         content = { paddingValues ->
@@ -103,7 +113,12 @@ private fun CategoriesScreen(
                     onValueChange = { onEvent.invoke(CategoriesEvent.Search(it)) }
                 )
                 CategoriesTabView(uiState.selectedTab, onEvent)
-                CategoriesContentView(uiState.selectedTab, uiState.filteredCategories, onEvent)
+                CategoriesContentView(
+                    uiState.selectedTab,
+                    uiState.theme,
+                    uiState.filteredCategories,
+                    onEvent
+                )
             }
         },
         floatingActionButton = {
@@ -120,6 +135,7 @@ private fun CategoriesScreen(
 @Composable
 private fun CategoriesContentView(
     tab: Int,
+    theme: Theme,
     categories: List<CategoryModel>,
     onEvent: (CategoriesEvent) -> Unit
 ) {
@@ -134,7 +150,7 @@ private fun CategoriesContentView(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(selectedCategories, key = { it.id }) { category ->
-                SwipeToDeleteCategoryView(category, onEvent)
+                SwipeToDeleteCategoryView(category, theme, onEvent)
             }
         }
     }

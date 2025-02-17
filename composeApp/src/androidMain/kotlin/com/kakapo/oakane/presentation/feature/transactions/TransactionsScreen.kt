@@ -29,7 +29,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun TransactionsRoute(navigateBack: () -> Unit, navigateToTransaction: (Long) -> Unit) {
+internal fun TransactionsRoute(
+    showDrawer: Boolean,
+    openDrawer: () -> Unit,
+    navigateBack: () -> Unit,
+    navigateToTransaction: (Long) -> Unit
+) {
     val context = LocalContext.current
     val viewModel = koinViewModel<TransactionsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -39,16 +44,17 @@ internal fun TransactionsRoute(navigateBack: () -> Unit, navigateToTransaction: 
     )
 
     LaunchedEffect(Unit) {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer)
     }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 is TransactionsEffect.ToDetail -> navigateToTransaction.invoke(effect.id)
                 TransactionsEffect.HideSheet -> sheetState.hide()
                 TransactionsEffect.NavigateBack -> navigateBack.invoke()
                 is TransactionsEffect.ShowError -> context.showToast(effect.message)
+                TransactionsEffect.OpenDrawer -> openDrawer.invoke()
             }
         }
     }
@@ -91,7 +97,8 @@ private fun TransactionsScreen(
                     }
                     items(items = transactions, key = { item -> item.id }) { transaction ->
                         TransactionItemView(
-                            transaction =  transaction,
+                            transaction = transaction,
+                            theme = state.theme,
                             onClick = { onEvent.invoke(TransactionsEvent.ToDetail(transaction.id)) }
                         )
                     }

@@ -18,7 +18,7 @@ final class SettingsViewModel: ObservableObject {
     }
     
     func initData() {
-        viewModel.doInitData()
+        viewModel.doInitData(showDrawer: true)
     }
     
     func handle(event: SettingsEvent) {

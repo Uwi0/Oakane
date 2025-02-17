@@ -10,11 +10,14 @@ import com.kakapo.data.model.MonthlyBudgetParam
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
+import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.domain.usecase.base.SetRecurringBudgetUseCase
 import com.kakapo.domain.usecase.base.ValidateCategoryLimitUseCase
+import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryLimitModel
 import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
+import com.kakapo.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,6 +33,7 @@ class MonthlyBudgetViewModel(
     private val monthlyBudgetRepository: MonthlyBudgetRepository,
     private val categoryRepository: CategoryRepository,
     private val categoryLimitRepository: CategoryLimitRepository,
+    private val systemRepository: SystemRepository,
     private val validateCategoryLimitUseCase: ValidateCategoryLimitUseCase,
     private val setRecurringBudgetUseCase: SetRecurringBudgetUseCase
 ) : ViewModel() {
@@ -45,6 +49,8 @@ class MonthlyBudgetViewModel(
     fun initializeData() {
         checkTableIsNotEmpty()
         loadExpenseCategory()
+        loadCurrency()
+        loadTheme()
     }
 
     fun handleEvent(event: MonthlyBudgetEvent) {
@@ -92,6 +98,26 @@ class MonthlyBudgetViewModel(
                 onFailure = ::handleError
             )
         }
+    }
+
+    private fun loadCurrency() = viewModelScope.launch {
+        val onSuccess: (Currency) -> Unit = { currency ->
+            _uiState.update { it.copy(currency = currency) }
+        }
+        systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
     }
 
     private fun saveBudget() {

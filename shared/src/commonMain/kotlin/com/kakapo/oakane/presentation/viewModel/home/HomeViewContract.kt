@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.home
 
 import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
+import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.wallet.WalletModel
 import kotlin.native.ObjCName
@@ -12,7 +13,8 @@ data class HomeState(
     val transactions: List<TransactionModel> = emptyList(),
     val goals: List<GoalModel> = emptyList(),
     val monthlyBudgetOverView: MonthlyBudgetOverView = MonthlyBudgetOverView(),
-    val isBalanceVisible: Boolean = true
+    val isBalanceVisible: Boolean = true,
+    val theme: Theme = Theme.System
 )
 
 sealed class HomeEffect {

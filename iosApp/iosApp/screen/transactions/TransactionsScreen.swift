@@ -67,6 +67,8 @@ struct TransactionsScreen: View {
                 navigation.navigate(to: .transaction(transactionId: effect.id))
             case .showError(let effect):
                 print(effect.message)
+            case .openDrawer:
+                print("open drawer")
             }
         }
         viewModel.uiEffect = nil

@@ -34,6 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WalletsRoute(
+    showDrawer: Boolean,
+    openDrawer: () -> Unit,
     navigateBack: () -> Unit,
     navigateToWallet: (Long) -> Unit
 ) {
@@ -43,12 +45,12 @@ internal fun WalletsRoute(
     val walletsSheetState = rememberWalletSheetState(currency = uiState.currency) { wallet ->
         viewModel.handleEvent(WalletsEvent.SaveWallet(wallet))
     }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true){
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) {
         walletsSheetState.sheetContent == WalletSheetContent.Create
     }
 
     LaunchedEffect(Unit) {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer)
     }
 
     LaunchedEffect(Unit) {
@@ -58,6 +60,7 @@ internal fun WalletsRoute(
                 WalletsEffect.DismissBottomSheet -> sheetState.hide()
                 is WalletsEffect.ShowError -> context.showToast(effect.message)
                 is WalletsEffect.NavigateToWallet -> navigateToWallet.invoke(effect.id)
+                WalletsEffect.OpenDrawer -> openDrawer.invoke()
             }
         }
     }
@@ -86,7 +89,7 @@ private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(uiState.filteredWallets, key = { it.id }) { wallet ->
-                    WalletItemView(wallet, onEvent)
+                    WalletItemView(wallet, uiState.theme, onEvent)
                 }
             }
         },

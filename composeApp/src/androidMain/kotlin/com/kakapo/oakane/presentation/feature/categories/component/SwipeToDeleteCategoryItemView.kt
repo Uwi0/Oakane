@@ -5,6 +5,7 @@ import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.ui.component.SwipeToDeleteBackgroundView
 import com.kakapo.oakane.presentation.ui.component.item.category.CategoryItemView
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
@@ -12,6 +13,7 @@ import com.kakapo.oakane.presentation.viewModel.categories.CategoriesEvent
 @Composable
 internal fun SwipeToDeleteCategoryView(
     item: CategoryModel,
+    theme: Theme,
     onEvent: (CategoriesEvent) -> Unit
 ) {
     val handleSweep = { onEvent.invoke(CategoriesEvent.SwipeToDeleteBy(item.id)) }
@@ -31,7 +33,10 @@ internal fun SwipeToDeleteCategoryView(
         state = dismissState,
         backgroundContent = { SwipeToDeleteBackgroundView(dismissState) },
         content = {
-            CategoryItemView(item, onEvent = { onEvent.invoke(CategoriesEvent.OnTapped(item)) })
+            CategoryItemView(
+                item,
+                theme,
+                onEvent = { onEvent.invoke(CategoriesEvent.OnTapped(item)) })
         }
     )
 }

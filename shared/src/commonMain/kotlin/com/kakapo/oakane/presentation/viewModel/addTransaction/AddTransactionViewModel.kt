@@ -123,6 +123,13 @@ class AddTransactionViewModel(
         )
     }
 
+    private fun loadTheme() = viewModelScope.launch {
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = { theme -> _uiState.update { it.copy(theme = theme) } },
+            onFailure = ::handleError
+        )
+    }
+
     private fun loadWallets(id: Long) = viewModelScope.launch {
         val onSuccess: (List<WalletModel>) -> Unit = { wallets ->
             val wallet = if (wallets.isNotEmpty()) wallets.first() else WalletModel()
@@ -148,9 +155,7 @@ class AddTransactionViewModel(
 
     private fun create(transaction: TransactionParam) = viewModelScope.launch {
         saveTransactionUseCase.execute(transaction).fold(
-            onSuccess = {
-                emit(AddTransactionEffect.NavigateBack)
-            },
+            onSuccess = { emit(AddTransactionEffect.NavigateBack) },
             onFailure = ::handleError
         )
     }

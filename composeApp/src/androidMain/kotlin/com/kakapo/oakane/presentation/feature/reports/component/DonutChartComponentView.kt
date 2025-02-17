@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
@@ -32,12 +33,14 @@ internal fun DonutChartComponentView(
     colors: List<Long>,
     categoriesName: List<String>,
     currency: Currency,
+    theme: Theme
 ) {
     val formattedColors = colors.map { Color(it) }
     ColumnWrapper(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
+        theme = theme,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Box(

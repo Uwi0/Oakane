@@ -76,6 +76,10 @@ struct CategoriesScreen: View {
                 print("Hide Sheet")
             case .navigateBack:
                 navigation.navigateBack()
+            case .openDrawer:
+                print("drawer opened")
+            case .showError(let effect):
+                print("error \(effect.message)")
             }
         }
         viewModel.uiEffect = nil

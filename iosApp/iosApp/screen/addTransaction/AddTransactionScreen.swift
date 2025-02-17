@@ -36,7 +36,10 @@ struct AddTransactionScreen: View {
     @ViewBuilder
     private func NavigationBar() -> some View {
         VStack {
-            NavigationTopAppbar(title: "Add transaction", navigateBack: { navigation.navigateBack() } )
+            NavigationTopAppbar(
+                title: "Add transaction",
+                navigateBack: { navigation.navigateBack() }
+            )
             Divider()
         }
     }

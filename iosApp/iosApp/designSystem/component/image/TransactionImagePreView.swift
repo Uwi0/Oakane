@@ -3,13 +3,16 @@ import SwiftUI
 struct TransactionImagePreView: View {
     
     let imageUrl: String
-    let onDismiss: () -> Void
+    var onDismiss: () -> Void = {}
+    var showDismissButton: Bool = true
     @State private var uiImage: UIImage? = nil
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             ImageDisplay()
-            CloseButton()
+            if showDismissButton {
+                DismissButton()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: 144)
         .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -31,7 +34,7 @@ struct TransactionImagePreView: View {
     }
     
     @ViewBuilder
-    private func CloseButton() -> some View {
+    private func DismissButton() -> some View {
         Button(
             action: onDismiss,
             label: {

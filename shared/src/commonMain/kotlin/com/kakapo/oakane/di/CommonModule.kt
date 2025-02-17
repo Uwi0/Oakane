@@ -145,18 +145,18 @@ object CommonModule {
         viewModel { MainViewModel(get(), get()) }
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
-        viewModel { TransactionsViewModel(get()) }
+        viewModel { TransactionsViewModel(get(), get()) }
         viewModel { TransactionViewModel(get(), get(), get(), get()) }
-        viewModel { CategoriesViewModel(get()) }
+        viewModel { CategoriesViewModel(get(), get()) }
         viewModel { AddGoalViewModel(get(), get(), get()) }
         viewModel { GoalViewModel(get(), get(), get(), get(), get()) }
-        viewModel { GoalsViewModel(get()) }
-        viewModel { MonthlyBudgetViewModel(get(), get(), get(), get(), get()) }
+        viewModel { GoalsViewModel(get(), get()) }
+        viewModel { MonthlyBudgetViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get())}
         viewModel { OnBoardingViewModel(get(), get(), get()) }
-        viewModel { WalletViewModel(get(), get(), get()) }
+        viewModel { WalletViewModel(get(), get(), get(), get()) }
         viewModel { TermAndServiceViewModel(get()) }
     }
 

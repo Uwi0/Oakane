@@ -86,16 +86,25 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
                 ) {
                     CardGoalView(uiState = uiState)
                     CardTimeView(uiState = uiState)
-                    CardNoteView(note = uiState.goal.note)
+                    CardNoteView(note = uiState.goal.note, uiState.theme)
                     Text(text = "Log Saving", style = MaterialTheme.typography.titleMedium)
                 }
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 4.dp),
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 16.dp,
+                        top = 4.dp
+                    ),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(uiState.goalSavings, key = { it.id }) { saving ->
-                        GoalSavingItemView(item = saving, currency = uiState.currency)
+                        GoalSavingItemView(
+                            item = saving,
+                            theme = uiState.theme,
+                            currency = uiState.currency
+                        )
                     }
                 }
             }

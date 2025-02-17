@@ -42,7 +42,10 @@ internal fun OakaneNavHost(
     onSelectedTheme: (Theme) -> Unit
 ) {
     val navController = appState.navController
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+    ) {
         splashScreen(
             navigateToTermAndService = { navController.navigateToTermAndService(appState.navOptionsPopBackStack()) },
             navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) },
@@ -65,8 +68,9 @@ internal fun OakaneNavHost(
             navigateToMonthlyBudget = navController::navigateToMonthlyBudget,
             navigateToWallets = navController::navigateToWallets
         )
-        addTransactionScreen(navigateBack = navController::navigateUp)
+        addTransactionScreen(navigateBack = appState::safeNavigateUp)
         transactionsScreen(
+            openDrawer = openDrawer,
             navigateBack = appState::safeNavigateUp,
             navigateToTransaction = navController::navigateToTransaction
         )
@@ -75,31 +79,39 @@ internal fun OakaneNavHost(
             navigateBack = navController::navigateUp
         )
         categoriesScreen(
+            openDrawer = openDrawer,
             navigateBack = appState::safeNavigateUp
         )
         addGoalScreen(
-            navigateBack = navController::navigateUp
+            navigateBack = appState::safeNavigateUp
         )
         goalsScreen(
+            openDrawer = openDrawer,
             navigateUp = appState::safeNavigateUp,
             navigateToAddGoal = navController::navigateToAddGoal,
             navigateToGoal = navController::navigateToGoal
         )
         goalScreen(
-            navigateUp = navController::navigateUp,
+            navigateUp = appState::safeNavigateUp,
             updateGoal = navController::navigateToAddGoal
         )
         monthlyBudgetScreen(
-            navigateBack = navController::navigateUp
+            navigateBack = appState::safeNavigateUp
         )
         walletsScreen(
+            openDrawer = openDrawer,
             navigateBack = appState::safeNavigateUp,
             navigateToWallet = navController::navigateToWallet
         )
         walletScreen(navigateBack = navController::navigateUp)
         reportsScreen(
+            openDrawer = openDrawer,
             navigateBack = appState::safeNavigateUp
         )
-        settingsScreen(navigateBack = appState::safeNavigateUp, onSelectedTheme = onSelectedTheme)
+        settingsScreen(
+            openDrawer = openDrawer,
+            navigateBack = appState::safeNavigateUp,
+            onSelectedTheme = onSelectedTheme
+        )
     }
 }

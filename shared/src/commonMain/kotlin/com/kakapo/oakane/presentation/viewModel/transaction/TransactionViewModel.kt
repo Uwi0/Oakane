@@ -8,6 +8,8 @@ import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.DeleteTransactionUseCase
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
+import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.viewModel.transaction.TransactionEffect.EditTransactionBy
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -37,10 +39,9 @@ class TransactionViewModel(
     private val _uiEffect = MutableSharedFlow<TransactionEffect>()
 
     fun initializeData(id: Long) {
-        loadTransactionBy(id).invokeOnCompletion {
-            loadWalletBy(uiState.value.transaction.walletId)
-        }
+        loadTransactionBy(id)
         loadCurrency()
+        loadTheme()
     }
 
     fun handleEvent(event: TransactionEvent) {
@@ -67,8 +68,12 @@ class TransactionViewModel(
     }
 
     private fun loadTransactionBy(id: Long) = viewModelScope.launch {
+        val onSuccess: (TransactionModel) -> Unit = { transaction ->
+            _uiState.update { it.copy(transaction = transaction) }
+            loadWalletBy(transaction.walletId)
+        }
         transactionRepository.loadTransactionBy(id).fold(
-            onSuccess = { transaction -> _uiState.update { it.copy(transaction = transaction) } },
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }
@@ -88,6 +93,16 @@ class TransactionViewModel(
             _uiState.update { it.copy(wallet = wallet) }
         }
         walletRepository.loadWalletBy(id).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

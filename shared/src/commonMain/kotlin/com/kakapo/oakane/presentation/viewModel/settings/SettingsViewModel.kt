@@ -29,7 +29,8 @@ class SettingsViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<SettingsEffect>()
 
-    fun initData() {
+    fun initData(showDrawer: Boolean) {
+        _uiState.update { it.copy(showDrawer = showDrawer) }
         loadIsDarkMode()
         loadCurrency()
         loadIsBudgetRecurring()
@@ -49,12 +50,13 @@ class SettingsViewModel(
             is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
             is SettingsEvent.ToggleRecurringBudget -> setMonthlyBudget(event.isRecurring)
             is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
+            SettingsEvent.OpenDrawer -> emit(SettingsEffect.OpenDrawer)
         }
     }
 
     private fun loadIsDarkMode() = viewModelScope.launch {
         val onSuccess: (Theme) -> Unit = { themeMode ->
-            _uiState.value = _uiState.value.copy(themeMode = themeMode)
+            _uiState.value = _uiState.value.copy(theme = themeMode)
         }
 
         systemRepository.loadSavedTheme().fold(
@@ -78,7 +80,7 @@ class SettingsViewModel(
     }
 
     private fun confirmTheme() = viewModelScope.launch {
-        val theme = uiState.value.themeMode
+        val theme = uiState.value.theme
         val onSuccess: (Unit) -> Unit = {
             _uiState.update { it.copy(isDialogShown = false) }
             emit(SettingsEffect.Confirm(theme))

@@ -6,6 +6,7 @@ import com.kakapo.data.model.GoalSavingParam
 import com.kakapo.model.Currency
 import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.goal.GoalSavingModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletModel
 import kotlinx.datetime.Clock
@@ -21,7 +22,8 @@ data class GoalState(
     val wallets: List<WalletModel> = emptyList(),
     val selectedWallet: WalletModel = WalletModel(),
     val note: String = "",
-    val goalSavings: List<GoalSavingModel> = emptyList()
+    val goalSavings: List<GoalSavingModel> = emptyList(),
+    val theme: Theme = Theme.System
 ) {
 
     val dayLeft: Long

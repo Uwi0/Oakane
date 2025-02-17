@@ -8,8 +8,10 @@ import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.selectedWalletUseCase
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEffect.NavigateToWallet
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -34,9 +36,11 @@ class WalletsViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<WalletsEffect>()
 
-    fun initializeData(){
+    fun initializeData(showDrawer: Boolean){
+        _uiState.update { it.copy(showDrawer = showDrawer) }
         loadWallets()
         loadCurrency()
+        loadTheme()
     }
 
     fun handleEvent(event: WalletsEvent) {
@@ -45,8 +49,9 @@ class WalletsViewModel(
             is WalletsEvent.OnSearchBy -> _uiState.update { it.copy(searchQuery = event.query) }
             is WalletsEvent.ShowSheet -> showSheet(event.shown)
             is WalletsEvent.SelectPrimaryWalletBy -> selectWalletBy(event.id)
-            is WalletsEvent.ClickedWallet -> emit(WalletsEffect.NavigateToWallet(event.item.id))
+            is WalletsEvent.ClickedWallet -> emit(NavigateToWallet(event.item.id))
             is WalletsEvent.SaveWallet -> add(event.wallet)
+            WalletsEvent.OpenDrawer -> emit(WalletsEffect.OpenDrawer)
         }
     }
 
@@ -65,6 +70,16 @@ class WalletsViewModel(
             _uiState.update { it.copy(currency = currency) }
         }
         systemRepository.loadSavedCurrency().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

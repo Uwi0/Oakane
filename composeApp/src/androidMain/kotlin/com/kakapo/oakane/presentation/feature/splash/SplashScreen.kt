@@ -3,7 +3,6 @@ package com.kakapo.oakane.presentation.feature.splash
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -101,33 +101,34 @@ private fun SplashScreen(
         targetValue = if (isTextVisible) 1f else 0f,
         animationSpec = tween(1000)
     )
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+    Surface {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.oakane_icon),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(240.dp)
-                    .clip(CircleShape)
-                    .scale(if (isLogoVisible) 1f else 1.2f)
-                    .alpha(logoAlpha)
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.oakane_icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(240.dp)
+                        .clip(CircleShape)
+                        .scale(if (isLogoVisible) 1f else 1.2f)
+                        .alpha(logoAlpha)
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "Oakane",
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.alpha(textAlpha)
-            )
+                Text(
+                    text = "Oakane",
+                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier.alpha(textAlpha)
+                )
+            }
         }
     }
+
 }

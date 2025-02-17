@@ -15,6 +15,7 @@ androidx-test-junit = "1.2.1"
 camera = "1.4.1"
 coil = "2.7.0"
 colorpicker = "1.1.2"
+compose-animation = "1.7.8"
 compose-plugin = "1.7.0"
 coroutine-core = "1.10.1"
 crashlytics-plugins = "3.0.3"
@@ -39,7 +40,7 @@ project-version = "1.0.0"
 skie = "0.10.1"
 splash-screen = "1.0.1"
 sqldelight = "2.0.2"
-uiTextGoogleFonts = "1.7.7"
+uiTextGoogleFonts = "1.7.8"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
@@ -50,6 +51,7 @@ androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycl
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
 androidx-camera = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidx-constraintlayout" }
+androidx-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose-animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
@@ -116,3 +118,4 @@ touchlab-skie = { id = "co.touchlab.skie", version.ref = "skie" }
 #plugin define by this project
 kakapo-kotlinMultiplatform = { id = "com.kakapo.app.kotlinMultiplatform", version = "unspecified" }
 kakapo-xcFramework = { id = "com.kakapo.app.xcframework", version = "unspecified" }
+kakapo-android-flavors = { id = "com.kakapo.app.androidFlavors", version = "unspecified" }

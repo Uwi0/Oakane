@@ -12,7 +12,7 @@ struct GoalItemView: View {
             )
             
             VStack(alignment: .leading,spacing: 4) {
-                Text(goal.goalName)
+                Text(goal.name)
                     .font(Typography.titleSmall)
                 Text("\(goal.amount.toFormatCurrency(currency: goal.currency))")
                     .font(Typography.titleSmall)

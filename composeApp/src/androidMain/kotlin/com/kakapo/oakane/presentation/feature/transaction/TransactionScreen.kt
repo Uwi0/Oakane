@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.getImageUriFromFileName
 import com.kakapo.common.showToast
 import com.kakapo.model.category.CategoryIconName
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
@@ -112,10 +113,9 @@ private fun TransactionScreen(
             ) {
                 TopContentView(state = uiState)
                 DetailContentView(state = uiState)
-                NoteContentView(uiState.transaction.note)
+                NoteContentView(uiState.transaction.note, uiState.theme)
                 ImageTransaction(uiState.transaction.imageFileName)
             }
-
         }
     )
 }
@@ -134,6 +134,7 @@ private fun TopContentView(state: TransactionState) {
     }
     ColumnWrapper(
         modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = state.theme,
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -150,7 +151,7 @@ private fun TopContentView(state: TransactionState) {
 private fun DetailContentView(state: TransactionState) {
     val transactionModel = state.transaction
 
-    ColumnWrapper(modifier = Modifier.padding(16.dp)) {
+    ColumnWrapper(modifier = Modifier.padding(16.dp), theme = state.theme) {
         RowText(
             title = "Wallet",
             value = state.wallet.name,
@@ -224,8 +225,8 @@ private fun TrailingIcon(
 }
 
 @Composable
-private fun NoteContentView(note: String) {
-    ColumnWrapper(modifier = Modifier.padding(16.dp)) {
+private fun NoteContentView(note: String, theme: Theme) {
+    ColumnWrapper(modifier = Modifier.padding(16.dp), theme = theme) {
         Text(
             "Note",
             style = MaterialTheme.typography.titleMedium,

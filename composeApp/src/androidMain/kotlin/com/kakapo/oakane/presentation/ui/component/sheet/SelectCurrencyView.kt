@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.OutlinedCheckmarkRadioButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
@@ -31,7 +32,7 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 
 @Composable
-internal fun SelectCurrencyView(currency: Currency,onConfirm: (Currency) -> Unit) {
+internal fun SelectCurrencyView(currency: Currency, theme: Theme,onConfirm: (Currency) -> Unit) {
     var query by remember { mutableStateOf("") }
     var selectedCurrency by remember { mutableStateOf(currency) }
     val currencies = Currency.entries.filter {
@@ -57,6 +58,7 @@ internal fun SelectCurrencyView(currency: Currency,onConfirm: (Currency) -> Unit
                     val selected = selectedCurrency == currency
                     CurrencyItemView(
                         currency = currency,
+                        theme = theme,
                         isSelected = selected,
                         onSelected = { selectedCurrency = it }
                     )
@@ -111,6 +113,7 @@ private fun CurrencyTopContentView(
 @Composable
 private fun CurrencyItemView(
     currency: Currency,
+    theme: Theme,
     isSelected: Boolean,
     onSelected: (Currency) -> Unit
 ) {
@@ -119,6 +122,7 @@ private fun CurrencyItemView(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = theme,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Column {
@@ -133,6 +137,6 @@ private fun CurrencyItemView(
 @Composable
 private fun SelectCurrencyPreview() {
     AppTheme {
-        SelectCurrencyView(currency = Currency.IDR,onConfirm = {})
+        SelectCurrencyView(currency = Currency.IDR, theme = Theme.System,onConfirm = {})
     }
 }

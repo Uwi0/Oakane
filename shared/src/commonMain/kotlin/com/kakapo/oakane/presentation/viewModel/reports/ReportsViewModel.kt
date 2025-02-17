@@ -13,6 +13,7 @@ import com.kakapo.model.Currency
 import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.report.ReportCsvModel
 import com.kakapo.model.report.ReportModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.viewModel.reports.model.MonthReport
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -41,12 +42,18 @@ class ReportsViewModel(
     val uiEffect get() = _uiEffect
     private val _uiEffect = MutableSharedFlow<ReportsEffect>()
 
-    fun initializeData() {
+    fun initializeData(showDrawer: Boolean) {
+        _uiState.update { it.copy(showDrawer = showDrawer) }
+        loadDefaultData()
+    }
+
+    private fun loadDefaultData() {
         loadMonthlyBudgetOverView()
         loadTransactionCategories()
         loadTotalBalance()
         loadWallets()
         loadCurrency()
+        loadTheme()
     }
 
     fun handleEVent(event: ReportsEvent) {
@@ -55,11 +62,12 @@ class ReportsViewModel(
             is ReportsEvent.Selected -> onSelected(event.wallet)
             is ReportsEvent.FilterBy -> onFilterByMonth(event.month)
             ReportsEvent.GenerateReport -> generateReportCSV()
+            ReportsEvent.OpenDrawer -> emit(ReportsEffect.OpenDrawer)
         }
     }
 
     private fun onSelected(wallet: WalletItemModel) {
-        if (wallet.isDefaultWallet()) loadDefaultValue()
+        if (wallet.isDefaultWallet()) resetToDefaultValue()
         else loadTransactionCategoriesWith(wallet)
     }
 
@@ -138,6 +146,16 @@ class ReportsViewModel(
         )
     }
 
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
     private fun generateReportCSV() = viewModelScope.launch {
         val onSuccess: (List<ReportCsvModel>) -> Unit = { reports ->
             emit(ReportsEffect.GenerateReport(reports))
@@ -150,8 +168,8 @@ class ReportsViewModel(
         )
     }
 
-    private fun loadDefaultValue() {
-        initializeData()
+    private fun resetToDefaultValue() {
+        loadDefaultData()
         _uiState.update { it.copy(selectedWallet = null, selectedWalletName = "All Wallet") }
     }
 
@@ -159,7 +177,7 @@ class ReportsViewModel(
         val wallet = _uiState.value.selectedWallet
         _uiState.update { it.copy(selectedMonth = month) }
         if (wallet != null) loadTransactionCategoriesWith(wallet)
-        else loadDefaultValue()
+        else resetToDefaultValue()
     }
 
     private fun handleError(throwable: Throwable?) {

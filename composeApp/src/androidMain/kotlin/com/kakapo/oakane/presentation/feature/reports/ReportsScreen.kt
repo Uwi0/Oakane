@@ -24,7 +24,7 @@ import com.kakapo.common.getCurrentDateWith
 import com.kakapo.common.showToast
 import com.kakapo.oakane.domain.usecase.toCsvUseCase
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
-import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
 import com.kakapo.oakane.presentation.feature.reports.component.BudgetContentView
 import com.kakapo.oakane.presentation.feature.reports.component.ButtonFilterView
 import com.kakapo.oakane.presentation.feature.reports.component.DonutChartComponentView
@@ -38,6 +38,8 @@ import java.io.File
 
 @Composable
 internal fun ReportsRoute(
+    showDrawer: Boolean,
+    openDrawer: () -> Unit,
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -45,13 +47,14 @@ internal fun ReportsRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer)
     }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 ReportsEffect.NavigateBack -> navigateBack.invoke()
+                ReportsEffect.OpenDrawer -> openDrawer.invoke()
                 is ReportsEffect.ShowError -> context.showToast(message = effect.message)
                 is ReportsEffect.GenerateReport -> {
                     val fileName = uiState.toReportName()
@@ -95,15 +98,17 @@ fun saveToDownloads(context: Context, file: File) {
 private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit) {
     Scaffold(
         topBar = {
-            CustomNavigationTopAppBarView(
+            CustomNavigationMenuTopAppBarView(
                 title = "Reports",
+                showDrawer = uiState.showDrawer,
                 actions = {
                     CustomIconButton(
                         icon = Icons.Outlined.FileDownload,
                         onClick = { onEvent.invoke(ReportsEvent.GenerateReport) }
                     )
                 },
-                onNavigateBack = { onEvent.invoke(ReportsEvent.NavigateBack) }
+                onNavigateBack = { onEvent.invoke(ReportsEvent.NavigateBack) },
+                openMenu = { onEvent.invoke(ReportsEvent.OpenDrawer) }
             )
         },
         content = { paddingValues ->
@@ -123,14 +128,15 @@ private fun ReportsScreen(uiState: ReportsState, onEvent: (ReportsEvent) -> Unit
                         proportions = uiState.proportions,
                         colors = uiState.colors,
                         categoriesName = uiState.names,
-                        currency = uiState.currency
+                        currency = uiState.currency,
+                        theme = uiState.theme
                     )
                 }
                 item {
-                    BudgetContentView(item = uiState.monthlyOverView)
+                    BudgetContentView(uiState)
                 }
                 items(uiState.reports, key = { it.id }) { report ->
-                    ReportsItemView(report)
+                    ReportsItemView(uiState.theme, report)
                 }
             }
         }

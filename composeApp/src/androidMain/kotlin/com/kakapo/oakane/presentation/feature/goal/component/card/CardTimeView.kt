@@ -21,7 +21,10 @@ import com.kakapo.oakane.presentation.viewModel.goal.GoalState
 
 @Composable
 internal fun CardTimeView(uiState: GoalState) {
-    ColumnWrapper(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
+    ColumnWrapper(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+        theme = uiState.theme
+    ) {
         TimeContentView(uiState = uiState)
         Text(
             text = "${uiState.dayLeft} Day Left",

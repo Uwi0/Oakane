@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
 import com.kakapo.model.Currency
+import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletLogItem
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
@@ -63,7 +64,7 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     val updateWalletSheetState = rememberWalletSheetState(
         currency = uiState.wallet.currency,
         wallet = uiState.wallet
-    ){
+    ) {
         viewModel.handleEvent(WalletEvent.UpdateWallet(it))
     }
     val walletSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) {
@@ -170,8 +171,8 @@ private fun WalletTopContentView(uiState: WalletState, onEvent: (WalletEvent) ->
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        WalletDetailItemView(item = uiState.wallet)
-        CardNoteView(note = uiState.wallet.note)
+        WalletDetailItemView(uiState = uiState)
+        CardNoteView(note = uiState.wallet.note, theme = uiState.theme)
         FilterLogView(uiState = uiState, onEvent = onEvent)
     }
 }
@@ -186,7 +187,7 @@ private fun FilterLogView(uiState: WalletState, onEvent: (WalletEvent) -> Unit) 
 
 @Composable
 private fun FilterLogComponent(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
-    val tint = if(uiState.hasFilter) MaterialTheme.colorScheme.primary
+    val tint = if (uiState.hasFilter) MaterialTheme.colorScheme.primary
     else MaterialTheme.colorScheme.outline
     Row(verticalAlignment = Alignment.CenterVertically) {
         SearchTextFieldView(
@@ -211,7 +212,7 @@ private fun LogsView(uiState: WalletState) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(uiState.filteredLogItems, key = { log -> log.uniqueId }) { log ->
-            LogItemView(log, currency)
+            LogItemView(log, currency, uiState.theme)
         }
     }
 }
@@ -219,12 +220,18 @@ private fun LogsView(uiState: WalletState) {
 @Composable
 private fun LogItemView(
     log: WalletLogItem<*>,
-    currency: Currency
+    currency: Currency,
+    theme: Theme
 ) {
     when (log) {
-        is WalletLogItem.TransactionLogItem -> TransactionItemView(log.data)
-        is WalletLogItem.WalletTransferLogItem -> TransferLogItemView(log)
-        is WalletLogItem.GoalSavingLogItem -> GoalSavingItemView(log.data, currency, isInLog = true)
+        is WalletLogItem.TransactionLogItem -> TransactionItemView(log.data, theme)
+        is WalletLogItem.WalletTransferLogItem -> TransferLogItemView(log, theme)
+        is WalletLogItem.GoalSavingLogItem -> GoalSavingItemView(
+            log.data,
+            theme,
+            currency,
+            isInLog = true
+        )
     }
 }
 

@@ -13,7 +13,7 @@ final class ReportsViewModel: ObservableObject {
     private var effectCancellable: AnyCancellable?
     
     init() {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer: true)
         observeState()
         observeEffect()
     }

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
-import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.viewModel.goals.GoalsEvent
 import com.kakapo.oakane.presentation.viewModel.goals.GoalsState
@@ -19,16 +19,20 @@ import com.kakapo.oakane.presentation.viewModel.goals.GoalsState
 @Composable
 internal fun GoalsTopAppbarView(uiState: GoalsState, onEvent: (GoalsEvent) -> Unit) {
     Column {
-        CustomNavigationTopAppBarView(
+        CustomNavigationMenuTopAppBarView(
             title = "Goals",
+            showDrawer = uiState.showDrawer,
             shadowElevation = 0.dp,
-            onNavigateBack = { onEvent.invoke(GoalsEvent.NavigateBack)}
+            onNavigateBack = { onEvent.invoke(GoalsEvent.NavigateBack) },
+            openMenu = { onEvent.invoke(GoalsEvent.OpenDrawer) }
         )
         SearchTextFieldView(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             value = uiState.searchQuery,
             placeholder = "Search Goal...",
-            onValueChange = { query -> onEvent.invoke(GoalsEvent.FilterBy(query))}
+            onValueChange = { query -> onEvent.invoke(GoalsEvent.FilterBy(query)) }
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         HorizontalDivider()

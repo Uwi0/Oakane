@@ -4,6 +4,7 @@ import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.data.model.TransactionParam
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatNumber
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
@@ -26,6 +27,7 @@ data class AddTransactionState(
     val sheetShown: Boolean = false,
     val categories: List<CategoryModel> = emptyList(),
     val currency: Currency = Currency.IDR,
+    val theme: Theme = Theme.System,
     val imageFileName: String = "",
     val titleFieldError: Boolean = false,
     val amountFieldError: Boolean = false,

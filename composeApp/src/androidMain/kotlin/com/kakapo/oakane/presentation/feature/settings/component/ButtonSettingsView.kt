@@ -13,13 +13,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.kakapo.model.system.Theme
+import com.kakapo.oakane.presentation.ui.util.cardTonalElevation
 
 @Composable
-internal fun ButtonSettingsView(title: String, icon: ImageVector, onClick: () -> Unit) {
+internal fun ButtonSettingsView(
+    title: String,
+    icon: ImageVector,
+    theme: Theme,
+    onClick: () -> Unit
+) {
     Surface(
         color = MaterialTheme.colorScheme.surface,
         shape = MaterialTheme.shapes.medium,
         border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+        tonalElevation = cardTonalElevation(theme),
         onClick = onClick
     ) {
         Row(

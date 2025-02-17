@@ -36,5 +36,9 @@ gradlePlugin {
             id = "com.kakapo.app.xcframework"
             implementationClass = "XCFrameworkPlugin"
         }
+        register("androidFlavors") {
+            id = "com.kakapo.app.androidFlavors"
+            implementationClass = "AndroidApplicationFlavorsConventionPlugins"
+        }
     }
 }

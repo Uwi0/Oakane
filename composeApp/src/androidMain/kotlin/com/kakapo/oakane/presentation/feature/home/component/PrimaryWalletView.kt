@@ -32,6 +32,7 @@ internal fun PrimaryWalletView(uiState: HomeState, onEvent: (HomeEvent) -> Unit)
 
     ColumnWrapper(
         modifier = Modifier.padding(16.dp),
+        theme = uiState.theme,
         onClick = { onEvent.invoke(HomeEvent.ToWallets) }) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

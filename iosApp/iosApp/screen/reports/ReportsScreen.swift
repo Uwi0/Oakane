@@ -75,6 +75,8 @@ struct ReportsScreen: View {
                 print("Navigate back")
             case .showError(let effect):
                 print(effect.message)
+            case .openDrawer:
+                print("Open Drawer")
             }
         }
         viewModel.uiEffect = nil

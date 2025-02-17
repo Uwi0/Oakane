@@ -14,10 +14,15 @@ import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetEvent
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetState
 
 @Composable
-internal fun MonthlyBottomContentView(uiState: MonthlyBudgetState, onEvent: (MonthlyBudgetEvent) -> Unit) {
+internal fun MonthlyBottomContentView(
+    uiState: MonthlyBudgetState,
+    onEvent: (MonthlyBudgetEvent) -> Unit
+) {
     Column {
         LimitCategoryHeaderView(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             onEvent = onEvent
         )
         LazyColumn(
@@ -25,7 +30,7 @@ internal fun MonthlyBottomContentView(uiState: MonthlyBudgetState, onEvent: (Mon
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
         ) {
             items(uiState.categoryLimits, key = { it.id }) { category ->
-                CategoryLimitItemView(category, onEvent)
+                CategoryLimitItemView(uiState.theme, category, onEvent)
             }
         }
     }

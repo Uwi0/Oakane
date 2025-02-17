@@ -11,7 +11,7 @@ final class WalletsViewModel: ObservableObject {
     private var uiEffectCancellable: AnyCancellable?
     
     init() {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer: true)
         observeUiState()
         observeUiEffect()
     }

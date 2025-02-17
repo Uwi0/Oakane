@@ -10,7 +10,9 @@ import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.domain.usecase.base.AddGoalSavingUseCase
 import com.kakapo.model.Currency
+import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.goal.GoalSavingModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -40,12 +42,11 @@ class GoalViewModel(
     private val _uiEffect = MutableSharedFlow<GoalEffect>()
 
     fun initializeData(goalId: Long) {
-        loadGoalBy(goalId).invokeOnCompletion {
-            loadGoalSavingsBy(goalId)
-        }
+        loadGoalBy(goalId)
         loadCurrency()
         loadWallets()
         loadSelectedWallet()
+        loadTheme()
     }
 
     fun handleEvent(event: GoalEvent) {
@@ -62,8 +63,13 @@ class GoalViewModel(
     }
 
     private fun loadGoalBy(id: Long) = viewModelScope.launch {
+        val onSuccess: (GoalModel) -> Unit = { goal ->
+            _uiState.update { it.copy(goal = goal) }
+            loadGoalSavingsBy(id)
+        }
+
         goalRepository.loadGoalBy(id).asCustomResult().subscribe(
-            onSuccess = { goal -> _uiState.update { it.copy(goal = goal) } },
+            onSuccess = onSuccess,
             onError = ::handleError
         )
     }
@@ -139,6 +145,16 @@ class GoalViewModel(
                 _uiState.update { it.copy(dialogShown = false) }
                 emit(GoalEffect.NavigateBack)
             },
+            onFailure = ::handleError
+        )
+    }
+
+    private fun loadTheme() = viewModelScope.launch {
+        val onSuccess: (Theme) -> Unit = { theme ->
+            _uiState.update { it.copy(theme = theme) }
+        }
+        systemRepository.loadSavedTheme().fold(
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }

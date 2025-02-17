@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
+import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.onboarding.content.AccountContentView
 import com.kakapo.oakane.presentation.feature.onboarding.content.ImportBackupContentView
@@ -73,6 +74,7 @@ private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) 
             OnBoardingContent.ImportBackup -> ImportBackupContentView(onEvent = onEvent)
             OnBoardingContent.SelectCurrency -> SelectCurrencyView(
                 currency = state.currency,
+                theme = Theme.System,
                 onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) }
             )
             OnBoardingContent.CreateWallet -> CreateWalletView(uiState = state,onEvent = onEvent)

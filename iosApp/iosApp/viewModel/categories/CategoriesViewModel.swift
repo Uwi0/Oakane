@@ -12,7 +12,7 @@ final class CategoriesViewModel: ObservableObject {
     private var uiEffectCancellable: AnyCancellable?
     
     init() {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer: true)
         observeUiState()
         observerUiEffect()
     }

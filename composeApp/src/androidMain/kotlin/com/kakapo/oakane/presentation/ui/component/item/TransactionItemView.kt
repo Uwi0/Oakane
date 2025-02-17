@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.common.asTextEllipsis
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.dummyValue
@@ -22,7 +23,11 @@ import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 import com.kakapo.oakane.presentation.ui.component.transactionColor
 
 @Composable
-internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> Unit = {}) {
+internal fun TransactionItemView(
+    transaction: TransactionModel,
+    theme: Theme,
+    onClick: () -> Unit = {}
+) {
     val selectedIcon = SelectedIconModel(
         imageFile = transaction.category.icon,
         defaultIcon = transaction.category.iconName,
@@ -30,6 +35,7 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
     )
     RowWrapper(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        theme = theme,
         onClick = onClick
     ) {
         SelectedIconView(selectedIcon = selectedIcon) { }
@@ -59,6 +65,6 @@ internal fun TransactionItemView(transaction: TransactionModel, onClick: () -> U
 @Preview
 private fun TransactionItemViewPrev() {
     Surface {
-        TransactionItemView(transaction = dummyValue()) { }
+        TransactionItemView(transaction = dummyValue(), theme = Theme.System) { }
     }
 }

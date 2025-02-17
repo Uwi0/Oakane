@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.gms.service)
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.kakapo.android.flavors)
 }
 
 kotlin {
@@ -60,8 +61,8 @@ android {
         applicationId = "com.kakapo.oakane"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 11
-        versionName = "1.0.10"
+        versionCode = 16
+        versionName = "1.0.15"
     }
     packaging {
         resources {
@@ -95,6 +96,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.compose.colorpicker)
     implementation(libs.splash.screen)
+    implementation(libs.androidx.compose.animation)
 
     //camera
     implementation(libs.androidx.camera)

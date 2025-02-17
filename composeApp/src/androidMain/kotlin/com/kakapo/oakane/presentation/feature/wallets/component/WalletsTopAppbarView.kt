@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
-import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
@@ -19,10 +19,12 @@ import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
 @Composable
 internal fun WalletsTopAppbarView(uiState: WalletsState, event: (WalletsEvent) -> Unit) {
     Column {
-        CustomNavigationTopAppBarView(
+        CustomNavigationMenuTopAppBarView(
             title = "Wallets",
+            showDrawer = uiState.showDrawer,
             shadowElevation = 0.dp,
-            onNavigateBack = { event.invoke(WalletsEvent.NavigateBack)}
+            onNavigateBack = { event.invoke(WalletsEvent.NavigateBack)},
+            openMenu = { event.invoke(WalletsEvent.OpenDrawer) }
         )
         SearchTextFieldView(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),

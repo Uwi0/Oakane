@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.model.Currency
 import com.kakapo.model.goal.GoalSavingModel
+import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
@@ -20,13 +21,19 @@ import com.kakapo.oakane.presentation.ui.component.RowWrapper
 import com.kakapo.oakane.presentation.ui.component.TransactionTypeIcon
 
 @Composable
-internal fun GoalSavingItemView(item: GoalSavingModel, currency: Currency, isInLog: Boolean = false) {
-    val transactionType = if(isInLog) TransactionType.Expense else TransactionType.Income
-    val textColor = if(isInLog) ColorScheme.error else ColorScheme.primary
+internal fun GoalSavingItemView(
+    item: GoalSavingModel,
+    theme: Theme,
+    currency: Currency,
+    isInLog: Boolean = false
+) {
+    val transactionType = if (isInLog) TransactionType.Expense else TransactionType.Income
+    val textColor = if (isInLog) ColorScheme.error else ColorScheme.primary
     RowWrapper(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 16.dp),
+        theme = theme,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TransactionTypeIcon(type = transactionType)
@@ -57,6 +64,7 @@ private fun GoalSavingItemPreview() {
                 note = "just Note",
                 createdAt = 1738291013
             ),
+            theme = Theme.Light,
             currency = Currency.IDR
         )
     }
