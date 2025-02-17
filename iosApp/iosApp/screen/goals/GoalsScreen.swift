@@ -54,6 +54,10 @@ struct GoalsScreen: View {
                 navigation.navigateBack()
             case .navigateToGoal(let goalsEffect):
                 navigation.navigate(to: .goal(goalId: goalsEffect.id))
+            case .openDrawer:
+                print("open drawer")
+            case .showError(let effect):
+                print("error \(effect.message)")
             }
         }
         viewModel.uiEffect = nil

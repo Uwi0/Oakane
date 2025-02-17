@@ -96,6 +96,8 @@ struct SettingsScreen: View {
                 print(effect.message)
             case .successChangeCurrency:
                 isSheetPresented = false
+            case .openDrawer:
+                print("open Drawer")
             }
         }
         viewModel.uiEffect = nil

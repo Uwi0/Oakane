@@ -55,7 +55,9 @@ struct WalletsScreen: View {
             case .showError(let effect):
                 print("error \(effect.message)")
             case .navigateToWallet(let effect):
-                print("Navigate to wallet")
+                print("Navigate to wallet \(effect.id)")
+            case .openDrawer:
+                print("open drawer")
             }
         }
         viewModel.uiEffect = nil

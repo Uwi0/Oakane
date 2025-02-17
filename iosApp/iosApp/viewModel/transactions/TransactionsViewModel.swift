@@ -18,7 +18,7 @@ final class TransactionsViewModel: ObservableObject {
     }
     
     func initData() {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer: true)
     }
     
     func handle(event: TransactionsEvent) {

@@ -17,7 +17,7 @@ final class GoalsViewModel: ObservableObject {
     }
     
     func initData(){
-        viewModel.doInitData()
+        viewModel.doInitData(showDrawer: true)
     }
     
     func handle(event: GoalsEvent){

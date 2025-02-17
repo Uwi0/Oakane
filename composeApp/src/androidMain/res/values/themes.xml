@@ -11,5 +11,6 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
         <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="android:windowBackground">@color/surface</item>
     </style>
 </resources>
