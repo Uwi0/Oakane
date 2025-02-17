@@ -42,7 +42,12 @@ class ReportsViewModel(
     val uiEffect get() = _uiEffect
     private val _uiEffect = MutableSharedFlow<ReportsEffect>()
 
-    fun initializeData() {
+    fun initializeData(showDrawer: Boolean) {
+        _uiState.update { it.copy(showDrawer = showDrawer) }
+        loadDefaultData()
+    }
+
+    private fun loadDefaultData() {
         loadMonthlyBudgetOverView()
         loadTransactionCategories()
         loadTotalBalance()
@@ -57,11 +62,12 @@ class ReportsViewModel(
             is ReportsEvent.Selected -> onSelected(event.wallet)
             is ReportsEvent.FilterBy -> onFilterByMonth(event.month)
             ReportsEvent.GenerateReport -> generateReportCSV()
+            ReportsEvent.OpenDrawer -> emit(ReportsEffect.OpenDrawer)
         }
     }
 
     private fun onSelected(wallet: WalletItemModel) {
-        if (wallet.isDefaultWallet()) loadDefaultValue()
+        if (wallet.isDefaultWallet()) resetToDefaultValue()
         else loadTransactionCategoriesWith(wallet)
     }
 
@@ -162,8 +168,8 @@ class ReportsViewModel(
         )
     }
 
-    private fun loadDefaultValue() {
-        initializeData()
+    private fun resetToDefaultValue() {
+        loadDefaultData()
         _uiState.update { it.copy(selectedWallet = null, selectedWalletName = "All Wallet") }
     }
 
@@ -171,7 +177,7 @@ class ReportsViewModel(
         val wallet = _uiState.value.selectedWallet
         _uiState.update { it.copy(selectedMonth = month) }
         if (wallet != null) loadTransactionCategoriesWith(wallet)
-        else loadDefaultValue()
+        else resetToDefaultValue()
     }
 
     private fun handleError(throwable: Throwable?) {

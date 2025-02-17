@@ -29,6 +29,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun GoalRoute(
+    showDrawer: Boolean,
+    openDrawer: () -> Unit,
     navigateUp: () -> Unit,
     navigateToAddGoal: () -> Unit,
     navigateToGoal: (Long) -> Unit
@@ -38,7 +40,7 @@ internal fun GoalRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.initData()
+        viewModel.initData(showDrawer)
     }
 
     LaunchedEffect(Unit) {
@@ -48,6 +50,7 @@ internal fun GoalRoute(
                 is GoalsEffect.NavigateToGoal -> navigateToGoal.invoke(effect.id)
                 GoalsEffect.AddGoal -> navigateToAddGoal.invoke()
                 is GoalsEffect.ShowError -> context.showToast(effect.message)
+                GoalsEffect.OpenDrawer -> openDrawer.invoke()
             }
         }
     }

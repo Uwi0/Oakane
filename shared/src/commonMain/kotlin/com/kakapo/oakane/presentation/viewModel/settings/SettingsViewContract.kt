@@ -12,7 +12,8 @@ data class SettingsState(
     val currency: Currency = Currency.USD,
     val isSheetShown: Boolean = false,
     val isRecurringBudget: Boolean = false,
-    val isRecurringCategoryLimit: Boolean = false
+    val isRecurringCategoryLimit: Boolean = false,
+    val showDrawer: Boolean = false
 ) {
     fun update(theme: Int) = copy(
         theme = theme.asTheme()
@@ -26,6 +27,7 @@ sealed class SettingsEffect {
     data object RestoreBackupFile: SettingsEffect()
     data class Confirm(val theme: Theme): SettingsEffect()
     data object SuccessChangeCurrency: SettingsEffect()
+    data object OpenDrawer: SettingsEffect()
 }
 
 sealed class SettingsEvent {
@@ -40,4 +42,5 @@ sealed class SettingsEvent {
     data class ChangeCurrency(val currency: Currency): SettingsEvent()
     data class ToggleRecurringBudget(val isRecurring: Boolean): SettingsEvent()
     data class ToggleRecurringCategoryLimit(val isRecurring: Boolean): SettingsEvent()
+    data object OpenDrawer: SettingsEvent()
 }

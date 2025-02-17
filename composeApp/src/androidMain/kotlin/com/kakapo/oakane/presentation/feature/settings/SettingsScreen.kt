@@ -42,7 +42,7 @@ import com.kakapo.common.getCurrentDateWith
 import com.kakapo.common.showToast
 import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
-import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
 import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsView
 import com.kakapo.oakane.presentation.feature.settings.component.DialogThemeView
 import com.kakapo.oakane.presentation.feature.settings.component.SelectCurrencySheet
@@ -61,6 +61,8 @@ private const val DATE_FORMAT = "dd-MM-yyyy-HH-mm-ss"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsRoute(
+    showDrawer: Boolean,
+    openDrawer: () -> Unit,
     navigateBack: () -> Unit,
     onSelectedTheme: (Theme) -> Unit
 ) {
@@ -109,7 +111,7 @@ internal fun SettingsRoute(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.initData()
+        viewModel.initData(showDrawer)
     }
 
     LaunchedEffect(Unit) {
@@ -120,11 +122,13 @@ internal fun SettingsRoute(
                 is SettingsEffect.ShowError -> context.showToast(effect.message)
                 is SettingsEffect.Confirm -> onSelectedTheme.invoke(effect.theme)
                 SettingsEffect.SuccessChangeCurrency -> sheetState.hide()
+                SettingsEffect.OpenDrawer -> openDrawer.invoke()
                 is SettingsEffect.GenerateBackupFile -> {
                     json = effect.json
                     Logger.d("json: $json")
                     createJsonLauncher.launch(createNewDocumentIntent())
                 }
+
             }
         }
     }
@@ -178,9 +182,11 @@ fun openDocumentIntent(): Intent {
 private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> Unit) {
     Scaffold(
         topBar = {
-            CustomNavigationTopAppBarView(
+            CustomNavigationMenuTopAppBarView(
                 title = "Settings",
-                onNavigateBack = { onEvent.invoke(SettingsEvent.NavigateBack) }
+                showDrawer = uiState.showDrawer,
+                onNavigateBack = { onEvent.invoke(SettingsEvent.NavigateBack) },
+                openMenu = { onEvent.invoke(SettingsEvent.OpenDrawer) }
             )
         },
         content = { paddingValues ->

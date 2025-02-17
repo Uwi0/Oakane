@@ -15,6 +15,7 @@ data class TransactionsState(
     val selectedDate: Long = 0L,
     val selectedCategory: CategoryModel? = null,
     val sheetShown: Boolean = false,
+    val showDrawer: Boolean = false,
     val sheetContent: TransactionsContentSheet = TransactionsContentSheet.Type,
     val theme: Theme = Theme.System
 ) {
@@ -41,6 +42,7 @@ sealed class TransactionsEffect{
     data object HideSheet: TransactionsEffect()
     data class ToDetail(val id: Long): TransactionsEffect()
     data class ShowError(val message: String): TransactionsEffect()
+    data object OpenDrawer: TransactionsEffect()
 }
 
 sealed class TransactionsEvent {
@@ -53,6 +55,7 @@ sealed class TransactionsEvent {
     data class ShowSheet(val content: TransactionsContentSheet): TransactionsEvent()
     data object HideSheet: TransactionsEvent()
     data class ToDetail(val id: Long): TransactionsEvent()
+    data object OpenDrawer: TransactionsEvent()
 }
 
 enum class TransactionsContentSheet {

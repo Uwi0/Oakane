@@ -32,7 +32,8 @@ class CategoriesViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<CategoriesEffect>()
 
-    fun initializeData() {
+    fun initializeData(showDrawer: Boolean) {
+        _uiState.update { it.copy(showDrawer = showDrawer) }
         loadCategories()
         loadTheme()
     }
@@ -53,6 +54,7 @@ class CategoriesViewModel(
             CategoriesEvent.SaveCategory -> saveClicked()
             CategoriesEvent.ConfirmIcon -> _uiState.update { it.confirmSelectedIcon() }
             CategoriesEvent.NavigateBack -> emit(effect = CategoriesEffect.NavigateBack)
+            CategoriesEvent.OpenDrawer -> emit(effect = CategoriesEffect.OpenDrawer)
         }
     }
 

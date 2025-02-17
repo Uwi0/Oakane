@@ -8,6 +8,7 @@ import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.system.Theme
+import com.kakapo.oakane.presentation.viewModel.goals.GoalsEffect.NavigateToGoal
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,7 +33,8 @@ class GoalsViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<GoalsEffect>()
 
-    fun initData() {
+    fun initData(showDrawer: Boolean) {
+        _uiState.update { it.copy(showDrawer = showDrawer) }
         loadGoals()
         loadTheme()
     }
@@ -40,9 +42,10 @@ class GoalsViewModel(
     fun handleEvent(event: GoalsEvent) {
         when(event) {
             is GoalsEvent.FilterBy -> filterGoalsBy(event.query)
-            is GoalsEvent.NavigateToGoal -> emit(GoalsEffect.NavigateToGoal(event.id))
+            is GoalsEvent.NavigateToGoal -> emit(NavigateToGoal(event.id))
             GoalsEvent.NavigateBack -> emit(GoalsEffect.NavigateBack)
             GoalsEvent.AddGoal -> emit(GoalsEffect.AddGoal)
+            GoalsEvent.OpenDrawer -> emit(GoalsEffect.OpenDrawer)
         }
     }
 

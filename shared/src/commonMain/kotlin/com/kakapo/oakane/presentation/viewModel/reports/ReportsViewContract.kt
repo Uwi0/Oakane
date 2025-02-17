@@ -22,7 +22,8 @@ data class ReportsState(
     val selectedMonth: MonthReport = currentMonth(),
     val selectedWallet: WalletItemModel? = null,
     val currency: Currency = Currency.IDR,
-    val theme: Theme = Theme.System
+    val theme: Theme = Theme.System,
+    val showDrawer: Boolean = false
 ){
     val proportions: List<Float> get(){
         val total = reports.sumOf { it.amount }
@@ -60,6 +61,7 @@ sealed class ReportsEffect {
     data object NavigateBack: ReportsEffect()
     data class ShowError(val message: String): ReportsEffect()
     data class GenerateReport(val reports: List<ReportCsvModel>): ReportsEffect()
+    data object OpenDrawer: ReportsEffect()
 }
 
 sealed class ReportsEvent {
@@ -67,4 +69,5 @@ sealed class ReportsEvent {
     data class Selected(val wallet: WalletItemModel): ReportsEvent()
     data class FilterBy(val month: MonthReport): ReportsEvent()
     data object GenerateReport: ReportsEvent()
+    data object OpenDrawer: ReportsEvent()
 }

@@ -3,7 +3,7 @@
 
     <style name="Theme.MyApp.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/surface</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/kanae</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/kanae_bed_version</item>
         <item name="postSplashScreenTheme">@style/Theme.MyApp</item>
     </style>
 

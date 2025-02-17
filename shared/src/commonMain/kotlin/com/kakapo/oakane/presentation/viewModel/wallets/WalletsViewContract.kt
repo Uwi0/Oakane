@@ -13,7 +13,8 @@ data class WalletsState(
     val searchQuery: String = "",
     val isSheetShown: Boolean = false,
     val currency: Currency = Currency.IDR,
-    val theme: Theme = Theme.System
+    val theme: Theme = Theme.System,
+    val showDrawer: Boolean = false
 ){
 
     val filteredWallets: List<WalletItemModel> get() {
@@ -27,6 +28,7 @@ sealed class WalletsEffect{
     data class ShowError(val message: String): WalletsEffect()
     data object DismissBottomSheet: WalletsEffect()
     data class NavigateToWallet(val id: Long): WalletsEffect()
+    data object OpenDrawer: WalletsEffect()
 }
 
 sealed class WalletsEvent{
@@ -36,4 +38,5 @@ sealed class WalletsEvent{
     data class SelectPrimaryWalletBy(val id: Long): WalletsEvent()
     data class ClickedWallet(val item: WalletItemModel): WalletsEvent()
     data class SaveWallet(val wallet: WalletModel): WalletsEvent()
+    data object OpenDrawer: WalletsEvent()
 }

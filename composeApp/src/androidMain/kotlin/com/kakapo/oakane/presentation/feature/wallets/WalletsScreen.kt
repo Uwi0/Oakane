@@ -34,6 +34,8 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WalletsRoute(
+    showDrawer: Boolean,
+    openDrawer: () -> Unit,
     navigateBack: () -> Unit,
     navigateToWallet: (Long) -> Unit
 ) {
@@ -48,7 +50,7 @@ internal fun WalletsRoute(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer)
     }
 
     LaunchedEffect(Unit) {
@@ -58,6 +60,7 @@ internal fun WalletsRoute(
                 WalletsEffect.DismissBottomSheet -> sheetState.hide()
                 is WalletsEffect.ShowError -> context.showToast(effect.message)
                 is WalletsEffect.NavigateToWallet -> navigateToWallet.invoke(effect.id)
+                WalletsEffect.OpenDrawer -> openDrawer.invoke()
             }
         }
     }

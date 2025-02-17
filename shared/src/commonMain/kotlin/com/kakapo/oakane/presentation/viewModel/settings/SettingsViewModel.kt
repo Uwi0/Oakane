@@ -29,7 +29,8 @@ class SettingsViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<SettingsEffect>()
 
-    fun initData() {
+    fun initData(showDrawer: Boolean) {
+        _uiState.update { it.copy(showDrawer = showDrawer) }
         loadIsDarkMode()
         loadCurrency()
         loadIsBudgetRecurring()
@@ -49,6 +50,7 @@ class SettingsViewModel(
             is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
             is SettingsEvent.ToggleRecurringBudget -> setMonthlyBudget(event.isRecurring)
             is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
+            SettingsEvent.OpenDrawer -> emit(SettingsEffect.OpenDrawer)
         }
     }
 

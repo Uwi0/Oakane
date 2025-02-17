@@ -23,7 +23,8 @@ data class CategoriesState(
     val categoryName: String = "",
     val isEditMode: Boolean = false,
     val categoryId: Long = 0,
-    val theme: Theme = Theme.System
+    val theme: Theme = Theme.System,
+    val showDrawer: Boolean = false
 ) {
     val categoriesColor: List<String>
         get() {
@@ -110,6 +111,7 @@ sealed class CategoriesEffect {
     data class ShowError(val message: String) : CategoriesEffect()
     data object NavigateBack: CategoriesEffect()
     data object HideSheet : CategoriesEffect()
+    data object OpenDrawer: CategoriesEffect()
 }
 
 sealed class CategoriesEvent {
@@ -127,4 +129,5 @@ sealed class CategoriesEvent {
     data class PickImage(val file: String) : CategoriesEvent()
     data class OnTapped(val category: CategoryModel) : CategoriesEvent()
     data class SwipeToDeleteBy(val id: Long) : CategoriesEvent()
+    data object OpenDrawer: CategoriesEvent()
 }

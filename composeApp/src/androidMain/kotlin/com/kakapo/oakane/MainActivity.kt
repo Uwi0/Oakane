@@ -112,7 +112,7 @@ private fun OakaneApp(
     ModalNavigationDrawer(
         modifier = Modifier.systemBarsPadding(),
         drawerState = drawerState,
-        gesturesEnabled = appState.isDashboardRoute(),
+        gesturesEnabled = appState.isDrawerRoute(),
         content = {
             Surface {
                 OakaneNavHost(

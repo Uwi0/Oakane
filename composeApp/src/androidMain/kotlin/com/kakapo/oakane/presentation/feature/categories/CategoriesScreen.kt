@@ -34,7 +34,7 @@ import com.kakapo.oakane.presentation.designSystem.animation.slidingContentAnima
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabRowView
 import com.kakapo.oakane.presentation.designSystem.component.tab.CustomTabView
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
-import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
 import com.kakapo.oakane.presentation.feature.categories.component.CategoriesSheetView
 import com.kakapo.oakane.presentation.feature.categories.component.SwipeToDeleteCategoryView
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
@@ -47,6 +47,8 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CategoriesRoute(
+    showDrawer: Boolean,
+    openDrawer: () -> Unit,
     navigateBack: () -> Unit
 ) {
     val viewModel = koinViewModel<CategoriesViewModel>()
@@ -60,15 +62,16 @@ internal fun CategoriesRoute(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.initializeData()
+        viewModel.initializeData(showDrawer = showDrawer)
     }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
+                is CategoriesEffect.ShowError -> context.showToast(effect.message)
                 CategoriesEffect.HideSheet -> sheetState.hide()
                 CategoriesEffect.NavigateBack -> navigateBack.invoke()
-                is CategoriesEffect.ShowError -> context.showToast(effect.message)
+                CategoriesEffect.OpenDrawer -> openDrawer.invoke()
             }
         }
     }
@@ -90,10 +93,12 @@ private fun CategoriesScreen(
 ) {
     Scaffold(
         topBar = {
-            CustomNavigationTopAppBarView(
+            CustomNavigationMenuTopAppBarView(
                 title = "Categories",
+                showDrawer = uiState.showDrawer,
                 tonalElevation = 0.dp,
-                onNavigateBack = { onEvent.invoke(CategoriesEvent.NavigateBack) }
+                onNavigateBack = { onEvent.invoke(CategoriesEvent.NavigateBack) },
+                openMenu = { onEvent.invoke(CategoriesEvent.OpenDrawer) }
             )
         },
         content = { paddingValues ->

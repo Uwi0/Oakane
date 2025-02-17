@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
-import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
 import com.kakapo.oakane.presentation.ui.component.ColumnWrapper
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsContentSheet
 import com.kakapo.oakane.presentation.viewModel.transactions.TransactionsEvent
@@ -29,11 +29,15 @@ internal fun TransactionTopAppBarView(
     onEvent: (TransactionsEvent) -> Unit
 ) {
     ColumnWrapper(modifier = Modifier.padding(bottom = 8.dp), shapes = RectangleShape, theme = state.theme) {
-        CustomNavigationTopAppBarView(
+        CustomNavigationMenuTopAppBarView(
             title = "Transactions",
+            showDrawer = state.showDrawer,
             shadowElevation = 0.dp,
             onNavigateBack = {
                 onEvent.invoke(TransactionsEvent.NavigateBack)
+            },
+            openMenu = {
+                onEvent.invoke(TransactionsEvent.OpenDrawer)
             }
         )
         SearchTextFieldView(

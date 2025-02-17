@@ -11,6 +11,7 @@ import com.kakapo.model.Currency
 import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
+import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEffect.NavigateToWallet
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,7 +36,8 @@ class WalletsViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<WalletsEffect>()
 
-    fun initializeData(){
+    fun initializeData(showDrawer: Boolean){
+        _uiState.update { it.copy(showDrawer = showDrawer) }
         loadWallets()
         loadCurrency()
         loadTheme()
@@ -47,8 +49,9 @@ class WalletsViewModel(
             is WalletsEvent.OnSearchBy -> _uiState.update { it.copy(searchQuery = event.query) }
             is WalletsEvent.ShowSheet -> showSheet(event.shown)
             is WalletsEvent.SelectPrimaryWalletBy -> selectWalletBy(event.id)
-            is WalletsEvent.ClickedWallet -> emit(WalletsEffect.NavigateToWallet(event.item.id))
+            is WalletsEvent.ClickedWallet -> emit(NavigateToWallet(event.item.id))
             is WalletsEvent.SaveWallet -> add(event.wallet)
+            WalletsEvent.OpenDrawer -> emit(WalletsEffect.OpenDrawer)
         }
     }
 
