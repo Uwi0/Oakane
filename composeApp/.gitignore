@@ -1,1 +1,6 @@
 google-services.json
+/prod/release/baselineProfiles/0/composeApp-prod-release.dm
+/prod/release/baselineProfiles/1/composeApp-prod-release.dm
+/prod/release/composeApp-prod-release.aab
+/prod/release/composeApp-prod-release.apk
+/prod/release/output-metadata.json
