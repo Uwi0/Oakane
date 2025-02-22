@@ -5,7 +5,7 @@ struct SelectedIconView: View {
     
     let imageName: String
     let icon: CategoryIconName
-    let color: Int64
+    let color: Color
     var size: CGFloat = 48
     var padding: CGFloat = 12
     
@@ -17,17 +17,13 @@ struct SelectedIconView: View {
         icon.asIconCategory()
     }
     
-    private var formattedColor: Color {
-        Color(hex: color)
-    }
-    
     var body: some View {
         VStack{
             if isDefaultIcon {
-                CategoryIconView(icon: iconSystem, color: formattedColor, size: size, padding: padding)
+                CategoryIconView(icon: iconSystem, color: color, size: size, padding: padding)
             } else {
                 DisplayImageFileView(fileName: imageName, width: size, height: size)
-                    .overlay{ Circle().stroke(formattedColor, lineWidth: 3) }
+                    .overlay{ Circle().stroke(color, lineWidth: 3) }
             }
         }
     }

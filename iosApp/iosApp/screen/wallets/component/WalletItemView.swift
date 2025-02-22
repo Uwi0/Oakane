@@ -10,44 +10,37 @@ struct WalletItemView: View {
         wallet.balance.toFormatCurrency(currency: wallet.currency)
     }
     
+    private var formattedColor: Color {
+        Color(hex: wallet.color.toColorLong())
+    }
+    
     var body: some View {
         VStack {
-            TopContentView(wallet: wallet, onSelectWalled: onSelectWallet)
+            TopContentView()
             Text(formattedBalance).font(Typography.headlineMedium)
             Divider().scaleEffect(y: 2.5)
-            BottomContentView(wallet: wallet)
+            BottomContentView()
         }
         .customBackground(backgroundColor: ColorTheme.surface)
     }
-}
-
-fileprivate struct TopContentView: View {
     
-    let wallet: WalletItemModel
-    let onSelectWalled: () -> Void
-    
-    var body: some View {
+    @ViewBuilder
+    private func TopContentView() -> some View {
         HStack(spacing: 8) {
             SelectedIconView(
                 imageName: wallet.icon,
                 icon: wallet.iconName,
-                color: wallet.color.toColorLong()
+                color: formattedColor
             )
             Text(wallet.name)
                 .font(Typography.titleMedium)
             Spacer()
-            OutlinedCheckmarkRadioButton(selected: wallet.isSelected, onClick: onSelectWalled)
+            OutlinedCheckmarkRadioButton(selected: wallet.isSelected, onClick: onSelectWallet)
         }
     }
-}
-
-
-
-fileprivate struct BottomContentView: View {
     
-    let wallet: WalletItemModel
-    
-    var body: some View {
+    @ViewBuilder
+    private func BottomContentView() -> some View {
         HStack(spacing: 10) {
             BalanceContent(
                 title: "Expense this month",
@@ -65,20 +58,16 @@ fileprivate struct BottomContentView: View {
         }
         .padding(.top, 8)
     }
-}
-
-fileprivate struct BalanceContent: View {
     
-    let title: String
-    let amount: Double
-    let currency: Currency
-    let color: Color
-    
-    private var formattedAmount: String {
-        amount.toFormatCurrency(currency: currency)
-    }
-    
-    var body: some View {
+    @ViewBuilder
+    private func BalanceContent(
+        title: String,
+        amount: Double,
+        currency: Currency,
+        color: Color
+    ) -> some View {
+        
+        let formattedAmount = amount.toFormatCurrency(currency: currency)
         VStack(alignment: .center, spacing: 8) {
             Text(title)
                 .foregroundStyle(color)
@@ -88,3 +77,4 @@ fileprivate struct BalanceContent: View {
         .frame(minWidth: 120)
     }
 }
+
