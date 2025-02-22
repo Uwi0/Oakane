@@ -3,26 +3,15 @@ import Shared
 
 struct CreateWalletSheetView: View {
     
-    let imageFile: String
-    let selectedIcon: CategoryIconName
-    let selectedColor: Int64
-    @Binding var walletName: String
-    @Binding var startBalance: Int
-    let colors: [String]
-    let onEvent: (CreateWalletEvent) -> Void
+    @ObservedObject var state: WalletSheetState
     
     var body: some View {
         VStack(spacing: 16) {
             NameAndIconContentView()
             StartWithBalanceContentView()
-            HorizontalColorSelectorView(
-                selectedColor: Color(hex: selectedColor),
-                colors: colors,
-                onSelectedColor: { hex in onEvent(.selectWallet(color: hex))}
-            )
+            HorizontalColorSelectorView(colors: state.defaultColors, selectedColor: $state.selectedColor)
             Spacer()
-            FilledButtonView(text: "Add Wallet", onClick: { onEvent(.saveWallet)})
-                .frame(height: 48)
+            FilledButtonView(text: "Add Wallet", onClick: {  } ).frame(height: 48)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
@@ -35,11 +24,11 @@ struct CreateWalletSheetView: View {
                 .font(Typography.titleMedium)
             
             HStack(alignment: .center, spacing: 8) {
-                SelectedIconView(imageName: imageFile, icon: selectedIcon, color: selectedColor)
-                    .onTapGesture { onEvent(.selectedIcon) }
+                SelectedIconView(imageName: state.imageFile, icon: state.selectedIcon, color: state.selectedColor)
+                    .onTapGesture { state.content = .icon }
                 
                 OutlinedTextFieldView(
-                    value: $walletName,
+                    value: $state.walletName,
                     placeHolder: "Wallet Name",
                     showLabel: false
                 )
@@ -52,9 +41,10 @@ struct CreateWalletSheetView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Start Balance")
                 .font(Typography.titleMedium)
+            
             OutlinedCurrencyTextFieldView(
-                value: $startBalance,
-                onValueChange: { balance in onEvent(.changeStart(balance: balance))}
+                value: $state.startBalance,
+                onValueChange: { _ in }
             )
         }
     }
@@ -62,9 +52,7 @@ struct CreateWalletSheetView: View {
 }
 
 enum CreateWalletEvent {
-    case changeWallet(name: String)
     case selectedIcon
-    case changeStart(balance: String)
     case selectWallet(color: String)
     case saveWallet
 }

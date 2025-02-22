@@ -5,20 +5,12 @@ struct CreateWalletContentView: View {
     
     let onEvent: (OnBoardingEvent) -> Void
     @State private var isSheetPresented: Bool = false
-    @State private var sheetContent: WalletSheetContent = .create
     @State private var imageFile: String = ""
     @State private var selectedIcon: CategoryIconName = .wallet
     @State private var selectedColorHex: String = colorsSelector.first ?? "0xFF4CAF50"
     @State private var walletName: String = ""
     @State private var startBalance: Int = 0
     
-    private var bottomSheetSize: PresentationDetent {
-        switch sheetContent {
-        case .create: return .fraction(0.50)
-        case .selectIcon: return .fraction(0.9)
-        case .selectColor: return .large
-        }
-    }
     
     private var walletModel: WalletModel {
         WalletModel(
@@ -50,11 +42,6 @@ struct CreateWalletContentView: View {
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(ColorTheme.surface.ignoresSafeArea())
-        .sheet(isPresented: $isSheetPresented) {
-            SheetContentView()
-                .presentationDetents([bottomSheetSize])
-                .presentationDragIndicator(.visible)
-        }
     }
     
     @ViewBuilder
@@ -95,36 +82,12 @@ struct CreateWalletContentView: View {
     
     @ViewBuilder
     private func SheetContentView() -> some View {
-        switch sheetContent {
-        case .create: CreateWalletSheetContent()
-        case .selectColor: Text("World")
-        case .selectIcon: SelectIconSheetContent()
-        }
+        
     }
     
     @ViewBuilder
     private func CreateWalletSheetContent() -> some View {
-        let onWalletEvent: (CreateWalletEvent) -> Void = { walletEvent in
-            switch walletEvent {
-            case .changeWallet(name: let name): walletName = name
-            case .selectedIcon: sheetContent = .selectIcon
-            case .changeStart(balance: let balance): print(balance)
-            case .selectWallet(color: let color): selectedColorHex = color
-            case .saveWallet:
-                onEvent(.ConfirmWallet(wallet: walletModel))
-                isSheetPresented = false
-            }
-        }
         
-        CreateWalletSheetView(
-            imageFile: imageFile,
-            selectedIcon: selectedIcon,
-            selectedColor: selectedColorHex.toColorLong(),
-            walletName: $walletName,
-            startBalance: $startBalance,
-            colors: colorsSelector,
-            onEvent: onWalletEvent
-        )
     }
     
     @ViewBuilder
@@ -134,7 +97,7 @@ struct CreateWalletContentView: View {
             selectedColor: selectedColorHex.toColorLong(),
             onPickIcon: { icon in selectedIcon = icon},
             onTakImage: { file in imageFile = file},
-            onConfirm: { sheetContent = .create }
+            onConfirm: {  }
         )
     }
 }
