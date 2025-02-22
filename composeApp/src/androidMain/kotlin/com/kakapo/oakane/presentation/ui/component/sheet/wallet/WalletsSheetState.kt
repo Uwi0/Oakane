@@ -12,8 +12,8 @@ import com.kakapo.model.category.CategoryIconName
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
-import com.kakapo.oakane.presentation.designSystem.theme.colorsSelector
 import com.kakapo.oakane.presentation.model.WalletSheetContent
+import com.kakapo.oakane.presentation.model.colorsSelector
 import java.util.Locale
 
 @Composable
