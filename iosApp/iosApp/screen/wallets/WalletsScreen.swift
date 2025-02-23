@@ -6,6 +6,7 @@ struct WalletsScreen: View {
     @StateObject private var viewModel: WalletsViewModel = WalletsViewModel()
     @StateObject private var sheetState: WalletSheetState = WalletSheetState()
     @EnvironmentObject private var navigation: AppNavigation
+    @State private var searchQuery: String = ""
     
     private var uiState: WalletsState { viewModel.uiState }
     
@@ -14,7 +15,7 @@ struct WalletsScreen: View {
         GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
             VStack {
-                WalletsTopAppBar(onNavigateBack: {viewModel.handle(event: .NavigateBack())})
+                WalletsTopAppBar()
                 WalletsContentView(walletItems: uiState.wallets, onEvent: viewModel.handle(event:))
             }
             .dynamicHeightSheet(
@@ -44,7 +45,7 @@ struct WalletsScreen: View {
         if let safeEffect = effect {
             switch onEnum(of: safeEffect){
             case .dismissBottomSheet:
-                print("dismiss")
+                sheetState.resetContent()
             case .navigateBack:
                 navigation.navigateBack()
             case .showError(let effect):
@@ -59,33 +60,16 @@ struct WalletsScreen: View {
     }
     
     @ViewBuilder
-    private func WalletsSheetContent() -> some View {
-        
-    }
-    
-    @ViewBuilder
-    private func CreateWalletSheetContent() -> some View {
-        let onEvent: (CreateWalletEvent) -> Void = { walletEvent in
-            
-        }
-        
-    }
-}
-
-struct WalletsTopAppBar: View{
-    
-    let onNavigateBack: () -> Void
-    @State private var searchQuery: String = ""
-    
-    var body: some View {
+    private func WalletsTopAppBar() -> some View {
         VStack(spacing: 16) {
-            NavigationTopAppbar(title: "Wallets", navigateBack: onNavigateBack)
+            NavigationTopAppbar(title: "Wallets", navigateBack: navigation.navigateBack)
             OutlinedSearchTextFieldView(query: $searchQuery, placeHolder: "Search Wallet...")
                 .padding(.horizontal, 16)
             Divider()
         }
     }
 }
+
 
 #Preview {
     WalletsScreen()

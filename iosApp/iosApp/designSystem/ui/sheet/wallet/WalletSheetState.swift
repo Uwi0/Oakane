@@ -16,4 +16,8 @@ class WalletSheetState: ObservableObject {
     @Published var selectedIcon: CategoryIconName = .wallet
     
     let defaultColors = colorsSelector.map{ color in Color(hex: color.toColorLong()) }
+    
+    func resetContent() {
+        content = .wallet
+    }
 }

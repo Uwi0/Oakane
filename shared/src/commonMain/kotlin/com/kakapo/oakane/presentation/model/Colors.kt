@@ -47,4 +47,4 @@ val colorsSelector: List<String> = listOf(
     "0xFF607D8B",
     "0xFF455A64",
     "0xFF78909C"
-)
+).distinct()
