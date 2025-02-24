@@ -11,7 +11,6 @@ struct DyhamicHeightSheetModifier<V>: ViewModifier where V: View {
                 self.myContent()
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .id(sheetHeight)
                     .overlay(
                         GeometryReader { geometry in
                             Color.clear
@@ -24,6 +23,7 @@ struct DyhamicHeightSheetModifier<V>: ViewModifier where V: View {
                         }
                     }
                     .presentationDetents([.height(sheetHeight)])
+                    .id(sheetHeight)
             }
     }
 }

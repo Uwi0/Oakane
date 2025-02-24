@@ -20,4 +20,11 @@ class WalletSheetState: ObservableObject {
     func resetContent() {
         content = .wallet
     }
+    
+    func updateImage(_ image: String) {
+        DispatchQueue.main.async {
+            self.content = .wallet
+            self.imageFile = image
+        }
+    }
 }

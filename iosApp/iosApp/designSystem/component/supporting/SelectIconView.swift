@@ -3,33 +3,21 @@ import Shared
 import PhotosUI
 
 struct SelectIconView: View {
-    let selectedIcon: CategoryIconName
-    let selectedColor: Int64
-    let onPickIcon: (CategoryIconName) -> Void
-    let onTakImage: (String) -> Void
+    @Binding var selectedIcon: CategoryIconName
+    let selectedColor: Color
+    let onTakeImage: (String) -> Void
     let onConfirm: () -> Void
 
     var body: some View {
         VStack{
-            Text("Chose Icon")
-                .font(Typography.titleMedium)
+            Text("Chose Icon").font(Typography.titleMedium)
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    ForEach(parentCategories, id: \.name){ parentCategory in
-                        SelectionIconItemView(
-                            selectedIcon: selectedIcon,
-                            selectedColor: selectedColor,
-                            parentCategory: parentCategory,
-                            onPickIcon: onPickIcon
-                        )
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
+                IconListView()
             }
             .scrollIndicators(.hidden)
             
             HStack(spacing: 16) {
-                CategoryImagePickerView(onTakeImage: onTakImage)
+                CategoryImagePickerView(onTakeImage: onTakeImage)
                 FilledButtonView(
                     text: "Select Icon",
                     onClick: onConfirm
@@ -39,22 +27,34 @@ struct SelectIconView: View {
         }
         .padding(16)
     }
+    
+    @ViewBuilder
+    private func IconListView() -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            ForEach(parentCategories, id: \.name){ parentCategory in
+                SelectionIconItemView(
+                    selectedIcon: $selectedIcon,
+                    selectedColor: selectedColor,
+                    parentCategory: parentCategory
+                )
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
 }
 
 private struct SelectionIconItemView: View {
-    let selectedIcon: CategoryIconName
-    let selectedColor: Int64
+    @Binding var selectedIcon: CategoryIconName
+    let selectedColor: Color
     let parentCategory: ParentCategory
-    let onPickIcon: (CategoryIconName) -> Void
     
     var body: some View {
         VStack(spacing: 8) {
             SelectionHeaderView(parentCategory: parentCategory)
             CategoryIconContentView(
-                selectedIcon: selectedIcon,
+                selectedIcon: $selectedIcon,
                 selectedColor: selectedColor,
-                parentCategory: parentCategory,
-                onPickIcon: onPickIcon
+                parentCategory: parentCategory
             )
         }
     }
@@ -76,10 +76,9 @@ private struct SelectionHeaderView: View {
 }
 
 private struct CategoryIconContentView: View {
-    let selectedIcon: CategoryIconName
-    let selectedColor: Int64
+    @Binding var selectedIcon: CategoryIconName
+    let selectedColor: Color
     let parentCategory: ParentCategory
-    let onPickIcon: (CategoryIconName) -> Void
     private let column: [GridItem] = [.init(.adaptive(minimum: 48, maximum: 48))]
     
     var body: some View {
@@ -88,9 +87,8 @@ private struct CategoryIconContentView: View {
             ForEach(categories, id: \.self) { category in
                 SelectionIconView(
                     selectedColor:selectedColor,
-                    selectedIcon: selectedIcon,
-                    category: category,
-                    onPickIcon: onPickIcon
+                    selectedIcon: $selectedIcon,
+                    category: category
                 )
             }
         }
@@ -98,13 +96,12 @@ private struct CategoryIconContentView: View {
 }
 
 struct SelectionIconView: View {
-    let selectedColor: Int64
-    let selectedIcon: CategoryIconName
+    let selectedColor: Color
+    @Binding var selectedIcon: CategoryIconName
     let category: CategoryIconName
-    let onPickIcon: (CategoryIconName) -> Void
     
     private var color: Color {
-        selectedIcon == category ? Color(hex: selectedColor) : ColorTheme.outline
+        selectedIcon == category ? selectedColor : ColorTheme.outline
     }
     
     private var iconName: String {
@@ -114,7 +111,7 @@ struct SelectionIconView: View {
     var body: some View {
         CategoryIconView(icon: iconName, color: color)
             .onTapGesture {
-                onPickIcon(category)
+                selectedIcon = category
             }
     }
 }
@@ -142,18 +139,33 @@ private struct CategoryImagePickerView: View {
                 }
         }
         .onChange(of: selectedItem){
-            Task {
-                if let data = try? await selectedItem?.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: data) {
-                    selectedImage = uiImage
-                    let savedImage = saveImageToFileSystem(image: uiImage)
-                    switch savedImage {
-                    case .success(let imageName):
-                        onTakeImage(imageName)
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
+            getImageLocalIdentifier()
+        }
+    }
+    
+    func getImageLocalIdentifier() {
+        guard let selectedItem else { return }
+        
+        Task {
+            do {
+                guard let imageData = try await selectedItem.loadTransferable(type: Data.self),
+                      let image = UIImage(data: imageData) else { return }
+                
+                selectedImage = image
+                handleImageSaving(image)
+            } catch {
+                print("Error loading image: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    private func handleImageSaving(_ image: UIImage) {
+        saveImageToPhotoLibrary(image: image) { result in
+            switch result {
+            case .success(let imageName):
+                onTakeImage(imageName)
+            case .failure(let error):
+                print("Error saving image: \(error.localizedDescription)")
             }
         }
     }

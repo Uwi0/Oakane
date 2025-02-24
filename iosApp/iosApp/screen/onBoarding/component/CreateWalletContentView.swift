@@ -92,13 +92,13 @@ struct CreateWalletContentView: View {
     
     @ViewBuilder
     private func SelectIconSheetContent() -> some View {
-        SelectIconView(
-            selectedIcon: selectedIcon,
-            selectedColor: selectedColorHex.toColorLong(),
-            onPickIcon: { icon in selectedIcon = icon},
-            onTakImage: { file in imageFile = file},
-            onConfirm: {  }
-        )
+//        SelectIconView(
+//            selectedIcon: selectedIcon,
+//            selectedColor: selectedColorHex.toColorLong(),
+//            onPickIcon: { icon in selectedIcon = icon},
+//            onTakImage: { file in imageFile = file},
+//            onConfirm: {  }
+//        )
     }
 }
 

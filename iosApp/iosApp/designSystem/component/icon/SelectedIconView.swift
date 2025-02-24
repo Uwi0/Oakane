@@ -10,7 +10,7 @@ struct SelectedIconView: View {
     var padding: CGFloat = 12
     
     private var isDefaultIcon: Bool {
-        !imageName.contains("jpg")
+        imageName.isEmpty || icon.displayName.lowercased() == imageName.lowercased()
     }
     
     private var iconSystem: String {

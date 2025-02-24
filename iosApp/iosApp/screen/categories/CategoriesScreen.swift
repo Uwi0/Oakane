@@ -54,13 +54,14 @@ struct CategoriesScreen: View {
                 case .selectColor:
                     Text("Select Color")
                 case .selectIcon:
-                    SelectIconView(
-                        selectedIcon: uiState.selectedIcon,
-                        selectedColor: uiState.selectedColor,
-                        onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon))},
-                        onTakImage: { image in viewModel.handle(event: .PickImage(file: image))},
-                        onConfirm: { viewModel.handle(event: .ConfirmIcon())}
-                    )
+//                    SelectIconView(
+//                        selectedIcon: uiState.selectedIcon,
+//                        selectedColor: uiState.selectedColor,
+//                        onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon))},
+//                        onTakImage: { image in viewModel.handle(event: .PickImage(file: image))},
+//                        onConfirm: { viewModel.handle(event: .ConfirmIcon())}
+//                    )
+                    Text("Todo will fixed soon")
                 }
             }
             .presentationDetents([bottomSheetSize])
