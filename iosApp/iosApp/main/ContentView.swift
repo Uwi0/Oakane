@@ -33,6 +33,7 @@ struct ContentView: View {
             case .wallets: WalletsScreen()
             case .reports: ReportsScreen()
             case .settings: SettingsScreen()
+            case .wallet: WalletScreen()
             }
         }
     }

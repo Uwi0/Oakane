@@ -28,3 +28,7 @@ struct SelectedIconView: View {
         }
     }
 }
+
+#Preview {
+    SelectedIconView(imageName: "", icon: .books, color: Color.accentColor, size: 48, padding: 12)
+}

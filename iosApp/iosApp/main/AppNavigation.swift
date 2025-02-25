@@ -15,6 +15,7 @@ final class AppNavigation: ObservableObject {
         case goals
         case monthlyBudget
         case wallets
+        case wallet
         case reports
         case settings
     }
