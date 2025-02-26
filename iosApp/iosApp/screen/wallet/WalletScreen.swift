@@ -3,6 +3,12 @@ import Shared
 
 struct WalletScreen: View {
     
+    @StateObject private var viewModel: WalletViewModel = WalletViewModel()
+    
+    private var uiState: WalletState {
+        viewModel.uiState
+    }
+    
     private var filterColorIndicator: Color {
         ColorTheme.outline
     }
@@ -11,6 +17,7 @@ struct WalletScreen: View {
         VStack {
             WalletTopbar()
             WalletContent()
+            LogViews()
             Spacer()
         }
         .background(ColorTheme.surface.ignoresSafeArea())
@@ -69,6 +76,30 @@ struct WalletScreen: View {
                 .frame(width: 24, height: 24)
         }
     }
+    
+    @ViewBuilder
+    private func LogViews() -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 8) {
+                LogItems()
+            }
+        }
+        .scrollIndicators(.hidden)
+        .padding(.top, 16)
+    }
+    
+    @ViewBuilder
+    private func LogItems() -> some View {
+        ForEach(uiState.logItems, id: \.id) { item in
+            let type = onEnum(of: item)
+            switch type {
+            case .goalSavingLogItem(let goal): Text(goal.name)
+            case .transactionLogItem(let transaction): Text(transaction.description)
+            case .walletTransferLogItem(let wallet): Text(wallet.name)
+            }
+        }
+    }
+    
 }
 
 #Preview {
