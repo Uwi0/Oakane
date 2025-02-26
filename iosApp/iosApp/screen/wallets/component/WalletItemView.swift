@@ -5,6 +5,7 @@ struct WalletItemView: View {
     
     let wallet: WalletItemModel
     let onSelectWallet: () -> Void
+    let navigateToDetails: () -> Void
     
     private var formattedBalance: String {
         wallet.balance.toFormatCurrency(currency: wallet.currency)
@@ -22,6 +23,7 @@ struct WalletItemView: View {
             BottomContentView()
         }
         .customBackground(backgroundColor: ColorTheme.surface)
+        .onTapGesture { navigateToDetails() }
     }
     
     @ViewBuilder
@@ -66,7 +68,6 @@ struct WalletItemView: View {
         currency: Currency,
         color: Color
     ) -> some View {
-        
         let formattedAmount = amount.toFormatCurrency(currency: currency)
         VStack(alignment: .center, spacing: 8) {
             Text(title)

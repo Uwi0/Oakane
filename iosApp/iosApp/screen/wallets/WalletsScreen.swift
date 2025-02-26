@@ -16,7 +16,7 @@ struct WalletsScreen: View {
             ColorTheme.surface.ignoresSafeArea()
             VStack {
                 WalletsTopAppBar()
-                WalletsContentView(walletItems: uiState.wallets, onEvent: viewModel.handle(event:))
+                WalletContentView()
             }
             .dynamicHeightSheet(
                 isPresented: Binding(
@@ -39,6 +39,24 @@ struct WalletsScreen: View {
         .onChange(of: viewModel.uiEffect) {
             observe(effect: viewModel.uiEffect)
         }
+    }
+    
+    @ViewBuilder
+    private func WalletContentView() -> some View {
+        ScrollView {
+            VStack {
+                ForEach(uiState.wallets, id: \.self){ walletItem in
+                    WalletItemView(
+                        wallet: walletItem,
+                        onSelectWallet: { },
+                        navigateToDetails: { navigation.navigate(to: .wallet)}
+                    )
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 16)
+        }
+        .scrollIndicators(.hidden)
     }
     
     private func observe(effect: WalletsEffect?){
@@ -73,4 +91,5 @@ struct WalletsScreen: View {
 
 #Preview {
     WalletsScreen()
+        .environmentObject(AppNavigation())
 }
