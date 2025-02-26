@@ -2,6 +2,11 @@ import SwiftUI
 import Shared
 
 struct WalletScreen: View {
+    
+    private var filterColorIndicator: Color {
+        ColorTheme.outline
+    }
+    
     var body: some View {
         VStack {
             WalletTopbar()
@@ -36,12 +41,33 @@ struct WalletScreen: View {
     
     @ViewBuilder
     private func WalletContent() -> some View {
-        VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 16) {
             WalletDetailItemView(state: WalletState.companion.default())
             CardNoteView(note: "Hello world!")
+            FilterLogView()
         }
         .padding(.horizontal, 16)
         .padding(.top, 24)
+    }
+    
+    @ViewBuilder
+    private func FilterLogView() -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Wallet History")
+            FilterLogComponent()
+        }
+    }
+    
+    @ViewBuilder
+    private func FilterLogComponent() -> some View {
+        HStack(alignment: .center, spacing: 8) {
+            OutlinedSearchTextFieldView(query: .constant("Hello"), placeHolder: "Search")
+            Image(systemName: "line.3.horizontal.decrease")
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(filterColorIndicator)
+                .frame(width: 24, height: 24)
+        }
     }
 }
 

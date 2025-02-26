@@ -36,6 +36,7 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconBu
 import com.kakapo.oakane.presentation.designSystem.component.textField.SearchTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.designSystem.theme.ColorScheme
 import com.kakapo.oakane.presentation.feature.goal.component.GoalSavingItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.TransferLogItemView
 import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemView
@@ -187,8 +188,7 @@ private fun FilterLogView(uiState: WalletState, onEvent: (WalletEvent) -> Unit) 
 
 @Composable
 private fun FilterLogComponent(uiState: WalletState, onEvent: (WalletEvent) -> Unit) {
-    val tint = if (uiState.hasFilter) MaterialTheme.colorScheme.primary
-    else MaterialTheme.colorScheme.outline
+    val tint = if (uiState.hasFilter) ColorScheme.primary else ColorScheme.outline
     Row(verticalAlignment = Alignment.CenterVertically) {
         SearchTextFieldView(
             modifier = Modifier.weight(1f),
