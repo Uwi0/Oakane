@@ -2,15 +2,8 @@ import SwiftUI
 
 struct HorizontalColorSelectorView: View {
     
-    let colors: [String]
-    let onSelectedColor: (String) -> Void
-    @State private var selectedColor: Color
-    
-    init(selectedColor: Color, colors: [String], onSelectedColor: @escaping (String) -> Void) {
-        self.colors = colors
-        self.onSelectedColor = onSelectedColor
-        self.selectedColor = selectedColor
-    }
+    let colors: [Color]
+    @Binding var selectedColor: Color
     
     var body: some View {
         ScrollView(.horizontal) {
@@ -21,22 +14,15 @@ struct HorizontalColorSelectorView: View {
                 )
                 .allowsHitTesting(false)
                 .background {
-                    ColorPicker("CustomColor",selection: $selectedColor)
+                    ColorPicker("CustomColor", selection: $selectedColor)
                         .labelsHidden()
-                        .onChange(of: selectedColor) {
-                            let colorHex = selectedColor.toHexString() ?? "0xFFFFFF"
-                            onSelectedColor(colorHex)
-                        }
                 }
-                ForEach(colors, id: \.self) { hex in
-                    let colorHex = hex.toColorLong()
-                    let color = Color(hex: colorHex)
+                ForEach(colors, id: \.self) { color in
                     Circle()
                         .fill(color)
                         .frame(width: 48, height: 48)
                         .onTapGesture {
                             selectedColor = color
-                            onSelectedColor(hex)
                         }
                 }
             }

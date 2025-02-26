@@ -65,6 +65,10 @@ data class WalletState(
         filterDate = FilterWalletLogByDateModel.All,
         filterCategory = FilterWalletLogByCategory.All
     )
+
+    companion object {
+        fun default() = WalletState()
+    }
 }
 
 sealed class WalletEffect {

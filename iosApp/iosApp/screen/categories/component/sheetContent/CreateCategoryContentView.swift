@@ -14,11 +14,11 @@ struct CreateCategoryContentView: View {
             TitleView(title: "Category Type")
             CategorySegmentedButtonView(onEvent: onEvent)
             TitleView(title: "Category Color")
-            HorizontalColorSelectorView(
-                selectedColor: Color(hex: uiState.selectedColor),
-                colors: uiState.defaultColors,
-                onSelectedColor: { hex in onEvent(.SelectedColor(hex: hex)) }
-            )
+//            HorizontalColorSelectorView(
+//                selectedColor: Color(hex: uiState.selectedColor),
+//                colors: uiState.defaultColors,
+//                onSelectedColor: { hex in onEvent(.SelectedColor(hex: hex)) }
+//            ) todo need to be fixed
             Spacer()
             CreateCategoryButtonView(uiState: uiState, onEvent: onEvent)
         }
@@ -45,12 +45,16 @@ private struct CategoryNameFieldView: View {
     }
     
     
+    private var formattedColor: Color {
+        Color(hex: uiState.selectedColor)
+    }
+    
     var body: some View {
         HStack(spacing: 16) {
             SelectedIconView(
                 imageName: uiState.imageName,
                 icon: uiState.selectedIcon,
-                color: uiState.selectedColor
+                color: formattedColor
             )
             .onTapGesture {
                 onEvent(.ChangeSheet(content: .selectIcon))

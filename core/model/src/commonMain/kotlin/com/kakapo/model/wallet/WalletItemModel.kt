@@ -6,12 +6,12 @@ import com.kakapo.model.toFormatNumber
 
 data class WalletItemModel(
     val id: Long = DEFAULT_ID,
-    val name: String = "",
+    val name: String = "Some Wallet",
     val isDefault: Boolean = true,
     val icon: String = "",
     val currency: Currency = Currency.IDR,
     val balance: Double = 0.0,
-    val color: String = "",
+    val color: String = "0xFF4CAF50",
     val income: Double = 0.0,
     val expense: Double = 0.0,
     val isSelected: Boolean = false,

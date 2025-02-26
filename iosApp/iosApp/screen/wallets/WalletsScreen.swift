@@ -4,39 +4,35 @@ import Shared
 struct WalletsScreen: View {
     
     @StateObject private var viewModel: WalletsViewModel = WalletsViewModel()
+    @StateObject private var sheetState: WalletSheetState = WalletSheetState()
     @EnvironmentObject private var navigation: AppNavigation
+    @State private var searchQuery: String = ""
     
     private var uiState: WalletsState { viewModel.uiState }
     
-    private var bottomSheetSize: PresentationDetent {
-        switch uiState.sheetContent {
-        case .create: return .fraction(0.50)
-        case .selectIcon: return .fraction(0.9)
-        case .selectColor: return .large
-        }
-    }
     
     var body: some View {
         GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
             VStack {
-                WalletsTopAppBar(onNavigateBack: {viewModel.handle(event: .NavigateBack())})
-                WalletsContentView(walletItems: uiState.wallets, onEvent: viewModel.handle(event:))
+                WalletsTopAppBar()
+                WalletContentView()
             }
-            .sheet(
-                isPresented: $viewModel.uiState.sheetShown,
-                onDismiss: { }
-            ){
-                WalletsSheetContent()
-                    .presentationDetents([bottomSheetSize])
-                    .presentationDragIndicator(.visible)
-            }
+            .dynamicHeightSheet(
+                isPresented: Binding(
+                    get: { uiState.sheetShown},
+                    set: { viewModel.handle(event: .ShowSheet(shown: $0)) }
+                ),
+                content: {
+                    WalletSheetView(state: sheetState)
+                }
+            )
             
             FabButtonView(
                 size: FabConstant.size,
                 xPos: proxy.size.width - FabConstant.xOffset,
                 yPos: proxy.size.height - FabConstant.yOffset,
-                onClick: { }
+                onClick: { viewModel.handle(event: .ShowSheet(shown: true)) }
             )
         }
         .navigationBarBackButtonHidden(true)
@@ -45,11 +41,29 @@ struct WalletsScreen: View {
         }
     }
     
+    @ViewBuilder
+    private func WalletContentView() -> some View {
+        ScrollView {
+            VStack {
+                ForEach(uiState.wallets, id: \.self){ walletItem in
+                    WalletItemView(
+                        wallet: walletItem,
+                        onSelectWallet: { },
+                        navigateToDetails: { navigation.navigate(to: .wallet)}
+                    )
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 16)
+        }
+        .scrollIndicators(.hidden)
+    }
+    
     private func observe(effect: WalletsEffect?){
         if let safeEffect = effect {
             switch onEnum(of: safeEffect){
             case .dismissBottomSheet:
-                print("dismiss")
+                sheetState.resetContent()
             case .navigateBack:
                 navigation.navigateBack()
             case .showError(let effect):
@@ -64,48 +78,9 @@ struct WalletsScreen: View {
     }
     
     @ViewBuilder
-    private func WalletsSheetContent() -> some View {
-        VStack {
-            switch uiState.sheetContent {
-            case .create: CreateWalletSheetContent()
-            case .selectColor: Text("Select Color")
-            case .selectIcon: SelectIconView(
-                selectedIcon: uiState.selectedIcon,
-                selectedColor: uiState.selectedColor,
-                onPickIcon: { icon in },
-                onTakImage: { file in },
-                onConfirm: {}
-            )
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private func CreateWalletSheetContent() -> some View {
-        let onEvent: (CreateWalletEvent) -> Void = { walletEvent in
-            
-        }
-        
-        CreateWalletSheetView(
-            imageFile: uiState.imageFile,
-            selectedIcon: uiState.selectedIcon,
-            selectedColor: uiState.selectedColor,
-            walletName: $viewModel.uiState.walletName,
-            startBalance: $viewModel.uiState.startBalance,
-            colors: uiState.colors,
-            onEvent: onEvent
-        )
-    }
-}
-
-struct WalletsTopAppBar: View{
-    
-    let onNavigateBack: () -> Void
-    @State private var searchQuery: String = ""
-    
-    var body: some View {
+    private func WalletsTopAppBar() -> some View {
         VStack(spacing: 16) {
-            NavigationTopAppbar(title: "Wallets", navigateBack: onNavigateBack)
+            NavigationTopAppbar(title: "Wallets", navigateBack: navigation.navigateBack)
             OutlinedSearchTextFieldView(query: $searchQuery, placeHolder: "Search Wallet...")
                 .padding(.horizontal, 16)
             Divider()
@@ -113,6 +88,8 @@ struct WalletsTopAppBar: View{
     }
 }
 
+
 #Preview {
     WalletsScreen()
+        .environmentObject(AppNavigation())
 }

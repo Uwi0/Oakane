@@ -21,8 +21,8 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOut
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
-import com.kakapo.oakane.presentation.designSystem.theme.colorsSelector
 import com.kakapo.oakane.presentation.model.WalletSheetContent
+import com.kakapo.oakane.presentation.model.colorsSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
