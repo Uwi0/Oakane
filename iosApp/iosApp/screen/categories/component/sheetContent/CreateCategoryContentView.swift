@@ -6,50 +6,48 @@ struct CreateCategoryContentView: View {
     let uiState: CategoriesState
     let onEvent: (CategoriesEvent) -> Void
     
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Spacer()
-            TitleView(title: "Create Category")
-            CategoryNameFieldView(uiState: uiState, onEvent: onEvent)
-            TitleView(title: "Category Type")
-            CategorySegmentedButtonView(onEvent: onEvent)
-            TitleView(title: "Category Color")
-//            HorizontalColorSelectorView(
-//                selectedColor: Color(hex: uiState.selectedColor),
-//                colors: uiState.defaultColors,
-//                onSelectedColor: { hex in onEvent(.SelectedColor(hex: hex)) }
-//            ) todo need to be fixed
-            Spacer()
-            CreateCategoryButtonView(uiState: uiState, onEvent: onEvent)
-        }
-        .padding(16)
-    }
-}
-
-private struct TitleView: View {
-    let title: String
-    var body: some View {
-        Text(title).font(Typography.titleMedium)
-    }
-}
-
-private struct CategoryNameFieldView: View {
-    @State private var categoryName: String = ""
-    let uiState: CategoriesState
-    let onEvent: (CategoriesEvent) -> Void
-    
-    init(uiState: CategoriesState, onEvent: @escaping (CategoriesEvent) -> Void) {
-        categoryName = uiState.categoryName
-        self.uiState = uiState
-        self.onEvent = onEvent
-    }
-    
+    @State private var selectedType: TransactionType = .income
     
     private var formattedColor: Color {
         Color(hex: uiState.selectedColor)
     }
     
+    private var saveTitle: String {
+        uiState.isEditMode ? "Update" : "Create"
+    }
+    
+    private var colors: [Color] {
+        uiState.defaultColors.map{ color in Color(hex: color.toColorLong())}
+    }
+    
     var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Spacer()
+            TitleView("Create Category")
+            CategoryNameFieldView()
+            TitleView("Category Type")
+            CategorySegmentedButtonView()
+            TitleView("Category Color")
+            HorizontalColorSelectorView(
+                colors: colors,
+                selectedColor: Binding(
+                    get: { Color(hex: uiState.selectedColor)},
+                    set: { color in onEvent(.SelectedColor(hex: color.toHexString() ?? "")) }
+                )
+            )
+            Spacer().frame(height: 48)
+            CreateCategoryButtonView()
+        }
+        .padding(16)
+    }
+    
+    @ViewBuilder
+    private func TitleView(_ title: String) -> some View {
+        Text(title).font(Typography.titleMedium)
+    }
+    
+    @ViewBuilder
+    private func CategoryNameFieldView() -> some View {
         HStack(spacing: 16) {
             SelectedIconView(
                 imageName: uiState.imageName,
@@ -69,46 +67,26 @@ private struct CategoryNameFieldView: View {
                 showLabel: false
             )
         }
-        
     }
-}
-
-
-private struct CategorySegmentedButtonView: View {
     
-    let onEvent: (CategoriesEvent) -> Void
-    
-    @State private var selectedType: TransactionType = .income
-    
-    var body: some View {
+    @ViewBuilder
+    private func CategorySegmentedButtonView() -> some View {
         Picker("Transaction Type", selection: $selectedType) {
-            ForEach(TransactionType.allCases, id: \.self) { type in
-                Text(type.name)
-            }
+            ForEach(TransactionType.allCases, id: \.self) { type in Text(type.name) }
         }
         .pickerStyle(.segmented)
         .onChange(of: selectedType) {
             onEvent(.Selected(type: selectedType))
         }
     }
-}
-
-private struct CreateCategoryButtonView: View {
-    let uiState: CategoriesState
-    let onEvent: (CategoriesEvent) -> Void
     
-    private var isEditMode: Bool {
-        uiState.isEditMode
-    }
-    private var saveTitle: String {
-        isEditMode ? "Update" : "Create"
-    }
-    var body: some View {
+    @ViewBuilder
+    private func CreateCategoryButtonView() -> some View {
         HStack {
-            if isEditMode {
+            if uiState.isEditMode {
                 OutlinedButtonView(
                     text: "Delete",
-                    onClick: {onEvent(.SwipeToDeleteBy(id: uiState.categoryId))},
+                    onClick: { onEvent(.SwipeToDeleteBy(id: uiState.categoryId)) },
                     color: ColorTheme.error
                 )
             }
