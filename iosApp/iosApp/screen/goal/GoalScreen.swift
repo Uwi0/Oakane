@@ -95,27 +95,6 @@ struct GoalScreen: View {
     }
 }
 
-private struct GoalDialogView: View {
-    
-    let uiState: GoalState
-    let onEvent: (GoalEvent) -> Void
-    
-    var body: some View {
-        PopUpDialog(
-            onDismiss: { _ in
-                onEvent(.Dialog(shown: false, content: .updateAmount))
-            }
-        ) {
-            switch uiState.dialogContent {
-            case .updateAmount:
-                DialogAddGoalSavingView(onEvent: onEvent)
-            case .deleteGoal:
-                DialogDeleteGoalConfirmationView(onEvent: onEvent)
-            }
-            
-        }
-    }
-}
 
 private struct ToolbarView: View {
     

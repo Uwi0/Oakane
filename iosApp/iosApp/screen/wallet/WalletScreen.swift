@@ -21,13 +21,18 @@ struct WalletScreen: View {
     }
     
     var body: some View {
-        VStack {
-            WalletTopbar()
-            WalletContent()
-            LogViews()
-            Spacer()
+        ZStack {
+            ColorTheme.surface.ignoresSafeArea()
+            VStack {
+                WalletTopbar()
+                WalletContent()
+                LogViews()
+            }
+            
+            if uiState.dialogVisible {
+                WalletDialogView(uiState: uiState, onEvent: viewModel.handle)
+            }
         }
-        .background(ColorTheme.surface.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .task {
             viewModel.iniData(walletId: walletId)
@@ -36,13 +41,16 @@ struct WalletScreen: View {
     
     @ViewBuilder
     private func WalletTopbar() -> some View {
+        let dialogContent = WalletDialogContent.deleteWallet
         VStack {
             NavigationTopAppbar(
                 title: "Wallet",
                 actionContent: {
                     BarAction(systemName: "pencil")
                     Spacer().frame(width: 16)
-                    BarAction(systemName: "trash")
+                    BarAction(systemName: "trash").onTapGesture {
+                        viewModel.handle(event: .ShowDialog(content: dialogContent, shown: true))
+                    }
                 },
                 navigateBack: { navigation.navigateBack() }
             )
@@ -79,7 +87,13 @@ struct WalletScreen: View {
     @ViewBuilder
     private func FilterLogComponent() -> some View {
         HStack(alignment: .center, spacing: 8) {
-            OutlinedSearchTextFieldView(query: .constant("Hello"), placeHolder: "Search")
+            OutlinedSearchTextFieldView(
+                query: Binding(
+                    get: { uiState.searchQuery },
+                    set: { query in  viewModel.handle(event: .SearchLog(query: query)) }
+                ),
+                placeHolder: "Search"
+            )
             Image(systemName: "line.3.horizontal.decrease")
                 .resizable()
                 .scaledToFit()
@@ -101,7 +115,7 @@ struct WalletScreen: View {
     
     @ViewBuilder
     private func LogItems() -> some View {
-        ForEach(uiState.logItems, id: \.id) { item in
+        ForEach(uiState.filteredLogItems, id: \.id) { item in
             let type = onEnum(of: item)
             switch type {
             case .goalSavingLogItem(let goal): GoalSavingItem(log: goal)

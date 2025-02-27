@@ -13,7 +13,7 @@ struct CardNoteView: View {
             Text("Note")
                 .font(Typography.titleMedium)
             
-            Text(note)
+            Text(noteValue)
                 .font(Typography.bodyMedium)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
