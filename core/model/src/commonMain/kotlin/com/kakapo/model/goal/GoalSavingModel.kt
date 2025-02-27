@@ -4,10 +4,10 @@ import com.kakapo.common.formatDateWith
 import com.kakapo.model.transaction.TransactionType
 
 data class GoalSavingModel(
-    val id: Long,
-    val amount: Double,
-    val note: String,
-    val createdAt: Long
+    val id: Long = 0L,
+    val amount: Double = 2000.0,
+    val note: String = "Just Note",
+    val createdAt: Long = 1740616605029
 ){
 
     val formattedDateCreated: String get() {
@@ -22,5 +22,6 @@ data class GoalSavingModel(
 
     companion object{
         private const val DATE_FORMAT = "dd MMM yyyy"
+        fun default() = GoalSavingModel()
     }
 }

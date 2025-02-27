@@ -67,13 +67,18 @@ struct GoalScreen: View {
     private func GoalBottomContentView() -> some View {
         ScrollView {
             VStack {
-                
+                GoalSavingsView()
             }
         }
         .scrollIndicators(.hidden)
     }
     
-    
+    @ViewBuilder
+    private func GoalSavingsView() -> some View {
+        ForEach(uiState.goalSavings, id: \.id) { saving in
+            GoalSavingItemView(item: saving, currency: uiState.currency)
+        }
+    }
     
     private func observe(effect: GoalEffect?){
         if let safeEffect = effect {
