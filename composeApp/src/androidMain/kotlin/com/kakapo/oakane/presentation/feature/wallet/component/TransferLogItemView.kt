@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
-import com.kakapo.model.wallet.WalletLogItem
 import com.kakapo.model.wallet.WalletTransferModel
 import com.kakapo.model.wallet.WalletTransferType
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomIconButton
@@ -31,8 +30,7 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.ui.component.RowWrapper
 
 @Composable
-internal fun TransferLogItemView(item: WalletLogItem.WalletTransferLogItem, theme: Theme) {
-    val transferLog = item.data
+internal fun TransferLogItemView(item: WalletTransferModel, theme: Theme) {
     RowWrapper(
         modifier = Modifier
             .fillMaxWidth()
@@ -40,10 +38,10 @@ internal fun TransferLogItemView(item: WalletLogItem.WalletTransferLogItem, them
         theme = theme,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        TransferLogIconView(transferLog.type)
-        TransferLogContentView(walletTransfer = transferLog)
+        TransferLogIconView(item.type)
+        TransferLogContentView(walletTransfer = item)
         Spacer(modifier = Modifier.weight(1f))
-        TransferLogTrailingContent(transferLog.formattedDate)
+        TransferLogTrailingContent(item.formattedDate)
     }
 }
 
@@ -101,6 +99,7 @@ private fun TransferLogTrailingContent(date: String) {
 @Preview
 private fun TransferLogIconPreview() {
     AppTheme {
-        TransferLogIconView(transferType = WalletTransferType.Outgoing)
+        val defaultItem = WalletTransferModel.default()
+        TransferLogItemView(defaultItem, Theme.System)
     }
 }

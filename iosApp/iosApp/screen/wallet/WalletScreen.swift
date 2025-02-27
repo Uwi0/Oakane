@@ -13,6 +13,10 @@ struct WalletScreen: View {
         ColorTheme.outline
     }
     
+    private var currency: Currency {
+        uiState.wallet.currency
+    }
+    
     var body: some View {
         VStack {
             WalletTopbar()
@@ -60,7 +64,7 @@ struct WalletScreen: View {
     @ViewBuilder
     private func FilterLogView() -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Wallet History")
+            Text("Wallet History").font(Typography.titleMedium)
             FilterLogComponent()
         }
     }
@@ -93,13 +97,22 @@ struct WalletScreen: View {
         ForEach(uiState.logItems, id: \.id) { item in
             let type = onEnum(of: item)
             switch type {
-            case .goalSavingLogItem(let goal): Text(goal.name)
-            case .transactionLogItem(let transaction): Text(transaction.description)
-            case .walletTransferLogItem(let wallet): Text(wallet.name)
+            case .goalSavingLogItem(let goal): GoalSavingItem(log: goal)
+            case .transactionLogItem(let transaction): TransactionItem(log: transaction)
+            case .walletTransferLogItem(let wallet): TransferLogItemView(item: wallet.data)
             }
         }
     }
     
+    @ViewBuilder
+    private func GoalSavingItem(log: WalletLogItemGoalSavingLogItem) -> some View {
+        GoalSavingItemView(item: log.data,currency: currency,isInLog: true)
+    }
+    
+    @ViewBuilder
+    private func TransactionItem(log: WalletLogItemTransactionLogItem) -> some View {
+        TransactionItemView(transaction: log.data)
+    }
 }
 
 #Preview {
