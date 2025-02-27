@@ -10,7 +10,8 @@ final class WalletViewModel: ObservableObject {
     private var uiStateCancellable: AnyCancellable?
     private var uiEffectCancellable: AnyCancellable?
     
-    func iniData() {
+    func iniData(walletId: Int64) {
+        viewModel.doInitData(walletId: walletId)
         observerUiState()
         observeUiEffect()
     }

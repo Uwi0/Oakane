@@ -3,7 +3,10 @@ import Shared
 
 struct WalletScreen: View {
     
+    let walletId: Int64
+    
     @StateObject private var viewModel: WalletViewModel = WalletViewModel()
+    @EnvironmentObject private var navigation: AppNavigation
     
     private var uiState: WalletState {
         viewModel.uiState
@@ -25,6 +28,10 @@ struct WalletScreen: View {
             Spacer()
         }
         .background(ColorTheme.surface.ignoresSafeArea())
+        .navigationBarBackButtonHidden(true)
+        .task {
+            viewModel.iniData(walletId: walletId)
+        }
     }
     
     @ViewBuilder
@@ -37,7 +44,7 @@ struct WalletScreen: View {
                     Spacer().frame(width: 16)
                     BarAction(systemName: "trash")
                 },
-                navigateBack: {}
+                navigateBack: { navigation.navigateBack() }
             )
             Divider()
         }
@@ -53,8 +60,8 @@ struct WalletScreen: View {
     @ViewBuilder
     private func WalletContent() -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            WalletDetailItemView(state: WalletState.companion.default())
-            CardNoteView(note: "Hello world!")
+            WalletDetailItemView(state: uiState)
+            CardNoteView(note: uiState.wallet.note)
             FilterLogView()
         }
         .padding(.horizontal, 16)
@@ -116,5 +123,5 @@ struct WalletScreen: View {
 }
 
 #Preview {
-    WalletScreen()
+    WalletScreen(walletId: 0)
 }
