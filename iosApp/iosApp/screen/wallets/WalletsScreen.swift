@@ -49,7 +49,9 @@ struct WalletsScreen: View {
                     WalletItemView(
                         wallet: walletItem,
                         onSelectWallet: { },
-                        navigateToDetails: { navigation.navigate(to: .wallet)}
+                        navigateToDetails: {
+                            navigation.navigate(to: .wallet(walletId: walletItem.id))
+                        }
                     )
                 }
             }
@@ -57,6 +59,19 @@ struct WalletsScreen: View {
             .padding(.vertical, 16)
         }
         .scrollIndicators(.hidden)
+    }
+    
+    @ViewBuilder
+    private func WalletsTopAppBar() -> some View {
+        VStack(spacing: 16) {
+            NavigationTopAppbar(title: "Wallets", navigateBack: navigation.navigateBack)
+            OutlinedSearchTextFieldView(
+                query: $searchQuery,
+                placeHolder: "Search Wallet..."
+            )
+            .padding(.horizontal, 16)
+            Divider()
+        }
     }
     
     private func observe(effect: WalletsEffect?){
@@ -76,16 +91,7 @@ struct WalletsScreen: View {
         }
         viewModel.uiEffect = nil
     }
-    
-    @ViewBuilder
-    private func WalletsTopAppBar() -> some View {
-        VStack(spacing: 16) {
-            NavigationTopAppbar(title: "Wallets", navigateBack: navigation.navigateBack)
-            OutlinedSearchTextFieldView(query: $searchQuery, placeHolder: "Search Wallet...")
-                .padding(.horizontal, 16)
-            Divider()
-        }
-    }
+
 }
 
 

@@ -4,12 +4,16 @@ struct CardNoteView: View {
     
     let note: String
     
+    private var noteValue: String {
+        note.isEmpty ? "-" : note
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Note")
                 .font(Typography.titleMedium)
             
-            Text(note)
+            Text(noteValue)
                 .font(Typography.bodyMedium)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

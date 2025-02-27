@@ -225,7 +225,7 @@ private fun LogItemView(
 ) {
     when (log) {
         is WalletLogItem.TransactionLogItem -> TransactionItemView(log.data, theme)
-        is WalletLogItem.WalletTransferLogItem -> TransferLogItemView(log, theme)
+        is WalletLogItem.WalletTransferLogItem -> TransferLogItemView(log.data, theme)
         is WalletLogItem.GoalSavingLogItem -> GoalSavingItemView(
             log.data,
             theme,

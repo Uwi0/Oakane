@@ -9,8 +9,6 @@ struct DyhamicHeightSheetModifier<V>: ViewModifier where V: View {
         viewContent
             .sheet(isPresented: $isPresented) {
                 self.myContent()
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
                     .overlay(
                         GeometryReader { geometry in
                             Color.clear

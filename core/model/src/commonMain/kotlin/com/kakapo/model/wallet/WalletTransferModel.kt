@@ -6,12 +6,12 @@ import com.kakapo.model.transaction.TransactionType
 
 data class WalletTransferModel(
     val id: Long = 0,
-    val name: String,
-    val amount: Double,
-    val notes: String,
-    val createdAt: Long,
-    val type: WalletTransferType,
-    val currency: Currency
+    val name: String = "Some Wallet",
+    val amount: Double = 2000.0,
+    val notes: String = "Just Note",
+    val createdAt: Long = 1740620341213,
+    val type: WalletTransferType = WalletTransferType.Incoming,
+    val currency: Currency = Currency.IDR
 ){
     val uniqueId: String get() {
         return "wallet_transfer$id"
@@ -31,6 +31,7 @@ data class WalletTransferModel(
 
     companion object {
         private const val FORMAT_DATE = "dd MMM yyyy"
+        fun default() = WalletTransferModel()
     }
 }
 

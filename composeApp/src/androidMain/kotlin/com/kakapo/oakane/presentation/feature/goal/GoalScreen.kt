@@ -73,41 +73,13 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
             GoalTopAppbar(onEvent)
         },
         content = { paddingValues ->
-            Column(
+            GoalContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(vertical = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    CardGoalView(uiState = uiState)
-                    CardTimeView(uiState = uiState)
-                    CardNoteView(note = uiState.goal.note, uiState.theme)
-                    Text(text = "Log Saving", style = MaterialTheme.typography.titleMedium)
-                }
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = 16.dp,
-                        top = 4.dp
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(uiState.goalSavings, key = { it.id }) { saving ->
-                        GoalSavingItemView(
-                            item = saving,
-                            theme = uiState.theme,
-                            currency = uiState.currency
-                        )
-                    }
-                }
-            }
+                uiState = uiState
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -117,6 +89,52 @@ private fun GoalScreen(uiState: GoalState, onEvent: (GoalEvent) -> Unit) {
             }
         }
     )
+}
+
+@Composable
+private fun GoalContent(modifier: Modifier = Modifier, uiState: GoalState) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        GoalTopContent(uiState)
+        GoalBottomContent(uiState)
+    }
+}
+
+@Composable
+private fun GoalTopContent(uiState: GoalState) {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        CardGoalView(uiState = uiState)
+        CardTimeView(uiState = uiState)
+        CardNoteView(note = uiState.goal.note, uiState.theme)
+        Text(text = "Log Saving", style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable
+private fun GoalBottomContent(uiState: GoalState) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(
+            start = 16.dp,
+            end = 16.dp,
+            bottom = 16.dp,
+            top = 4.dp
+        ),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        items(uiState.goalSavings, key = { it.id }) { saving ->
+            GoalSavingItemView(
+                item = saving,
+                theme = uiState.theme,
+                currency = uiState.currency
+            )
+        }
+    }
 }
 
 @Composable

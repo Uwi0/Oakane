@@ -17,14 +17,7 @@ struct GoalScreen: View {
             ColorTheme.surface.ignoresSafeArea()
             VStack {
                 ToolbarView(onEvent: viewModel.handle(event:))
-                VStack(spacing: 16) {
-                    CardGoalView(uiState: uiState)
-                    CardTimeView(uiState: uiState)
-                    CardNoteView(note: uiState.note)
-                    Spacer()
-                }
-                .padding(.vertical, 24)
-                .padding(.horizontal, 16)
+                GoalContentView()
             }
             FabButtonView(
                 size: FabConstant.size,
@@ -34,7 +27,7 @@ struct GoalScreen: View {
                     viewModel.handle(event: .Dialog(shown: true, content: .updateAmount))
                 }
             )
-            if uiState.isDialogShown {
+            if uiState.dialogShown {
                 GoalDialogView(
                     uiState: uiState,
                     onEvent: viewModel.handle(event:)
@@ -47,6 +40,43 @@ struct GoalScreen: View {
         }
         .onChange(of: viewModel.uiEffect){
             observe(effect:viewModel.uiEffect)
+        }
+    }
+    
+    @ViewBuilder
+    private func GoalContentView() -> some View {
+        VStack(spacing: 16) {
+            GoalTopContentView()
+            GoalBottomContentView()
+        }
+    }
+    
+    @ViewBuilder
+    private func GoalTopContentView() -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            CardGoalView(uiState: uiState)
+            CardTimeView(uiState: uiState)
+            CardNoteView(note: uiState.note)
+            Text("Log Saving").font(Typography.titleMedium)
+        }
+        .padding(.top, 24)
+        .padding(.horizontal, 16)
+    }
+    
+    @ViewBuilder
+    private func GoalBottomContentView() -> some View {
+        ScrollView {
+            VStack {
+                GoalSavingsView()
+            }
+        }
+        .scrollIndicators(.hidden)
+    }
+    
+    @ViewBuilder
+    private func GoalSavingsView() -> some View {
+        ForEach(uiState.goalSavings, id: \.id) { saving in
+            GoalSavingItemView(item: saving, currency: uiState.currency)
         }
     }
     
@@ -65,27 +95,6 @@ struct GoalScreen: View {
     }
 }
 
-private struct GoalDialogView: View {
-    
-    let uiState: GoalState
-    let onEvent: (GoalEvent) -> Void
-    
-    var body: some View {
-        PopUpDialog(
-            onDismiss: { _ in
-                onEvent(.Dialog(shown: false, content: .updateAmount))
-            }
-        ) {
-            switch uiState.dialogContent {
-            case .updateAmount:
-                DialogAddGoalSavingView(onEvent: onEvent)
-            case .deleteGoal:
-                DialogDeleteGoalConfirmationView(onEvent: onEvent)
-            }
-            
-        }
-    }
-}
 
 private struct ToolbarView: View {
     

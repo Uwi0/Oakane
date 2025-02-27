@@ -10,7 +10,7 @@ struct CardGoalView: View {
         HStack(spacing: 8) {
             DisplayImageFileView(
                 defaultImage: ImageConstants.defaultImage,
-                fileName: uiState.fileName,
+                fileName: uiState.goal.fileName,
                 width: size,
                 height: size
             )
@@ -22,11 +22,11 @@ struct CardGoalView: View {
     @ViewBuilder
     private func CardContentView() -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(uiState.title)
+            Text(uiState.goal.name)
                 .font(Typography.titleMedium)
                 .foregroundStyle(ColorTheme.outline)
             SavingProgressView()
-            ProgressIndicatorView(value: uiState.progress)
+            ProgressIndicatorView(value: uiState.goal.progress)
         }
     }
     
@@ -52,6 +52,6 @@ struct CardGoalView: View {
 }
 
 #Preview {
-    let uiState = GoalState()
+    let uiState = GoalState.companion.default()
     CardGoalView(uiState: uiState)
 }

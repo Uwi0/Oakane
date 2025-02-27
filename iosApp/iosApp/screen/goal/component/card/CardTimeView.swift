@@ -1,4 +1,5 @@
 import SwiftUI
+import Shared
 
 struct CardTimeView: View {
     
@@ -7,11 +8,11 @@ struct CardTimeView: View {
     private let datePattern = "dd MMM yyy"
     
     private var startDate: String {
-        uiState.startDate.formatDateWith(pattern: datePattern)
+        uiState.goal.startDate.formatDateWith(pattern: datePattern)
     }
     
     private var endDate: String {
-        uiState.endDate.formatDateWith(pattern: datePattern)
+        uiState.goal.endDate.formatDateWith(pattern: datePattern)
     }
     
     var body: some View {
@@ -34,7 +35,7 @@ struct CardTimeView: View {
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Text("\(uiState.daysLeft) Days Left")
+            Text("\(uiState.dayLeft) Days Left")
                 .foregroundStyle(ColorTheme.error)
                 .font(Typography.labelSmall)
         }
@@ -43,6 +44,6 @@ struct CardTimeView: View {
 }
 
 #Preview {
-    let state = GoalState()
+    let state = GoalState.companion.default()
     CardTimeView(uiState: state)
 }

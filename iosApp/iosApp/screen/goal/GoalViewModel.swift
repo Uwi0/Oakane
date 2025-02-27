@@ -5,7 +5,7 @@ import KMPNativeCoroutinesCombine
 
 final class GoalViewModel: ObservableObject {
     
-    @Published var uiState: GoalState = GoalState()
+    @Published var uiState: GoalState = GoalState.companion.default()
     @Published var uiEffect: GoalEffect? = nil
     
     private let viewModel: GoalViewModelKt = Koin.shared.get()
@@ -34,9 +34,9 @@ final class GoalViewModel: ObservableObject {
         }
     }
     
-    private func update(state: GoalStateKt){
+    private func update(state: GoalState){
         DispatchQueue.main.async {
-            self.uiState = GoalState(state: state)
+            self.uiState = state
         }
     }
     

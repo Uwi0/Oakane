@@ -1,22 +1,24 @@
 import SwiftUI
-import Shared
 
-struct DialogDeleteGoalConfirmationView: View {
+struct DeleteContentDialogView: View {
     
-    let onEvent: (GoalEvent) -> Void
+    let title: String
+    let subtitle: String
+    let onDismiss: () -> Void
+    let onConfirm: () -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Are you sure want to delete this Goal ?")
+            Text(title)
                 .font(Typography.headlineSmall)
             Spacer()
                 .frame(height: 16)
-            Text("This action cannot be undone.")
+            Text(subtitle)
                 .font(Typography.bodyMedium)
             Spacer()
                 .frame(height: 24)
             HStack(spacing: 16) {
-                Button(action: { onEvent(.Dialog(shown: false, content: .updateAmount))}) {
+                Button(action: onDismiss) {
                     Text("Cancel")
                         .font(Typography.labelLarge)
                         .foregroundStyle(ColorTheme.primary)
@@ -27,9 +29,9 @@ struct DialogDeleteGoalConfirmationView: View {
                 FilledButtonView(
                     text: "Delete",
                     bgColor: ColorTheme.error,
-                    onClick: { onEvent(.DeleteGoal()) }
+                    onClick: onConfirm
                 )
-                    .frame(width: 120,height: 48)
+                .frame(width: 120,height: 48)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }
@@ -37,5 +39,10 @@ struct DialogDeleteGoalConfirmationView: View {
 }
 
 #Preview {
-    DialogDeleteGoalConfirmationView(onEvent: { _ in })
+    DeleteContentDialogView(
+        title: "Are you sure want to delete this Goal ?",
+        subtitle: "This action cannot be undone.",
+        onDismiss: {},
+        onConfirm: {}
+    )
 }

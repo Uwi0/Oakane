@@ -20,7 +20,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("WalletViewModelKt")
 class WalletViewModel(
     private val walletRepository: WalletRepository,
     private val systemRepository: SystemRepository,
