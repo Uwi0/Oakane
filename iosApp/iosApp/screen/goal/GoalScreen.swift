@@ -17,14 +17,7 @@ struct GoalScreen: View {
             ColorTheme.surface.ignoresSafeArea()
             VStack {
                 ToolbarView(onEvent: viewModel.handle(event:))
-                VStack(spacing: 16) {
-                    CardGoalView(uiState: uiState)
-                    CardTimeView(uiState: uiState)
-                    CardNoteView(note: uiState.note)
-                    Spacer()
-                }
-                .padding(.vertical, 24)
-                .padding(.horizontal, 16)
+                GoalContentView()
             }
             FabButtonView(
                 size: FabConstant.size,
@@ -34,7 +27,7 @@ struct GoalScreen: View {
                     viewModel.handle(event: .Dialog(shown: true, content: .updateAmount))
                 }
             )
-            if uiState.isDialogShown {
+            if uiState.dialogShown {
                 GoalDialogView(
                     uiState: uiState,
                     onEvent: viewModel.handle(event:)
@@ -49,6 +42,38 @@ struct GoalScreen: View {
             observe(effect:viewModel.uiEffect)
         }
     }
+    
+    @ViewBuilder
+    private func GoalContentView() -> some View {
+        VStack(spacing: 16) {
+            GoalTopContentView()
+            GoalBottomContentView()
+        }
+    }
+    
+    @ViewBuilder
+    private func GoalTopContentView() -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            CardGoalView(uiState: uiState)
+            CardTimeView(uiState: uiState)
+            CardNoteView(note: uiState.note)
+            Text("Log Saving").font(Typography.titleMedium)
+        }
+        .padding(.top, 24)
+        .padding(.horizontal, 16)
+    }
+    
+    @ViewBuilder
+    private func GoalBottomContentView() -> some View {
+        ScrollView {
+            VStack {
+                
+            }
+        }
+        .scrollIndicators(.hidden)
+    }
+    
+    
     
     private func observe(effect: GoalEffect?){
         if let safeEffect = effect {

@@ -10,9 +10,7 @@ import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletModel
 import kotlinx.datetime.Clock
-import kotlin.native.ObjCName
 
-@ObjCName("GoalStateKt")
 data class GoalState(
     val goal: GoalModel = GoalModel(),
     val savingAmount: String = "",
@@ -56,6 +54,10 @@ data class GoalState(
         dialogShown = shown,
         dialogContent = content
     )
+
+    companion object {
+        fun default() = GoalState()
+    }
 }
 
 enum class GoalDialogContent {
