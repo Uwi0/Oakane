@@ -3,6 +3,9 @@ import SwiftUI
 struct MoveBalanceDialogView: View {
     
     @Binding var note: String
+    @Binding var amount: Int
+    let onDismiss: () -> Void
+    let onConfirm: () -> Void
     
     var body: some View {
         VStack(spacing: 24) {
@@ -24,7 +27,7 @@ struct MoveBalanceDialogView: View {
     private func BalanceCurrencyTextField() -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Amount")
-            CurrencyTextField(value: .constant(0), currency: .usd)
+            CurrencyTextField(value: $amount, currency: .usd)
         }
     }
     
@@ -32,8 +35,8 @@ struct MoveBalanceDialogView: View {
     @ViewBuilder
     private func BottomContent() -> some View {
         HStack(spacing: 24) {
-            TextButtonView(title: "Cancel", onClick: {})
-            FilledContentButtonView(content: {Text("Move Balance")}, onclick: {})
+            TextButtonView(title: "Cancel", onClick: onDismiss)
+            FilledContentButtonView(content: {Text("Move Balance")}, onclick: onConfirm)
                 .frame(width: 148)
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -41,5 +44,10 @@ struct MoveBalanceDialogView: View {
 }
 
 #Preview {
-    MoveBalanceDialogView(note: .constant("Hello world"))
+    MoveBalanceDialogView(
+        note: .constant("Hello world"),
+        amount: .constant(0),
+        onDismiss: {},
+        onConfirm: {}
+    )
 }
