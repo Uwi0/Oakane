@@ -66,9 +66,11 @@ struct GoalScreen: View {
     @ViewBuilder
     private func GoalBottomContentView() -> some View {
         ScrollView {
-            VStack {
+            VStack(spacing: 16) {
                 GoalSavingsView()
             }
+            .padding(.top, 16)
+            .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
     }
@@ -78,6 +80,7 @@ struct GoalScreen: View {
         ForEach(uiState.goalSavings, id: \.id) { saving in
             GoalSavingItemView(item: saving, currency: uiState.currency)
         }
+        .padding(.horizontal, 16)
     }
     
     private func observe(effect: GoalEffect?){

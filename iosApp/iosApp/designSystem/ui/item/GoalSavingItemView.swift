@@ -15,6 +15,10 @@ struct GoalSavingItemView: View {
         isInLog ? ColorTheme.error : ColorTheme.primary
     }
     
+    private var note: String {
+        item.note.isEmpty ? "-" : item.note
+    }
+    
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             TransactionTypeIconView(transactionType: transactionType, iconSize: 48)
@@ -30,7 +34,7 @@ struct GoalSavingItemView: View {
             Text(item.amount.toFormatCurrency(currency: currency))
                 .foregroundStyle(textColor)
                 .font(Typography.titleLarge)
-            Text(item.note)
+            Text("note: \(item.note)")
                 .foregroundStyle(ColorTheme.outline)
                 .font(Typography.labelMedium)
         }

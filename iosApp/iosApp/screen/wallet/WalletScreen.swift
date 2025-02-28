@@ -114,17 +114,19 @@ struct WalletScreen: View {
     @ViewBuilder
     private func LogViews() -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 16) {
                 LogItems()
             }
+            .padding(.top, 16)
+            .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
-        .padding(.top, 16)
+        
     }
     
     @ViewBuilder
     private func LogItems() -> some View {
-        ForEach(uiState.filteredLogItems, id: \.id) { item in
+        ForEach(uiState.filteredLogItems, id: \.uniqueId) { item in
             let type = onEnum(of: item)
             switch type {
             case .goalSavingLogItem(let goal): GoalSavingItem(log: goal)
@@ -132,6 +134,7 @@ struct WalletScreen: View {
             case .walletTransferLogItem(let wallet): TransferLogItemView(item: wallet.data)
             }
         }
+        .padding(.horizontal, 16)
     }
     
     @ViewBuilder
