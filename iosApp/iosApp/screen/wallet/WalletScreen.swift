@@ -21,13 +21,22 @@ struct WalletScreen: View {
     }
     
     var body: some View {
-        ZStack {
+        GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
             VStack {
                 WalletTopbar()
                 WalletContent()
                 LogViews()
             }
+            
+            FabButtonView(
+                size: FabConstant.size,
+                xPos: proxy.size.width - FabConstant.xOffset,
+                yPos: proxy.size.height - FabConstant.yOffset,
+                onClick: {
+                    viewModel.handle(event: .ShowDialog(content: .moveBalance, shown: true))
+                }
+            )
             
             if uiState.dialogVisible {
                 WalletDialogView(uiState: uiState, onEvent: viewModel.handle)
