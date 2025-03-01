@@ -35,7 +35,8 @@ class TransactionLocalDatasourceImpl(
                 category = entity.category.id,
                 dateCreated = entity.dateCreated,
                 note = entity.note,
-                imageFile = entity.imageFile
+                imageFile = entity.imageFile,
+                excludedBudget = entity.excludedBudget
             )
         }
     }
@@ -65,6 +66,7 @@ class TransactionLocalDatasourceImpl(
                 note = entity.note,
                 imageFile = entity.imageFile,
                 walletId = entity.walletId,
+                excludedBudget = entity.excludedBudget,
                 id = entity.id,
             )
         }

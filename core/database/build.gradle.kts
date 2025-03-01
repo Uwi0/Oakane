@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kmp.nativecoroutines)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.kakapo.kotlinMultiplatform)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {

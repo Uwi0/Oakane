@@ -29,6 +29,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -41,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
@@ -61,6 +63,7 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.currency.
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.addTransaction.component.ImageReceiptView
 import com.kakapo.oakane.presentation.feature.addTransaction.component.SelectCategorySheet
 import com.kakapo.oakane.presentation.ui.component.dialog.CustomDatePickerDialog
@@ -285,6 +288,7 @@ private fun AddTransactionScreen(
                 )
                 TakeImageButtonView(onEvent = onEvent)
                 ImageReceiptView(uiState, onEvent)
+                ToggleExcludeFromMonthly(state = uiState, onEvent = onEvent)
             }
         },
         bottomBar = {
@@ -351,13 +355,15 @@ private fun AddTransactionCurrencyTextField(
     isError: Boolean,
     onEvent: (AddTransactionEvent) -> Unit
 ) {
-    val textFieldConfig by remember(uiState.transactionAmountUpdate) { mutableStateOf(
-        CurrencyTextFieldConfig(
-            Locale(uiState.currency.languageCode,uiState.currency.countryCode),
-            initialText = uiState.transactionAmount,
-            currencySymbol = uiState.currency.symbol
+    val textFieldConfig by remember(uiState.transactionAmountUpdate) {
+        mutableStateOf(
+            CurrencyTextFieldConfig(
+                Locale(uiState.currency.languageCode, uiState.currency.countryCode),
+                initialText = uiState.transactionAmount,
+                currencySymbol = uiState.currency.symbol
+            )
         )
-    ) }
+    }
     val state = rememberCurrencyTextFieldState(textFieldConfig) { amount ->
         onEvent(AddTransactionEvent.ChangedAmount(amount))
     }
@@ -385,3 +391,30 @@ private fun TransactionTypeDropDown(
     )
 }
 
+@Composable
+private fun ToggleExcludeFromMonthly(state: AddTransactionState, onEvent: (AddTransactionEvent) -> Unit) {
+    if (state.transactionType == TransactionType.Expense){
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Exclude From Budget", style = MaterialTheme.typography.titleMedium)
+            Switch(
+                checked = state.excludeFromBudget,
+                onCheckedChange = { onEvent.invoke(AddTransactionEvent.ExcludeFromBudget(it)) }
+            )
+        }
+    }
+}
+
+@Composable
+@Preview
+private fun AddTransactionScreenPreview() {
+    AppTheme {
+        AddTransactionScreen(
+            uiState = AddTransactionState(),
+            onEvent = {}
+        )
+    }
+}

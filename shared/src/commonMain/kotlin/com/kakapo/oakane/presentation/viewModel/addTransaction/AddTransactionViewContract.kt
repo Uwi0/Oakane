@@ -32,7 +32,8 @@ data class AddTransactionState(
     val titleFieldError: Boolean = false,
     val amountFieldError: Boolean = false,
     val wallets: List<WalletModel> = emptyList(),
-    val selectedWallet: WalletModel = WalletModel()
+    val selectedWallet: WalletModel = WalletModel(),
+    val excludeFromBudget: Boolean = false
 ) {
     val isEditMode get() = transactionId != 0L
 
@@ -62,7 +63,8 @@ data class AddTransactionState(
         category = transaction.category,
         note = transaction.note,
         imageFileName = transaction.imageFileName,
-        selectedWallet = wallet
+        selectedWallet = wallet,
+        excludeFromBudget = transaction.excludedBudget
     )
 
     fun asTransactionParam() = TransactionParam(
@@ -75,6 +77,7 @@ data class AddTransactionState(
         walletId = selectedWallet.id,
         note = note,
         imageFile = imageFileName,
+        excludeFromBudget = excludeFromBudget
     )
 
 }
@@ -103,4 +106,5 @@ sealed class AddTransactionEvent {
     data class SaveImageFile(val name: String) : AddTransactionEvent()
     data object ClearImage : AddTransactionEvent()
     data class ChangeWallet(val wallet: WalletModel): AddTransactionEvent()
+    data class ExcludeFromBudget(val value: Boolean): AddTransactionEvent()
 }

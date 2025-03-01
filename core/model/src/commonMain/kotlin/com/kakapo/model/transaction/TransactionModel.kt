@@ -14,7 +14,8 @@ data class TransactionModel(
     val amount: Double = 0.0,
     val note: String = "",
     val currency: Currency = Currency.IDR,
-    val imageFileName: String = ""
+    val imageFileName: String = "",
+    val excludedBudget: Boolean = false
 ) {
     val formattedDate: String
         get() {
