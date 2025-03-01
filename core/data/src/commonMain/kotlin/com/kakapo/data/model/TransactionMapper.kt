@@ -1,5 +1,6 @@
 package com.kakapo.data.model
 
+import com.kakapo.common.asLong
 import com.kakapo.database.model.TransactionCategoryEntity
 import com.kakapo.database.model.TransactionEntity
 import com.kakapo.model.Currency
@@ -18,7 +19,8 @@ data class TransactionParam(
     val category: CategoryModel,
     val dateCreated: Long,
     val note: String?,
-    val imageFile: String?
+    val imageFile: String?,
+    val excludeFromBudget: Boolean
 ) {
     val saveBalance: Double get() {
         return if(type == 0L) amount else -amount
@@ -33,7 +35,8 @@ data class TransactionParam(
         category = category.toCategoryEntity(),
         dateCreated = dateCreated,
         note = note,
-        imageFile = imageFile
+        imageFile = imageFile,
+        excludedBudget = excludeFromBudget.asLong()
     )
 
     fun asTransactionAmount(): Double {
@@ -54,7 +57,8 @@ fun TransactionEntity.toModel(currency: Currency) = TransactionModel(
     amount = amount,
     note = note ?: "",
     currency = currency,
-    imageFileName = imageFile ?: ""
+    imageFileName = imageFile ?: "",
+    excludedBudget = excludedBudget == 1L
 )
 
 fun TransactionCategoryEntity.toReportModel(currency: Currency) = ReportModel(

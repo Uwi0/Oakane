@@ -21,13 +21,22 @@ struct WalletScreen: View {
     }
     
     var body: some View {
-        ZStack {
+        GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
             VStack {
                 WalletTopbar()
                 WalletContent()
                 LogViews()
             }
+            
+            FabButtonView(
+                size: FabConstant.size,
+                xPos: proxy.size.width - FabConstant.xOffset,
+                yPos: proxy.size.height - FabConstant.yOffset,
+                onClick: {
+                    viewModel.handle(event: .ShowDialog(content: .moveBalance, shown: true))
+                }
+            )
             
             if uiState.dialogVisible {
                 WalletDialogView(uiState: uiState, onEvent: viewModel.handle)
@@ -105,17 +114,19 @@ struct WalletScreen: View {
     @ViewBuilder
     private func LogViews() -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 16) {
                 LogItems()
             }
+            .padding(.top, 16)
+            .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
-        .padding(.top, 16)
+        
     }
     
     @ViewBuilder
     private func LogItems() -> some View {
-        ForEach(uiState.filteredLogItems, id: \.id) { item in
+        ForEach(uiState.filteredLogItems, id: \.uniqueId) { item in
             let type = onEnum(of: item)
             switch type {
             case .goalSavingLogItem(let goal): GoalSavingItem(log: goal)
@@ -123,6 +134,7 @@ struct WalletScreen: View {
             case .walletTransferLogItem(let wallet): TransferLogItemView(item: wallet.data)
             }
         }
+        .padding(.horizontal, 16)
     }
     
     @ViewBuilder

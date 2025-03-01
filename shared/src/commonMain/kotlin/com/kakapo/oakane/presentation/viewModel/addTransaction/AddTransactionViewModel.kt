@@ -49,6 +49,7 @@ class AddTransactionViewModel(
         if (id == 0L) loadSelectedWallet()
         loadCurrency()
         loadCategories(id)
+        loadTheme()
     }
 
     fun handleEvent(event: AddTransactionEvent) {
@@ -62,13 +63,14 @@ class AddTransactionViewModel(
             is AddTransactionEvent.ChangeDate -> _uiState.update { it.update(date = event.value) }
             is AddTransactionEvent.Sheet -> _uiState.update { it.copy(sheetShown = event.shown) }
             is AddTransactionEvent.SetCategory -> _uiState.update { it.update(category = event.value) }
+            is AddTransactionEvent.SaveImageFile -> _uiState.update { it.copy(imageFileName = event.name) }
+            is AddTransactionEvent.ChangeWallet -> _uiState.update { it.copy(selectedWallet = event.wallet) }
+            is AddTransactionEvent.ExcludeFromBudget -> _uiState.update { it.copy(excludeFromBudget = event.value) }
             AddTransactionEvent.NavigateBack -> emit(AddTransactionEffect.NavigateBack)
             AddTransactionEvent.SaveTransaction -> onClickButton()
             AddTransactionEvent.PickImage -> emit(AddTransactionEffect.PickImage)
             AddTransactionEvent.TakePhoto -> emit(AddTransactionEffect.TakePhoto)
-            is AddTransactionEvent.SaveImageFile -> _uiState.update { it.copy(imageFileName = event.name) }
             AddTransactionEvent.ClearImage -> _uiState.update { it.copy(imageFileName = "") }
-            is AddTransactionEvent.ChangeWallet -> _uiState.update { it.copy(selectedWallet = event.wallet) }
         }
     }
 

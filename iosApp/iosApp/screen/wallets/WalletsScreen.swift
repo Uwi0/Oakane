@@ -20,7 +20,7 @@ struct WalletsScreen: View {
             }
             .dynamicHeightSheet(
                 isPresented: Binding(
-                    get: { uiState.sheetShown},
+                    get: { uiState.sheetShown },
                     set: { viewModel.handle(event: .ShowSheet(shown: $0)) }
                 ),
                 content: {
