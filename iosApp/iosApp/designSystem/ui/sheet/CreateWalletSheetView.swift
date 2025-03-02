@@ -11,7 +11,7 @@ struct CreateWalletSheetView: View {
             StartWithBalanceContentView()
             HorizontalColorSelectorView(colors: state.defaultColors, selectedColor: $state.selectedColor)
             Spacer()
-            FilledButtonView(text: "Add Wallet", onClick: {  } ).frame(height: 48)
+            FilledButtonView(text: "Add Wallet", onClick: { state.saveWallet() } ).frame(height: 48)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 24)

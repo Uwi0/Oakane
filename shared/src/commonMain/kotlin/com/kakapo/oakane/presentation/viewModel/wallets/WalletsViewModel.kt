@@ -57,7 +57,8 @@ class WalletsViewModel(
 
     private fun loadWallets() = viewModelScope.launch {
         val onSuccess: (List<WalletItemModel>) -> Unit = { wallets ->
-            _uiState.update { it.copy(wallets = wallets) }
+            _uiState.update { it.copy(wallets = wallets, isSheetShown = false) }
+            emit(WalletsEffect.DismissBottomSheet)
         }
         walletRepository.loadWalletItems().asCustomResult().subscribe(
             onSuccess = onSuccess,
