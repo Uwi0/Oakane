@@ -39,6 +39,10 @@ data class WalletState(
             category = filterCategory
         )
 
+    val filteredWallet: List<WalletModel> get() {
+        return wallets.filterNot { it.id == selectedWalletId }
+    }
+
     val formatedMovedBalance: Int get() = movedBalance.toIntOrNull() ?: 0
 
     val hasFilter: Boolean get() = filterDate != FilterWalletLogByDateModel.All ||

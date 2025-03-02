@@ -13,7 +13,7 @@ struct WalletScreen: View {
     }
     
     private var filterColorIndicator: Color {
-        ColorTheme.outline
+        uiState.hasFilter ? ColorTheme.primary : ColorTheme.outline
     }
     
     private var currency: Currency {

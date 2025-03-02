@@ -5,9 +5,8 @@ import Shared
 struct SelectionPickerView: View {
     let title: String
     var label: String = ""
+    var options: [String] = TransactionType.allCases.map(\.self.name)
     @Binding var selectedOption: String
-    
-    private let options: [String] = TransactionType.allCases.map(\.self.name)
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
