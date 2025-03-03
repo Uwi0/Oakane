@@ -14,16 +14,21 @@ class WalletSheetState: ObservableObject {
     @Published var selectedColor: Color = .green
     @Published var imageFile: String = ""
     @Published var selectedIcon: CategoryIconName = .wallet
-    let id: Int64
-    let currency: Currency
+    var id: Int64 = 0
+    var currency: Currency = .usd
     var onSaveWallet : (WalletModel) -> Void = { _ in }
     
-    init(wallet: WalletModel = defaultWallet) {
+    let defaultColors = colorsSelector.map{ color in Color(hex: color.toColorLong()) }
+    
+    func initData(wallet: WalletItemModel) {
         self.id = wallet.id
         self.currency = wallet.currency
+        self.walletName = wallet.name
+        self.startBalance = Int(wallet.balance)
+        self.selectedColor = Color(hex: wallet.color.toColorLong())
+        self.imageFile = wallet.icon
+        self.selectedIcon = wallet.iconName
     }
-    
-    let defaultColors = colorsSelector.map{ color in Color(hex: color.toColorLong()) }
     
     func resetContent() {
         content = .wallet

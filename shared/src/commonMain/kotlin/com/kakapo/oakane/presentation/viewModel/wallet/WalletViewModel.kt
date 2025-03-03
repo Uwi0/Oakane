@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.wallet
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.SystemRepository
@@ -122,6 +123,7 @@ class WalletViewModel(
             emit(WalletEffect.DismissWalletSheet)
             loadWalletBy(wallet.id, logs)
         }
+        Logger.d("update wallet $wallet")
         walletRepository.update(wallet).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
