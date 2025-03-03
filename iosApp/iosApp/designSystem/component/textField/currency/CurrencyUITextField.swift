@@ -5,6 +5,7 @@ class CurrencyUITextField: UITextField {
     private let formatter: NumberFormatter
     var onValueChange: ((Int) -> Void)?
     var onFocusChange: ((Bool) -> Void) = { _ in }
+    var intValue: Int = 0
     
 
     init(formatter: NumberFormatter) {
@@ -56,6 +57,7 @@ class CurrencyUITextField: UITextField {
         text = currency(from: decimal)
         resetSelection()
         let newValue = Int(doubleValue)
+        intValue = newValue
         onValueChange?(newValue)
     }
     

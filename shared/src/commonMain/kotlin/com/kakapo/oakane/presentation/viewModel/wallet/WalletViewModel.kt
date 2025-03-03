@@ -50,6 +50,7 @@ class WalletViewModel(
             WalletEvent.NavigateBack -> emit(WalletEffect.NavigateBack)
             WalletEvent.MoveBalance -> moveBalance()
             WalletEvent.ConfirmDelete -> deleteWallet()
+            WalletEvent.ResetFilterLog -> _uiState.update { it.resetFilter() }
             is WalletEvent.ShowDialog -> _uiState.update { it.showDialog(event) }
             is WalletEvent.AddNote -> _uiState.update { it.copy(moveBalanceNote = event.note) }
             is WalletEvent.AddSelectedWalletTo -> _uiState.update { it.copy(selectedWalletTo = event.wallet) }
@@ -59,7 +60,6 @@ class WalletViewModel(
             is WalletEvent.UpdateWallet -> update(event.wallet)
             is WalletEvent.ShowFilterSheet -> onFilterSheet(event.shown)
             is WalletEvent.FilterLog -> applyFilterLog(event)
-            WalletEvent.ResetFilterLog -> _uiState.update { it.resetFilter() }
         }
     }
 

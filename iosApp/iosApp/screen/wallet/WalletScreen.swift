@@ -8,6 +8,7 @@ struct WalletScreen: View {
     @StateObject private var viewModel = WalletViewModel()
     @StateObject private var walletSheetState = WalletSheetState()
     @EnvironmentObject private var navigation: AppNavigation
+    @State private var sheetID = UUID()
     
     private var uiState: WalletState {
         viewModel.uiState
@@ -52,6 +53,7 @@ struct WalletScreen: View {
             ),
             content: {
                 WalletSheetView(state: walletSheetState)
+                    .id(sheetID)
             }
         )
         .task {

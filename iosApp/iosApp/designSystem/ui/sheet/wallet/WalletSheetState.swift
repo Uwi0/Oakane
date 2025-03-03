@@ -10,7 +10,7 @@ enum WalletSheetContent {
 class WalletSheetState: ObservableObject {
     @Published var content: WalletSheetContent = .wallet
     @Published var walletName: String = ""
-    @Published var startBalance: Int = 0
+    @Published var startBalance: Int = 5000
     @Published var selectedColor: Color = .green
     @Published var imageFile: String = ""
     @Published var selectedIcon: CategoryIconName = .wallet
@@ -21,6 +21,7 @@ class WalletSheetState: ObservableObject {
     let defaultColors = colorsSelector.map{ color in Color(hex: color.toColorLong()) }
     
     func initData(wallet: WalletItemModel) {
+        objectWillChange.send()
         self.id = wallet.id
         self.currency = wallet.currency
         self.walletName = wallet.name
@@ -28,6 +29,7 @@ class WalletSheetState: ObservableObject {
         self.selectedColor = Color(hex: wallet.color.toColorLong())
         self.imageFile = wallet.icon
         self.selectedIcon = wallet.iconName
+        print("wallet \(startBalance)")
     }
     
     func resetContent() {
