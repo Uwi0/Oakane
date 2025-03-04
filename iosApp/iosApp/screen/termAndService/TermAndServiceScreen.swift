@@ -10,6 +10,7 @@ struct TermAndServiceScreen: View {
     private let TERM_4 = TermAndServiceMessage.shared.TERM_4
     
     @StateObject private var viewModel = TermAndServiceViewModel()
+    @EnvironmentObject private var navigation: AppNavigation
     
     private var uiState: TermAndServiceState {
         viewModel.uiState
@@ -22,6 +23,7 @@ struct TermAndServiceScreen: View {
             Spacer()
         }
         .background(ColorTheme.surface.ignoresSafeArea())
+        .navigationBarBackButtonHidden(true)
         .task {
             viewModel.initData()
         }
@@ -66,6 +68,9 @@ struct TermAndServiceScreen: View {
         }
         .padding(.vertical, 24)
         .padding(.horizontal, 16)
+        .onChange(of: viewModel.uiEffect) {
+            observe(effect: viewModel.uiEffect)
+        }
     }
     
     @ViewBuilder
@@ -97,10 +102,20 @@ struct TermAndServiceScreen: View {
     
     @ViewBuilder
     private func ConfirmTermAndServiceButton() -> some View {
-        FilledContentButtonView(onclick: {} ) {
+        FilledContentButtonView(onclick: { viewModel.handle(event: .OnAgreementButtonClicked())}, enabled: uiState.isButtonEnabled) {
             Text("I Accept and Agree")
         }
-        .disabled(uiState.isButtonEnabled)
+    }
+    
+    private func observe(effect: TermAndServiceEffect?) {
+        guard let effect else { return }
+        
+        switch onEnum(of: effect) {
+        case .navigateToOnBoarding: navigation.navigate(to: .onboarding)
+        case .showError(let effect): print(effect.message)
+        }
+        
+        viewModel.uiEffect = nil
     }
 }
 

@@ -17,7 +17,7 @@ struct ContentView: View {
     }
     
     @ViewBuilder private func ScreenContent() -> some View {
-        TermAndServiceScreen()
+        SplashScreen()
         .navigationDestination(for: AppNavigation.Destination.self) { destination in
             switch destination {
             case .onboarding: OnBoardingScreen()
