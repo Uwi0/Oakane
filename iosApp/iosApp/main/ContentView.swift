@@ -17,7 +17,7 @@ struct ContentView: View {
     }
     
     @ViewBuilder private func ScreenContent() -> some View {
-        SplashScreen()
+        TermAndServiceScreen()
         .navigationDestination(for: AppNavigation.Destination.self) { destination in
             switch destination {
             case .onboarding: OnBoardingScreen()
@@ -34,6 +34,7 @@ struct ContentView: View {
             case .reports: ReportsScreen()
             case .settings: SettingsScreen()
             case .wallet(let walletId): WalletScreen(walletId: walletId)
+            case .termAndService: TermAndServiceScreen()
             }
         }
     }
