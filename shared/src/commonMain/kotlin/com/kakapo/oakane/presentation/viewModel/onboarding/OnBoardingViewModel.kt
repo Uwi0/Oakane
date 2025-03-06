@@ -75,6 +75,7 @@ class OnBoardingViewModel(
 
     private fun restoreBackup(json: String) = viewModelScope.launch {
         val onSuccess: (Unit) -> Unit = {
+            saveOnBoardingAlreadyRead()
             emit(OnBoardingEffect.NavigateToHome)
         }
         backupRepository.restoreBackup(json).fold(

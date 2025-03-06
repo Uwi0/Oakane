@@ -27,7 +27,10 @@ struct AddGoalScreen: View {
                 
                 OutlinedCurrencyTextFieldView(
                     label: "Target",
-                    value: $viewModel.uiState.targetAmount,
+                    value: Binding(
+                        get: { Int(uiState.targetAmount) ?? 0},
+                        set: { amount in viewModel.handle(event: .SetTarget(amount: String(amount))) }
+                    ),
                     onValueChange: { amount in viewModel.handle(event: .SetTarget(amount: amount))}
                 )
                 

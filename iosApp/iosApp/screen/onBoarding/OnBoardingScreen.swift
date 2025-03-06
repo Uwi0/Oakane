@@ -6,6 +6,7 @@ struct OnBoardingScreen: View {
     @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel = OnBoardingViewModel()
     @AppStorage(UserDefaultsKeys.onBoardingAlreadyRead) private var onboardingAlreadyRead: Bool = false
+    
     private var content: OnBoardingContent {
         viewModel.uiState.onBoardingContent
     }

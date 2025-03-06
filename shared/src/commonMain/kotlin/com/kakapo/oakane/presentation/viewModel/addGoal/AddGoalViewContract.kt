@@ -4,9 +4,7 @@ import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.model.Currency
 import com.kakapo.model.goal.GoalModel
 import kotlinx.datetime.Clock
-import kotlin.native.ObjCName
 
-@ObjCName("AddGoalStateKt")
 data class AddGoalState(
     val id: Long = 0L,
     val currency: Currency = Currency.IDR,
@@ -61,6 +59,10 @@ data class AddGoalState(
         endDate = endDate,
         fileName = fileName
     )
+
+    companion object {
+        fun default() = AddGoalState()
+    }
 }
 
 sealed class AddGoalEffect {
