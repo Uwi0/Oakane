@@ -15,17 +15,7 @@ struct GoalsScreen: View {
             ColorTheme.surface.ignoresSafeArea()
             VStack{
                 GoalsTopAppBar(onEvent: viewModel.handle(event:))
-                ScrollView {
-                    VStack(spacing: 16) {
-                        ForEach(uiState.goals, id: \.self) { goal in
-                            GoalItemView(goal: goal)
-                                .onTapGesture {
-                                    viewModel.handle(event: .NavigateToGoal(id: goal.id))
-                                }
-                        }
-                    }
-                    .padding(16)
-                }
+                GoalsContent()
                 .scrollIndicators(.hidden)
                 
             }
@@ -42,6 +32,25 @@ struct GoalsScreen: View {
         .onAppear(perform: viewModel.initData)
         .onChange(of: viewModel.uiEffect){
             observe(effect:viewModel.uiEffect)
+        }
+    }
+    @ViewBuilder
+    private func GoalsContent() -> some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                ListItemView()
+            }
+            .padding(16)
+        }
+    }
+    
+    @ViewBuilder
+    private func ListItemView() -> some View {
+        ForEach(uiState.goals, id: \.self) { goal in
+            GoalItemView(goal: goal)
+                .onTapGesture {
+                    viewModel.handle(event: .NavigateToGoal(id: goal.id))
+                }
         }
     }
     

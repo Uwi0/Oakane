@@ -2,16 +2,18 @@ package com.kakapo.oakane.presentation.viewModel.goals
 
 import com.kakapo.model.goal.GoalModel
 import com.kakapo.model.system.Theme
-import kotlin.native.ObjCName
 
-@ObjCName("GoalsStateKt")
 data class GoalsState(
     val searchQuery: String = "",
     val goals: List<GoalModel> = emptyList(),
     val filteredGoals: List<GoalModel> = emptyList(),
     val theme: Theme = Theme.System,
     val showDrawer: Boolean = false
-)
+){
+    companion object{
+        fun default() = GoalsState()
+    }
+}
 
 sealed class GoalsEffect {
     data class ShowError(val message: String): GoalsEffect()
