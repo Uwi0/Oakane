@@ -21,7 +21,10 @@ struct MonthlyBudgetScreen: View {
                 )
                 VStack(alignment: .leading, spacing: 24) {
                     MonthlyBudgetTopContentView(
-                        budget: $viewModel.uiState.amount,
+                        budget: Binding(
+                            get: { Int(uiState.realAmount) },
+                            set: { amount in viewModel.handle(event: .Changed(amount: String(amount)))}
+                        ),
                         onEvent: viewModel.handle(event:)
                     )
                     .padding(.horizontal, 16)
@@ -43,12 +46,12 @@ struct MonthlyBudgetScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             
-            if uiState.isDialogShown {
+            if uiState.dialogShown {
                 PopUpDialog(
                     onDismiss: {_ in viewModel.handle(event: .Dialog(shown: false)) }
                 ){
                     CreateCategoryLimitDialogView(
-                        categoryLimit: uiState.categoryLimit,
+                        categoryLimit: uiState.selectedCategoryLimit,
                         categories: uiState.expenseCategories,
                         onEvent: viewModel.handle(event:)
                     )
