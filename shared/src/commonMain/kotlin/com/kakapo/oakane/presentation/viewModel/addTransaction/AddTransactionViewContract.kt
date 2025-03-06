@@ -10,9 +10,7 @@ import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.model.wallet.WalletModel
 import kotlinx.datetime.Clock
-import kotlin.native.ObjCName
 
-@ObjCName("AddTransactionStateKt")
 data class AddTransactionState(
     val transactionId: Long = 0,
     val title: String = "",
@@ -37,10 +35,11 @@ data class AddTransactionState(
 ) {
     val isEditMode get() = transactionId != 0L
 
-    val amount: Int get() {
-        val doubleValue = transactionAmount.toDoubleOrNull() ?: 0.0
-        return doubleValue.toInt()
-    }
+    val amount: Int
+        get() {
+            val doubleValue = transactionAmount.toDoubleOrNull() ?: 0.0
+            return doubleValue.toInt()
+        }
 
     fun dropDownType(expanded: Boolean) = copy(isDropdownExpanded = expanded)
 
@@ -80,6 +79,9 @@ data class AddTransactionState(
         excludeFromBudget = excludeFromBudget
     )
 
+    companion object {
+        fun default() = AddTransactionState()
+    }
 }
 
 sealed class AddTransactionEffect {
@@ -105,6 +107,6 @@ sealed class AddTransactionEvent {
     data object PickImage : AddTransactionEvent()
     data class SaveImageFile(val name: String) : AddTransactionEvent()
     data object ClearImage : AddTransactionEvent()
-    data class ChangeWallet(val wallet: WalletModel): AddTransactionEvent()
-    data class ExcludeFromBudget(val value: Boolean): AddTransactionEvent()
+    data class ChangeWallet(val wallet: WalletModel) : AddTransactionEvent()
+    data class ExcludeFromBudget(val value: Boolean) : AddTransactionEvent()
 }

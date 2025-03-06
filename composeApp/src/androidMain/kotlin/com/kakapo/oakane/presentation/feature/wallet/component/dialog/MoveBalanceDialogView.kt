@@ -42,7 +42,7 @@ private fun MoveBalanceDialogTopContentView(
     uiState: WalletState,
     onEvent: (WalletEvent) -> Unit
 ) {
-    val wallets = uiState.wallets
+    val wallets = uiState.filteredWallet
     val selectedWalletId = uiState.selectedWalletId
     val toWalletState = rememberSelectWalletDropdownMenuState(wallets, selectedWalletId) {
         onEvent.invoke(WalletEvent.AddSelectedWalletTo(it))

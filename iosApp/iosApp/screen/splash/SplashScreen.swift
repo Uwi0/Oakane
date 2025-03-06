@@ -5,9 +5,7 @@ struct SplashScreen: View {
     @State private var isTextVisible = false
     @State private var shouldNavigate = false
     @EnvironmentObject private var navigation: AppNavigation
-
-    private static let alreadyReadKey = UserDefaultsKeys.onBoardingAlreadyRead
-    @AppStorage(alreadyReadKey) private var isAlreadyRead: Bool = UserDefaults.standard.bool(forKey: alreadyReadKey)
+    @StateObject private var viewModel = SplashViewModel()
 
     var body: some View {
         ZStack {
@@ -31,18 +29,29 @@ struct SplashScreen: View {
                     .animation(.easeIn(duration: 1.0).delay(0.5), value: isTextVisible)
             }
         }
+        .task {
+            viewModel.initData()
+        }
         .onAppear {
             startSplashAnimation()
         }
         .onChange(of: shouldNavigate) {
             if shouldNavigate {
-                DispatchQueue.main.async {
-                    if isAlreadyRead {
-                        navigation.navigate(to: .home)
-                    } else {
-                        navigation.navigate(to: .onboarding)
-                    }
+                navigateToDestinationScreen()
+            }
+        }
+    }
+    
+    private func navigateToDestinationScreen() {
+        DispatchQueue.main.async {
+            if viewModel.termsAndServiceAlreadyRead {
+                if viewModel.obBoardingAlreadyRead {
+                    navigation.navigate(to: .home)
+                } else {
+                    navigation.navigate(to: .onboarding)
                 }
+            } else {
+                navigation.navigate(to: .termAndService)
             }
         }
     }

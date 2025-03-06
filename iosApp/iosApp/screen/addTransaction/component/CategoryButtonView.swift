@@ -30,5 +30,5 @@ struct CategoryButtonView: View {
 }
 
 #Preview {
-    CategoryButtonView(uiState: AddTransactionState(), onEvent: { _ in })
+    CategoryButtonView(uiState: AddTransactionState.companion.default(), onEvent: { _ in })
 }

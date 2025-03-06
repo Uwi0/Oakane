@@ -9,7 +9,7 @@ struct WalletsScreen: View {
     @State private var searchQuery: String = ""
     
     private var uiState: WalletsState { viewModel.uiState }
-    
+
     
     var body: some View {
         GeometryReader { proxy in
@@ -38,6 +38,11 @@ struct WalletsScreen: View {
         .navigationBarBackButtonHidden(true)
         .onChange(of: viewModel.uiEffect) {
             observe(effect: viewModel.uiEffect)
+        }
+        .onAppear {
+            sheetState.onSaveWallet = { wallet in
+                viewModel.handle(event: .SaveWallet(wallet: wallet))
+            }
         }
     }
     
@@ -90,6 +95,10 @@ struct WalletsScreen: View {
             }
         }
         viewModel.uiEffect = nil
+    }
+    
+    private func capturedEventSave(wallet: WalletModel) {
+        viewModel.handle(event: .SaveWallet(wallet: wallet))
     }
 
 }

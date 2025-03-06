@@ -40,10 +40,11 @@ struct WalletDialogView: View {
                 set: { note in onEvent(.AddNote(note: note))}
             ),
             amount: $amount,
-            wallets: uiState.wallets,
+            wallets: uiState.filteredWallet,
             onDismiss: { onEvent(dismissEvent) },
-            onConfirm: {
+            onConfirm: { wallet in
                 onEvent(.AddBalance(balance: String(amount)))
+                onEvent(.AddSelectedWalletTo(wallet: wallet))
                 onEvent(confirmMoveBalance)
             }
         )

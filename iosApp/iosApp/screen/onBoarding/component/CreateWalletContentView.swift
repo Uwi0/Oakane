@@ -5,25 +5,7 @@ struct CreateWalletContentView: View {
     
     let onEvent: (OnBoardingEvent) -> Void
     @State private var isSheetPresented: Bool = false
-    @State private var imageFile: String = ""
-    @State private var selectedIcon: CategoryIconName = .wallet
-    @State private var selectedColorHex: String = colorsSelector.first ?? "0xFF4CAF50"
-    @State private var walletName: String = ""
-    @State private var startBalance: Int = 0
-    
-    
-    private var walletModel: WalletModel {
-        WalletModel(
-            id: 0,
-            currency: Currency.usd,
-            balance: Double(startBalance),
-            name: walletName,
-            isDefaultIcon: imageFile.isEmpty,
-            icon: imageFile.isEmpty ? selectedIcon.displayName : imageFile,
-            color: selectedColorHex,
-            note: ""
-        )
-    }
+    @StateObject private var sheetState: WalletSheetState = WalletSheetState()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -42,6 +24,14 @@ struct CreateWalletContentView: View {
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(ColorTheme.surface.ignoresSafeArea())
+        .dynamicHeightSheet(isPresented: $isSheetPresented) {
+            WalletSheetView(state: sheetState)
+        }
+        .onAppear {
+            sheetState.onSaveWallet = { wallet in
+                onEvent(.ConfirmWallet(wallet: wallet))
+            }
+        }
     }
     
     @ViewBuilder
@@ -78,27 +68,6 @@ struct CreateWalletContentView: View {
             Spacer()
             Image(systemName: "chevron.right").fontWeight(.bold)
         }
-    }
-    
-    @ViewBuilder
-    private func SheetContentView() -> some View {
-        
-    }
-    
-    @ViewBuilder
-    private func CreateWalletSheetContent() -> some View {
-        
-    }
-    
-    @ViewBuilder
-    private func SelectIconSheetContent() -> some View {
-//        SelectIconView(
-//            selectedIcon: selectedIcon,
-//            selectedColor: selectedColorHex.toColorLong(),
-//            onPickIcon: { icon in selectedIcon = icon},
-//            onTakImage: { file in imageFile = file},
-//            onConfirm: {  }
-//        )
     }
 }
 

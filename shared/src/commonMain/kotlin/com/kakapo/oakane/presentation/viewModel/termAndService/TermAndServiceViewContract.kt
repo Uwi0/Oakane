@@ -10,6 +10,10 @@ data class TermAndServiceState(
     val theme: Theme = Theme.System
 ){
     val isButtonEnabled: Boolean get() = isTerm1Checked && isTerm2Checked && isTerm3Checked && isTerm4Checked
+
+    companion object {
+        fun default() = TermAndServiceState()
+    }
 }
 
 sealed class TermAndServiceEffect {

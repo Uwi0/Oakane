@@ -34,6 +34,7 @@ struct ContentView: View {
             case .reports: ReportsScreen()
             case .settings: SettingsScreen()
             case .wallet(let walletId): WalletScreen(walletId: walletId)
+            case .termAndService: TermAndServiceScreen()
             }
         }
     }
