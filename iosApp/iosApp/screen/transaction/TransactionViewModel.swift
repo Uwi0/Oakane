@@ -5,7 +5,7 @@ import KMPNativeCoroutinesCombine
 
 final class TransactionViewModel: ObservableObject {
     
-    @Published var uiState: TransactionState = TransactionState()
+    @Published var uiState: TransactionState = TransactionState.companion.default()
     @Published var uiEffect: TransactionEffect? = nil
     
     private var viewModel: TransactionViewModelKt = Koin.shared.get()
@@ -29,10 +29,14 @@ final class TransactionViewModel: ObservableObject {
         let publisher = createPublisher(for: viewModel.uiStateFlow)
         uiStateCancellable = publisher.sink { completion in
             print("completion \(completion)")
-        } receiveValue: { state in
-            DispatchQueue.main.async {
-                self.uiState = TransactionState(state: state)
-            }
+        } receiveValue: { [weak self] state in
+            self?.update(state: state)
+        }
+    }
+    
+    private func update(state: TransactionState) {
+        DispatchQueue.main.async {
+            self.uiState = state
         }
     }
     
@@ -40,10 +44,14 @@ final class TransactionViewModel: ObservableObject {
         let publisher = createPublisher(for: viewModel.uiEffect)
         uiEffectCancellable = publisher.sink { completion in
             print("completion \(completion)")
-        } receiveValue: { effect in
-            DispatchQueue.main.async {
-                self.uiEffect = effect
-            }
+        } receiveValue: { [weak self] effect in
+            self?.update(effect: effect)
+        }
+    }
+    
+    private func update(effect: TransactionEffect) {
+        DispatchQueue.main.async {
+            self.uiEffect = effect
         }
     }
     
