@@ -4,8 +4,8 @@ import Combine
 import KMPNativeCoroutinesCombine
 
 final class SplashViewModel: ObservableObject {
-    @Published var obBoardingAlreadyRead: Bool = false
-    @Published var termsAndServiceAlreadyRead: Bool = false
+    @Published private(set) var obBoardingAlreadyRead: Bool = false
+    @Published private(set) var termsAndServiceAlreadyRead: Bool = false
     private var viewModel: SplashViewModelKt = Koin.shared.get()
     private var onboardingReaded: AnyCancellable?
     private var termsAndServiceReaded: AnyCancellable?
