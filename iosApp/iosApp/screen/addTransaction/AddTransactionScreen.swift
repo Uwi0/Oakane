@@ -57,14 +57,17 @@ struct AddTransactionScreen: View {
                 )
                 OutlinedCurrencyTextFieldView(
                     label: "Amount",
-                    value: $viewModel.uiState.amount,
+                    value: Binding(
+                        get: { Int(uiState.amount) },
+                        set: { amount in viewModel.handle(event: .ChangedAmount(value: String(amount)))}
+                    ),
                     onValueChange: { newValue in viewModel.handle(event: .ChangedAmount(value: newValue))}
                 )
                 SelectionPickerView(
                     title: "Transaction Type",
                     label: "Type",
                     selectedOption: Binding(
-                        get: { uiState.selectedType},
+                        get: { uiState.transactionType.name },
                         set: { option in viewModel.handle(event: .ChangeType(value: option.asTransactionType()))}
                     )
                 )
@@ -88,9 +91,9 @@ struct AddTransactionScreen: View {
                 )
                 ButtonAddImage()
                 
-                if !uiState.imageFile.isEmpty {
+                if !uiState.imageFileName.isEmpty {
                     TransactionImagePreView(
-                        imageUrl: uiState.imageFile,
+                        imageUrl: uiState.imageFileName,
                         onDismiss: { viewModel.handle(event: .ClearImage())}
                     )
                 }
@@ -100,10 +103,12 @@ struct AddTransactionScreen: View {
             .padding(.vertical, 24)
         }
         .scrollIndicators(.hidden)
-        
+        .background(ColorTheme.surface)
         .sheet(
-            isPresented: $viewModel.uiState.showSheet,
-            onDismiss: { viewModel.handle(event: .Sheet(shown: false)) },
+            isPresented: Binding(
+                get: { uiState.sheetShown},
+                set: { isSheetShown in viewModel.handle(event: .Sheet(shown: isSheetShown))}
+            ),
             content: {
                 CategoriesSheetView(
                     categories: viewModel.uiState.categories,
