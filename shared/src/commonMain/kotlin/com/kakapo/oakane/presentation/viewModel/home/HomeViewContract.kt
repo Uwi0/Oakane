@@ -5,9 +5,7 @@ import com.kakapo.model.monthlyBudget.MonthlyBudgetOverView
 import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.wallet.WalletModel
-import kotlin.native.ObjCName
 
-@ObjCName("HomeStateKt")
 data class HomeState(
     val wallet: WalletModel = WalletModel(),
     val transactions: List<TransactionModel> = emptyList(),
@@ -15,7 +13,12 @@ data class HomeState(
     val monthlyBudgetOverView: MonthlyBudgetOverView = MonthlyBudgetOverView(),
     val isBalanceVisible: Boolean = true,
     val theme: Theme = Theme.System
-)
+) {
+
+    companion object {
+        fun default() = HomeState()
+    }
+}
 
 sealed class HomeEffect {
     data class ShowError(val message: String): HomeEffect()

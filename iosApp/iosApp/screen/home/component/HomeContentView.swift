@@ -10,7 +10,7 @@ struct HomeContentView: View {
         ScrollView {
             VStack(alignment: .leading,spacing: 16) {
                 WalletBalanceView(wallet: uiState.wallet)
-                MonthlyBudgetView(monthlyBudgetOverView: uiState.monthlyOverview, onEvent: onEvent)
+                MonthlyBudgetView(monthlyBudgetOverView: uiState.monthlyBudgetOverView, onEvent: onEvent)
                 Text("RecentTransaction")
                     .font(Typography.titleMedium)
                 HomeTransactionsView(transactions: uiState.transactions)
@@ -20,9 +20,7 @@ struct HomeContentView: View {
                 GoalHeaderView(isVisible: true, onClick: { onEvent(.ToCreateGoal()) })
                 GoalsView(
                     goals: uiState.goals,
-                    onClick: { goal in
-                        onEvent(.ToGoalWith(id: goal.id))
-                    }
+                    onClick: { goal in onEvent(.ToGoalWith(id: goal.id))}
                 )
                 ShowMoreItemView(onClick: {})
             }
@@ -37,7 +35,7 @@ struct HomeContentView: View {
 #Preview {
     NavigationView {
         HomeContentView(
-            uiState: HomeState(),
+            uiState: HomeState.companion.default(),
             onEvent: {_ in }
         )
     }

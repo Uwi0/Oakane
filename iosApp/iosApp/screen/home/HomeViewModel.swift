@@ -5,7 +5,7 @@ import KMPNativeCoroutinesCombine
 
 final class HomeViewModel: ObservableObject {
     
-    @Published var uiState: HomeState = HomeState()
+    @Published private(set) var uiState: HomeState = HomeState.companion.default()
     @Published var uiEffects: HomeEffect? = nil
     
     private var viewModel: HomeViewModelKt = Koin.shared.get()
@@ -29,10 +29,14 @@ final class HomeViewModel: ObservableObject {
         let publisher = createPublisher(for: viewModel.uiStateFlow)
         uiStateCancellable = publisher.sink { completion in
             print("completion: \(completion)")
-        } receiveValue: { state in
-            DispatchQueue.main.async {
-                self.uiState = HomeState(state: state)
-            }
+        } receiveValue: { [weak self] state in
+            self?.update(state: state)
+        }
+    }
+    
+    private func update(state: HomeState) {
+        DispatchQueue.main.async {
+            self.uiState = state
         }
     }
     
@@ -40,10 +44,14 @@ final class HomeViewModel: ObservableObject {
         let publisher = createPublisher(for: viewModel.uiEffect)
         uiEffectCancellable = publisher.sink { completion in
             print("completion: \(completion)")
-        } receiveValue: { effect in
-            DispatchQueue.main.async {
-                self.uiEffects = effect
-            }
+        } receiveValue: { [weak self] effect in
+            self?.update(effect: effect)
+        }
+    }
+    
+    private func update(effect: HomeEffect) {
+        DispatchQueue.main.async {
+            self.uiEffects = effect
         }
     }
     
