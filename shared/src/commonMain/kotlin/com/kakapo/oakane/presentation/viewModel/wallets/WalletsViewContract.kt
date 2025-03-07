@@ -4,9 +4,7 @@ import com.kakapo.model.Currency
 import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
-import kotlin.native.ObjCName
 
-@ObjCName("WalletsStateKt")
 data class WalletsState(
     val walletId: Long = 0,
     val wallets: List<WalletItemModel> = emptyList(),
@@ -20,6 +18,10 @@ data class WalletsState(
     val filteredWallets: List<WalletItemModel> get() {
         return if(searchQuery.isEmpty()) wallets
         else wallets.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    }
+
+    companion object {
+        fun default() = WalletsState()
     }
 }
 
