@@ -54,7 +54,7 @@ struct HomeScreen: View {
     private func ContentView() -> some View {
         ScrollView {
             VStack(alignment: .leading,spacing: 16) {
-                WalletBalanceView(wallet: uiState.wallet)
+                PrimaryWalletView(state: uiState, onEvent: viewModel.handle(event:))
                 MonthlyBudgetView(monthlyBudgetOverView: uiState.monthlyBudgetOverView, onEvent: viewModel.handle(event:))
                 Text("RecentTransaction")
                     .font(Typography.titleMedium)
