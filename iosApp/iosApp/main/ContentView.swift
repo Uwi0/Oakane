@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var showDrawer: Bool = false
+    @State private var openDrawer: Bool = false
     @EnvironmentObject private var navigation: AppNavigation
     @AppStorage(UserDefaultsKeys.isDarkMode) private var isDarkModel: Bool = UserDefaults.standard.bool(forKey: UserDefaultsKeys.isDarkMode)
     
@@ -11,7 +11,7 @@ struct ContentView: View {
             NavigationStack(path: $navigation.navPath) {
                 ScreenContent()
             }
-            DrawerMenuView(isShowing: $showDrawer, onMenuClick: navigation.navigateFrom(menu:))
+            DrawerMenuView(isShowing: $openDrawer, onMenuClick: navigation.navigateFrom(menu:))
         }
         .preferredColorScheme(isDarkModel ? .dark : .light)
     }
@@ -21,9 +21,9 @@ struct ContentView: View {
         .navigationDestination(for: AppNavigation.Destination.self) { destination in
             switch destination {
             case .onboarding: OnBoardingScreen()
-            case .home: HomeScreen(showDrawer: $showDrawer)
+            case .home: HomeScreen(openDrawer: $openDrawer)
             case .addTransaction(let transactionId): AddTransactionScreen(transactionId: transactionId)
-            case .transactions: TransactionsScreen()
+            case .transactions(let showDrawer): TransactionsScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
             case .transaction(let transactionId): TransactionScreen(transactionId: transactionId)
             case .categories: CategoriesScreen()
             case .addGoal(let goalId): AddGoalScreen(goalId: goalId)

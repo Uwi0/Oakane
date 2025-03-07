@@ -2,7 +2,7 @@ import SwiftUI
 import Shared
 
 struct HomeScreen: View {
-    @Binding var showDrawer: Bool
+    @Binding var openDrawer: Bool
     
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
     @EnvironmentObject private var navigation: AppNavigation
@@ -39,8 +39,10 @@ struct HomeScreen: View {
     private func TopAppBarView() -> some View {
         HStack(alignment: .center,spacing: 16) {
             Image(systemName: "line.3.horizontal")
-                .tint(ColorTheme.onSurface)
-                .font(.title)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
+                .tint(ColorTheme.outline)
                 .onTapGesture { viewModel.handle(event: .OpenDrawer()) }
             
             Text("Dashboard")
@@ -99,11 +101,11 @@ struct HomeScreen: View {
         if let safeEffect = effect {
             switch onEnum(of: safeEffect) {
             case .openDrawer:
-                showDrawer = !showDrawer
+                openDrawer = !openDrawer
             case .toCreateTransaction:
                 navigation.navigate(to: .addTransaction(transactionId: 0))
             case .toTransactions:
-                navigation.navigate(to: .transactions)
+                navigation.navigate(to: .transactions())
             case .toCreateGoal:
                 navigation.navigate(to: .addGoal(goalId: 0))
             case .showError(let error):
@@ -125,5 +127,5 @@ struct HomeScreen: View {
 }
 
 #Preview {
-    HomeScreen(showDrawer: .constant(false))
+    HomeScreen(openDrawer: .constant(false))
 }

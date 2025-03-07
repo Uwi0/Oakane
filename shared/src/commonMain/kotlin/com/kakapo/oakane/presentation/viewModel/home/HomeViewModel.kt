@@ -2,7 +2,6 @@ package com.kakapo.oakane.presentation.viewModel.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
@@ -108,7 +107,6 @@ class HomeViewModel(
 
     private fun loadIsBalanceVisible() = viewModelScope.launch {
         val onSuccess: (Boolean) -> Unit = { isBalanceVisible ->
-            Logger.d("Visibility is $isBalanceVisible")
             _uiState.update { it.copy(isBalanceVisible = isBalanceVisible) }
         }
         systemRepository.isBalanceVisible().fold(
@@ -120,7 +118,6 @@ class HomeViewModel(
     private fun changeBalanceVisibility() = viewModelScope.launch {
         val currentVisibility = _uiState.value.isBalanceVisible
         val onSuccess: (Boolean) -> Unit = { isBalanceVisible ->
-            Logger.d("Changed visibility to $isBalanceVisible")
             _uiState.update { it.copy(isBalanceVisible = isBalanceVisible) }
         }
         systemRepository.changeBalance(!currentVisibility).fold(

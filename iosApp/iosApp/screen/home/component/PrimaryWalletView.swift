@@ -59,7 +59,7 @@ struct PrimaryWalletView: View {
     private func BottomContentView() -> some View {
         HStack(spacing: 8) {
             VStack{
-                Text("\(wallet.currency.symbol) \(state.isBalanceVisible)")
+                Text("\(wallet.currency.symbol)")
                     .font(Typography.bodyMedium)
                 Spacer().frame(height: 16)
             }

@@ -8,7 +8,7 @@ final class AppNavigation: ObservableObject {
         case onboarding
         case home
         case addTransaction(transactionId: Int64)
-        case transactions
+        case transactions(showDrawer: Bool = false)
         case transaction(transactionId: Int64)
         case categories
         case addGoal(goalId: Int64)
@@ -38,9 +38,9 @@ final class AppNavigation: ObservableObject {
     func navigateFrom(menu: DrawerMenuNavigation){
         switch menu {
         case .dashboard:
-            print("Dashboard")
+            navigate(to: .home)
         case .transactions:
-            navigate(to: .transactions)
+            navigate(to: .transactions(showDrawer: true))
         case .categories:
             navigate(to: .categories)
         case .goals:

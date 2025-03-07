@@ -1,12 +1,15 @@
 import SwiftUI
 
 struct TransactionNavBarView: View {
+
+    var showDrawer: Bool = false
     let onClick: () -> Void
+    
     var body: some View {
         HStack(spacing: 24) {
             IconButtonView(
-                name: "arrow.left",
-                width: 16,
+                name: showDrawer ? "line.3.horizontal" :"arrow.left",
+                width: 24,
                 onClick: onClick
             )
             Text("Transactions")
@@ -14,6 +17,7 @@ struct TransactionNavBarView: View {
             Spacer()
         }
     }
+    
 }
 
 #Preview {

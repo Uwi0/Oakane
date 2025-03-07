@@ -5,18 +5,20 @@ struct TransactionTopAppBarView: View {
     
     let uiState: TransactionsState
     let onEvent: (TransactionsEvent) -> Void
+    var showDrawer: Bool
     @State private  var query: String
     
-    init(uiState: TransactionsState, onEvent: @escaping (TransactionsEvent) -> Void) {
+    init(uiState: TransactionsState,showDrawer: Bool = false, onEvent: @escaping (TransactionsEvent) -> Void) {
         self.uiState = uiState
         self.onEvent = onEvent
         self.query = uiState.searchQuery
+        self.showDrawer = showDrawer
     }
     
     var body: some View {
         VStack {
             VStack(spacing: 16) {
-                TransactionNavBarView(onClick: { onEvent(.NavigateBack())})
+                TransactionNavBarView(showDrawer: showDrawer, onClick: onClickEvent)
                 
                 OutlinedSearchTextFieldView(query: $query, placeHolder: "Search Transactions...")
                     .onChange(of: query) {
@@ -31,6 +33,14 @@ struct TransactionTopAppBarView: View {
             .padding(16)
             .background(ColorTheme.surface)
             Divider()
+        }
+    }
+    
+    private func onClickEvent() {
+        if showDrawer {
+            onEvent(.OpenDrawer())
+        } else {
+            onEvent(.NavigateBack())
         }
     }
 }

@@ -3,6 +3,8 @@ import Shared
 
 struct TransactionsScreen: View {
     
+    @Binding var openDrawer: Bool
+    var showDrawer: Bool = false
     @StateObject private var viewModel = TransactionsViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     
@@ -25,6 +27,7 @@ struct TransactionsScreen: View {
                 
                 TransactionTopAppBarView(
                     uiState: viewModel.uiState,
+                    showDrawer: showDrawer,
                     onEvent: viewModel.handle(event:)
                 )
                 
@@ -77,7 +80,7 @@ struct TransactionsScreen: View {
             case .showError(let effect):
                 print(effect.message)
             case .openDrawer:
-                print("open drawer")
+                openDrawer = !openDrawer
             }
         }
         viewModel.uiEffect = nil
@@ -85,5 +88,5 @@ struct TransactionsScreen: View {
 }
 
 #Preview {
-    TransactionsScreen()
+    TransactionsScreen(openDrawer: .constant(false))
 }
