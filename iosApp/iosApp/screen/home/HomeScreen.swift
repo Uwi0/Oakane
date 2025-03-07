@@ -58,22 +58,41 @@ struct HomeScreen: View {
                 MonthlyBudgetView(monthlyBudgetOverView: uiState.monthlyBudgetOverView, onEvent: viewModel.handle(event:))
                 Text("RecentTransaction")
                     .font(Typography.titleMedium)
-                HomeTransactionsView(transactions: uiState.transactions)
-                if uiState.transactions.count > 3 {
+                TransactionsContent()
+                if uiState.transactions.count == 3 {
                     ShowMoreItemView(onClick: { viewModel.handle(event: .ToTransactions())})
                 }
                 GoalHeaderView(isVisible: true, onClick: { viewModel.handle(event: .ToCreateGoal()) })
-                GoalsView(
-                    goals: uiState.goals,
-                    onClick: { goal in viewModel.handle(event: .ToGoalWith(id: goal.id))}
-                )
-                ShowMoreItemView(onClick: {})
+                GoalsContent()
+                if uiState.goals.count == 3 {
+                    ShowMoreItemView(onClick: {})
+                }
             }
             .padding(.vertical, 24)
             .padding(.horizontal, 16)
             .ignoresSafeArea(.all)
         }
         .scrollIndicators(.hidden)
+    }
+    
+    @ViewBuilder
+    private func TransactionsContent() -> some View {
+        VStack(spacing: 8) {
+            ForEach(uiState.transactions, id: \.id) { transaction in
+                TransactionItemView(transaction: transaction)
+                    .onTapGesture { viewModel.handle(event: .ToTransactionWith(id: transaction.id))}
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func GoalsContent() -> some View {
+        VStack(spacing: 8) {
+            ForEach(uiState.goals, id: \.id){ goal in
+                GoalItemView(goal: goal)
+                    .onTapGesture { viewModel.handle(event: .ToGoalWith(id: goal.id)) }
+            }
+        }
     }
     
     private func observe(effect: HomeEffect?) {
