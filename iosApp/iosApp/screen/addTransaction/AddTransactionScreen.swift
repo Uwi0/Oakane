@@ -28,6 +28,7 @@ struct AddTransactionScreen: View {
             .padding(.horizontal, 16)
         }
         .navigationBarBackButtonHidden(true)
+        .background(ColorTheme.surface)
         .onAppear {
             viewModel.initializeData(transactionId: transactionId)
         }
@@ -97,13 +98,15 @@ struct AddTransactionScreen: View {
                         onDismiss: { viewModel.handle(event: .ClearImage())}
                     )
                 }
+                if uiState.transactionType == .expense {
+                    ToggleExcludeFromBudget()
+                }
                 Spacer()
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 24)
         }
         .scrollIndicators(.hidden)
-        .background(ColorTheme.surface)
         .sheet(
             isPresented: Binding(
                 get: { uiState.sheetShown},
@@ -116,6 +119,7 @@ struct AddTransactionScreen: View {
                 )
                 .presentationDetents([.height(640)])
                 .presentationDragIndicator(.visible)
+                .background(ColorTheme.surface)
             }
         )
         .sheet(isPresented: $showCamera, content: { CameraViewController() })
@@ -138,6 +142,18 @@ struct AddTransactionScreen: View {
                     viewModel.handle(event: .SaveImageFile(name: imageName))
                 }
             )
+        }
+    }
+    
+    @ViewBuilder
+    private func ToggleExcludeFromBudget() -> some View {
+        Toggle(
+            isOn: Binding(
+                get: { viewModel.uiState.excludeFromBudget },
+                set: { toggled in viewModel.handle(event: .ExcludeFromBudget(value: toggled))}
+            )
+        ) {
+            Text("Exclude from budget")
         }
     }
 }
