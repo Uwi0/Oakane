@@ -37,7 +37,7 @@ struct TransactionTopAppBarView: View {
 
 #Preview {
     TransactionTopAppBarView(
-        uiState: TransactionsState(),
+        uiState: TransactionsState.companion.default(),
         onEvent: {_ in }
     )
 }

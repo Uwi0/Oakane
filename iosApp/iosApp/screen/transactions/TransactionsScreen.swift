@@ -6,6 +6,10 @@ struct TransactionsScreen: View {
     @StateObject private var viewModel = TransactionsViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     
+    private var uiState: TransactionsState {
+        viewModel.uiState
+    }
+    
     private var bottomSheetSize: CGFloat {
         switch (viewModel.uiState.sheetContent) {
         case .type: 160
@@ -32,7 +36,12 @@ struct TransactionsScreen: View {
 
         }
         .navigationBarBackButtonHidden(true)
-        .sheet(isPresented: $viewModel.uiState.sheetShown){
+        .sheet(
+            isPresented: Binding(
+                get: { uiState.sheetShown },
+                set: { shown in viewModel.handle(event: .ShowSheet(shown: shown, content: .type)) }
+            )
+        ){
             VStack {
                 switch viewModel.uiState.sheetContent {
                 case .type:

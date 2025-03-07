@@ -61,7 +61,7 @@ internal fun TransactionTopAppBarView(
                     if (state.selectedType != null)
                         onEvent.invoke(TransactionsEvent.FilterByType(null))
                     else
-                        onEvent.invoke(TransactionsEvent.ShowSheet(TransactionsContentSheet.Type))
+                        onEvent.invoke(TransactionsEvent.ShowSheet(false,TransactionsContentSheet.Type))
                 }
             )
             ChipSelector(
@@ -71,7 +71,7 @@ internal fun TransactionTopAppBarView(
                     if (state.selectedDate != 0L)
                         onEvent.invoke(TransactionsEvent.FilterByDate(0L))
                     else
-                    onEvent.invoke(TransactionsEvent.ShowSheet(TransactionsContentSheet.Date))
+                    onEvent.invoke(TransactionsEvent.ShowSheet(true,TransactionsContentSheet.Date))
                 }
             )
             ChipSelector(
@@ -81,7 +81,7 @@ internal fun TransactionTopAppBarView(
                     if (state.selectedCategory != null)
                         onEvent.invoke(TransactionsEvent.FilterByCategory(null))
                     else
-                    onEvent.invoke(TransactionsEvent.ShowSheet(TransactionsContentSheet.Category))
+                    onEvent.invoke(TransactionsEvent.ShowSheet(true,TransactionsContentSheet.Category))
                 }
             )
         }

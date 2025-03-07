@@ -47,7 +47,7 @@ internal fun FilterTypeView(
 
         CustomButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { onEvent.invoke(TransactionsEvent.HideSheet) },
+            onClick = { onEvent.invoke(TransactionsEvent.ShowSheet(false)) },
             content = { Text("Apply Filter Type") }
         )
     }

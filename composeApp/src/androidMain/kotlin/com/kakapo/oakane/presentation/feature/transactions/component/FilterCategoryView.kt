@@ -45,7 +45,7 @@ internal fun FilterCategoryView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            onClick = { onEvent.invoke(TransactionsEvent.HideSheet) },
+            onClick = { onEvent.invoke(TransactionsEvent.ShowSheet(false)) },
             content = { Text("Apply filter Category") }
         )
     }

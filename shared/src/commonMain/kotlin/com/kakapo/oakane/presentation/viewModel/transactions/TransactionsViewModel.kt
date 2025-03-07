@@ -69,9 +69,8 @@ class TransactionsViewModel(
             }
 
             is TransactionsEvent.Delete -> delete(event.transaction)
-            is TransactionsEvent.ShowSheet -> _uiState.update { it.showSheet(event.content) }
+            is TransactionsEvent.ShowSheet -> updateSheetStateBy(event)
             is TransactionsEvent.ToDetail -> emit(ToDetail(event.id))
-            TransactionsEvent.HideSheet -> hideSheet()
             TransactionsEvent.NavigateBack -> emit(TransactionsEffect.NavigateBack)
             TransactionsEvent.OpenDrawer -> emit(TransactionsEffect.OpenDrawer)
         }
@@ -143,8 +142,12 @@ class TransactionsViewModel(
         _uiState.update { it.copy(filteredTransactions = deletedTransaction) }
     }
 
+    private fun updateSheetStateBy(event: TransactionsEvent.ShowSheet) {
+        _uiState.update { it.copy(sheetShown = event.shown, sheetContent = event.content) }
+    }
+
     private fun hideSheet() {
-        _uiState.update { it.hideSheet() }
+        _uiState.update { it.copy(sheetShown = false, sheetContent = TransactionsContentSheet.Type) }
         emit(TransactionsEffect.HideSheet)
     }
 

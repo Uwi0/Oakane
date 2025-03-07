@@ -17,7 +17,7 @@ internal fun TransactionBottomSheetView(
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = { onEvent.invoke(TransactionsEvent.HideSheet) },
+        onDismissRequest = { onEvent.invoke(TransactionsEvent.ShowSheet(false)) },
         content = {
             when(state.sheetContent) {
                 TransactionsContentSheet.Type -> FilterTypeView(state, onEvent)
