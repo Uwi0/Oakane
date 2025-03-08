@@ -4,7 +4,7 @@ import Combine
 import KMPNativeCoroutinesCombine
 
 final class CategoriesViewModel: ObservableObject {
-    @Published var uiState = CategoriesState()
+    @Published var uiState = CategoriesState.companion.default()
     @Published var uiEffect: CategoriesEffect? = nil
     
     private var viewModel: CategoriesViewModelKt = Koin.shared.get()
@@ -25,14 +25,14 @@ final class CategoriesViewModel: ObservableObject {
         let publisher = createPublisher(for: viewModel.uiStateFlow)
         uiStateCancellable = publisher.sink { completion in
             print("completion \(completion)")
-        } receiveValue: { state in
-            self.update(state: state)
+        } receiveValue: { [weak self] state in
+            self?.update(state: state)
         }
     }
     
-    private func update(state: CategoriesStateKt){
+    private func update(state: CategoriesState){
         DispatchQueue.main.async {
-            self.uiState = CategoriesState(state: state)
+            self.uiState = state
         }
     }
     
@@ -40,8 +40,8 @@ final class CategoriesViewModel: ObservableObject {
         let publisher = createPublisher(for: viewModel.uiEffect)
         uiEffectCancellable = publisher.sink { completion in
             print("completion \(completion)")
-        } receiveValue: { effect in
-            self.update(effect: effect)
+        } receiveValue: { [weak self] effect in
+            self?.update(effect: effect)
         }
     }
     

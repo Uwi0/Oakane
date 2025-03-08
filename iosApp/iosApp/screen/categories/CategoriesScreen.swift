@@ -3,6 +3,8 @@ import Shared
 
 struct CategoriesScreen: View {
     
+    @Binding var openDrawer: Bool
+    var showDrawer: Bool = false
     @StateObject private var viewModel = CategoriesViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     let toolbarContent = ToolBarContent(title: "Categories")
@@ -28,8 +30,6 @@ struct CategoriesScreen: View {
             ColorTheme.surface
                 .ignoresSafeArea()
             CategoriesContentView(
-                selectedTab: $viewModel.uiState.selectedTab,
-                searchQuery: $viewModel.uiState.searchQuery,
                 uiState: uiState,
                 onEvent: viewModel.handle(event:)
             )
@@ -46,7 +46,13 @@ struct CategoriesScreen: View {
         }
         .navigationBarBackButtonHidden(true)
         .onChange(of: viewModel.uiEffect){ observe(effect: viewModel.uiEffect) }
-        .sheet(isPresented: $viewModel.uiState.showSheet, onDismiss: { viewModel.handle(event: .ShowSheet(visibility: false))}) {
+        .sheet(
+            isPresented: Binding(
+                get: { uiState.showSheet },
+                set: { shown in viewModel.handle(event: .ShowSheet(visibility: shown))}
+            ),
+            onDismiss: { viewModel.handle(event: .ShowSheet(visibility: false))}
+        ) {
             VStack {
                 switch uiState.sheetContent {
                 case .create:
@@ -54,14 +60,15 @@ struct CategoriesScreen: View {
                 case .selectColor:
                     Text("Select Color")
                 case .selectIcon:
-//                    SelectIconView(
-//                        selectedIcon: uiState.selectedIcon,
-//                        selectedColor: uiState.selectedColor,
-//                        onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon))},
-//                        onTakImage: { image in viewModel.handle(event: .PickImage(file: image))},
-//                        onConfirm: { viewModel.handle(event: .ConfirmIcon())}
-//                    )
-                    Text("Todo will fixed soon")
+                    SelectIconView(
+                        selectedIcon: Binding(
+                            get: { uiState.selectedIcon },
+                            set: { icon in viewModel.handle(event: .SelectedIcon(name: icon))}
+                        ),
+                        selectedColor: Color(hex: uiState.selectedColor.toColorLong()),
+                        onTakeImage: { image in viewModel.handle(event: .PickImage(file: image))},
+                        onConfirm: { viewModel.handle(event: .ConfirmIcon())}
+                    )
                 }
             }
             .presentationDetents([bottomSheetSize])
@@ -88,5 +95,5 @@ struct CategoriesScreen: View {
 }
 
 #Preview {
-    CategoriesScreen()
+    CategoriesScreen(openDrawer: .constant(false))
 }
