@@ -104,13 +104,13 @@ struct CategoriesScreen: View {
                 categories: uiState.categories.filter{ category in category.type == .income },
                 onClick: { category in viewModel.handle(event: .OnTapped(category: category)) }
             )
-            .tag(0)
+            .tag(TransactionType.income.ordinal)
             
             CategoriesView(
                 categories: uiState.categories.filter{ category in category.type == .expense },
                 onClick: { category in viewModel.handle(event: .OnTapped(category: category)) }
             )
-            .tag(1)
+            .tag(TransactionType.expense.ordinal)
             
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
