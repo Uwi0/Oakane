@@ -25,7 +25,7 @@ struct ContentView: View {
             case .addTransaction(let transactionId): AddTransactionScreen(transactionId: transactionId)
             case .transactions(let showDrawer): TransactionsScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
             case .transaction(let transactionId): TransactionScreen(transactionId: transactionId)
-            case .categories: CategoriesScreen()
+            case .categories(let showDrawer): CategoriesScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
             case .addGoal(let goalId): AddGoalScreen(goalId: goalId)
             case .goal(let goalId): GoalScreen(goalId: goalId)
             case .goals: GoalsScreen()

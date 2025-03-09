@@ -7,7 +7,7 @@ struct CategoriesSheetView: View {
     let onEvent: (AddTransactionEvent) -> Void
     
     @State private var searchQuery: String = ""
-    @State private var selectedTab: Int = 0
+    @State private var selectedTab: Int32 = 0
     private let tabBars = TransactionType.allCases.map { type in type.name }
     
 
@@ -37,7 +37,9 @@ struct CategoriesSheetView: View {
         VStack(spacing: 16) {
             VStack {
                 OutlinedSearchTextFieldView(query: $searchQuery, placeHolder: "Search Category...")
-                TabBarView(currentTab: $selectedTab, tabBarOptions: tabBars)
+                TabBarView(
+                    currentTab: $selectedTab,
+                    tabBarOptions: tabBars)
             }
             .padding(.horizontal, 16)
             .padding(.top, 24)

@@ -15,10 +15,7 @@ struct MonthlyBudgetScreen: View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
             VStack {
-                MonthlyBudgetTopbarView(
-                    title: "Monthly Budget",
-                    onNavigateBack: { viewModel.handle(event: .NavigateBack())}
-                )
+                TopAppbar()
                 VStack(alignment: .leading, spacing: 24) {
                     MonthlyBudgetTopContentView(
                         budget: Binding(
@@ -65,6 +62,17 @@ struct MonthlyBudgetScreen: View {
         }
     }
     
+    @ViewBuilder
+    private func TopAppbar() -> some View {
+        VStack {
+            NavigationTopAppbar(
+                title: "Monthly Budget",
+                onAction: { viewModel.handle(event: .NavigateBack())}
+            )
+            Divider()
+        }
+    }
+    
     private func observe(effect: MonthlyBudgetEffect?){
         if let safeEffect = effect {
             switch onEnum(of:safeEffect) {
@@ -75,19 +83,6 @@ struct MonthlyBudgetScreen: View {
             }
         }
         viewModel.uiEffect = nil
-    }
-}
-
-private struct MonthlyBudgetTopbarView: View {
-    
-    let title: String
-    let onNavigateBack: () -> Void
-    
-    var body: some View {
-        VStack {
-            NavigationTopAppbar(title: title, navigateBack: onNavigateBack)
-            Divider()
-        }
     }
 }
 

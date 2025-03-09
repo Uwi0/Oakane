@@ -14,7 +14,6 @@ struct TransactionScreen: View {
         viewModel.uiState
     }
     
-    
     var body: some View {
         VStack{
             NavigationTopAppBarView()
@@ -56,7 +55,7 @@ struct TransactionScreen: View {
                         .frame(width: 24, height: 24)
                         .onTapGesture { viewModel.handle(event: .DeleteTransaction()) }
                 },
-                navigateBack: { navigation.navigateBack() }
+                onAction: { navigation.navigateBack() }
             )
             Divider()
         }

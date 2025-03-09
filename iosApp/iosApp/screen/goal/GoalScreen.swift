@@ -120,7 +120,7 @@ private struct ToolbarView: View {
                             onEvent(.Dialog(shown: true, content: .deleteGoal))
                         }
                 },
-                navigateBack: { onEvent(.NavigateBack()) }
+                onAction: { onEvent(.NavigateBack()) }
             )
             Divider()
         }

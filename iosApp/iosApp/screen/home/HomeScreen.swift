@@ -117,7 +117,7 @@ struct HomeScreen: View {
             case .toMonthlyBudget:
                 navigation.navigate(to: .monthlyBudget)
             case .toTransaction(let effect):
-                navigation.navigate(to: .transaction(transactionId: effect.id))
+                navigation.navigate(to: .transaction(id: effect.id))
             case .toWallets:
                 navigation.navigate(to: .wallets)
             }

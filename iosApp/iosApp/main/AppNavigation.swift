@@ -9,8 +9,8 @@ final class AppNavigation: ObservableObject {
         case home
         case addTransaction(transactionId: Int64)
         case transactions(showDrawer: Bool = false)
-        case transaction(transactionId: Int64)
-        case categories
+        case transaction(id: Int64)
+        case categories(showDrawer: Bool = false)
         case addGoal(goalId: Int64)
         case goal(goalId: Int64)
         case goals
@@ -42,7 +42,7 @@ final class AppNavigation: ObservableObject {
         case .transactions:
             navigate(to: .transactions(showDrawer: true))
         case .categories:
-            navigate(to: .categories)
+            navigate(to: .categories(showDrawer: true))
         case .goals:
             navigate(to: .goals)
         case .wallets:

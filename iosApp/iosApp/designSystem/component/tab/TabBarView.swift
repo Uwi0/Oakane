@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TabBarView: View {
-    @Binding var currentTab: Int
+    @Binding var currentTab: Int32
     @Namespace var nameSpace
     
     var tabBarOptions: [String] = ["View 1", "View 2"]
@@ -13,7 +13,7 @@ struct TabBarView: View {
                     currentTab: $currentTab,
                     namespace: nameSpace.self,
                     tabBarItemName: name,
-                    tab: index
+                    tab: Int32(index)
                 )
             }
         }

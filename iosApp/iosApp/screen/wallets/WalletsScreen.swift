@@ -69,7 +69,7 @@ struct WalletsScreen: View {
     @ViewBuilder
     private func WalletsTopAppBar() -> some View {
         VStack(spacing: 16) {
-            NavigationTopAppbar(title: "Wallets", navigateBack: navigation.navigateBack)
+            NavigationTopAppbar(title: "Wallets", onAction: navigation.navigateBack)
             OutlinedSearchTextFieldView(
                 query: $searchQuery,
                 placeHolder: "Search Wallet..."

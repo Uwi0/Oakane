@@ -39,7 +39,7 @@ struct AddTransactionScreen: View {
         VStack {
             NavigationTopAppbar(
                 title: "Add transaction",
-                navigateBack: { navigation.navigateBack() }
+                onAction: { navigation.navigateBack() }
             )
             Divider()
         }

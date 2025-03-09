@@ -4,36 +4,39 @@ import Shared
 struct TransactionTopAppBarView: View {
     
     let uiState: TransactionsState
+    var showDrawer: Bool = false
     let onEvent: (TransactionsEvent) -> Void
-    var showDrawer: Bool
-    @State private  var query: String
-    
-    init(uiState: TransactionsState,showDrawer: Bool = false, onEvent: @escaping (TransactionsEvent) -> Void) {
-        self.uiState = uiState
-        self.onEvent = onEvent
-        self.query = uiState.searchQuery
-        self.showDrawer = showDrawer
-    }
     
     var body: some View {
         VStack {
-            VStack(spacing: 16) {
-                TransactionNavBarView(showDrawer: showDrawer, onClick: onClickEvent)
-                
-                OutlinedSearchTextFieldView(query: $query, placeHolder: "Search Transactions...")
-                    .onChange(of: query) {
-                        onEvent(.FilterBy(query: query))
-                    }
-                
-                FilterSelectorView(
-                    uiState: uiState,
-                    onEvent: onEvent
-                )
-            }
-            .padding(16)
-            .background(ColorTheme.surface)
+            NavigationTopAppbar(
+                title: "Transactions",
+                showDrawer: showDrawer,
+                onAction: onClickEvent
+            )
+            FilterComponent()
             Divider()
         }
+    }
+    
+    @ViewBuilder
+    private func FilterComponent() -> some View {
+        VStack(spacing: 16) {
+            OutlinedSearchTextFieldView(
+                query: Binding(
+                    get: { uiState.searchQuery },
+                    set: {query in onEvent(.FilterBy(query: query))}
+                ),
+                placeHolder: "Search Transactions..."
+            )
+            
+            FilterSelectorView(
+                uiState: uiState,
+                onEvent: onEvent
+            )
+        }
+        .padding(.horizontal, 16)
+        .background(ColorTheme.surface)
     }
     
     private func onClickEvent() {

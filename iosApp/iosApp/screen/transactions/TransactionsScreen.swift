@@ -75,12 +75,9 @@ struct TransactionsScreen: View {
             switch onEnum(of: sideEffect) {
             case .hideSheet: print("Hide sheet")
             case .navigateBack: navigation.navigateBack()
-            case .toDetail(let effect):
-                navigation.navigate(to: .transaction(transactionId: effect.id))
-            case .showError(let effect):
-                print(effect.message)
-            case .openDrawer:
-                openDrawer = !openDrawer
+            case .toDetail(let effect): navigation.navigate(to: .transaction(id: effect.id))
+            case .showError(let effect): print(effect.message)
+            case .openDrawer: openDrawer = !openDrawer
             }
         }
         viewModel.uiEffect = nil

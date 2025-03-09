@@ -10,7 +10,7 @@ struct GoalsTopAppBar: View {
         VStack(spacing: 16) {
             NavigationTopAppbar(
                 title: "Goals",
-                navigateBack: { onEvent(.NavigateBack())}
+                onAction: { onEvent(.NavigateBack())}
             )
             OutlinedSearchTextFieldView(
                 query: $query,
