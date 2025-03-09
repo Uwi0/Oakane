@@ -111,9 +111,9 @@ struct HomeScreen: View {
             case .showError(let error):
                 print("error \(error.message)")
             case .toGoalWith(let homeEvent):
-                navigation.navigate(to: .goal(goalId: homeEvent.id))
+                navigation.navigate(to: .goal(id: homeEvent.id))
             case .toGoals:
-                navigation.navigate(to: .goals)
+                navigation.navigate(to: .goals())
             case .toMonthlyBudget:
                 navigation.navigate(to: .monthlyBudget)
             case .toTransaction(let effect):

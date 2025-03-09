@@ -12,7 +12,6 @@ struct NavigationTopAppbar<Content: View>: View {
             Image(systemName: showDrawer ? "line.3.horizontal" :"arrow.left")
                 .resizable()
                 .scaledToFit()
-                .fontWeight(.semibold)
                 .frame(width: 24, height: 24)
                 .onTapGesture {
                     onAction()

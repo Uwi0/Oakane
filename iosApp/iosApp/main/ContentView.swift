@@ -28,7 +28,7 @@ struct ContentView: View {
             case .categories(let showDrawer): CategoriesScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
             case .addGoal(let goalId): AddGoalScreen(goalId: goalId)
             case .goal(let goalId): GoalScreen(goalId: goalId)
-            case .goals: GoalsScreen()
+            case .goals(let showDrawer): GoalsScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
             case .monthlyBudget: MonthlyBudgetScreen()
             case .wallets: WalletsScreen()
             case .reports: ReportsScreen()

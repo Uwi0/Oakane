@@ -7,7 +7,6 @@ struct CategoriesScreen: View {
     var showDrawer: Bool = false
     @StateObject private var viewModel = CategoriesViewModel()
     @EnvironmentObject private var navigation: AppNavigation
-    let toolbarContent = ToolBarContent(title: "Categories")
     
     private var bottomSheetSize: PresentationDetent {
         switch viewModel.uiState.sheetContent {
@@ -101,13 +100,13 @@ struct CategoriesScreen: View {
             )
         ) {
             CategoriesView(
-                categories: uiState.categories.filter{ category in category.type == .income },
+                categories: uiState.filteredCategories.filter{ category in category.type == .income },
                 onClick: { category in viewModel.handle(event: .OnTapped(category: category)) }
             )
             .tag(TransactionType.income.ordinal)
             
             CategoriesView(
-                categories: uiState.categories.filter{ category in category.type == .expense },
+                categories: uiState.filteredCategories.filter{ category in category.type == .expense },
                 onClick: { category in viewModel.handle(event: .OnTapped(category: category)) }
             )
             .tag(TransactionType.expense.ordinal)

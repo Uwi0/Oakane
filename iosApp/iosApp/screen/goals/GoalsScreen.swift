@@ -3,6 +3,8 @@ import Shared
 
 struct GoalsScreen: View {
     
+    @Binding var openDrawer: Bool
+    var showDrawer: Bool = false
     @StateObject private var viewModel: GoalsViewModel = GoalsViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     
@@ -14,7 +16,7 @@ struct GoalsScreen: View {
         GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
             VStack{
-                GoalsTopAppBar(onEvent: viewModel.handle(event:))
+                GoalsTopbar()
                 GoalsContent()
                 .scrollIndicators(.hidden)
                 
@@ -34,6 +36,27 @@ struct GoalsScreen: View {
             observe(effect:viewModel.uiEffect)
         }
     }
+    
+    @ViewBuilder
+    private func GoalsTopbar() -> some View {
+        VStack(spacing: 16) {
+            NavigationTopAppbar(
+                title: "Goals",
+                showDrawer: showDrawer,
+                onAction: onAction
+            )
+            OutlinedSearchTextFieldView(
+                query: Binding(
+                    get: { uiState.searchQuery },
+                    set: {query in viewModel.handle(event: .FilterBy(query: query))}
+                ),
+                placeHolder: "Search goal..."
+            )
+            .padding(.horizontal, 16)
+            Divider()
+        }
+    }
+    
     @ViewBuilder
     private func GoalsContent() -> some View {
         ScrollView {
@@ -48,31 +71,33 @@ struct GoalsScreen: View {
     private func ListItemView() -> some View {
         ForEach(uiState.goals, id: \.self) { goal in
             GoalItemView(goal: goal)
-                .onTapGesture {
-                    viewModel.handle(event: .NavigateToGoal(id: goal.id))
-                }
+                .onTapGesture { viewModel.handle(event: .NavigateToGoal(id: goal.id)) }
         }
     }
     
     private func observe(effect: GoalsEffect?) {
-        if let safEffect = effect {
-            switch onEnum(of: safEffect) {
-            case .addGoal:
-                navigation.navigate(to:.addGoal(goalId: 0))
-            case .navigateBack:
-                navigation.navigateBack()
-            case .navigateToGoal(let goalsEffect):
-                navigation.navigate(to: .goal(goalId: goalsEffect.id))
-            case .openDrawer:
-                print("open drawer")
-            case .showError(let effect):
-                print("error \(effect.message)")
-            }
+        guard let effect else { return }
+        
+        switch onEnum(of: effect) {
+        case .addGoal: navigation.navigate(to: .addGoal(goalId: 0))
+        case .navigateBack: navigation.navigateBack()
+        case .navigateToGoal(let effect): navigation.navigate(to: .goal(id: effect.id))
+        case .openDrawer: openDrawer = !openDrawer
+        case .showError(let effect): print("error \(effect.message)")
         }
+        
         viewModel.uiEffect = nil
+    }
+    
+    private func onAction() {
+        if showDrawer {
+            viewModel.handle(event: .OpenDrawer())
+        } else {
+            viewModel.handle(event: .NavigateBack())
+        }
     }
 }
 
 #Preview {
-    GoalsScreen()
+    GoalsScreen(openDrawer: .constant(false))
 }
