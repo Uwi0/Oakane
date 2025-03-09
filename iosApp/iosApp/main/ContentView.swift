@@ -30,7 +30,7 @@ struct ContentView: View {
             case .goal(let goalId): GoalScreen(goalId: goalId)
             case .goals(let showDrawer): GoalsScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
             case .monthlyBudget: MonthlyBudgetScreen()
-            case .wallets: WalletsScreen()
+            case .wallets(let showDrawer): WalletsScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
             case .reports: ReportsScreen()
             case .settings: SettingsScreen()
             case .wallet(let walletId): WalletScreen(walletId: walletId)

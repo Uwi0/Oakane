@@ -119,7 +119,7 @@ struct HomeScreen: View {
             case .toTransaction(let effect):
                 navigation.navigate(to: .transaction(id: effect.id))
             case .toWallets:
-                navigation.navigate(to: .wallets)
+                navigation.navigate(to: .wallets())
             }
         }
         viewModel.uiEffects = nil
