@@ -121,7 +121,7 @@ class HomeViewModel(
             _uiState.update { it.copy(isBalanceVisible = isBalanceVisible) }
         }
         systemRepository.changeBalance(!currentVisibility).fold(
-            onSuccess =onSuccess,
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }

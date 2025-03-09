@@ -4,7 +4,7 @@ import Combine
 import KMPNativeCoroutinesCombine
 
 final class MonthlyBudgetViewModel: ObservableObject {
-    @Published var uiState: MonthlyBudgetState = MonthlyBudgetState()
+    @Published var uiState: MonthlyBudgetState = MonthlyBudgetState.companion.default()
     @Published var uiEffect: MonthlyBudgetEffect? = nil
     
     private let viewModel: MonthlyBudgetViewModelKt = Koin.shared.get()
@@ -25,9 +25,9 @@ final class MonthlyBudgetViewModel: ObservableObject {
         }
     }
     
-    private func update(state: MonthlyBudgetStateKt){
+    private func update(state: MonthlyBudgetState){
         DispatchQueue.main.async {
-            self.uiState = MonthlyBudgetState(state: state)
+            self.uiState = state
         }
     }
     

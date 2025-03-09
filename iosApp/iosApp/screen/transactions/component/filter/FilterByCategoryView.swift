@@ -17,7 +17,7 @@ struct FilterByCategoryView: View {
             Spacer()
             FilledButtonView(
                 text: "Apply Filter",
-                onClick: { onEvent(.HideSheet())}
+                onClick: { onEvent(.ShowSheet(shown: false, content: .type))}
             )
             .frame(height: 48)
         }
@@ -27,7 +27,7 @@ struct FilterByCategoryView: View {
 
 #Preview {
     FilterByCategoryView(
-        uiState: TransactionsState(),
+        uiState: TransactionsState.companion.default(),
         onEvent: { _ in }
     )
 }

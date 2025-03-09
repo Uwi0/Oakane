@@ -12,9 +12,7 @@ import com.kakapo.model.monthlyBudget.MonthlyBudgetModel
 import com.kakapo.model.system.Theme
 import com.kakapo.model.toFormatNumber
 import kotlinx.datetime.Clock
-import kotlin.native.ObjCName
 
-@ObjCName("MonthlyBudgetStateKt")
 data class MonthlyBudgetState(
     val id: Long = 0,
     val amount: String = "",
@@ -72,6 +70,9 @@ data class MonthlyBudgetState(
         else copy(dialogShown = shown, selectedCategoryLimit = null)
     }
 
+    companion object {
+        fun default() = MonthlyBudgetState()
+    }
 }
 
 sealed class MonthlyBudgetEffect {

@@ -4,15 +4,18 @@ struct NavigationTopAppbar<Content: View>: View {
     
     let title: String
     let actionContent: Content
-    let onNavigateBack: () -> Void
+    var showDrawer: Bool
+    let onAction: () -> Void
     
     var body: some View {
         HStack(spacing: 16) {
-            Image(systemName: "arrow.left")
+            Image(systemName: showDrawer ? "line.3.horizontal" :"arrow.left")
+                .resizable()
+                .scaledToFit()
                 .fontWeight(.semibold)
                 .frame(width: 24, height: 24)
                 .onTapGesture {
-                    onNavigateBack()
+                    onAction()
                 }
             Text(title)
                 .font(Typography.titleLarge)
@@ -31,18 +34,20 @@ extension NavigationTopAppbar {
     
     init(
         title: String,
+        showDrawer: Bool = false,
         @ViewBuilder actionContent: @escaping () -> Content = { EmptyView() },
-        navigateBack: @escaping () -> Void
+        onAction: @escaping () -> Void
     ) {
         self.title = title
         self.actionContent = actionContent()
-        self.onNavigateBack = navigateBack
+        self.onAction = onAction
+        self.showDrawer = showDrawer
     }
 }
 
 #Preview {
     VStack {
-        NavigationTopAppbar(title: "Title1", navigateBack: {})
+        NavigationTopAppbar(title: "Title1", onAction: {})
         NavigationTopAppbar(
             title: "title2",
             actionContent: {
@@ -51,7 +56,7 @@ extension NavigationTopAppbar {
                 Image(systemName: "pencil")
                     .frame(width: 24, height: 24)
             },
-            navigateBack: {}
+            onAction: {}
         )
     }
     

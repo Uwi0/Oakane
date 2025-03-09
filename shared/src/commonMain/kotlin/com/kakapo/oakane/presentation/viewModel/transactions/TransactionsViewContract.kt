@@ -4,9 +4,7 @@ import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionModel
 import com.kakapo.model.transaction.TransactionType
-import kotlin.native.ObjCName
 
-@ObjCName("TransactionsStateKt")
 data class TransactionsState(
     val transactions: List<TransactionModel> = emptyList(),
     val filteredTransactions: List<TransactionModel> = transactions,
@@ -24,17 +22,11 @@ data class TransactionsState(
             return selectedType?.name ?: "By Type"
         }
 
-    val categories: List<CategoryModel> get() = transactions.map { it.category }
+    val categories: List<CategoryModel> get() = transactions.map { it.category }.distinctBy { it.id }
 
-    fun showSheet(content: TransactionsContentSheet) = copy(
-        sheetShown = true,
-        sheetContent = content
-    )
-
-    fun hideSheet() = copy(
-        sheetShown = false,
-        sheetContent = TransactionsContentSheet.Type
-    )
+    companion object {
+        fun default() = TransactionsState()
+    }
 }
 
 sealed class TransactionsEffect{
@@ -52,8 +44,7 @@ sealed class TransactionsEvent {
     data class FilterByDate(val timeMillis: Long) : TransactionsEvent()
     data class FilterByCategory(val value: CategoryModel?) : TransactionsEvent()
     data class Delete(val transaction: TransactionModel): TransactionsEvent()
-    data class ShowSheet(val content: TransactionsContentSheet): TransactionsEvent()
-    data object HideSheet: TransactionsEvent()
+    data class ShowSheet(val shown: Boolean ,val content: TransactionsContentSheet = TransactionsContentSheet.Type): TransactionsEvent()
     data class ToDetail(val id: Long): TransactionsEvent()
     data object OpenDrawer: TransactionsEvent()
 }

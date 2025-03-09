@@ -6,9 +6,7 @@ import com.kakapo.model.category.CategoryModel
 import com.kakapo.model.system.Theme
 import com.kakapo.model.transaction.TransactionType
 import com.kakapo.oakane.presentation.model.CategoriesSheetContent
-import kotlin.native.ObjCName
 
-@ObjCName("CategoriesStateKt")
 data class CategoriesState(
     val searchQuery: String = "",
     val categories: List<CategoryModel> = emptyList(),
@@ -104,6 +102,10 @@ data class CategoriesState(
             type = selectedType,
             isDefault = fileName.isEmpty()
         )
+    }
+
+    companion object {
+        fun default() = CategoriesState()
     }
 }
 

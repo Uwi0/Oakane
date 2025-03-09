@@ -9,7 +9,7 @@ struct CreateCategoryContentView: View {
     @State private var selectedType: TransactionType = .income
     
     private var formattedColor: Color {
-        Color(hex: uiState.selectedColor)
+        Color(hex: uiState.selectedColor.toColorLong())
     }
     
     private var saveTitle: String {
@@ -17,7 +17,7 @@ struct CreateCategoryContentView: View {
     }
     
     private var colors: [Color] {
-        uiState.defaultColors.map{ color in Color(hex: color.toColorLong())}
+        uiState.categoriesColor.map{ color in Color(hex: color.toColorLong())}
     }
     
     var body: some View {
@@ -31,7 +31,7 @@ struct CreateCategoryContentView: View {
             HorizontalColorSelectorView(
                 colors: colors,
                 selectedColor: Binding(
-                    get: { Color(hex: uiState.selectedColor)},
+                    get: { Color(hex: uiState.selectedColor.toColorLong())},
                     set: { color in onEvent(.SelectedColor(hex: color.toHexString() ?? "")) }
                 )
             )
@@ -50,7 +50,7 @@ struct CreateCategoryContentView: View {
     private func CategoryNameFieldView() -> some View {
         HStack(spacing: 16) {
             SelectedIconView(
-                imageName: uiState.imageName,
+                imageName: uiState.fileName,
                 icon: uiState.selectedIcon,
                 color: formattedColor
             )
@@ -99,5 +99,5 @@ struct CreateCategoryContentView: View {
 }
 
 #Preview {
-    CreateCategoryContentView(uiState: CategoriesState(), onEvent: {_ in })
+    CreateCategoryContentView(uiState: CategoriesState.companion.default(), onEvent: {_ in })
 }

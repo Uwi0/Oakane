@@ -3,57 +3,60 @@ import Shared
 import Combine
 import KMPNativeCoroutinesCombine
 
-final class CategoriesViewModel: ObservableObject {
-    @Published var uiState = CategoriesState()
-    @Published var uiEffect: CategoriesEffect? = nil
+final class TransactionsViewModel: ObservableObject {
     
-    private var viewModel: CategoriesViewModelKt = Koin.shared.get()
+    @Published var uiState: TransactionsState = TransactionsState.companion.default()
+    @Published var uiEffect: TransactionsEffect? = nil
+    
+    private var viewModel: TransactionsViewModelKt = Koin.shared.get()
     private var uiStateCancellable: AnyCancellable?
     private var uiEffectCancellable: AnyCancellable?
     
-    init() {
-        viewModel.initializeData(showDrawer: true)
-        observeUiState()
-        observerUiEffect()
+    init () {
+        observeUIState()
+        observeUIEffect()
     }
     
-    func handle(event: CategoriesEvent) {
+    func initData() {
+        viewModel.initializeData(showDrawer: true)
+    }
+    
+    func handle(event: TransactionsEvent) {
         viewModel.handleEvent(event: event)
     }
     
-    private func observeUiState() {
+    private func observeUIState() {
         let publisher = createPublisher(for: viewModel.uiStateFlow)
         uiStateCancellable = publisher.sink { completion in
             print("completion \(completion)")
-        } receiveValue: { state in
-            self.update(state: state)
+        } receiveValue: { [weak self] state in
+            self?.update(state: state)
         }
     }
     
-    private func update(state: CategoriesStateKt){
+    private func update(state: TransactionsState) {
         DispatchQueue.main.async {
-            self.uiState = CategoriesState(state: state)
+            self.uiState = state
         }
     }
     
-    private func observerUiEffect() {
+    private func observeUIEffect() {
         let publisher = createPublisher(for: viewModel.uiEffect)
         uiEffectCancellable = publisher.sink { completion in
             print("completion \(completion)")
-        } receiveValue: { effect in
-            self.update(effect: effect)
+        } receiveValue: { [weak self] effect in
+            self?.update(effect: effect)
         }
     }
     
-    func update(effect: CategoriesEffect){
+    private func update(effect: TransactionsEffect) {
         DispatchQueue.main.async {
             self.uiEffect = effect
         }
     }
     
     deinit {
-        uiStateCancellable?.cancel()
         uiEffectCancellable?.cancel()
+        uiStateCancellable?.cancel()
     }
-    
 }

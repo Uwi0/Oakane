@@ -84,7 +84,7 @@ struct AddGoalScreen: View {
     @ViewBuilder
     private func AddGoalTopAppBar() -> some View {
         VStack {
-            NavigationTopAppbar(title: "Add Goal", navigateBack: { navigation.navigateBack() })
+            NavigationTopAppbar(title: "Add Goal", onAction: { navigation.navigateBack() })
             Divider()
         }
     }

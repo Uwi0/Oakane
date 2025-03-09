@@ -46,8 +46,7 @@ fileprivate struct TopContentView: View {
                     IconButtonView(
                         name: "pencil",
                         width: imageSize,
-                        onClick: { onEvent(.ToMonthlyBudget())},
-                        fontWeight: .bold
+                        onClick: { onEvent(.ToMonthlyBudget())}
                     )
                 }
                 Text(formattedLimit)

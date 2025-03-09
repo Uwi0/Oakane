@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct TabBarItemView: View {
-    @Binding var currentTab: Int
+    @Binding var currentTab: Int32
     let namespace: Namespace.ID
     
     var tabBarItemName: String
-    var tab: Int
+    var tab: Int32
     
     var body: some View {
         Button {

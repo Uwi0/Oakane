@@ -15,13 +15,13 @@ struct MonthlyBudgetScreen: View {
         ZStack {
             ColorTheme.surface.ignoresSafeArea()
             VStack {
-                MonthlyBudgetTopbarView(
-                    title: "Monthly Budget",
-                    onNavigateBack: { viewModel.handle(event: .NavigateBack())}
-                )
+                TopAppbar()
                 VStack(alignment: .leading, spacing: 24) {
                     MonthlyBudgetTopContentView(
-                        budget: $viewModel.uiState.amount,
+                        budget: Binding(
+                            get: { Int(uiState.realAmount) },
+                            set: { amount in viewModel.handle(event: .Changed(amount: String(amount)))}
+                        ),
                         onEvent: viewModel.handle(event:)
                     )
                     .padding(.horizontal, 16)
@@ -43,12 +43,12 @@ struct MonthlyBudgetScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             
-            if uiState.isDialogShown {
+            if uiState.dialogShown {
                 PopUpDialog(
                     onDismiss: {_ in viewModel.handle(event: .Dialog(shown: false)) }
                 ){
                     CreateCategoryLimitDialogView(
-                        categoryLimit: uiState.categoryLimit,
+                        categoryLimit: uiState.selectedCategoryLimit,
                         categories: uiState.expenseCategories,
                         onEvent: viewModel.handle(event:)
                     )
@@ -62,6 +62,17 @@ struct MonthlyBudgetScreen: View {
         }
     }
     
+    @ViewBuilder
+    private func TopAppbar() -> some View {
+        VStack {
+            NavigationTopAppbar(
+                title: "Monthly Budget",
+                onAction: { viewModel.handle(event: .NavigateBack())}
+            )
+            Divider()
+        }
+    }
+    
     private func observe(effect: MonthlyBudgetEffect?){
         if let safeEffect = effect {
             switch onEnum(of:safeEffect) {
@@ -72,19 +83,6 @@ struct MonthlyBudgetScreen: View {
             }
         }
         viewModel.uiEffect = nil
-    }
-}
-
-private struct MonthlyBudgetTopbarView: View {
-    
-    let title: String
-    let onNavigateBack: () -> Void
-    
-    var body: some View {
-        VStack {
-            NavigationTopAppbar(title: title, navigateBack: onNavigateBack)
-            Divider()
-        }
     }
 }
 

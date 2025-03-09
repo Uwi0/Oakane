@@ -3,8 +3,14 @@ import Shared
 
 struct TransactionsScreen: View {
     
+    @Binding var openDrawer: Bool
+    var showDrawer: Bool = false
     @StateObject private var viewModel = TransactionsViewModel()
     @EnvironmentObject private var navigation: AppNavigation
+    
+    private var uiState: TransactionsState {
+        viewModel.uiState
+    }
     
     private var bottomSheetSize: CGFloat {
         switch (viewModel.uiState.sheetContent) {
@@ -21,6 +27,7 @@ struct TransactionsScreen: View {
                 
                 TransactionTopAppBarView(
                     uiState: viewModel.uiState,
+                    showDrawer: showDrawer,
                     onEvent: viewModel.handle(event:)
                 )
                 
@@ -32,7 +39,12 @@ struct TransactionsScreen: View {
 
         }
         .navigationBarBackButtonHidden(true)
-        .sheet(isPresented: $viewModel.uiState.sheetShown){
+        .sheet(
+            isPresented: Binding(
+                get: { uiState.sheetShown },
+                set: { shown in viewModel.handle(event: .ShowSheet(shown: shown, content: .type)) }
+            )
+        ){
             VStack {
                 switch viewModel.uiState.sheetContent {
                 case .type:
@@ -63,12 +75,9 @@ struct TransactionsScreen: View {
             switch onEnum(of: sideEffect) {
             case .hideSheet: print("Hide sheet")
             case .navigateBack: navigation.navigateBack()
-            case .toDetail(let effect):
-                navigation.navigate(to: .transaction(transactionId: effect.id))
-            case .showError(let effect):
-                print(effect.message)
-            case .openDrawer:
-                print("open drawer")
+            case .toDetail(let effect): navigation.navigate(to: .transaction(id: effect.id))
+            case .showError(let effect): print(effect.message)
+            case .openDrawer: openDrawer = !openDrawer
             }
         }
         viewModel.uiEffect = nil
@@ -76,5 +85,5 @@ struct TransactionsScreen: View {
 }
 
 #Preview {
-    TransactionsScreen()
+    TransactionsScreen(openDrawer: .constant(false))
 }

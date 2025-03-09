@@ -28,7 +28,7 @@ struct FilterByTypeView: View {
             
             FilledButtonView(
                 text: "Apply filter",
-                onClick: { onEvent(.HideSheet())}
+                onClick: { onEvent(.ShowSheet(shown: false, content: .type))}
             ).frame(height: 48)
         }
         .padding(16)
@@ -37,5 +37,5 @@ struct FilterByTypeView: View {
 }
 
 #Preview {
-    FilterByTypeView(uiState: TransactionsState(), onEvent: { _ in })
+    FilterByTypeView(uiState: TransactionsState.companion.default(), onEvent: { _ in })
 }

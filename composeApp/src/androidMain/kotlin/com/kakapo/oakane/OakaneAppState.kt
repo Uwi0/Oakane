@@ -44,7 +44,7 @@ class OakaneAppState(val navController: NavHostController, private val coroutine
     private var selectedDrawerValue by mutableStateOf(DrawerMenuNavigation.DASHBOARD)
     private var isNavigateUp = false
 
-    val currentRoute get() = _currentRoute.value
+    private val currentRoute get() = _currentRoute.value
     private val _currentRoute = mutableStateOf<String?>(null)
 
     init {

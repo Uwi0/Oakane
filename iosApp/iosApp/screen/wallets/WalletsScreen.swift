@@ -20,7 +20,7 @@ struct WalletsScreen: View {
             }
             .dynamicHeightSheet(
                 isPresented: Binding(
-                    get: { uiState.sheetShown },
+                    get: { uiState.isSheetShown },
                     set: { viewModel.handle(event: .ShowSheet(shown: $0)) }
                 ),
                 content: {
@@ -69,7 +69,7 @@ struct WalletsScreen: View {
     @ViewBuilder
     private func WalletsTopAppBar() -> some View {
         VStack(spacing: 16) {
-            NavigationTopAppbar(title: "Wallets", navigateBack: navigation.navigateBack)
+            NavigationTopAppbar(title: "Wallets", onAction: navigation.navigateBack)
             OutlinedSearchTextFieldView(
                 query: $searchQuery,
                 placeHolder: "Search Wallet..."

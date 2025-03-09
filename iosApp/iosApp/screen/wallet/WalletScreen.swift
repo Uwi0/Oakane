@@ -80,7 +80,7 @@ struct WalletScreen: View {
                         viewModel.handle(event: .ShowDialog(content: dialogContent, shown: true))
                     }
                 },
-                navigateBack: { navigation.navigateBack() }
+                onAction: { navigation.navigateBack() }
             )
             Divider()
         }

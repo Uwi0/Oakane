@@ -16,29 +16,29 @@ sealed interface CustomResult<out T> {
 @NativeCoroutines
 fun <T> Flow<T>?.asResult(): Flow<CustomResult<T>> {
     return this?.map<T, CustomResult<T>> {
-        com.kakapo.common.CustomResult.Success(it)
+        CustomResult.Success(it)
     }
         ?.catch {
-            emit(com.kakapo.common.CustomResult.Error(it))
+            emit(CustomResult.Error(it))
         }
-        ?.onStart { emit(com.kakapo.common.CustomResult.Loading) }
-        ?: flowOf(com.kakapo.common.CustomResult.Error(NullPointerException("Flow<Result<T>> is null")))
+        ?.onStart { emit(CustomResult.Loading) }
+        ?: flowOf(CustomResult.Error(NullPointerException("Flow<Result<T>> is null")))
 }
 
 @NativeCoroutines
 fun <T> Flow<Result<T>>?.asCustomResult(): Flow<CustomResult<T>> {
     return this?.map {
         if (it.isSuccess) {
-            com.kakapo.common.CustomResult.Success(it.getOrThrow())
+            CustomResult.Success(it.getOrThrow())
         } else {
-            com.kakapo.common.CustomResult.Error(it.exceptionOrNull())
+            CustomResult.Error(it.exceptionOrNull())
         }
     }
         ?.catch {
-            emit(com.kakapo.common.CustomResult.Error(it))
+            emit(CustomResult.Error(it))
         }
-        ?.onStart { emit(com.kakapo.common.CustomResult.Loading) }
-        ?: flowOf(com.kakapo.common.CustomResult.Error(NullPointerException("Flow<Result<T>> is null")))
+        ?.onStart { emit(CustomResult.Loading) }
+        ?: flowOf(CustomResult.Error(NullPointerException("Flow<Result<T>> is null")))
 }
 
 
@@ -50,7 +50,7 @@ suspend fun <T> Flow<CustomResult<T>>.subscribe(
 ) {
     this.collect { result ->
         when (result) {
-            com.kakapo.common.CustomResult.Loading -> onLoading.invoke()
+            CustomResult.Loading -> onLoading.invoke()
             is CustomResult.Error -> onError.invoke(result.exception)
             is CustomResult.Success -> onSuccess.invoke(result.data)
         }
@@ -65,7 +65,7 @@ suspend fun <T> Flow<CustomResult<T>>.suspendSubscribe(
 ) {
     this.collect { result ->
         when (result) {
-            com.kakapo.common.CustomResult.Loading -> onLoading.invoke()
+            CustomResult.Loading -> onLoading.invoke()
             is CustomResult.Error -> onError.invoke(result.exception)
             is CustomResult.Success -> onSuccess.invoke(result.data)
         }

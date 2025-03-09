@@ -5,7 +5,6 @@ struct IconButtonView: View {
     let name: String
     let width: CGFloat
     let onClick: () -> Void
-    var fontWeight: Font.Weight = .regular
     
     var body: some View {
         Button(
@@ -13,8 +12,8 @@ struct IconButtonView: View {
             label: {
                 Image(systemName: name)
                     .resizable()
+                    .scaledToFit()
                     .frame(width: width, height: width)
-                    .fontWeight(fontWeight)
                     .foregroundStyle(ColorTheme.outline)
             }
         )

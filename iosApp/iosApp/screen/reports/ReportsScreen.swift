@@ -60,7 +60,7 @@ struct ReportsScreen: View {
                         .frame(width: 24, height: 24)
                         .onTapGesture { viewModel.handle(event: .GenerateReport())}
                 },
-                navigateBack: { navigation.navigateBack() }
+                onAction: { navigation.navigateBack() }
             )
             Divider()
         }

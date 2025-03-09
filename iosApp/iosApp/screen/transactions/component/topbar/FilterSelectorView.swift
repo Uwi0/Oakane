@@ -29,7 +29,7 @@ struct FilterSelectorView: View {
     
     private func onSelectedType() {
         if uiState.selectedType == nil {
-            onEvent(.ShowSheet(content: .type))
+            onEvent(.ShowSheet(shown: true,content: .type))
         } else {
             onEvent(.FilterByType(value: nil))
         }
@@ -37,7 +37,7 @@ struct FilterSelectorView: View {
     
     private func onSelectedDate() {
         if uiState.selectedDate == 0 {
-            onEvent(.ShowSheet(content: .date))
+            onEvent(.ShowSheet(shown: true,content: .date))
         } else {
             onEvent(.FilterByDate(timeMillis: 0))
         }
@@ -45,7 +45,7 @@ struct FilterSelectorView: View {
     
     private func onSelectedCategory() {
         if uiState.selectedCategory == nil {
-            onEvent(.ShowSheet(content: .category))
+            onEvent(.ShowSheet(shown: true, content: .category))
         } else {
             onEvent(.FilterByCategory(value: nil))
         }
@@ -68,7 +68,7 @@ private struct ChipSelectorView: View {
 
 #Preview {
     FilterSelectorView(
-        uiState: TransactionsState(),
+        uiState: TransactionsState.companion.default(),
         onEvent: {_ in }
     )
 }

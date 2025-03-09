@@ -3,6 +3,8 @@ import Shared
 
 struct CategoriesScreen: View {
     
+    @Binding var openDrawer: Bool
+    var showDrawer: Bool = false
     @StateObject private var viewModel = CategoriesViewModel()
     @EnvironmentObject private var navigation: AppNavigation
     let toolbarContent = ToolBarContent(title: "Categories")
@@ -27,15 +29,8 @@ struct CategoriesScreen: View {
         GeometryReader { geometry in
             ColorTheme.surface
                 .ignoresSafeArea()
-            CategoriesContentView(
-                selectedTab: $viewModel.uiState.selectedTab,
-                searchQuery: $viewModel.uiState.searchQuery,
-                uiState: uiState,
-                onEvent: viewModel.handle(event:)
-            )
-            .onChange(of: uiState.searchQuery){
-                viewModel.handle(event: .Search(query: uiState.searchQuery))
-            }
+            
+            CategoriesContentView()
             
             FabButtonView(
                 size: FabConstant.size,
@@ -46,22 +41,22 @@ struct CategoriesScreen: View {
         }
         .navigationBarBackButtonHidden(true)
         .onChange(of: viewModel.uiEffect){ observe(effect: viewModel.uiEffect) }
-        .sheet(isPresented: $viewModel.uiState.showSheet, onDismiss: { viewModel.handle(event: .ShowSheet(visibility: false))}) {
+        .sheet(
+            isPresented: Binding(
+                get: { uiState.showSheet },
+                set: { shown in viewModel.handle(event: .ShowSheet(visibility: shown))}
+            ),
+            onDismiss: { viewModel.handle(event: .ShowSheet(visibility: false))}
+        ) {
             VStack {
                 switch uiState.sheetContent {
-                case .create:
-                    CreateCategoryContentView(uiState: viewModel.uiState, onEvent: viewModel.handle)
-                case .selectColor:
-                    Text("Select Color")
-                case .selectIcon:
-//                    SelectIconView(
-//                        selectedIcon: uiState.selectedIcon,
-//                        selectedColor: uiState.selectedColor,
-//                        onPickIcon: { icon in viewModel.handle(event: .SelectedIcon(name: icon))},
-//                        onTakImage: { image in viewModel.handle(event: .PickImage(file: image))},
-//                        onConfirm: { viewModel.handle(event: .ConfirmIcon())}
-//                    )
-                    Text("Todo will fixed soon")
+                case .create:CreateCategoryContentView(
+                    uiState: viewModel.uiState,
+                    onEvent: viewModel.handle
+                )
+                case .selectColor: Text("Select Color")
+                case .selectIcon: SelectIconCategoryView()
+                    
                 }
             }
             .presentationDetents([bottomSheetSize])
@@ -69,6 +64,78 @@ struct CategoriesScreen: View {
         }
     }
     
+    @ViewBuilder
+    private func CategoriesContentView() -> some View {
+        VStack {
+            NavigationTopAppbar(
+                title: "Categories",
+                showDrawer: showDrawer,
+                onAction: onAction
+            )
+            OutlinedSearchTextFieldView(
+                query: Binding(
+                    get: { uiState.searchQuery },
+                    set: { viewModel.handle(event: .Search(query: $0))
+                    }
+                ),
+                placeHolder: "Search Categories..."
+            )
+            .padding(.horizontal, 16)
+            TabBarView(
+                currentTab: Binding(
+                    get: { uiState.selectedTab },
+                    set: { index in viewModel.handle(event: .ChangeTab(index: Int32(index))) }
+                ),
+                tabBarOptions: TransactionType.allCases.map{ type in type.name }
+            )
+            TabContentView()
+        }
+    }
+    
+    @ViewBuilder
+    private func TabContentView() -> some View {
+        TabView(
+            selection: Binding(
+                get: { uiState.selectedTab },
+                set: { index in viewModel.handle(event: .ChangeTab(index: Int32(index))) }
+            )
+        ) {
+            CategoriesView(
+                categories: uiState.categories.filter{ category in category.type == .income },
+                onClick: { category in viewModel.handle(event: .OnTapped(category: category)) }
+            )
+            .tag(TransactionType.income.ordinal)
+            
+            CategoriesView(
+                categories: uiState.categories.filter{ category in category.type == .expense },
+                onClick: { category in viewModel.handle(event: .OnTapped(category: category)) }
+            )
+            .tag(TransactionType.expense.ordinal)
+            
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+    }
+    
+    @ViewBuilder
+    private func SelectIconCategoryView() -> some View {
+        SelectIconView(
+            selectedIcon: Binding(
+                get: { uiState.selectedIcon },
+                set: { icon in viewModel.handle(event: .SelectedIcon(name: icon))}
+            ),
+            selectedColor: Color(hex: uiState.selectedColor.toColorLong()),
+            onTakeImage: { image in viewModel.handle(event: .PickImage(file: image))},
+            onConfirm: { viewModel.handle(event: .ConfirmIcon())}
+        )
+    }
+    
+    private func onAction() {
+        if showDrawer {
+            viewModel.handle(event: .OpenDrawer())
+        } else {
+            viewModel.handle(event: .NavigateBack())
+        }
+    }
     
     private func observe(effect: CategoriesEffect?){
         if let safeEffect = effect {
@@ -78,7 +145,7 @@ struct CategoriesScreen: View {
             case .navigateBack:
                 navigation.navigateBack()
             case .openDrawer:
-                print("drawer opened")
+                openDrawer = !openDrawer
             case .showError(let effect):
                 print("error \(effect.message)")
             }
@@ -88,5 +155,5 @@ struct CategoriesScreen: View {
 }
 
 #Preview {
-    CategoriesScreen()
+    CategoriesScreen(openDrawer: .constant(false))
 }
