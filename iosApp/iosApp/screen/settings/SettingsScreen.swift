@@ -3,6 +3,8 @@ import Shared
 
 struct SettingsScreen: View {
     
+    @Binding var openDrawer: Bool
+    var showDrawer: Bool = false
     @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel: SettingsViewModel = SettingsViewModel()
     @AppStorage(UserDefaultsKeys.isDarkMode) private var darkAppearance: Bool = false
@@ -62,8 +64,20 @@ struct SettingsScreen: View {
     @ViewBuilder
     private func NavigationBar() -> some View {
         VStack {
-            NavigationTopAppbar(title: "Settings", onAction: { navigation.navigateBack() })
+            NavigationTopAppbar(
+                title: "Settings",
+                showDrawer: showDrawer,
+                onAction: onAction
+            )
             Divider()
+        }
+    }
+    
+    private func onAction() {
+        if showDrawer {
+            viewModel.handle(event: .OpenDrawer())
+        } else {
+            viewModel.handle(event: .NavigateBack())
         }
     }
     
@@ -82,24 +96,18 @@ struct SettingsScreen: View {
     }
     
     private func observe(effect: SettingsEffect?) {
-        if let safeEffect = effect {
-            switch onEnum(of: safeEffect) {
-            case .confirm(_):
-                print("clicked")
-            case .generateBackupFile(let effect):
-                saveBackup(json: effect.json)
-            case .navigateBack:
-                print("Navigate back")
-            case .restoreBackupFile:
-                print("restire back up")
-            case .showError(let effect):
-                print(effect.message)
-            case .successChangeCurrency:
-                isSheetPresented = false
-            case .openDrawer:
-                print("open Drawer")
-            }
+        guard let effect else { return }
+        
+        switch onEnum(of: effect) {
+        case .confirm(_): print("clicked")
+        case .generateBackupFile(let effect): saveBackup(json: effect.json)
+        case .navigateBack: navigation.navigateBack()
+        case .restoreBackupFile: print("restire back up")
+        case .showError(let effect): print(effect.message)
+        case .successChangeCurrency: isSheetPresented = false
+        case .openDrawer: openDrawer = !openDrawer
         }
+        
         viewModel.uiEffect = nil
     }
     
@@ -124,5 +132,5 @@ struct SettingsScreen: View {
 }
 
 #Preview {
-    SettingsScreen()
+    SettingsScreen(openDrawer: .constant(false))
 }

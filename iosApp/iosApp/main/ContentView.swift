@@ -31,8 +31,8 @@ struct ContentView: View {
             case .goals(let showDrawer): GoalsScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
             case .monthlyBudget: MonthlyBudgetScreen()
             case .wallets(let showDrawer): WalletsScreen(openDrawer: $openDrawer, showDrawer: showDrawer)
-            case .reports: ReportsScreen()
-            case .settings: SettingsScreen()
+            case .reports: ReportsScreen(openDrawer: $openDrawer, showDrawer: true)
+            case .settings: SettingsScreen(openDrawer: $openDrawer, showDrawer: true)
             case .wallet(let walletId): WalletScreen(walletId: walletId)
             case .termAndService: TermAndServiceScreen()
             }

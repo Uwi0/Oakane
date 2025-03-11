@@ -3,6 +3,8 @@ import Shared
 
 struct ReportsScreen: View {
     
+    @Binding var openDrawer: Bool
+    var showDrawer: Bool = false
     @EnvironmentObject private var navigation: AppNavigation
     @StateObject private var viewModel: ReportsViewModel = ReportsViewModel()
     @State private var viewController: UIViewController?
@@ -55,29 +57,35 @@ struct ReportsScreen: View {
         VStack {
             NavigationTopAppbar(
                 title: "Reports",
+                showDrawer: showDrawer,
                 actionContent: {
                     Image(systemName: "square.and.arrow.down")
                         .frame(width: 24, height: 24)
                         .onTapGesture { viewModel.handle(event: .GenerateReport())}
                 },
-                onAction: { navigation.navigateBack() }
+                onAction: onAction
             )
             Divider()
         }
     }
     
+    private func onAction() {
+        if showDrawer {
+            viewModel.handle(event: .OpenDrawer())
+        } else {
+            viewModel.handle(event: .NavigateBack())
+        }
+    }
+    
     private func observe(effect: ReportsEffect?){
-        if let safeEffect = effect {
-            switch onEnum(of: safeEffect) {
-            case .generateReport(let effect):
-                generateReports(values: effect.reports)
-            case .navigateBack(_):
-                print("Navigate back")
-            case .showError(let effect):
-                print(effect.message)
-            case .openDrawer:
-                print("Open Drawer")
-            }
+        guard let effect else { return }
+        
+        switch onEnum(of: effect) {
+        case .generateReport(let effect):generateReports(values: effect.reports)
+        case .navigateBack : navigation.navigateBack()
+        case .showError(let effect): print(effect.message)
+        case .openDrawer: openDrawer = !openDrawer
+            
         }
         viewModel.uiEffect = nil
     }
@@ -99,5 +107,5 @@ struct ReportsScreen: View {
 }
 
 #Preview {
-    ReportsScreen()
+    ReportsScreen(openDrawer: .constant(false))
 }
