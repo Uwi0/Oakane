@@ -50,6 +50,7 @@ class SettingsViewModel(
             is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
             is SettingsEvent.ToggleRecurringBudget -> setMonthlyBudget(event.isRecurring)
             is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
+            is SettingsEvent.ToggleAlarm -> _uiState.update { it.copy(alarmEnabled = event.enabled) }
             SettingsEvent.OpenDrawer -> emit(SettingsEffect.OpenDrawer)
         }
     }

@@ -13,6 +13,8 @@ data class SettingsState(
     val isSheetShown: Boolean = false,
     val isRecurringBudget: Boolean = false,
     val isRecurringCategoryLimit: Boolean = false,
+    val alarmEnabled: Boolean = false,
+    val alarmValue: String = "19:00",
     val showDrawer: Boolean = false
 ) {
     fun update(theme: Int) = copy(
@@ -43,4 +45,5 @@ sealed class SettingsEvent {
     data class ToggleRecurringBudget(val isRecurring: Boolean): SettingsEvent()
     data class ToggleRecurringCategoryLimit(val isRecurring: Boolean): SettingsEvent()
     data object OpenDrawer: SettingsEvent()
+    data class ToggleAlarm(val enabled: Boolean): SettingsEvent()
 }

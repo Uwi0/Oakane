@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -35,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
@@ -42,7 +42,10 @@ import com.kakapo.common.getCurrentDateWith
 import com.kakapo.common.showToast
 import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
+import com.kakapo.oakane.presentation.designSystem.component.button.ToggleSwitchComponentView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
+import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.feature.settings.component.AlarmComponentView
 import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsView
 import com.kakapo.oakane.presentation.feature.settings.component.DialogThemeView
 import com.kakapo.oakane.presentation.feature.settings.component.SelectCurrencySheet
@@ -133,7 +136,7 @@ internal fun SettingsRoute(
         }
     }
 
-    SettingsScreen(uiState = uiState, onEvent = viewModel::handleEvent)
+    SettingsScreen(state = uiState, onEvent = viewModel::handleEvent)
 
     if (uiState.isSheetShown) {
         SelectCurrencySheet(
@@ -179,12 +182,12 @@ fun openDocumentIntent(): Intent {
 }
 
 @Composable
-private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> Unit) {
+private fun SettingsScreen(state: SettingsState, onEvent: (SettingsEvent) -> Unit) {
     Scaffold(
         topBar = {
             CustomNavigationMenuTopAppBarView(
                 title = "Settings",
-                showDrawer = uiState.showDrawer,
+                showDrawer = state.showDrawer,
                 onNavigateBack = { onEvent.invoke(SettingsEvent.NavigateBack) },
                 openMenu = { onEvent.invoke(SettingsEvent.OpenDrawer) }
             )
@@ -194,7 +197,7 @@ private fun SettingsScreen(uiState: SettingsState, onEvent: (SettingsEvent) -> U
                 modifier = Modifier
                     .padding(paddingValues)
                     .padding(vertical = 24.dp, horizontal = 16.dp),
-                uiState = uiState,
+                uiState = state,
                 onEvent = onEvent
             )
         }
@@ -240,6 +243,8 @@ private fun SettingContentView(
             icon = Icons.Outlined.ImportExport,
             onClick = { onEvent.invoke(SettingsEvent.RestoreBackupFile) }
         )
+        HorizontalDivider()
+        AlarmComponentView(state = uiState, onEvent = onEvent)
     }
 }
 
@@ -298,23 +303,10 @@ private fun ThemeButtonView(theme: Theme, onClick: () -> Unit) {
     }
 }
 
+@Preview
 @Composable
-private fun ToggleSwitchComponentView(
-    title: String,
-    checked: Boolean,
-    enable: Boolean = true,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(title, style = MaterialTheme.typography.titleMedium)
-        Switch(
-            checked = checked,
-            enabled = enable,
-            onCheckedChange = { onCheckedChange.invoke(it) }
-        )
+private fun SettingScreenPreview() {
+    AppTheme {
+        SettingsScreen(state = SettingsState()) { }
     }
 }
