@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.settings.component
+package com.kakapo.oakane.presentation.feature.settings.component.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -19,23 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kakapo.model.system.Theme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun DialogThemeView(
-    theme: Theme,
-    onClick: (Int) -> Unit,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit
-) {
-    BasicAlertDialog(onDismissRequest = onDismiss) {
-        Surface(shape = MaterialTheme.shapes.large) {
-            DialogContentThemeView(theme, onClick, onDismiss, onConfirm)
-        }
-    }
-}
-
-@Composable
-private fun DialogContentThemeView(
+internal fun SelectThemeDialogContent(
     theme: Theme,
     onClick: (Int) -> Unit,
     onDismiss: () -> Unit,
@@ -70,7 +52,7 @@ private fun ThemeSelection(selectedTheme: Theme, onClick: (Int) -> Unit) {
 }
 
 @Composable
-private fun ButtonAction(modifier: Modifier,onDismiss: () -> Unit, onConfirm: () -> Unit) {
+private fun ButtonAction(modifier: Modifier, onDismiss: () -> Unit, onConfirm: () -> Unit) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)

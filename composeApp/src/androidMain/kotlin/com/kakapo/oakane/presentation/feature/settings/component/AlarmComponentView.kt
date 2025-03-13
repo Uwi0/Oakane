@@ -50,7 +50,7 @@ private fun AlarmContentView(
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TitleContent(state)
         RepeatedDayView(state = state)
-        DaySelectorView(onEvent = onEvent)
+        DaySelectorView(state = state, onEvent = onEvent)
     }
 }
 
@@ -94,13 +94,14 @@ private fun RepeatedDayView(state: SettingsState) {
 }
 
 @Composable
-private fun DaySelectorView(onEvent: (SettingsEvent) -> Unit) {
+private fun DaySelectorView(state: SettingsState,onEvent: (SettingsEvent) -> Unit) {
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(ReminderDay.entries) { day ->
-            DayReminderItem(day, onClick = { onEvent.invoke(SettingsEvent.UpdateDay(day)) })
+            val isSelected = state.selectedDays.contains(day)
+            DayReminderItem(day, isSelected, onClick = { onEvent.invoke(SettingsEvent.UpdateDay(day)) })
         }
     }
 }
@@ -128,7 +129,11 @@ private fun DayReminderItem(
 
 @Composable
 private fun Boolean.asChipDateSelectedColor(): Pair<Color, Color> {
-    return ColorScheme.secondaryContainer to ColorScheme.secondary
+    return if (this) {
+        ColorScheme.secondaryContainer to ColorScheme.secondary
+    } else {
+        ColorScheme.surface to ColorScheme.outline
+    }
 }
 
 @Preview

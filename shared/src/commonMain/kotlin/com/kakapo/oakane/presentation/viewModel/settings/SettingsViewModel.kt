@@ -44,8 +44,8 @@ class SettingsViewModel(
             SettingsEvent.RestoreBackupFile -> emit(SettingsEffect.RestoreBackupFile)
             SettingsEvent.OnConfirmTheme -> confirmTheme()
             is SettingsEvent.RetrieveBackupFile -> retrieveBackupFile(event.json)
-            is SettingsEvent.OnDialog -> _uiState.update { it.copy(isDialogShown = event.shown) }
-            is SettingsEvent.OnSelected -> _uiState.update { it.update(event.theme) }
+            is SettingsEvent.ShowDialog -> _uiState.update { it.copy(isDialogShown = event.shown) }
+            is SettingsEvent.Selected -> _uiState.update { it.update(event.theme) }
             is SettingsEvent.OnSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
             is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
             is SettingsEvent.ToggleRecurringBudget -> setMonthlyBudget(event.isRecurring)

@@ -47,9 +47,10 @@ import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNav
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.settings.component.AlarmComponentView
 import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsView
-import com.kakapo.oakane.presentation.feature.settings.component.DialogThemeView
 import com.kakapo.oakane.presentation.feature.settings.component.SelectCurrencySheet
-import com.kakapo.oakane.presentation.feature.settings.component.asString
+import com.kakapo.oakane.presentation.feature.settings.component.dialog.DialogThemeView
+import com.kakapo.oakane.presentation.feature.settings.component.dialog.asString
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsDialogContent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEffect
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
@@ -150,9 +151,7 @@ internal fun SettingsRoute(
     if (uiState.isDialogShown) {
         DialogThemeView(
             theme = uiState.theme,
-            onClick = { theme -> viewModel.handleEvent(SettingsEvent.OnSelected(theme)) },
-            onConfirm = { viewModel.handleEvent(SettingsEvent.OnConfirmTheme) },
-            onDismiss = { viewModel.handleEvent(SettingsEvent.OnDialog(shown = false)) }
+            onEvent = viewModel::handleEvent
         )
     }
 }
@@ -210,6 +209,7 @@ private fun SettingContentView(
     uiState: SettingsState,
     onEvent: (SettingsEvent) -> Unit
 ) {
+    val dialogContent = SettingsDialogContent.Theme
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -217,7 +217,7 @@ private fun SettingContentView(
         ChangeCurrencyButtonView(onEvent, uiState)
         ThemeButtonView(
             theme = uiState.theme,
-            onClick = { onEvent.invoke(SettingsEvent.OnDialog(shown = true)) }
+            onClick = { onEvent.invoke(SettingsEvent.ShowDialog(content = dialogContent, shown = true)) }
         )
         ToggleSwitchComponentView(
             title = "Recurring Monthly Budget",

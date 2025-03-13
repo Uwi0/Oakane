@@ -17,7 +17,8 @@ data class SettingsState(
     val alarmEnabled: Boolean = false,
     val alarmValue: String = "19:00",
     val showDrawer: Boolean = false,
-    val selectedDays: List<ReminderDay> = emptyList()
+    val selectedDays: List<ReminderDay> = ReminderDay.entries,
+    val dialogContent: SettingsDialogContent = SettingsDialogContent.Theme
 ) {
     fun update(theme: Int) = copy(
         theme = theme.asTheme()
@@ -47,9 +48,9 @@ sealed class SettingsEvent {
     data object GenerateBackupFile: SettingsEvent()
     data object RestoreBackupFile: SettingsEvent()
     data class RetrieveBackupFile(val json: String): SettingsEvent()
-    data class OnDialog(val shown: Boolean): SettingsEvent()
+    data class ShowDialog(val content: SettingsDialogContent, val shown: Boolean): SettingsEvent()
     data class OnSheet(val shown: Boolean): SettingsEvent()
-    data class OnSelected(val theme: Int): SettingsEvent()
+    data class Selected(val theme: Int): SettingsEvent()
     data object OnConfirmTheme: SettingsEvent()
     data class ChangeCurrency(val currency: Currency): SettingsEvent()
     data class ToggleRecurringBudget(val isRecurring: Boolean): SettingsEvent()
@@ -57,4 +58,9 @@ sealed class SettingsEvent {
     data object OpenDrawer: SettingsEvent()
     data class ToggleAlarm(val enabled: Boolean): SettingsEvent()
     data class UpdateDay(val day: ReminderDay): SettingsEvent()
+}
+
+enum class SettingsDialogContent {
+    Theme,
+    Reminder
 }
