@@ -52,6 +52,7 @@ class SettingsViewModel(
             is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
             is SettingsEvent.ToggleAlarm -> _uiState.update { it.copy(alarmEnabled = event.enabled) }
             SettingsEvent.OpenDrawer -> emit(SettingsEffect.OpenDrawer)
+            is SettingsEvent.UpdateDay -> _uiState.update { it.update(event.day) }
         }
     }
 

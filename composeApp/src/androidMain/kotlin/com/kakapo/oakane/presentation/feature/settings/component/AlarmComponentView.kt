@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.ToggleSwitchComponentView
@@ -33,20 +34,23 @@ internal fun AlarmComponentView(state: SettingsState, onEvent: (SettingsEvent) -
         ToggleSwitchComponentView(
             title = "Set Reminder",
             checked = state.alarmEnabled,
-            onCheckedChange = { onEvent.invoke(SettingsEvent.ToggleAlarm(it))}
+            onCheckedChange = { onEvent.invoke(SettingsEvent.ToggleAlarm(it)) }
         )
         AnimatedVisibility(state.alarmEnabled) {
-            AlarmContentView(state = state)
+            AlarmContentView(state = state, onEvent = onEvent)
         }
     }
 }
 
 @Composable
-private fun AlarmContentView(state: SettingsState) {
+private fun AlarmContentView(
+    state: SettingsState,
+    onEvent: (SettingsEvent) -> Unit
+) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TitleContent(state)
-        RepeatedDayView()
-        DaySelectorView()
+        RepeatedDayView(state = state)
+        DaySelectorView(onEvent = onEvent)
     }
 }
 
@@ -77,33 +81,42 @@ private fun CustomButtonEdit() {
 }
 
 @Composable
-private fun RepeatedDayView() {
+private fun RepeatedDayView(state: SettingsState) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text("Repeat on", style = Typography.labelLarge)
-    }
-}
-
-@Composable
-private fun DaySelectorView() {
-    LazyRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(ReminderDay.entries) { day ->
-            DayReminderItem(day)
+        Text("Repeat on:", style = Typography.labelLarge)
+        state.selectedDays.forEach { day ->
+            Text(day.title, style = Typography.titleMedium)
         }
     }
 }
 
 @Composable
-private fun DayReminderItem(day: ReminderDay) {
+private fun DaySelectorView(onEvent: (SettingsEvent) -> Unit) {
+    LazyRow(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(ReminderDay.entries) { day ->
+            DayReminderItem(day, onClick = { onEvent.invoke(SettingsEvent.UpdateDay(day)) })
+        }
+    }
+}
+
+@Composable
+private fun DayReminderItem(
+    day: ReminderDay,
+    isSelected: Boolean = false,
+    onClick: () -> Unit = {}
+) {
+    val (containerColor, borderColor) = isSelected.asChipDateSelectedColor()
     Surface(
+        onClick = onClick,
         shape = MaterialTheme.shapes.small,
-        color = ColorScheme.secondaryContainer,
-        border = BorderStroke(color = ColorScheme.secondary, width = 1.dp)
+        color = containerColor,
+        border = BorderStroke(color = borderColor, width = 1.dp)
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -111,6 +124,11 @@ private fun DayReminderItem(day: ReminderDay) {
             style = Typography.titleSmall
         )
     }
+}
+
+@Composable
+private fun Boolean.asChipDateSelectedColor(): Pair<Color, Color> {
+    return ColorScheme.secondaryContainer to ColorScheme.secondary
 }
 
 @Preview
