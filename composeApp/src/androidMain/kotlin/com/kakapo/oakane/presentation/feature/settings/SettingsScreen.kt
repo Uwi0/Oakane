@@ -148,9 +148,9 @@ internal fun SettingsRoute(
         )
     }
 
-    if (uiState.isDialogShown) {
+    if (uiState.dialogShown) {
         DialogThemeView(
-            theme = uiState.theme,
+            state = uiState,
             onEvent = viewModel::handleEvent
         )
     }

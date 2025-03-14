@@ -43,15 +43,15 @@ class SettingsViewModel(
             SettingsEvent.GenerateBackupFile -> createBackupFile()
             SettingsEvent.RestoreBackupFile -> emit(SettingsEffect.RestoreBackupFile)
             SettingsEvent.OnConfirmTheme -> confirmTheme()
+            SettingsEvent.OpenDrawer -> emit(SettingsEffect.OpenDrawer)
             is SettingsEvent.RetrieveBackupFile -> retrieveBackupFile(event.json)
-            is SettingsEvent.ShowDialog -> _uiState.update { it.copy(isDialogShown = event.shown) }
+            is SettingsEvent.ShowDialog -> _uiState.update { it.copy(dialogShown = event.shown, dialogContent = event.content) }
             is SettingsEvent.Selected -> _uiState.update { it.update(event.theme) }
             is SettingsEvent.OnSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
             is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
             is SettingsEvent.ToggleRecurringBudget -> setMonthlyBudget(event.isRecurring)
             is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
             is SettingsEvent.ToggleAlarm -> _uiState.update { it.copy(alarmEnabled = event.enabled) }
-            SettingsEvent.OpenDrawer -> emit(SettingsEffect.OpenDrawer)
             is SettingsEvent.UpdateDay -> _uiState.update { it.update(event.day) }
         }
     }
@@ -84,7 +84,7 @@ class SettingsViewModel(
     private fun confirmTheme() = viewModelScope.launch {
         val theme = uiState.value.theme
         val onSuccess: (Unit) -> Unit = {
-            _uiState.update { it.copy(isDialogShown = false) }
+            _uiState.update { it.copy(dialogShown = false) }
             emit(SettingsEffect.Confirm(theme))
         }
 

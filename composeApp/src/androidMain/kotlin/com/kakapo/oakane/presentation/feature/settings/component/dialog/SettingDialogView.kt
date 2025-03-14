@@ -5,14 +5,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import com.kakapo.model.system.Theme
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsDialogContent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DialogThemeView(
-    theme: Theme,
+    state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
 ) {
     val dismissContent = SettingsDialogContent.Theme
@@ -26,12 +26,17 @@ internal fun DialogThemeView(
         }
     ) {
         Surface(shape = MaterialTheme.shapes.large) {
-            SelectThemeDialogContent(
-                theme = theme,
-                onClick = { theme -> onEvent.invoke(SettingsEvent.Selected(theme)) },
-                onDismiss = dismissDialog,
-                onConfirm = dismissDialog
-            )
+            when (state.dialogContent) {
+                SettingsDialogContent.Theme -> SelectThemeDialogContent(
+                    theme = state.theme,
+                    onClick = { theme -> onEvent.invoke(SettingsEvent.Selected(theme)) },
+                    onDismiss = dismissDialog,
+                    onConfirm = dismissDialog
+                )
+
+                SettingsDialogContent.Reminder -> SetAlarmReminderDialogContent()
+            }
+
         }
     }
 }

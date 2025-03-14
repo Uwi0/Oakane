@@ -25,6 +25,7 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.designSystem.theme.ColorScheme
 import com.kakapo.oakane.presentation.designSystem.theme.Typography
 import com.kakapo.oakane.presentation.model.ReminderDay
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsDialogContent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
 
@@ -48,27 +49,31 @@ private fun AlarmContentView(
     onEvent: (SettingsEvent) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        TitleContent(state)
+        TitleContent(state, onEvent)
         RepeatedDayView(state = state)
         DaySelectorView(state = state, onEvent = onEvent)
     }
 }
 
 @Composable
-private fun TitleContent(state: SettingsState) {
+private fun TitleContent(state: SettingsState, onEvent: (SettingsEvent) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text("Time Input", style = Typography.labelLarge)
         Text(state.alarmValue, style = Typography.titleLarge)
-        CustomButtonEdit()
+        CustomButtonEdit(onClick = {
+            onEvent.invoke(
+                SettingsEvent.ShowDialog(content = SettingsDialogContent.Reminder, shown = true)
+            )
+        })
     }
 }
 
 @Composable
-private fun CustomButtonEdit() {
-    Surface(shape = MaterialTheme.shapes.small, color = ColorScheme.secondary) {
+private fun CustomButtonEdit(onClick: () -> Unit) {
+    Surface(onClick = onClick, shape = MaterialTheme.shapes.small, color = ColorScheme.secondary) {
         Row(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -94,14 +99,17 @@ private fun RepeatedDayView(state: SettingsState) {
 }
 
 @Composable
-private fun DaySelectorView(state: SettingsState,onEvent: (SettingsEvent) -> Unit) {
+private fun DaySelectorView(state: SettingsState, onEvent: (SettingsEvent) -> Unit) {
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(ReminderDay.entries) { day ->
             val isSelected = state.selectedDays.contains(day)
-            DayReminderItem(day, isSelected, onClick = { onEvent.invoke(SettingsEvent.UpdateDay(day)) })
+            DayReminderItem(
+                day,
+                isSelected,
+                onClick = { onEvent.invoke(SettingsEvent.UpdateDay(day)) })
         }
     }
 }

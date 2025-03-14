@@ -9,7 +9,7 @@ import kotlin.native.ObjCName
 @ObjCName("SettingsStateKt")
 data class SettingsState(
     val theme: Theme = Theme.System,
-    val isDialogShown: Boolean = false,
+    val dialogShown: Boolean = false,
     val currency: Currency = Currency.USD,
     val isSheetShown: Boolean = false,
     val isRecurringBudget: Boolean = false,
