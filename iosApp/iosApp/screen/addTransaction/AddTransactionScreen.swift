@@ -122,7 +122,16 @@ struct AddTransactionScreen: View {
                 .background(ColorTheme.surface)
             }
         )
-        .sheet(isPresented: $showCamera, content: { CameraViewController() })
+        .sheet(
+            isPresented: $showCamera,
+            content: {
+                CameraViewController(
+                    onGetPhoto: { imageUrl in
+                        viewModel.handle(event: .SaveImageFile(name: imageUrl))
+                    }
+                )
+            }
+        )
     }
     
     
@@ -159,6 +168,9 @@ struct AddTransactionScreen: View {
 }
 
 struct CameraViewController: UIViewControllerRepresentable {
+    
+    let onGetPhoto: (String) -> Void
+    
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = .camera
@@ -184,7 +196,7 @@ struct CameraViewController: UIViewControllerRepresentable {
                 saveImageToPhotoLibrary(image: capturedImage) { result in
                     switch result {
                     case .success(let url):
-                        print(url)
+                        self.parent.onGetPhoto(url)
                     case .failure(let error):
                         print(error)
                     }
