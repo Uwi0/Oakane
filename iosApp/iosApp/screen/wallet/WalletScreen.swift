@@ -31,7 +31,6 @@ struct WalletScreen: View {
                 LogViews()
             }
             
-            
             FabButtonView(
                 size: FabConstant.size,
                 xPos: proxy.size.width - FabConstant.xOffset,

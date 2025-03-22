@@ -58,6 +58,9 @@ internal fun HomeRoute(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
+                is HomeEffect.ToTransaction -> navigateToTransaction.invoke(effect.id)
+                is HomeEffect.ToGoalWith -> navigateToGoal.invoke(effect.id)
+                is HomeEffect.ShowError -> context.showToast(effect.message)
                 HomeEffect.ToCreateTransaction -> navigateToAddTransaction.invoke()
                 HomeEffect.ToTransactions -> navigateToTransactions.invoke()
                 HomeEffect.OpenDrawer -> openDrawer.invoke()
@@ -65,9 +68,6 @@ internal fun HomeRoute(
                 HomeEffect.ToMonthlyBudget -> navigateToMonthlyBudget.invoke()
                 HomeEffect.ToGoals -> navigateToGoals.invoke()
                 HomeEffect.ToWallets -> navigateToWallets.invoke()
-                is HomeEffect.ToTransaction -> navigateToTransaction.invoke(effect.id)
-                is HomeEffect.ToGoalWith -> navigateToGoal.invoke(effect.id)
-                is HomeEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
@@ -79,22 +79,11 @@ internal fun HomeRoute(
     HomeScreen(uiState = uiState, onEvent = viewModel::handleEvent)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeScreen(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text("Dashboard")
-                },
-                navigationIcon = {
-                    CustomIconButton(
-                        icon = Icons.Default.Menu,
-                        onClick = { onEvent.invoke(HomeEvent.OpenDrawer) }
-                    )
-                }
-            )
+            HomeTopAppBar(onEvent)
         },
         content = { paddingValues ->
             HomeContentView(
@@ -112,6 +101,22 @@ private fun HomeScreen(uiState: HomeState, onEvent: (HomeEvent) -> Unit) {
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun HomeTopAppBar(onEvent: (HomeEvent) -> Unit) {
+    TopAppBar(
+        title = {
+            Text("Dashboard")
+        },
+        navigationIcon = {
+            CustomIconButton(
+                icon = Icons.Default.Menu,
+                onClick = { onEvent.invoke(HomeEvent.OpenDrawer) }
+            )
         }
     )
 }

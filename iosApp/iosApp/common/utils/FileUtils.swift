@@ -90,13 +90,19 @@ func fetchImage(localIdentifier: String) async -> UIImage? {
         let options = PHImageRequestOptions()
         options.version = .current
         options.isSynchronous = false
+        options.deliveryMode = .highQualityFormat
         
-        manager.requestImage(for: asset,
-                             targetSize: PHImageManagerMaximumSize,
-                             contentMode: .aspectFit,
-                             options: options) { (image, _) in
-            continuation.resume(returning: image)
-        }
+        var hasResumed = false
+        
+        manager.requestImage(
+            for: asset,
+            targetSize: PHImageManagerMaximumSize,
+            contentMode: .aspectFit,
+            options: options) { (image, _) in
+                guard !hasResumed else { return }
+                hasResumed = true
+                continuation.resume(returning: image)
+            }
     }
 }
 

@@ -12,11 +12,11 @@ final class AppNavigation: ObservableObject {
         case transaction(id: Int64)
         case categories(showDrawer: Bool = false)
         case addGoal(goalId: Int64)
-        case goal(goalId: Int64)
-        case goals
+        case goal(id: Int64)
+        case goals(showDrawer: Bool = false)
         case monthlyBudget
-        case wallets
-        case wallet(walletId: Int64)
+        case wallets(showDrawer: Bool = false)
+        case wallet(id: Int64)
         case reports
         case settings
     }
@@ -37,20 +37,13 @@ final class AppNavigation: ObservableObject {
     
     func navigateFrom(menu: DrawerMenuNavigation){
         switch menu {
-        case .dashboard:
-            navigate(to: .home)
-        case .transactions:
-            navigate(to: .transactions(showDrawer: true))
-        case .categories:
-            navigate(to: .categories(showDrawer: true))
-        case .goals:
-            navigate(to: .goals)
-        case .wallets:
-            navigate(to: .wallets)
-        case .reports:
-            navigate(to: .reports)
-        case .settings:
-            navigate(to: .settings)
+        case .dashboard: navigate(to: .home)
+        case .transactions: navigate(to: .transactions(showDrawer: true))
+        case .categories: navigate(to: .categories(showDrawer: true))
+        case .goals: navigate(to: .goals(showDrawer: true))
+        case .wallets: navigate(to: .wallets(showDrawer: true))
+        case .reports: navigate(to: .reports)
+        case .settings: navigate(to: .settings)
         }
     }
     
