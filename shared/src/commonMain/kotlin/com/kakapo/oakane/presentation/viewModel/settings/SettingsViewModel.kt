@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.BackupRepository
+import com.kakapo.data.repository.base.BudgetRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.model.Currency
 import com.kakapo.model.system.Theme
@@ -11,6 +12,7 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.native.ObjCName
@@ -18,11 +20,12 @@ import kotlin.native.ObjCName
 @ObjCName("SettingsViewModelKt")
 class SettingsViewModel(
     private val backupRepository: BackupRepository,
-    private val systemRepository: SystemRepository
+    private val systemRepository: SystemRepository,
+    private val budgetRepository: BudgetRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
-    val uiState get() = _uiState
+    val uiState get() = _uiState.asStateFlow()
     private val _uiState = MutableStateFlow(SettingsState())
 
     @NativeCoroutines
@@ -53,6 +56,7 @@ class SettingsViewModel(
             is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
             is SettingsEvent.ToggleAlarm -> _uiState.update { it.copy(alarmEnabled = event.enabled) }
             is SettingsEvent.UpdateDay -> _uiState.update { it.update(event.day) }
+            is SettingsEvent.UpdateHourAndMinute -> _uiState.update { it.updateHourAndMinutesWith(event) }
         }
     }
 
@@ -108,7 +112,7 @@ class SettingsViewModel(
         val onSuccess: (Boolean) -> Unit = { isRecurring ->
             _uiState.value = _uiState.value.copy(isRecurringBudget = isRecurring)
         }
-        systemRepository.isMonthlyBudgetRecurring().fold(
+        budgetRepository.isMonthlyBudgetRecurring().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
@@ -118,7 +122,7 @@ class SettingsViewModel(
         val onSuccess: (Boolean) -> Unit = { isRecurring ->
             _uiState.value = _uiState.value.copy(isRecurringCategoryLimit = isRecurring)
         }
-        systemRepository.isCategoryLimitRecurring().fold(
+        budgetRepository.isCategoryLimitRecurring().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
@@ -140,7 +144,7 @@ class SettingsViewModel(
             _uiState.update { it.copy(isRecurringBudget = isRecurring) }
             if (!isRecurring) setCategoryLimit(isRecurring = false)
         }
-        systemRepository.setMonthlyBudget(isRecurring).fold(
+        budgetRepository.setMonthlyBudget(isRecurring).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
@@ -150,7 +154,7 @@ class SettingsViewModel(
         val onSuccess: (Unit) -> Unit = {
             _uiState.update { it.copy(isRecurringCategoryLimit = isRecurring) }
         }
-        systemRepository.saveCategoryLimit(isRecurring).fold(
+        budgetRepository.saveCategoryLimit(isRecurring).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

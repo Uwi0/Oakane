@@ -15,14 +15,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsDialogContent
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
+import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SetAlarmReminderDialogContent() {
+internal fun SetAlarmReminderDialogContent(state: SettingsState, onEvent: (SettingsEvent) -> Unit) {
     val timePickerState = rememberTimePickerState(
+        initialHour = state.selectedHour,
+        initialMinute = state.selectedMinute,
         is24Hour = true
     )
     Column(
@@ -31,19 +37,40 @@ internal fun SetAlarmReminderDialogContent() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TimePicker(state = timePickerState)
-        BottomContentView()
+        BottomContentView(
+            onCancel = {
+                onEvent.invoke(
+                    SettingsEvent.ShowDialog(
+                        content = SettingsDialogContent.Reminder,
+                        shown = false
+                    )
+                )
+            },
+            onConfirm = {
+                onEvent.invoke(
+                    SettingsEvent.UpdateHourAndMinute(
+                        hour = timePickerState.hour,
+                        minute = timePickerState.minute
+                    )
+                )
+            }
+        )
     }
 }
 
 @Composable
-private fun BottomContentView() {
+private fun BottomContentView(onCancel: () -> Unit, onConfirm: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         CustomTextButton(
             modifier = Modifier.weight(1f),
-            onClick = {},
+            onClick = onCancel,
             text = { Text("Cancel") }
         )
-        CustomButton(modifier = Modifier.weight(1f), onClick = {}, text = { Text("Save") })
+        CustomButton(
+            modifier = Modifier.weight(1f),
+            onClick = onConfirm,
+            text = { Text("Save") }
+        )
     }
 }
 
@@ -52,7 +79,7 @@ private fun BottomContentView() {
 private fun SetAlarmTimeDialogContentPreview() {
     AppTheme {
         Surface {
-            SetAlarmReminderDialogContent()
+            SetAlarmReminderDialogContent(state = SettingsState(), onEvent = {})
         }
     }
 }

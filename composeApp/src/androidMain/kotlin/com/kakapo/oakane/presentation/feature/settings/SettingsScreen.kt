@@ -48,7 +48,7 @@ import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.settings.component.AlarmComponentView
 import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsView
 import com.kakapo.oakane.presentation.feature.settings.component.SelectCurrencySheet
-import com.kakapo.oakane.presentation.feature.settings.component.dialog.DialogThemeView
+import com.kakapo.oakane.presentation.feature.settings.component.dialog.DialogSettingsView
 import com.kakapo.oakane.presentation.feature.settings.component.dialog.asString
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsDialogContent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEffect
@@ -149,7 +149,7 @@ internal fun SettingsRoute(
     }
 
     if (uiState.dialogShown) {
-        DialogThemeView(
+        DialogSettingsView(
             state = uiState,
             onEvent = viewModel::handleEvent
         )

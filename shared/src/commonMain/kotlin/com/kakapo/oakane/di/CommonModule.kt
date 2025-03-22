@@ -1,6 +1,7 @@
 package com.kakapo.oakane.di
 
 import com.kakapo.data.repository.base.BackupRepository
+import com.kakapo.data.repository.base.BudgetRepository
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.GoalRepository
@@ -12,6 +13,7 @@ import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.data.repository.base.WalletTransferRepository
 import com.kakapo.data.repository.impl.BackupRepositoryImpl
+import com.kakapo.data.repository.impl.BudgetRepositoryImpl
 import com.kakapo.data.repository.impl.CategoryLimitRepositoryImpl
 import com.kakapo.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.data.repository.impl.GoalRepositoryImpl
@@ -124,6 +126,7 @@ object CommonModule {
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
         factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get(), get(named(IO))) }
         factory<WalletTransferRepository> { WalletTransferRepositoryImpl(get(), get(), get(named(IO))) }
+        factory<BudgetRepository> { BudgetRepositoryImpl(get()) }
     }
 
     val domainModule: Module = module {
@@ -154,7 +157,7 @@ object CommonModule {
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
-        viewModel { SettingsViewModel(get(), get())}
+        viewModel { SettingsViewModel(get(), get(), get())}
         viewModel { OnBoardingViewModel(get(), get(), get()) }
         viewModel { WalletViewModel(get(), get(), get(), get()) }
         viewModel { TermAndServiceViewModel(get()) }

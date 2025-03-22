@@ -11,3 +11,9 @@ enum class ReminderDay(val title: String, val dayOfWeek: DayOfWeek) {
     FRIDAY("Fri", DayOfWeek.FRIDAY),
     SATURDAY("Sat", DayOfWeek.SATURDAY)
 }
+
+fun List<String>.toReminderDays(): List<ReminderDay> {
+    return mapNotNull { title ->
+        ReminderDay.entries.find { it.title == title }
+    }
+}

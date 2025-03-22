@@ -11,7 +11,7 @@ import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun DialogThemeView(
+internal fun DialogSettingsView(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
 ) {
@@ -34,9 +34,11 @@ internal fun DialogThemeView(
                     onConfirm = dismissDialog
                 )
 
-                SettingsDialogContent.Reminder -> SetAlarmReminderDialogContent()
+                SettingsDialogContent.Reminder -> SetAlarmReminderDialogContent(
+                    state = state,
+                    onEvent = onEvent
+                )
             }
-
         }
     }
 }

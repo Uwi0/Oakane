@@ -15,11 +15,18 @@ data class SettingsState(
     val isRecurringBudget: Boolean = false,
     val isRecurringCategoryLimit: Boolean = false,
     val alarmEnabled: Boolean = false,
-    val alarmValue: String = "19:00",
     val showDrawer: Boolean = false,
     val selectedDays: List<ReminderDay> = ReminderDay.entries,
-    val dialogContent: SettingsDialogContent = SettingsDialogContent.Theme
+    val dialogContent: SettingsDialogContent = SettingsDialogContent.Theme,
+    val selectedHour: Int = 19,
+    val selectedMinute: Int = 0
 ) {
+    val alarmValue: String get() {
+        val hour = selectedHour.toString().padStart(2, '0')
+        val minute = selectedMinute.toString().padStart(2, '0')
+        return "$hour:$minute"
+    }
+
     fun update(theme: Int) = copy(
         theme = theme.asTheme()
     )
@@ -30,6 +37,12 @@ data class SettingsState(
         } else {
             selectedDays + day
         }
+    )
+
+    fun updateHourAndMinutesWith(event: SettingsEvent.UpdateHourAndMinute) = copy(
+        selectedHour = event.hour,
+        selectedMinute = event.minute,
+        dialogShown = false
     )
 }
 
@@ -58,6 +71,7 @@ sealed class SettingsEvent {
     data object OpenDrawer: SettingsEvent()
     data class ToggleAlarm(val enabled: Boolean): SettingsEvent()
     data class UpdateDay(val day: ReminderDay): SettingsEvent()
+    data class UpdateHourAndMinute(val hour: Int, val minute: Int): SettingsEvent()
 }
 
 enum class SettingsDialogContent {
