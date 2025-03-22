@@ -128,11 +128,20 @@ Oakane is a finance management app built with **Kotlin Multiplatform (KMP)**, le
 ### **download google services.json for android**
 1. Go to Firebase Console.
 2. Click Add App → Select Android
-3. Enter the package name:com.kakapo.oakane.demo
-4. Generate SHA-1 using:./gradlew signingReport
+3. Enter the package name:
+```sh
+com.kakapo.oakane.demo
+```
+4. Generate SHA-1 using:
+```sh
+./gradlew signingReport
+```
 5. Paste the SHA-1 in Firebase.
 6. Download the google-services.json file.
-7. Place the file inside:composeApp/src/androidMain/
+7. Place the file inside: 
+```sh
+composeApp/src/androidMain/
+```
 Ensure the file is present before building the project, as it will be automatically detected.
 ### **Android**
 1. Clone the repository:
