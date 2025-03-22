@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.data.repository.base.SettingsRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,7 @@ import kotlin.native.ObjCName
 
 @ObjCName("SplashViewModelKt")
 class SplashViewModel(
-    private val systemRepository: SystemRepository
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -29,14 +30,14 @@ class SplashViewModel(
     }
 
     private fun isAlreadyReadOnBoarding() = viewModelScope.launch {
-        systemRepository.loadOnBoardingAlreadyRead().fold(
+        settingsRepository.loadOnBoardingAlreadyRead().fold(
             onSuccess = { alreadyRead -> _isAlreadyReadOnBoarding.update { alreadyRead } },
             onFailure = {}
         )
     }
 
     private fun isAlreadyReadTermAndService() = viewModelScope.launch {
-        systemRepository.loadTermAndServiceCondition().fold(
+        settingsRepository.loadTermAndServiceCondition().fold(
             onSuccess = { alreadyRead -> _isAlreadyReadTermAndService.update { alreadyRead } },
             onFailure = {}
         )

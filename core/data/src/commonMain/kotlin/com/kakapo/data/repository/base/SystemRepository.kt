@@ -13,16 +13,4 @@ interface SystemRepository {
     suspend fun saveCurrency(currency: Currency): Result<Unit>
     @NativeCoroutines
     suspend fun loadSavedCurrency(): Result<Currency>
-    @NativeCoroutines
-    suspend fun saveOnBoardingAlreadyRead(): Result<Unit>
-    @NativeCoroutines
-    suspend fun loadOnBoardingAlreadyRead(): Result<Boolean>
-    @NativeCoroutines
-    suspend fun changeBalance(visibility: Boolean): Result<Boolean>
-    @NativeCoroutines
-    suspend fun isBalanceVisible(): Result<Boolean>
-    @NativeCoroutines
-    suspend fun saveTermAndServiceCondition(): Result<Unit>
-    @NativeCoroutines
-    suspend fun loadTermAndServiceCondition(): Result<Boolean>
 }

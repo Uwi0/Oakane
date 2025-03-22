@@ -8,6 +8,7 @@ import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.data.repository.base.GoalSavingsRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.ReportRepository
+import com.kakapo.data.repository.base.SettingsRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
@@ -20,6 +21,7 @@ import com.kakapo.data.repository.impl.GoalRepositoryImpl
 import com.kakapo.data.repository.impl.GoalSavingsRepositoryImpl
 import com.kakapo.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.data.repository.impl.ReportRepositoryImpl
+import com.kakapo.data.repository.impl.SettingsRepositoryImpl
 import com.kakapo.data.repository.impl.SystemRepositoryImpl
 import com.kakapo.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.data.repository.impl.WalletRepositoryImpl
@@ -127,6 +129,7 @@ object CommonModule {
         factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get(), get(named(IO))) }
         factory<WalletTransferRepository> { WalletTransferRepositoryImpl(get(), get(), get(named(IO))) }
         factory<BudgetRepository> { BudgetRepositoryImpl(get()) }
+        factory<SettingsRepository> { SettingsRepositoryImpl(get()) }
     }
 
     val domainModule: Module = module {
@@ -147,7 +150,7 @@ object CommonModule {
         viewModel { SplashViewModel(get()) }
         viewModel { MainViewModel(get(), get()) }
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
+        viewModel { HomeViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get(), get()) }
         viewModel { TransactionViewModel(get(), get(), get(), get()) }
         viewModel { CategoriesViewModel(get(), get()) }
@@ -158,7 +161,7 @@ object CommonModule {
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsViewModel(get(), get(), get())}
-        viewModel { OnBoardingViewModel(get(), get(), get()) }
+        viewModel { OnBoardingViewModel(get(), get(), get(), get()) }
         viewModel { WalletViewModel(get(), get(), get(), get()) }
         viewModel { TermAndServiceViewModel(get()) }
     }
