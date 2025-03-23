@@ -1,9 +1,10 @@
 package com.kakapo.oakane.presentation.viewModel.settings
 
 import com.kakapo.model.Currency
+import com.kakapo.model.reminder.Reminder
 import com.kakapo.model.system.Theme
 import com.kakapo.model.system.asTheme
-import com.kakapo.oakane.presentation.model.ReminderDay
+import com.kakapo.model.reminder.ReminderDay
 import kotlin.native.ObjCName
 
 @ObjCName("SettingsStateKt")
@@ -43,6 +44,13 @@ data class SettingsState(
         selectedHour = event.hour,
         selectedMinute = event.minute,
         dialogShown = false
+    )
+
+    fun updateReminder(reminder: Reminder) = copy(
+        selectedHour = reminder.selectedHour,
+        selectedMinute = reminder.selectedMinute,
+        alarmEnabled = reminder.isReminderEnabled,
+        selectedDays = reminder.reminders
     )
 }
 

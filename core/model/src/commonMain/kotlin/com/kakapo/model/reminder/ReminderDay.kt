@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.model
+package com.kakapo.model.reminder
 
 import kotlinx.datetime.DayOfWeek
 

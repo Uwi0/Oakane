@@ -24,7 +24,7 @@ import com.kakapo.oakane.presentation.designSystem.component.button.ToggleSwitch
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.designSystem.theme.ColorScheme
 import com.kakapo.oakane.presentation.designSystem.theme.Typography
-import com.kakapo.oakane.presentation.model.ReminderDay
+import com.kakapo.model.reminder.ReminderDay
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsDialogContent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsState

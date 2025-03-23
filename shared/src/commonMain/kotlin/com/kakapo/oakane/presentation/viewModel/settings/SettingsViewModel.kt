@@ -4,15 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.BackupRepository
 import com.kakapo.data.repository.base.BudgetRepository
+import com.kakapo.data.repository.base.SettingsRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.model.Currency
+import com.kakapo.model.reminder.Reminder
 import com.kakapo.model.system.Theme
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.native.ObjCName
@@ -21,7 +28,8 @@ import kotlin.native.ObjCName
 class SettingsViewModel(
     private val backupRepository: BackupRepository,
     private val systemRepository: SystemRepository,
-    private val budgetRepository: BudgetRepository
+    private val budgetRepository: BudgetRepository,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -38,6 +46,7 @@ class SettingsViewModel(
         loadCurrency()
         loadIsBudgetRecurring()
         loadIsCategoryLimitRecurring()
+        loadReminders()
     }
 
     fun handleEvent(event: SettingsEvent) {
@@ -56,7 +65,7 @@ class SettingsViewModel(
             is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
             is SettingsEvent.ToggleAlarm -> _uiState.update { it.copy(alarmEnabled = event.enabled) }
             is SettingsEvent.UpdateDay -> _uiState.update { it.update(event.day) }
-            is SettingsEvent.UpdateHourAndMinute -> _uiState.update { it.updateHourAndMinutesWith(event) }
+            is SettingsEvent.UpdateHourAndMinute -> _uiState.update { it.updateHourAndMinutesWith(event)}
         }
     }
 
@@ -155,6 +164,34 @@ class SettingsViewModel(
             _uiState.update { it.copy(isRecurringCategoryLimit = isRecurring) }
         }
         budgetRepository.saveCategoryLimit(isRecurring).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun handleReminder() = viewModelScope.launch {
+        uiState.map { state ->
+            Reminder(
+                reminders = state.selectedDays,
+                isReminderEnabled = state.alarmEnabled,
+                selectedHour = state.selectedHour,
+                selectedMinute = state.selectedMinute
+            )
+        }
+            .distinctUntilChanged()
+            .debounce(500)
+            .collectLatest { reminderPrefs ->
+                settingsRepository.saveReminder(reminderPrefs)
+            }
+    }
+
+    private fun loadReminders() = viewModelScope.launch {
+        val onSuccess: (Reminder) -> Unit = { reminder ->
+            handleReminder()
+            _uiState.update { it.updateReminder(reminder) }
+        }
+        settingsRepository.loadReminder().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
