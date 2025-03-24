@@ -41,6 +41,7 @@ skie = "0.10.1"
 splash-screen = "1.0.1"
 sqldelight = "2.0.2"
 uiTextGoogleFonts = "1.7.8"
+worker = "2.10.0"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
@@ -71,6 +72,7 @@ firebase-gitlive-sdk = { group = "com.google.firebase", name = "firebase-gitlive
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
+koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager" }
 koin-android = { module = "io.insert-koin:koin-android" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 koin-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
@@ -93,6 +95,8 @@ splash-screen = { module = "androidx.core:core-splashscreen", version.ref = "spl
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+worker-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "worker" }
+worker-testing = { module = "androidx.work:work-testing", version.ref = "worker" }
 
 #Dependencies of the included build logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

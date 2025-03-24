@@ -36,15 +36,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(projects.shared)
-
-            //COIL image
-            implementation(libs.coil.kt)
-            implementation(libs.coil.kt.compose)
-            implementation(libs.coil.kt.svg)
-
-            //koin
-            implementation(libs.koin.android)
-            implementation(libs.koin.androidx.compose)
         }
     }
 }
@@ -111,6 +102,20 @@ dependencies {
     //firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
+
+    //worker
+    implementation(libs.worker.runtime.ktx)
+    testImplementation(libs.worker.testing)
+
+    //COIL image
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
+    implementation(libs.coil.kt.svg)
+
+    //koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.workmanager)
 
     implementation(kotlin("reflect"))
 }

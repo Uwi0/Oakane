@@ -1,4 +1,4 @@
-package com.kakapo.oakane
+package com.kakapo.oakane.presentation.feature
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
