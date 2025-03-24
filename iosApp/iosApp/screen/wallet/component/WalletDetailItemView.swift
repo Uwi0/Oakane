@@ -50,11 +50,11 @@ struct WalletDetailItemView: View {
     @ViewBuilder
     private func BottomContent() -> some View {
         HStack {
-            BudgetItemView(amount: wallet.income, isExpense: false, currency: wallet.currency)
+            TransactionIconView(amount: wallet.income, isExpense: false, currency: wallet.currency)
             Spacer()
             Divider().frame(height: 48)
             Spacer()
-            BudgetItemView(amount: wallet.expense, isExpense: true, currency: wallet.currency)
+            TransactionIconView(amount: wallet.expense, isExpense: true, currency: wallet.currency)
         }
     }
     

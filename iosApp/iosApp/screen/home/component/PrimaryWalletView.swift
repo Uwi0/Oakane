@@ -35,6 +35,9 @@ struct PrimaryWalletView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .customBackground(backgroundColor: ColorTheme.surface)
+        .onTapGesture {
+            onEvent(.ToWallets())
+        }
     }
     
     @ViewBuilder

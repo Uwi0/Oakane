@@ -1,7 +1,7 @@
 import SwiftUI
 import Shared
 
-struct BudgetItemView: View {
+struct TransactionIconView: View {
     
     let amount: Double
     let isExpense: Bool
@@ -33,5 +33,5 @@ struct BudgetItemView: View {
 }
 
 #Preview {
-    BudgetItemView(amount: 2.0, isExpense: true, currency: .usd)
+    TransactionIconView(amount: 2.0, isExpense: true, currency: .usd)
 }
