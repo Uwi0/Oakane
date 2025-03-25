@@ -2,7 +2,7 @@ package com.kakapo.model.reminder
 
 import kotlinx.datetime.DayOfWeek
 
-enum class ReminderDay(val title: String, val dayOfWeek: DayOfWeek) {
+enum class ReminderDay(val title: String, public val dayOfWeek: DayOfWeek) {
     SUNDAY("Sun", DayOfWeek.SUNDAY),
     MONDAY("Mon", DayOfWeek.MONDAY),
     TUESDAY("Tues", DayOfWeek.TUESDAY),

@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.BackupRepository
 import com.kakapo.data.repository.base.BudgetRepository
 import com.kakapo.data.repository.base.SettingsRepository
@@ -199,6 +200,7 @@ class SettingsViewModel(
 
     private fun handleError(throwable: Throwable? = null) {
         emit(SettingsEffect.ShowError(throwable?.message ?: "Unknown error"))
+        Logger.e("Error: ${throwable?.message}")
     }
 
     private fun emit(effect: SettingsEffect) = viewModelScope.launch {

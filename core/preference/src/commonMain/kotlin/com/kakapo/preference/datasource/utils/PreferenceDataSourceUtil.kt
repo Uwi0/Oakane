@@ -34,6 +34,6 @@ suspend fun PreferenceDatasource.getReminderPrefs(): ReminderPrefs {
     val selectedHour = getIntValue(IntKey.REMINDER_HOUR)
     val selectedMinute = getIntValue(IntKey.REMINDER_MINUTE)
     val jsonReminders = getStringValue(StringKey.REMINDER_DAYS)
-    val reminders = Json.decodeFromString<List<String>>(jsonReminders)
+    val reminders = if(isReminderEnabled) Json.decodeFromString<List<String>>(jsonReminders) else emptyList()
     return ReminderPrefs(reminders, isReminderEnabled, selectedHour, selectedMinute)
 }
