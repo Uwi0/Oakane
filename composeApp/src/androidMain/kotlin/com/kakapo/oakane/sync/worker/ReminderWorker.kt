@@ -34,7 +34,7 @@ class ReminderWorker(
         val calendar = Calendar.getInstance()
         val currentDay = DayOfWeek.of(calendar.get(Calendar.DAY_OF_WEEK))
 
-        if (reminder.reminders.any{ it.dayOfWeek == currentDay}) {
+        if (reminder.reminders.any { it.dayOfWeek.value == currentDay.value }) {
             setAlarm(reminder.selectedHour, reminder.selectedMinute)
         }
     }
