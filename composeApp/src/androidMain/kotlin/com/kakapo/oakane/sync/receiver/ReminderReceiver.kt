@@ -20,6 +20,7 @@ class ReminderReceiver: BroadcastReceiver() {
         ) as NotificationManager
 
         val builder = NotificationCompat.Builder(context, "reminder_channel")
+            .setSmallIcon(R.drawable.oakane_icon)
             .setContentTitle("Reminder Alert")
             .setContentText("You have a reminder set for today.")
             .setPriority(NotificationCompat.PRIORITY_HIGH)

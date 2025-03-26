@@ -10,7 +10,11 @@ struct ReminderScreen: View {
             VStack(spacing: 16) {
                 Toggle("Switch Reminder", isOn: .constant(true))
                 Divider()
-                DatePicker("Select Time", selection: $selectedTime, displayedComponents: .hourAndMinute)
+                DatePicker(
+                    "Select Time",
+                    selection: $selectedTime,
+                    displayedComponents: .hourAndMinute
+                )
                 RecurringDayView()
                 Divider()
                 Spacer()
