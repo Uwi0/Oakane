@@ -18,40 +18,12 @@ data class SettingsState(
     val alarmEnabled: Boolean = false,
     val showDrawer: Boolean = false,
     val selectedDays: List<ReminderDay> = ReminderDay.entries,
-    val dialogContent: SettingsDialogContent = SettingsDialogContent.Theme,
-    val selectedHour: Int = 19,
-    val selectedMinute: Int = 0
 ) {
-    val alarmValue: String get() {
-        val hour = selectedHour.toString().padStart(2, '0')
-        val minute = selectedMinute.toString().padStart(2, '0')
-        return "$hour:$minute"
-    }
 
     fun update(theme: Int) = copy(
         theme = theme.asTheme()
     )
 
-    fun update(day: ReminderDay) = copy(
-        selectedDays = if (selectedDays.contains(day)) {
-            selectedDays - day
-        } else {
-            selectedDays + day
-        }
-    )
-
-    fun updateHourAndMinutesWith(event: SettingsEvent.UpdateHourAndMinute) = copy(
-        selectedHour = event.hour,
-        selectedMinute = event.minute,
-        dialogShown = false
-    )
-
-    fun updateReminder(reminder: Reminder) = copy(
-        selectedHour = reminder.selectedHour,
-        selectedMinute = reminder.selectedMinute,
-        alarmEnabled = reminder.isReminderEnabled,
-        selectedDays = reminder.reminders
-    )
 }
 
 sealed class SettingsEffect {
@@ -62,6 +34,7 @@ sealed class SettingsEffect {
     data class Confirm(val theme: Theme): SettingsEffect()
     data object SuccessChangeCurrency: SettingsEffect()
     data object OpenDrawer: SettingsEffect()
+    data object NavigateToReminder: SettingsEffect()
 }
 
 sealed class SettingsEvent {
@@ -69,7 +42,7 @@ sealed class SettingsEvent {
     data object GenerateBackupFile: SettingsEvent()
     data object RestoreBackupFile: SettingsEvent()
     data class RetrieveBackupFile(val json: String): SettingsEvent()
-    data class ShowDialog(val content: SettingsDialogContent, val shown: Boolean): SettingsEvent()
+    data class ShowDialog(val shown: Boolean): SettingsEvent()
     data class OnSheet(val shown: Boolean): SettingsEvent()
     data class Selected(val theme: Int): SettingsEvent()
     data object OnConfirmTheme: SettingsEvent()
@@ -77,12 +50,5 @@ sealed class SettingsEvent {
     data class ToggleRecurringBudget(val isRecurring: Boolean): SettingsEvent()
     data class ToggleRecurringCategoryLimit(val isRecurring: Boolean): SettingsEvent()
     data object OpenDrawer: SettingsEvent()
-    data class ToggleAlarm(val enabled: Boolean): SettingsEvent()
-    data class UpdateDay(val day: ReminderDay): SettingsEvent()
-    data class UpdateHourAndMinute(val hour: Int, val minute: Int): SettingsEvent()
-}
-
-enum class SettingsDialogContent {
-    Theme,
-    Reminder
+    data object NavigateToReminder: SettingsEvent()
 }

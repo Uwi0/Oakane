@@ -75,6 +75,7 @@ import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import com.kakapo.oakane.presentation.viewModel.main.MainViewModel
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetViewModel
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingViewModel
+import com.kakapo.oakane.presentation.viewModel.reminder.ReminderViewModel
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
 import com.kakapo.oakane.presentation.viewModel.splash.SplashViewModel
@@ -164,6 +165,7 @@ object CommonModule {
         viewModel { OnBoardingViewModel(get(), get(), get(), get()) }
         viewModel { WalletViewModel(get(), get(), get(), get()) }
         viewModel { TermAndServiceViewModel(get()) }
+        viewModel { ReminderViewModel() }
     }
 
     val coroutineModule: Module = module {

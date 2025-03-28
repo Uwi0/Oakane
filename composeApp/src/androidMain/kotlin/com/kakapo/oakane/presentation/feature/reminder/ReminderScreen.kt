@@ -24,9 +24,12 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.designSystem.theme.ColorScheme
+import com.kakapo.oakane.presentation.viewModel.reminder.ReminderViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun ReminderRoute() {
+    val viewModel = koinViewModel<ReminderViewModel>()
     ReminderScreen()
 }
 
@@ -35,23 +38,30 @@ private fun ReminderScreen() {
     Scaffold(
         topBar = { CustomNavigationTopAppBarView(title = "Reminder", onNavigateBack = {}) },
         content = { paddingValues ->
-            Column(
+            ReminderContent(
                 modifier = Modifier
                     .padding(paddingValues)
                     .padding(vertical = 24.dp, horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                SwitchReminder()
-                HorizontalDivider()
-                TimeSelector()
-                DaySelector()
-                HorizontalDivider()
-            }
+            )
         },
         bottomBar = {
             ButtonSaveReminder()
         }
     )
+}
+
+@Composable
+private fun ReminderContent(modifier: Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        SwitchReminder()
+        HorizontalDivider()
+        TimeSelector()
+        DaySelector()
+        HorizontalDivider()
+    }
 }
 
 @Composable
@@ -80,7 +90,7 @@ private fun TimeSelector() {
 
 @Composable
 private fun CustomButtonSelectTime() {
-    Surface(color = ColorScheme.primaryContainer, shape = MaterialTheme.shapes.medium) {
+    Surface(color = ColorScheme.primaryContainer, shape = MaterialTheme.shapes.medium, onClick = {}) {
         Text(
             "20:00",
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),

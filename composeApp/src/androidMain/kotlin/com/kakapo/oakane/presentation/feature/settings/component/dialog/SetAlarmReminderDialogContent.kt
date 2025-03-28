@@ -15,11 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
-import com.kakapo.oakane.presentation.viewModel.settings.SettingsDialogContent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
 
@@ -27,8 +25,8 @@ import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
 @Composable
 internal fun SetAlarmReminderDialogContent(state: SettingsState, onEvent: (SettingsEvent) -> Unit) {
     val timePickerState = rememberTimePickerState(
-        initialHour = state.selectedHour,
-        initialMinute = state.selectedMinute,
+        initialHour = 0,
+        initialMinute = 0,
         is24Hour = true
     )
     Column(
@@ -39,20 +37,8 @@ internal fun SetAlarmReminderDialogContent(state: SettingsState, onEvent: (Setti
         TimePicker(state = timePickerState)
         BottomContentView(
             onCancel = {
-                onEvent.invoke(
-                    SettingsEvent.ShowDialog(
-                        content = SettingsDialogContent.Reminder,
-                        shown = false
-                    )
-                )
             },
             onConfirm = {
-                onEvent.invoke(
-                    SettingsEvent.UpdateHourAndMinute(
-                        hour = timePickerState.hour,
-                        minute = timePickerState.minute
-                    )
-                )
             }
         )
     }

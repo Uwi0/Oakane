@@ -47,7 +47,6 @@ class SettingsViewModel(
         loadCurrency()
         loadIsBudgetRecurring()
         loadIsCategoryLimitRecurring()
-        loadReminders()
     }
 
     fun handleEvent(event: SettingsEvent) {
@@ -57,16 +56,14 @@ class SettingsViewModel(
             SettingsEvent.RestoreBackupFile -> emit(SettingsEffect.RestoreBackupFile)
             SettingsEvent.OnConfirmTheme -> confirmTheme()
             SettingsEvent.OpenDrawer -> emit(SettingsEffect.OpenDrawer)
+            SettingsEvent.NavigateToReminder -> emit(SettingsEffect.NavigateToReminder)
             is SettingsEvent.RetrieveBackupFile -> retrieveBackupFile(event.json)
-            is SettingsEvent.ShowDialog -> _uiState.update { it.copy(dialogShown = event.shown, dialogContent = event.content) }
+            is SettingsEvent.ShowDialog -> _uiState.update { it.copy(dialogShown = event.shown) }
             is SettingsEvent.Selected -> _uiState.update { it.update(event.theme) }
             is SettingsEvent.OnSheet -> _uiState.update { it.copy(isSheetShown = event.shown) }
             is SettingsEvent.ChangeCurrency -> changeCurrency(event.currency)
             is SettingsEvent.ToggleRecurringBudget -> setMonthlyBudget(event.isRecurring)
             is SettingsEvent.ToggleRecurringCategoryLimit -> setCategoryLimit(event.isRecurring)
-            is SettingsEvent.ToggleAlarm -> _uiState.update { it.copy(alarmEnabled = event.enabled) }
-            is SettingsEvent.UpdateDay -> _uiState.update { it.update(event.day) }
-            is SettingsEvent.UpdateHourAndMinute -> _uiState.update { it.updateHourAndMinutesWith(event)}
         }
     }
 
@@ -165,34 +162,6 @@ class SettingsViewModel(
             _uiState.update { it.copy(isRecurringCategoryLimit = isRecurring) }
         }
         budgetRepository.saveCategoryLimit(isRecurring).fold(
-            onSuccess = onSuccess,
-            onFailure = ::handleError
-        )
-    }
-
-    @OptIn(FlowPreview::class)
-    private fun handleReminder() = viewModelScope.launch {
-        uiState.map { state ->
-            Reminder(
-                reminders = state.selectedDays,
-                isReminderEnabled = state.alarmEnabled,
-                selectedHour = state.selectedHour,
-                selectedMinute = state.selectedMinute
-            )
-        }
-            .distinctUntilChanged()
-            .debounce(500)
-            .collectLatest { reminderPrefs ->
-                settingsRepository.saveReminder(reminderPrefs)
-            }
-    }
-
-    private fun loadReminders() = viewModelScope.launch {
-        val onSuccess: (Reminder) -> Unit = { reminder ->
-            handleReminder()
-            _uiState.update { it.updateReminder(reminder) }
-        }
-        settingsRepository.loadReminder().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

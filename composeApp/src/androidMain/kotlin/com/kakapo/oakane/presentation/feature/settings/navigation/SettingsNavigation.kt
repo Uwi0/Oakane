@@ -20,7 +20,8 @@ fun NavController.navigateToSettings(showDrawer: Boolean = false,navOptions: Nav
 fun NavGraphBuilder.settingsScreen(
     openDrawer: () -> Unit,
     navigateBack: () -> Unit,
-    onSelectedTheme: (Theme) -> Unit
+    onSelectedTheme: (Theme) -> Unit,
+    navigateToReminder: () -> Unit
 ) {
     val route = "$SETTINGS_ROUTE/{$SHOW_DRAWER}"
     val args = listOf(navArgument(SHOW_DRAWER) { type = NavType.BoolType })
@@ -30,7 +31,8 @@ fun NavGraphBuilder.settingsScreen(
             showDrawer = showDrawer,
             openDrawer = openDrawer,
             navigateBack = navigateBack,
-            onSelectedTheme = onSelectedTheme
+            onSelectedTheme = onSelectedTheme,
+            navigateToReminder = navigateToReminder
         )
     }
 }

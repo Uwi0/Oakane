@@ -19,6 +19,8 @@ import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.monthlyBu
 import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.navigateToMonthlyBudget
 import com.kakapo.oakane.presentation.feature.onboarding.navigation.navigateToOnBoarding
 import com.kakapo.oakane.presentation.feature.onboarding.navigation.onBoardingScreen
+import com.kakapo.oakane.presentation.feature.reminder.navigation.navigateToReminder
+import com.kakapo.oakane.presentation.feature.reminder.navigation.reminderScreen
 import com.kakapo.oakane.presentation.feature.reports.navigation.reportsScreen
 import com.kakapo.oakane.presentation.feature.settings.navigation.settingsScreen
 import com.kakapo.oakane.presentation.feature.splash.navigation.SPLASH_ROUTE
@@ -111,7 +113,9 @@ internal fun OakaneNavHost(
         settingsScreen(
             openDrawer = openDrawer,
             navigateBack = appState::safeNavigateUp,
-            onSelectedTheme = onSelectedTheme
+            onSelectedTheme = onSelectedTheme,
+            navigateToReminder = navController::navigateToReminder
         )
+        reminderScreen()
     }
 }
