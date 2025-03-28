@@ -16,6 +16,8 @@ class ReminderViewModel : ViewModel() {
         when (event) {
             is ReminderEvent.Dialog -> _uiState.update { it.copy(showDialog = event.shown) }
             is ReminderEvent.TimeSelected -> _uiState.update { it.updateSelectedTime(event) }
+            is ReminderEvent.DaySelected -> _uiState.update { it.updateSelected(event.day) }
+            is ReminderEvent.ToggleReminder -> _uiState.update { it.copy(enabledReminder = event.enabled) }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.kakapo.oakane.presentation.feature.reminder
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -73,23 +75,27 @@ private fun ReminderContent(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        SwitchReminder()
+        SwitchReminder(state = state, onEvent = onEvent)
         HorizontalDivider()
         TimeSelector(state = state, onEvent = onEvent)
-        DaySelector()
+        SelectedDays(state = state)
+        DaySelectors(state = state, onEvent = onEvent)
         HorizontalDivider()
     }
 }
 
 @Composable
-private fun SwitchReminder() {
+private fun SwitchReminder(state: ReminderState, onEvent: (ReminderEvent) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text("Switch Reminder", style = MaterialTheme.typography.titleMedium)
-        Switch(checked = true, onCheckedChange = {})
+        Switch(
+            checked = state.enabledReminder,
+            onCheckedChange = { onEvent.invoke(ReminderEvent.ToggleReminder(it)) }
+        )
     }
 }
 
@@ -121,18 +127,51 @@ private fun CustomButtonSelectTime(state: ReminderState, onEvent: (ReminderEvent
 }
 
 @Composable
-private fun DaySelector() {
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        items(ReminderDay.entries) { day ->
-            ButtonSelector(day)
+private fun SelectedDays(state: ReminderState) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text("Repeat On : ", style = MaterialTheme.typography.titleMedium)
+        state.selectedDays.forEach { day ->
+            Text(day.title, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
 
 @Composable
-private fun ButtonSelector(day: ReminderDay) {
-    Surface(color = ColorScheme.secondaryContainer, shape = MaterialTheme.shapes.medium) {
-        Text(day.title, modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp))
+private fun DaySelectors(state: ReminderState, onEvent: (ReminderEvent) -> Unit) {
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        items(ReminderDay.entries) { day ->
+            val selected = state.selectedDays.contains(day)
+            ButtonSelector(
+                day,
+                isSelected = selected,
+                onClick = { onEvent.invoke(ReminderEvent.DaySelected(day)) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ButtonSelector(day: ReminderDay, isSelected: Boolean, onClick: () -> Unit) {
+    val (containerColor, borderColor) = isSelected.asChipDateSelectedColor()
+    Surface(
+        onClick = onClick,
+        shape = MaterialTheme.shapes.small,
+        color = containerColor,
+        border = BorderStroke(color = borderColor, width = 1.dp)
+    ) {
+        Text(day.title, modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp))
+    }
+}
+
+@Composable
+private fun Boolean.asChipDateSelectedColor(): Pair<Color, Color> {
+    return if (this) {
+        ColorScheme.secondaryContainer to ColorScheme.secondary
+    } else {
+        ColorScheme.surface to ColorScheme.outline
     }
 }
 
@@ -152,7 +191,7 @@ private fun ButtonSaveReminder() {
 @Composable
 private fun ReminderScreenPReview() {
     AppTheme {
-        ReminderScreen(state = ReminderState()){
+        ReminderScreen(state = ReminderState()) {
 
         }
     }
