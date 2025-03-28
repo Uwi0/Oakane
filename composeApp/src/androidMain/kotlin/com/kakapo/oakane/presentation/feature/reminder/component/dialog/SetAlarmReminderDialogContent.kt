@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.settings.component.dialog
+package com.kakapo.oakane.presentation.feature.reminder.component.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,15 +18,18 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
-import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
-import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
+import com.kakapo.oakane.presentation.viewModel.reminder.ReminderState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SetAlarmReminderDialogContent(state: SettingsState, onEvent: (SettingsEvent) -> Unit) {
+internal fun SetAlarmReminderDialogContent(
+    state: ReminderState,
+    onCancel: () -> Unit,
+    onConfirm: (Int, Int) -> Unit
+) {
     val timePickerState = rememberTimePickerState(
-        initialHour = 0,
-        initialMinute = 0,
+        initialHour = state.selectedHour,
+        initialMinute = state.selectedMinute,
         is24Hour = true
     )
     Column(
@@ -36,10 +39,8 @@ internal fun SetAlarmReminderDialogContent(state: SettingsState, onEvent: (Setti
     ) {
         TimePicker(state = timePickerState)
         BottomContentView(
-            onCancel = {
-            },
-            onConfirm = {
-            }
+            onCancel = onCancel,
+            onConfirm = { onConfirm.invoke(timePickerState.hour, timePickerState.minute) }
         )
     }
 }
@@ -65,7 +66,7 @@ private fun BottomContentView(onCancel: () -> Unit, onConfirm: () -> Unit) {
 private fun SetAlarmTimeDialogContentPreview() {
     AppTheme {
         Surface {
-            SetAlarmReminderDialogContent(state = SettingsState(), onEvent = {})
+            SetAlarmReminderDialogContent(state = ReminderState(), onCancel = {}, onConfirm = {_,_ ->})
         }
     }
 }

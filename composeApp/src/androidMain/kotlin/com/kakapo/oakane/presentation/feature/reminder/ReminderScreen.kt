@@ -15,26 +15,37 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.model.reminder.ReminderDay
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.designSystem.theme.ColorScheme
+import com.kakapo.oakane.presentation.feature.reminder.component.dialog.ReminderDialog
+import com.kakapo.oakane.presentation.viewModel.reminder.ReminderEvent
+import com.kakapo.oakane.presentation.viewModel.reminder.ReminderState
 import com.kakapo.oakane.presentation.viewModel.reminder.ReminderViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun ReminderRoute() {
     val viewModel = koinViewModel<ReminderViewModel>()
-    ReminderScreen()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ReminderScreen(state = state, onEvent = viewModel::handleEvent)
+
+    if (state.showDialog) {
+        ReminderDialog(state = state, onEvent = viewModel::handleEvent)
+    }
 }
 
 @Composable
-private fun ReminderScreen() {
+private fun ReminderScreen(state: ReminderState, onEvent: (ReminderEvent) -> Unit) {
     Scaffold(
         topBar = { CustomNavigationTopAppBarView(title = "Reminder", onNavigateBack = {}) },
         content = { paddingValues ->
@@ -42,6 +53,8 @@ private fun ReminderScreen() {
                 modifier = Modifier
                     .padding(paddingValues)
                     .padding(vertical = 24.dp, horizontal = 16.dp),
+                state = state,
+                onEvent = onEvent
             )
         },
         bottomBar = {
@@ -51,14 +64,18 @@ private fun ReminderScreen() {
 }
 
 @Composable
-private fun ReminderContent(modifier: Modifier) {
+private fun ReminderContent(
+    modifier: Modifier,
+    state: ReminderState,
+    onEvent: (ReminderEvent) -> Unit
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SwitchReminder()
         HorizontalDivider()
-        TimeSelector()
+        TimeSelector(state = state, onEvent = onEvent)
         DaySelector()
         HorizontalDivider()
     }
@@ -77,22 +94,26 @@ private fun SwitchReminder() {
 }
 
 @Composable
-private fun TimeSelector() {
+private fun TimeSelector(state: ReminderState, onEvent: (ReminderEvent) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text("Select Time", style = MaterialTheme.typography.titleMedium)
-        CustomButtonSelectTime()
+        CustomButtonSelectTime(state = state, onEvent = onEvent)
     }
 }
 
 @Composable
-private fun CustomButtonSelectTime() {
-    Surface(color = ColorScheme.primaryContainer, shape = MaterialTheme.shapes.medium, onClick = {}) {
+private fun CustomButtonSelectTime(state: ReminderState, onEvent: (ReminderEvent) -> Unit) {
+    Surface(
+        color = ColorScheme.primaryContainer,
+        shape = MaterialTheme.shapes.medium,
+        onClick = { onEvent.invoke(ReminderEvent.Dialog(shown = true)) }
+    ) {
         Text(
-            "20:00",
+            state.selectedTime,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
             style = MaterialTheme.typography.titleMedium
         )
@@ -131,6 +152,8 @@ private fun ButtonSaveReminder() {
 @Composable
 private fun ReminderScreenPReview() {
     AppTheme {
-        ReminderScreen()
+        ReminderScreen(state = ReminderState()){
+
+        }
     }
 }
