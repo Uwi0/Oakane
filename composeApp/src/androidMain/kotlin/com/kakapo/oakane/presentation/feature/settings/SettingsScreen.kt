@@ -1,6 +1,8 @@
 package com.kakapo.oakane.presentation.feature.settings
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +40,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.kakapo.common.getCurrentDateWith
 import com.kakapo.common.showToast
 import com.kakapo.model.system.Theme
@@ -244,12 +249,31 @@ private fun SettingContentView(
             onClick = { onEvent.invoke(SettingsEvent.RestoreBackupFile) }
         )
         HorizontalDivider()
-        ButtonSettingsNavigation(
-            icon = Icons.Outlined.Notifications,
-            title = "Reminder",
-            onClick = { onEvent.invoke(SettingsEvent.NavigateToReminder)}
-        )
+        ButtonNavigateToReminder(onEvent = onEvent)
     }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+private fun ButtonNavigateToReminder(onEvent: (SettingsEvent) -> Unit) {
+    val notificationPermissionState = rememberPermissionState(
+        permission = Manifest.permission.POST_NOTIFICATIONS
+    )
+    val checkPermission = {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionState.launchPermissionRequest()
+            if (notificationPermissionState.status.isGranted) {
+                onEvent.invoke(SettingsEvent.NavigateToReminder)
+            }
+        } else {
+            onEvent.invoke(SettingsEvent.NavigateToReminder)
+        }
+    }
+    ButtonSettingsNavigation(
+        icon = Icons.Outlined.Notifications,
+        title = "Reminder",
+        onClick = checkPermission
+    )
 }
 
 @Composable
