@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("ReminderViewModelKt")
 class ReminderViewModel(
     private val settingsRepository: SettingsRepository
 ) : ViewModel() {

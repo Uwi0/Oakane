@@ -45,6 +45,10 @@ data class ReminderState(
         }
         return copy(selectedDays = updatedDays)
     }
+
+    companion object {
+        fun default() = ReminderState()
+    }
 }
 
 sealed class ReminderEffect {

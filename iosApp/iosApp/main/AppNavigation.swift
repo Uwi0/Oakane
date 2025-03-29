@@ -19,6 +19,7 @@ final class AppNavigation: ObservableObject {
         case wallet(id: Int64)
         case reports
         case settings
+        case reminder
     }
     
     @Published var navPath = NavigationPath()

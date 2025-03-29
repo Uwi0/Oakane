@@ -106,6 +106,7 @@ struct SettingsScreen: View {
         case .showError(let effect): print(effect.message)
         case .successChangeCurrency: isSheetPresented = false
         case .openDrawer: openDrawer = !openDrawer
+        case .navigateToReminder: navigation.navigate(to: .reminder)
         }
         
         viewModel.uiEffect = nil

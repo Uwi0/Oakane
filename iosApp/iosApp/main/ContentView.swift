@@ -35,6 +35,7 @@ struct ContentView: View {
             case .settings: SettingsScreen(openDrawer: $openDrawer, showDrawer: true)
             case .wallet(let walletId): WalletScreen(walletId: walletId)
             case .termAndService: TermAndServiceScreen()
+            case .reminder: ReminderScreen()
             }
         }
     }
