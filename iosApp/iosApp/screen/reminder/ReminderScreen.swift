@@ -108,12 +108,50 @@ struct ReminderScreen: View {
     private func observeEffect(effect: ReminderEffect?) {
         guard let effect = effect else { return }
         switch onEnum(of: effect) {
-        case .createdReminder(let reminder): print("reminder created: \(reminder)")
+        case .createdReminder(let effect): scheduleDailyReminder(reminder: effect.reminder)
         case .navigateBack: navigation.navigateBack()
         case .showError(let effect): print("error \(effect.message)")
         }
         viewModel.uiEffect = nil
     }
+    
+    private func scheduleDailyReminder(reminder: Reminder) {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        
+        guard reminder.isReminderEnabled else { return }
+        
+        
+        for day in reminder.reminders {
+            var dateComponents = DateComponents()
+            dateComponents.hour = Int(reminder.selectedHour)
+            dateComponents.minute = Int(reminder.selectedMinute)
+            dateComponents.weekday = day.toWeekDay()
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            
+            let content = UNMutableNotificationContent()
+            content.title = "Oakane Reminder"
+            content.body = "Don't forget to record your finances today!!"
+            content.sound = .default
+            
+            let identifier = "finance-reminder-\(day)"
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            center.add(request) { error in
+                if let error = error {
+                    print("Error scheduling notification for \(day): \(error.localizedDescription)")
+                } else {
+                    print("Successfully scheduled reminder for \(day)")
+                }
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.navigation.navigateBack()
+        }
+    }
+
 }
 
 #Preview {

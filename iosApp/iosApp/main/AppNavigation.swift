@@ -29,6 +29,7 @@ final class AppNavigation: ObservableObject {
     }
     
     func navigateBack() {
+        if navPath.isEmpty { return }
         navPath.removeLast()
     }
     
