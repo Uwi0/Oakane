@@ -27,6 +27,7 @@ struct ReminderScreen: View {
             .padding(.horizontal, 16)
         }
         .background(ColorTheme.surface)
+        .navigationBarBackButtonHidden(true)
     }
     
     @ViewBuilder

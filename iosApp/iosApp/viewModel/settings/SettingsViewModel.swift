@@ -5,8 +5,8 @@ import KMPNativeCoroutinesCombine
 
 final class SettingsViewModel: ObservableObject {
     
-    @Published var uiState: SettingsState = SettingsState()
-    @Published var uiEffect: SettingsEffect?
+    @Published var uiState: SettingsState = SettingsState.companion.default()
+    @Published var uiEffect: SettingsEffect? = nil
     
     private let viewModel: SettingsViewModelKt = Koin.shared.get()
     private var stateCancellable: AnyCancellable?
@@ -30,13 +30,14 @@ final class SettingsViewModel: ObservableObject {
         stateCancellable = publisher.sink { completion in
             print("Completion: \(completion)")
         } receiveValue: { [weak self] state in
-            self?.update(state: state)
+            guard let self = self else { return }
+            self.update(state: state)
         }
     }
     
-    private func update(state: SettingsStateKt) {
+    private func update(state: SettingsState) {
         DispatchQueue.main.async {
-            self.uiState = SettingsState(state: state)
+            self.uiState = state
         }
     }
     
@@ -45,7 +46,8 @@ final class SettingsViewModel: ObservableObject {
         effectCancellable = publisher.sink { completion in
             print("Completion: \(completion)")
         } receiveValue: { [weak self] effect in
-            self?.update(effect: effect)
+            guard let self = self else { return }
+            self.update(effect: effect)
         }
     }
     
@@ -56,6 +58,7 @@ final class SettingsViewModel: ObservableObject {
     }
     
     deinit {
+        stateCancellable?.cancel()
         effectCancellable?.cancel()
     }
 }

@@ -7,7 +7,6 @@ import com.kakapo.model.system.asTheme
 import com.kakapo.model.reminder.ReminderDay
 import kotlin.native.ObjCName
 
-@ObjCName("SettingsStateKt")
 data class SettingsState(
     val theme: Theme = Theme.System,
     val dialogShown: Boolean = false,
@@ -17,13 +16,15 @@ data class SettingsState(
     val isRecurringCategoryLimit: Boolean = false,
     val alarmEnabled: Boolean = false,
     val showDrawer: Boolean = false,
-    val selectedDays: List<ReminderDay> = ReminderDay.entries,
 ) {
 
     fun update(theme: Int) = copy(
         theme = theme.asTheme()
     )
 
+    companion object {
+        fun default() = SettingsState()
+    }
 }
 
 sealed class SettingsEffect {

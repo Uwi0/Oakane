@@ -14,11 +14,24 @@ struct SettingsScreen: View {
     
     var body: some View {
         VStack {
-            
             NavigationBar()
-            VStack {
+            VStack(spacing: 16) {
                 ButtonCurrencyView()
                 Toggle("Dark Appearance", isOn: $darkAppearance)
+                Toggle(
+                    "Recurring Monthly Budget",
+                    isOn: Binding(
+                        get: { viewModel.uiState.isRecurringBudget},
+                        set: { viewModel.handle(event: .ToggleRecurringBudget(isRecurring: $0))}
+                    )
+                )
+                Toggle(
+                    "Recurring Category Limit",
+                    isOn: Binding(
+                        get: { viewModel.uiState.isRecurringCategoryLimit },
+                        set: { viewModel.handle(event: .ToggleRecurringCategoryLimit(isRecurring: $0))}
+                    )
+                )
                 Divider()
                 ButtonSettingsView(
                     title: "Back Up",
@@ -29,6 +42,12 @@ struct SettingsScreen: View {
                     title: "Import Data",
                     iconName: "square.and.arrow.down",
                     onClick: { isFileImportedPresented = true }
+                )
+                Divider()
+                ButtonNavigationSettingsView(
+                    icon: "bell",
+                    title: "Reminder",
+                    onClick: requestNotificationPermission
                 )
                 Spacer()
             }
@@ -55,7 +74,7 @@ struct SettingsScreen: View {
                 onConfirm: { selectedCurrency in
                     viewModel.handle(event: .ChangeCurrency(currency: selectedCurrency))
                 },
-                currency: viewModel.uiState.currentCurrency
+                currency: viewModel.uiState.currency
             )
         }
         
@@ -89,7 +108,7 @@ struct SettingsScreen: View {
                 Image(systemName: "dollarsign.circle").resizable().frame(width: 24, height: 24)
                 Text("Set Currency")
                 Spacer()
-                Text("\(viewModel.uiState.currentCurrency.name)")
+                Text("\(viewModel.uiState.currency.name)")
                 Image(systemName: "chevron.right")
             }
         )
@@ -124,10 +143,19 @@ struct SettingsScreen: View {
     private func readBackup(url: URL) {
         let result = readJSONFileAsString(fileUrl: url)
         switch result {
-        case .success(let json):
-            viewModel.handle(event: .RetrieveBackupFile(json: json))
-        case .failure(let error):
-            print("error \(error)")
+        case .success(let json): viewModel.handle(event: .RetrieveBackupFile(json: json))
+        case .failure(let error): print("error \(error)")
+        }
+    }
+    
+    private func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if granted {
+                viewModel.handle(event: .NavigateToReminder())
+            } else {
+                print("Permission denied")
+            }
         }
     }
 }
