@@ -3,7 +3,7 @@ package com.kakapo.oakane.presentation.feature.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import com.kakapo.model.system.Theme
-import com.kakapo.oakane.OakaneAppState
+import com.kakapo.oakane.presentation.feature.OakaneAppState
 import com.kakapo.oakane.presentation.feature.addGoal.navigation.addGoalScreen
 import com.kakapo.oakane.presentation.feature.addGoal.navigation.navigateToAddGoal
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTransactionScreen
@@ -19,6 +19,8 @@ import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.monthlyBu
 import com.kakapo.oakane.presentation.feature.monthlyBudget.navigation.navigateToMonthlyBudget
 import com.kakapo.oakane.presentation.feature.onboarding.navigation.navigateToOnBoarding
 import com.kakapo.oakane.presentation.feature.onboarding.navigation.onBoardingScreen
+import com.kakapo.oakane.presentation.feature.reminder.navigation.navigateToReminder
+import com.kakapo.oakane.presentation.feature.reminder.navigation.reminderScreen
 import com.kakapo.oakane.presentation.feature.reports.navigation.reportsScreen
 import com.kakapo.oakane.presentation.feature.settings.navigation.settingsScreen
 import com.kakapo.oakane.presentation.feature.splash.navigation.SPLASH_ROUTE
@@ -111,7 +113,9 @@ internal fun OakaneNavHost(
         settingsScreen(
             openDrawer = openDrawer,
             navigateBack = appState::safeNavigateUp,
-            onSelectedTheme = onSelectedTheme
+            onSelectedTheme = onSelectedTheme,
+            navigateToReminder = navController::navigateToReminder
         )
+        reminderScreen()
     }
 }

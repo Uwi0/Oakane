@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.feature.settings.component.dialog
+package com.kakapo.oakane.presentation.feature.reminder.component.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,11 +18,18 @@ import androidx.compose.ui.unit.dp
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomTextButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.viewModel.reminder.ReminderState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SetAlarmReminderDialogContent() {
+internal fun SetAlarmReminderDialogContent(
+    state: ReminderState,
+    onCancel: () -> Unit,
+    onConfirm: (Int, Int) -> Unit
+) {
     val timePickerState = rememberTimePickerState(
+        initialHour = state.selectedHour,
+        initialMinute = state.selectedMinute,
         is24Hour = true
     )
     Column(
@@ -31,19 +38,26 @@ internal fun SetAlarmReminderDialogContent() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TimePicker(state = timePickerState)
-        BottomContentView()
+        BottomContentView(
+            onCancel = onCancel,
+            onConfirm = { onConfirm.invoke(timePickerState.hour, timePickerState.minute) }
+        )
     }
 }
 
 @Composable
-private fun BottomContentView() {
+private fun BottomContentView(onCancel: () -> Unit, onConfirm: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         CustomTextButton(
             modifier = Modifier.weight(1f),
-            onClick = {},
+            onClick = onCancel,
             text = { Text("Cancel") }
         )
-        CustomButton(modifier = Modifier.weight(1f), onClick = {}, text = { Text("Save") })
+        CustomButton(
+            modifier = Modifier.weight(1f),
+            onClick = onConfirm,
+            text = { Text("Save") }
+        )
     }
 }
 
@@ -52,7 +66,7 @@ private fun BottomContentView() {
 private fun SetAlarmTimeDialogContentPreview() {
     AppTheme {
         Surface {
-            SetAlarmReminderDialogContent()
+            SetAlarmReminderDialogContent(state = ReminderState(), onCancel = {}, onConfirm = {_,_ ->})
         }
     }
 }

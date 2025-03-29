@@ -30,11 +30,11 @@ internal struct ReportBudgetContentView: View {
     
     @ViewBuilder func bottomContentView() -> some View {
         HStack(spacing: 8) {
-            BudgetItemView(amount: item.totalIncome, isExpense: false, currency: currency)
+            TransactionIconView(amount: item.totalIncome, isExpense: false, currency: currency)
             Spacer()
             Divider().frame(height: 48)
             Spacer()
-            BudgetItemView(amount: item.totalExpense, isExpense: true, currency: currency)
+            TransactionIconView(amount: item.totalExpense, isExpense: true, currency: currency)
         }
     }
 }

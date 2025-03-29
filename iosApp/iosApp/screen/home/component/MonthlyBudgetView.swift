@@ -3,24 +3,9 @@ import Shared
 
 struct MonthlyBudgetView: View {
     
-    let monthlyBudgetOverView: MonthlyBudgetOverView
-    let onEvent: (HomeEvent) -> Void
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            TopContentView(overview: monthlyBudgetOverView, onEvent: onEvent)
-            HorizontalDivider()
-            BottomContentView(overview: monthlyBudgetOverView)
-        }
-        .customBackground(backgroundColor: ColorTheme.surface)
-    }
-    
-}
-
-fileprivate struct TopContentView: View {
-    
     let overview: MonthlyBudgetOverView
     let onEvent: (HomeEvent) -> Void
+    
     private let imageSize: CGFloat = 24
     
     private var formattedLimit: String {
@@ -36,6 +21,16 @@ fileprivate struct TopContentView: View {
     }
     
     var body: some View {
+        VStack(spacing: 16) {
+            TopContentView()
+            HorizontalDivider()
+            BottomContentView()
+        }
+        .customBackground(backgroundColor: ColorTheme.surface)
+    }
+    
+    @ViewBuilder
+    private func TopContentView() -> some View {
         HStack(alignment: .center, spacing: 16) {
             OutlinedCircleIcon(imageName: "dollarsign", size: imageSize)
             VStack(alignment: .leading,spacing: 8) {
@@ -63,42 +58,27 @@ fileprivate struct TopContentView: View {
             }
         }
     }
-}
-
-fileprivate struct BottomContentView: View {
-    let overview: MonthlyBudgetOverView
-    var body: some View {
+    
+    @ViewBuilder
+    private func BottomContentView() -> some View {
         HStack(spacing: 16) {
             BalanceItemView(value: overview.totalIncome, currency: overview.currency, isIncome: true)
             Spacer()
             BalanceItemView(value: overview.totalExpense, currency: overview.currency, isIncome: false)
         }
     }
-}
-
-fileprivate struct BalanceItemView: View {
     
-    let value: Double
-    let currency: Currency
-    let isIncome: Bool
-    
-    private var imageName: String {
-        isIncome ? "arrow.up" : "arrow.down"
-    }
-    
-    private var text: LocalizedStringKey {
-        isIncome ? "Total Income" : "Total Expenses"
-    }
-    
-    private var formattedValue: String {
-        value.toFormatCurrency(currency: currency)
-    }
-    
-    var body: some View {
+    @ViewBuilder
+    private func BalanceItemView(value: Double, currency: Currency, isIncome: Bool) -> some View {
+        let imageName = isIncome ? "arrow.up" : "arrow.down"
+        let text = isIncome ? "Total Income" : "Total Expenses"
+        let formattedValue = value.toFormatCurrency(currency: currency)
+        let transactionType: TransactionType = isIncome ? .income : .expense
+        
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Spacer()
-                Image(systemName: imageName)
+                TransactionTypeIconView(transactionType: transactionType, iconSize: 24)
             }
             Text(text)
                 .foregroundStyle(ColorTheme.outline)
@@ -107,4 +87,9 @@ fileprivate struct BalanceItemView: View {
                 .font(Typography.titleMedium)
         }
     }
+    
+}
+
+#Preview {
+    MonthlyBudgetView(overview: defaultMonthlyBudgetOverView, onEvent: { _ in })
 }

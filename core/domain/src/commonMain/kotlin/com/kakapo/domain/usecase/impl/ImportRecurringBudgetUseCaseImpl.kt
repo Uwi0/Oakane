@@ -4,6 +4,7 @@ import com.kakapo.common.getEndOfMonthUnixTime
 import com.kakapo.data.model.MonthlyBudgetParam
 import com.kakapo.data.model.MonthlyBudgetRecurring
 import com.kakapo.data.model.decodeToCategoryLimitParams
+import com.kakapo.data.repository.base.BudgetRepository
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.SystemRepository
@@ -15,7 +16,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 
 class ImportRecurringBudgetUseCaseImpl(
-    private val systemRepository: SystemRepository,
+    private val budgetRepository: BudgetRepository,
     private val monthlyBudgetRepository: MonthlyBudgetRepository,
     private val categoryLimitRepository: CategoryLimitRepository,
     private val dispatcher: CoroutineDispatcher
@@ -36,16 +37,16 @@ class ImportRecurringBudgetUseCaseImpl(
             monthlyBudgetRepository.hasCurrentMonthlyBudgetAtTheTime().getOrDefault(false)
         }
         val hasRecurringBudget = async {
-            systemRepository.isMonthlyBudgetRecurring().getOrDefault(false)
+            budgetRepository.isMonthlyBudgetRecurring().getOrDefault(false)
         }
         val hasRecurringCategory = async {
-            systemRepository.isCategoryLimitRecurring().getOrDefault(false)
+            budgetRepository.isCategoryLimitRecurring().getOrDefault(false)
         }
         val monthlyBudgetBackup = async {
-            systemRepository.loadRecurringBudget().getOrDefault("")
+            budgetRepository.loadRecurringBudget().getOrDefault("")
         }
         val categoryLimitBackup = async {
-            systemRepository.loadRecurringCategory().getOrDefault("")
+            budgetRepository.loadRecurringCategory().getOrDefault("")
         }
 
         BudgetData(

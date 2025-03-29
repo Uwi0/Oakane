@@ -36,15 +36,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(projects.shared)
-
-            //COIL image
-            implementation(libs.coil.kt)
-            implementation(libs.coil.kt.compose)
-            implementation(libs.coil.kt.svg)
-
-            //koin
-            implementation(libs.koin.android)
-            implementation(libs.koin.androidx.compose)
+            implementation(projects.core.data)
         }
     }
 }
@@ -67,6 +59,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += listOf("META-INF/LICENSE.md", "META-INF/LICENSE-notice.md")
         }
     }
     buildTypes {
@@ -90,6 +83,7 @@ android {
         debugImplementation(compose.uiTooling)
     }
 }
+
 dependencies {
     implementation(libs.material.design)
     implementation(libs.androidx.ui.text.google.fonts)
@@ -111,6 +105,29 @@ dependencies {
     //firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
+
+    //worker
+    implementation(libs.worker.runtime.ktx)
+
+    //COIL image
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
+    implementation(libs.coil.kt.svg)
+
+    //koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.workmanager)
+
+    implementation(libs.kotlinx.datetime)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.worker.testing)
+    androidTestImplementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.mockk)
 
     implementation(kotlin("reflect"))
 }

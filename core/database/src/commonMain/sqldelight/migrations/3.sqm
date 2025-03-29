@@ -1,1 +1,0 @@
-ALTER TABLE TransactionTable ADD COLUMN excludedBudget INTEGER NOT NULL DEFAULT 0;

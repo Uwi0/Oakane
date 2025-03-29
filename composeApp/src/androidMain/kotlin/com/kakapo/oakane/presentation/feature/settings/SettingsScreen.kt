@@ -15,6 +15,7 @@ import androidx.compose.material.icons.automirrored.sharp.ArrowForwardIos
 import androidx.compose.material.icons.filled.Brightness6
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.ImportExport
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -37,7 +38,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import co.touchlab.kermit.Logger
 import com.kakapo.common.getCurrentDateWith
 import com.kakapo.common.showToast
 import com.kakapo.model.system.Theme
@@ -45,12 +45,11 @@ import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlin
 import com.kakapo.oakane.presentation.designSystem.component.button.ToggleSwitchComponentView
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationMenuTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
-import com.kakapo.oakane.presentation.feature.settings.component.AlarmComponentView
+import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsNavigation
 import com.kakapo.oakane.presentation.feature.settings.component.ButtonSettingsView
 import com.kakapo.oakane.presentation.feature.settings.component.SelectCurrencySheet
-import com.kakapo.oakane.presentation.feature.settings.component.dialog.DialogThemeView
+import com.kakapo.oakane.presentation.feature.settings.component.dialog.DialogSettingsView
 import com.kakapo.oakane.presentation.feature.settings.component.dialog.asString
-import com.kakapo.oakane.presentation.viewModel.settings.SettingsDialogContent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEffect
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsEvent
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsState
@@ -68,7 +67,8 @@ internal fun SettingsRoute(
     showDrawer: Boolean,
     openDrawer: () -> Unit,
     navigateBack: () -> Unit,
-    onSelectedTheme: (Theme) -> Unit
+    onSelectedTheme: (Theme) -> Unit,
+    navigateToReminder: () -> Unit
 ) {
     val viewModel = koinViewModel<SettingsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -123,16 +123,15 @@ internal fun SettingsRoute(
             when (effect) {
                 SettingsEffect.NavigateBack -> navigateBack.invoke()
                 SettingsEffect.RestoreBackupFile -> retrieveJsonLauncher.launch(openDocumentIntent())
-                is SettingsEffect.ShowError -> context.showToast(effect.message)
-                is SettingsEffect.Confirm -> onSelectedTheme.invoke(effect.theme)
                 SettingsEffect.SuccessChangeCurrency -> sheetState.hide()
                 SettingsEffect.OpenDrawer -> openDrawer.invoke()
+                SettingsEffect.NavigateToReminder -> navigateToReminder.invoke()
+                is SettingsEffect.ShowError -> context.showToast(effect.message)
+                is SettingsEffect.Confirm -> onSelectedTheme.invoke(effect.theme)
                 is SettingsEffect.GenerateBackupFile -> {
                     json = effect.json
-                    Logger.d("json: $json")
                     createJsonLauncher.launch(createNewDocumentIntent())
                 }
-
             }
         }
     }
@@ -149,7 +148,7 @@ internal fun SettingsRoute(
     }
 
     if (uiState.dialogShown) {
-        DialogThemeView(
+        DialogSettingsView(
             state = uiState,
             onEvent = viewModel::handleEvent
         )
@@ -209,7 +208,6 @@ private fun SettingContentView(
     uiState: SettingsState,
     onEvent: (SettingsEvent) -> Unit
 ) {
-    val dialogContent = SettingsDialogContent.Theme
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -217,7 +215,9 @@ private fun SettingContentView(
         ChangeCurrencyButtonView(onEvent, uiState)
         ThemeButtonView(
             theme = uiState.theme,
-            onClick = { onEvent.invoke(SettingsEvent.ShowDialog(content = dialogContent, shown = true)) }
+            onClick = {
+                onEvent.invoke(SettingsEvent.ShowDialog(shown = true))
+            }
         )
         ToggleSwitchComponentView(
             title = "Recurring Monthly Budget",
@@ -244,7 +244,11 @@ private fun SettingContentView(
             onClick = { onEvent.invoke(SettingsEvent.RestoreBackupFile) }
         )
         HorizontalDivider()
-        AlarmComponentView(state = uiState, onEvent = onEvent)
+        ButtonSettingsNavigation(
+            icon = Icons.Outlined.Notifications,
+            title = "Reminder",
+            onClick = { onEvent.invoke(SettingsEvent.NavigateToReminder)}
+        )
     }
 }
 

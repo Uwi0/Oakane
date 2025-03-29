@@ -1,23 +1,27 @@
 package com.kakapo.oakane.di
 
 import com.kakapo.data.repository.base.BackupRepository
+import com.kakapo.data.repository.base.BudgetRepository
 import com.kakapo.data.repository.base.CategoryLimitRepository
 import com.kakapo.data.repository.base.CategoryRepository
 import com.kakapo.data.repository.base.GoalRepository
 import com.kakapo.data.repository.base.GoalSavingsRepository
 import com.kakapo.data.repository.base.MonthlyBudgetRepository
 import com.kakapo.data.repository.base.ReportRepository
+import com.kakapo.data.repository.base.SettingsRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.data.repository.base.WalletTransferRepository
 import com.kakapo.data.repository.impl.BackupRepositoryImpl
+import com.kakapo.data.repository.impl.BudgetRepositoryImpl
 import com.kakapo.data.repository.impl.CategoryLimitRepositoryImpl
 import com.kakapo.data.repository.impl.CategoryRepositoryImpl
 import com.kakapo.data.repository.impl.GoalRepositoryImpl
 import com.kakapo.data.repository.impl.GoalSavingsRepositoryImpl
 import com.kakapo.data.repository.impl.MonthlyBudgetRepositoryImpl
 import com.kakapo.data.repository.impl.ReportRepositoryImpl
+import com.kakapo.data.repository.impl.SettingsRepositoryImpl
 import com.kakapo.data.repository.impl.SystemRepositoryImpl
 import com.kakapo.data.repository.impl.TransactionRepositoryImpl
 import com.kakapo.data.repository.impl.WalletRepositoryImpl
@@ -71,6 +75,7 @@ import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
 import com.kakapo.oakane.presentation.viewModel.main.MainViewModel
 import com.kakapo.oakane.presentation.viewModel.monthlyBudget.MonthlyBudgetViewModel
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingViewModel
+import com.kakapo.oakane.presentation.viewModel.reminder.ReminderViewModel
 import com.kakapo.oakane.presentation.viewModel.reports.ReportsViewModel
 import com.kakapo.oakane.presentation.viewModel.settings.SettingsViewModel
 import com.kakapo.oakane.presentation.viewModel.splash.SplashViewModel
@@ -124,6 +129,8 @@ object CommonModule {
         factory<SystemRepository> { SystemRepositoryImpl(get()) }
         factory<GoalSavingsRepository> { GoalSavingsRepositoryImpl(get(), get(named(IO))) }
         factory<WalletTransferRepository> { WalletTransferRepositoryImpl(get(), get(), get(named(IO))) }
+        factory<BudgetRepository> { BudgetRepositoryImpl(get()) }
+        factory<SettingsRepository> { SettingsRepositoryImpl(get()) }
     }
 
     val domainModule: Module = module {
@@ -144,7 +151,7 @@ object CommonModule {
         viewModel { SplashViewModel(get()) }
         viewModel { MainViewModel(get(), get()) }
         viewModel { AddTransactionViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
+        viewModel { HomeViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionsViewModel(get(), get()) }
         viewModel { TransactionViewModel(get(), get(), get(), get()) }
         viewModel { CategoriesViewModel(get(), get()) }
@@ -154,10 +161,11 @@ object CommonModule {
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WalletsViewModel(get(), get())}
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
-        viewModel { SettingsViewModel(get(), get())}
-        viewModel { OnBoardingViewModel(get(), get(), get()) }
+        viewModel { SettingsViewModel(get(), get(), get(), get())}
+        viewModel { OnBoardingViewModel(get(), get(), get(), get()) }
         viewModel { WalletViewModel(get(), get(), get(), get()) }
         viewModel { TermAndServiceViewModel(get()) }
+        viewModel { ReminderViewModel() }
     }
 
     val coroutineModule: Module = module {

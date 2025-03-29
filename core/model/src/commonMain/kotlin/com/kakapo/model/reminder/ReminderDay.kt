@@ -1,4 +1,4 @@
-package com.kakapo.oakane.presentation.model
+package com.kakapo.model.reminder
 
 import kotlinx.datetime.DayOfWeek
 
@@ -10,4 +10,10 @@ enum class ReminderDay(val title: String, val dayOfWeek: DayOfWeek) {
     THURSDAY("Thu", DayOfWeek.THURSDAY),
     FRIDAY("Fri", DayOfWeek.FRIDAY),
     SATURDAY("Sat", DayOfWeek.SATURDAY)
+}
+
+fun List<String>.toReminderDays(): List<ReminderDay> {
+    return mapNotNull { title ->
+        ReminderDay.entries.find { it.title == title }
+    }
 }

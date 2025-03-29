@@ -21,7 +21,7 @@ struct TransactionsScreen: View {
     }
     
     var body: some View {
-        ZStack{
+        GeometryReader { proxy in
             ColorTheme.surface.ignoresSafeArea()
             VStack {
                 
@@ -36,7 +36,13 @@ struct TransactionsScreen: View {
                     onEvent: viewModel.handle(event:)
                 )
             }
-
+            
+            FabButtonView(
+                size: FabConstant.size,
+                xPos: proxy.size.width - FabConstant.xOffset,
+                yPos: proxy.size.height - FabConstant.yOffset,
+                onClick: { navigation.navigate(to: .addTransaction(transactionId: 0)) }
+            )
         }
         .navigationBarBackButtonHidden(true)
         .sheet(
@@ -45,28 +51,24 @@ struct TransactionsScreen: View {
                 set: { shown in viewModel.handle(event: .ShowSheet(shown: shown, content: .type)) }
             )
         ){
-            VStack {
-                switch viewModel.uiState.sheetContent {
-                case .type:
-                    FilterByTypeView(
-                        uiState: viewModel.uiState,
-                        onEvent: viewModel.handle(event:)
-                    )
-                case .date:
-                    FilterByDateView(onEvent: viewModel.handle(event:))
-                case .category:
-                    FilterByCategoryView(
-                        uiState: viewModel.uiState,
-                        onEvent: viewModel.handle(event:)
-                    )
-                }
-            }
+            SheetContentView()
             .presentationDetents([.height(bottomSheetSize)])
             .presentationDragIndicator(.visible)
         }
         .onAppear(perform: viewModel.initData)
         .onChange(of: viewModel.uiEffect){
             observe(effect:viewModel.uiEffect)
+        }
+    }
+    
+    @ViewBuilder
+    private func SheetContentView() -> some View {
+        VStack {
+            switch viewModel.uiState.sheetContent {
+            case .type:FilterByTypeView(uiState: viewModel.uiState,onEvent: viewModel.handle(event:))
+            case .date:FilterByDateView(onEvent: viewModel.handle(event:))
+            case .category:FilterByCategoryView(uiState: viewModel.uiState,onEvent: viewModel.handle(event:))
+            }
         }
     }
     

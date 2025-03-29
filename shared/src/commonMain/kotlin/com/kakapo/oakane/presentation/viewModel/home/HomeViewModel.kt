@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asCustomResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.GoalRepository
+import com.kakapo.data.repository.base.SettingsRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.TransactionRepository
 import com.kakapo.data.repository.base.WalletRepository
@@ -30,7 +31,8 @@ class HomeViewModel(
     private val goalRepository: GoalRepository,
     private val walletRepository: WalletRepository,
     private val monthlyBudgetOverviewUseCase: GetMonthlyBudgetOverviewUseCase,
-    private val systemRepository: SystemRepository
+    private val systemRepository: SystemRepository,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -109,7 +111,7 @@ class HomeViewModel(
         val onSuccess: (Boolean) -> Unit = { isBalanceVisible ->
             _uiState.update { it.copy(isBalanceVisible = isBalanceVisible) }
         }
-        systemRepository.isBalanceVisible().fold(
+        settingsRepository.isBalanceVisible().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
@@ -120,7 +122,7 @@ class HomeViewModel(
         val onSuccess: (Boolean) -> Unit = { isBalanceVisible ->
             _uiState.update { it.copy(isBalanceVisible = isBalanceVisible) }
         }
-        systemRepository.changeBalance(!currentVisibility).fold(
+        settingsRepository.changeBalanceVisibility(!currentVisibility).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

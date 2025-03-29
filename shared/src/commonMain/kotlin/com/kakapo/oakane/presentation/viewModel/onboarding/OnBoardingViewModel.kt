@@ -3,6 +3,7 @@ package com.kakapo.oakane.presentation.viewModel.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.BackupRepository
+import com.kakapo.data.repository.base.SettingsRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.model.Currency
@@ -20,6 +21,7 @@ import kotlin.native.ObjCName
 @ObjCName("OnBoardingViewModelKt")
 class OnBoardingViewModel(
     private val systemRepository: SystemRepository,
+    private val settingsRepository: SettingsRepository,
     private val walletRepository: WalletRepository,
     private val backupRepository: BackupRepository
 ) : ViewModel() {
@@ -88,7 +90,7 @@ class OnBoardingViewModel(
         val onSuccess: (Unit) -> Unit = {
             emit(OnBoardingEffect.NavigateToHome)
         }
-        systemRepository.saveOnBoardingAlreadyRead().fold(
+        settingsRepository.saveOnBoardingAlreadyRead().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

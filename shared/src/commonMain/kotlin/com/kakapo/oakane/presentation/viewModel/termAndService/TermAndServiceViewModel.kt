@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.termAndService
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.data.repository.base.SettingsRepository
 import com.kakapo.data.repository.base.SystemRepository
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -15,7 +16,7 @@ import kotlin.native.ObjCName
 
 @ObjCName("TermAndServiceViewModelKt")
 class TermAndServiceViewModel(
-    private val systemRepository: SystemRepository
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     @NativeCoroutinesState
@@ -40,7 +41,7 @@ class TermAndServiceViewModel(
         val onSuccess: (Unit) -> Unit = {
             emit(TermAndServiceEffect.NavigateToOnBoarding)
         }
-        systemRepository.saveTermAndServiceCondition().fold(
+        settingsRepository.saveTermAndServiceCondition().fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
