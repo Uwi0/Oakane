@@ -12,8 +12,8 @@ fun NavController.navigateToReminder(navOptions: NavOptions? = null) {
     navigate(REMINDER_NAVIGATION, navOptions)
 }
 
-fun NavGraphBuilder.reminderScreen() {
+fun NavGraphBuilder.reminderScreen(navigateBack: () -> Unit) {
     composable(REMINDER_NAVIGATION) {
-        ReminderRoute()
+        ReminderRoute(navigateBack = navigateBack)
     }
 }

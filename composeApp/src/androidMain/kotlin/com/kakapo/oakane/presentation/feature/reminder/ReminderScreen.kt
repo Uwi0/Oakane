@@ -1,5 +1,9 @@
 package com.kakapo.oakane.presentation.feature.reminder
 
+import android.app.AlarmManager
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,28 +20,46 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.common.showToast
 import com.kakapo.model.reminder.ReminderDay
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.designSystem.theme.ColorScheme
 import com.kakapo.oakane.presentation.feature.reminder.component.dialog.ReminderDialog
+import com.kakapo.oakane.presentation.viewModel.reminder.ReminderEffect
 import com.kakapo.oakane.presentation.viewModel.reminder.ReminderEvent
 import com.kakapo.oakane.presentation.viewModel.reminder.ReminderState
 import com.kakapo.oakane.presentation.viewModel.reminder.ReminderViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun ReminderRoute() {
+internal fun ReminderRoute(navigateBack: () -> Unit) {
+    val context = LocalContext.current
     val viewModel = koinViewModel<ReminderViewModel>()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                ReminderEffect.NavigateBack -> navigateBack.invoke()
+                is ReminderEffect.ShowError -> context.showToast(effect.message)
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.initData()
+    }
 
     ReminderScreen(state = state, onEvent = viewModel::handleEvent)
 
@@ -60,7 +82,7 @@ private fun ReminderScreen(state: ReminderState, onEvent: (ReminderEvent) -> Uni
             )
         },
         bottomBar = {
-            ButtonSaveReminder()
+            ButtonSaveReminder(createReminder = { onEvent.invoke(ReminderEvent.SaveReminder) })
         }
     )
 }
@@ -176,16 +198,34 @@ private fun Boolean.asChipDateSelectedColor(): Pair<Color, Color> {
 }
 
 @Composable
-private fun ButtonSaveReminder() {
+private fun ButtonSaveReminder(createReminder: () -> Unit = {}) {
+    val context = LocalContext.current
+    val askAlarmPermission: () -> Unit = {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = context.getSystemService(AlarmManager::class.java)
+            if (!alarmManager.canScheduleExactAlarms()) {
+                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(intent)
+            } else {
+                createReminder.invoke()
+            }
+        } else {
+            createReminder.invoke()
+        }
+    }
+
     CustomButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
         contentPadding = PaddingValues(16.dp),
-        onClick = {},
+        onClick = askAlarmPermission,
         content = { Text("Save Reminder") },
     )
 }
+
 
 @Preview
 @Composable

@@ -116,6 +116,6 @@ internal fun OakaneNavHost(
             onSelectedTheme = onSelectedTheme,
             navigateToReminder = navController::navigateToReminder
         )
-        reminderScreen()
+        reminderScreen(navigateBack = navController::navigateUp)
     }
 }
