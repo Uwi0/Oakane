@@ -1,6 +1,8 @@
 package com.kakapo.oakane.presentation.feature.reminder
 
 import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
@@ -40,7 +42,9 @@ import com.kakapo.oakane.presentation.viewModel.reminder.ReminderEffect
 import com.kakapo.oakane.presentation.viewModel.reminder.ReminderEvent
 import com.kakapo.oakane.presentation.viewModel.reminder.ReminderState
 import com.kakapo.oakane.presentation.viewModel.reminder.ReminderViewModel
+import com.kakapo.oakane.sync.receiver.ReminderReceiver
 import org.koin.androidx.compose.koinViewModel
+import java.util.Calendar
 
 @Composable
 internal fun ReminderRoute(navigateBack: () -> Unit) {
@@ -53,6 +57,7 @@ internal fun ReminderRoute(navigateBack: () -> Unit) {
             when (effect) {
                 ReminderEffect.NavigateBack -> navigateBack.invoke()
                 is ReminderEffect.ShowError -> context.showToast(effect.message)
+                is ReminderEffect.CreatedReminder -> navigateBack.invoke()
             }
         }
     }
@@ -71,7 +76,12 @@ internal fun ReminderRoute(navigateBack: () -> Unit) {
 @Composable
 private fun ReminderScreen(state: ReminderState, onEvent: (ReminderEvent) -> Unit) {
     Scaffold(
-        topBar = { CustomNavigationTopAppBarView(title = "Reminder", onNavigateBack = {}) },
+        topBar = {
+            CustomNavigationTopAppBarView(
+                title = "Reminder",
+                onNavigateBack = { onEvent.invoke(ReminderEvent.NavigateUp) }
+            )
+        },
         content = { paddingValues ->
             ReminderContent(
                 modifier = Modifier
@@ -225,7 +235,6 @@ private fun ButtonSaveReminder(createReminder: () -> Unit = {}) {
         content = { Text("Save Reminder") },
     )
 }
-
 
 @Preview
 @Composable

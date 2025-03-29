@@ -52,7 +52,7 @@ class ReminderViewModel(
 
     private fun saveReminder() = viewModelScope.launch {
         val reminder = uiState.value.asReminder()
-        val onSuccess: (Unit) -> Unit = { emit(ReminderEffect.NavigateBack) }
+        val onSuccess: (Unit) -> Unit = { emit(ReminderEffect.CreatedReminder(reminder)) }
         settingsRepository.saveReminder(reminder).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError

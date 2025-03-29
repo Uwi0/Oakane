@@ -50,6 +50,7 @@ data class ReminderState(
 sealed class ReminderEffect {
     data object NavigateBack: ReminderEffect()
     data class ShowError(val message: String): ReminderEffect()
+    data class CreatedReminder(val reminder: Reminder): ReminderEffect()
 }
 
 sealed class ReminderEvent {
