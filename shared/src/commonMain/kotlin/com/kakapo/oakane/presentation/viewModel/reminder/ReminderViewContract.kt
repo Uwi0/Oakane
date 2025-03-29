@@ -43,7 +43,7 @@ data class ReminderState(
         } else {
             selectedDays + day
         }
-        return copy(selectedDays = updatedDays)
+        return copy(selectedDays = updatedDays.sortedBy { it.ordinal })
     }
 
     companion object {

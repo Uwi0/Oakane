@@ -3,10 +3,10 @@ import Shared
 import Combine
 import KMPNativeCoroutinesCombine
 
-final class ReReminderViewModel: ObservableObject {
+final class ReminderViewModel: ObservableObject {
     
     @Published private(set) var uiState: ReminderState = ReminderState.companion.default()
-    @Published private var uiEffect: ReminderEffect? = nil
+    @Published var uiEffect: ReminderEffect? = nil
     
     private var viewModel: ReminderViewModelKt = Koin.shared.get()
     private var uiStateCancellable: AnyCancellable?
@@ -15,6 +15,7 @@ final class ReReminderViewModel: ObservableObject {
     func initViewModel() {
         viewModel.doInitData()
         observeUiState()
+        observeUiEffect()
     }
     
     func handle(event: ReminderEvent) {
