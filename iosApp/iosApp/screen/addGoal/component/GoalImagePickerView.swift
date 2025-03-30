@@ -87,7 +87,7 @@ private struct SelectedGoalImageView: View {
                     .clipShape(Circle())
             }
             else {
-                Image(ImageConstants.imageAddGoalDefault)
+                Image(ImageConstants.oakaneIcon)
                     .resizable()
                     .scaledToFit()
                     .frame(width: size, height: size)

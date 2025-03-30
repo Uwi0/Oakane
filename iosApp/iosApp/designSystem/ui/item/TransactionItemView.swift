@@ -12,7 +12,7 @@ struct TransactionItemView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Image(ImageConstants.fubukiStare)
+            Image(ImageConstants.oakaneIcon)
                 .resizable()
                 .frame(width: imageSize, height: imageSize)
                 .clipShape(Circle())

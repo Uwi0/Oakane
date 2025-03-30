@@ -70,7 +70,6 @@ struct MonthlyBudgetView: View {
     
     @ViewBuilder
     private func BalanceItemView(value: Double, currency: Currency, isIncome: Bool) -> some View {
-        let imageName = isIncome ? "arrow.up" : "arrow.down"
         let text = isIncome ? "Total Income" : "Total Expenses"
         let formattedValue = value.toFormatCurrency(currency: currency)
         let transactionType: TransactionType = isIncome ? .income : .expense

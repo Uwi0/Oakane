@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DisplayImageFileView: View {
     
-    var defaultImage: String = ImageConstants.defaultImage
+    var defaultImage: String = ImageConstants.oakaneIcon
     let fileName: String
     let width: CGFloat
     let height: CGFloat
@@ -46,5 +46,9 @@ struct DisplayImageFileView: View {
 
 #Preview {
     DisplayImageFileView(
-        defaultImage: ImageConstants.defaultImage,fileName: "", width: 68, height: 68)
+        defaultImage: ImageConstants.oakaneIcon,
+        fileName: "",
+        width: 68,
+        height: 68
+    )
 }

@@ -7,11 +7,12 @@ struct ImportBackupContentView: View {
     @State private var isPresented: Bool = false
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: . center) {
             Text("Import Your Backup")
                 .font(Typography.displaySmall)
             Spacer().frame(height: 148)
-            Image(ImageConstants.mumeiBackup)
+            Image(ImageConstants.oakaneEmpty)
+                .resizable()
                 .frame(width: 236, height: 236)
             Spacer().frame(height: 16)
             Text("You can import your back up to restore your data,  if you have one from previous back up or previous device.")

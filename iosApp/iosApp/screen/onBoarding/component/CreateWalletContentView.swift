@@ -37,7 +37,7 @@ struct CreateWalletContentView: View {
     @ViewBuilder
     private func ImageView() -> some View {
         VStack(alignment: .center) {
-            Image(ImageConstants.monaEmptyWallet)
+            Image(ImageConstants.oakaneIcon)
                 .resizable()
                 .clipShape(Circle())
                 .frame(width: 220, height: 220)

@@ -4,6 +4,7 @@ struct ContentView: View {
     
     @State private var openDrawer: Bool = false
     @EnvironmentObject private var navigation: AppNavigation
+    @StateObject private var viewModel: MainViewModel = MainViewModel()
     @AppStorage(UserDefaultsKeys.isDarkMode) private var isDarkModel: Bool = UserDefaults.standard.bool(forKey: UserDefaultsKeys.isDarkMode)
     
     var body: some View {
@@ -14,6 +15,7 @@ struct ContentView: View {
             DrawerMenuView(isShowing: $openDrawer, onMenuClick: navigation.navigateFrom(menu:))
         }
         .preferredColorScheme(isDarkModel ? .dark : .light)
+        .task { viewModel.initData() }
     }
     
     @ViewBuilder private func ScreenContent() -> some View {

@@ -29,7 +29,7 @@ struct TransactionImagePreView: View {
         if let safeImage = uiImage {
             Image(uiImage: safeImage).resizable()
         } else {
-            Image(ImageConstants.fubukiStare).resizable()
+            Image(ImageConstants.oakaneIcon).resizable()
         }
     }
     

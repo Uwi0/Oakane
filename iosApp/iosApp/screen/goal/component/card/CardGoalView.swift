@@ -9,7 +9,7 @@ struct CardGoalView: View {
     var body: some View {
         HStack(spacing: 8) {
             DisplayImageFileView(
-                defaultImage: ImageConstants.defaultImage,
+                defaultImage: ImageConstants.oakaneIcon,
                 fileName: uiState.goal.fileName,
                 width: size,
                 height: size

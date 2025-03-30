@@ -15,7 +15,7 @@ struct SplashScreen: View {
                 .animation(.easeIn(duration: 0.6), value: isLogoVisible)
 
             VStack {
-                Image(ImageConstants.shirokoIcon)
+                Image(ImageConstants.oakaneIcon)
                     .resizable()
                     .frame(width: 240, height: 240)
                     .clipShape(Circle())

@@ -13,7 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.native.ObjCName
 
+@ObjCName("MainViewModelKt")
 class MainViewModel(
     private val systemRepository: SystemRepository,
     private val importRecurringBudgetUseCase: ImportRecurringBudgetUseCase
