@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <files-path
+    <external-files-path
         name="images"
-        path="." />
+        path="Pictures/Oakane/" />
+
     <external-files-path
         name="csv_files"
-        path="." />
+        path="Documents/" />
 </paths>

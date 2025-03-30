@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.touchlab.kermit.Logger
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -205,17 +206,18 @@ private fun createImageUri(context: Context): Pair<Uri?, String> {
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             contentValues
         )
-        uri to "${fileName}.jpg"
+        uri to "$fileName.jpg"
     } else {
         val picturesDir = File(
             context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             "Oakane"
         )
-        if (!picturesDir.exists()) {
-            picturesDir.mkdirs()
-        }
-        val file = File(picturesDir, "${fileName}.jpg")
-        Uri.fromFile(file) to fileName
+        if (!picturesDir.exists()) picturesDir.mkdirs()
+
+        val file = File(picturesDir, "$fileName.jpg")
+        val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+
+        uri to "$fileName.jpg"
     }
 }
 

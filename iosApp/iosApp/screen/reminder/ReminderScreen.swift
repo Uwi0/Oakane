@@ -82,7 +82,6 @@ struct ReminderScreen: View {
                     )
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
     
