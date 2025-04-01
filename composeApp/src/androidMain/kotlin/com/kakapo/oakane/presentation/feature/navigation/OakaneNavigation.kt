@@ -9,6 +9,8 @@ import com.kakapo.oakane.presentation.feature.addGoal.navigation.navigateToAddGo
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.addTransactionScreen
 import com.kakapo.oakane.presentation.feature.addTransaction.navigation.navigateToAddTransaction
 import com.kakapo.oakane.presentation.feature.categories.navigation.categoriesScreen
+import com.kakapo.oakane.presentation.feature.createwallet.navigation.createWalletScreen
+import com.kakapo.oakane.presentation.feature.createwallet.navigation.navigateToCreateWallet
 import com.kakapo.oakane.presentation.feature.goal.navigation.goalScreen
 import com.kakapo.oakane.presentation.feature.goal.navigation.navigateToGoal
 import com.kakapo.oakane.presentation.feature.goals.navigation.goalsScreen
@@ -103,7 +105,8 @@ internal fun OakaneNavHost(
         walletsScreen(
             openDrawer = openDrawer,
             navigateBack = appState::safeNavigateUp,
-            navigateToWallet = navController::navigateToWallet
+            navigateToWallet = navController::navigateToWallet,
+            navigateToCreateWallet = navController::navigateToCreateWallet
         )
         walletScreen(navigateBack = navController::navigateUp)
         reportsScreen(
@@ -117,5 +120,6 @@ internal fun OakaneNavHost(
             navigateToReminder = navController::navigateToReminder
         )
         reminderScreen(navigateBack = navController::navigateUp)
+        createWalletScreen()
     }
 }

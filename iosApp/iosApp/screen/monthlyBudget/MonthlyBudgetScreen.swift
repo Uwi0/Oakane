@@ -74,14 +74,13 @@ struct MonthlyBudgetScreen: View {
     }
     
     private func observe(effect: MonthlyBudgetEffect?){
-        if let safeEffect = effect {
-            switch onEnum(of:safeEffect) {
-            case .navigateBack:
-                navigation.navigateBack()
-            case .showError(let effect):
-                print(effect.message)
-            }
+        guard let effect else { return }
+        
+        switch onEnum(of:effect) {
+        case .navigateBack:navigation.navigateBack()
+        case .showError(let effect): print(effect.message)
         }
+        
         viewModel.uiEffect = nil
     }
 }

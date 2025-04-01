@@ -31,6 +31,7 @@ sealed class WalletsEffect{
     data object DismissBottomSheet: WalletsEffect()
     data class NavigateToWallet(val id: Long): WalletsEffect()
     data object OpenDrawer: WalletsEffect()
+    data object NavigateToCreateWallet: WalletsEffect()
 }
 
 sealed class WalletsEvent{
@@ -41,4 +42,5 @@ sealed class WalletsEvent{
     data class ClickedWallet(val item: WalletItemModel): WalletsEvent()
     data class SaveWallet(val wallet: WalletModel): WalletsEvent()
     data object OpenDrawer: WalletsEvent()
+    data object NavigateToCreateWallet: WalletsEvent()
 }

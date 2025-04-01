@@ -27,7 +27,7 @@ data class MonthlyBudgetState(
 ){
 
     val realAmount: Int get() {
-        val doubleValue = amount.toDoubleOrNull() ?: 0.0
+        val doubleValue = amount.asRealCurrencyValue()
         return doubleValue.toInt()
     }
 

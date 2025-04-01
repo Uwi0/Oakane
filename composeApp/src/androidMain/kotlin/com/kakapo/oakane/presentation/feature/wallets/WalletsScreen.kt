@@ -37,7 +37,8 @@ internal fun WalletsRoute(
     showDrawer: Boolean,
     openDrawer: () -> Unit,
     navigateBack: () -> Unit,
-    navigateToWallet: (Long) -> Unit
+    navigateToWallet: (Long) -> Unit,
+    navigateToCreateWallet: (Long) -> Unit
 ) {
     val context = LocalContext.current
     val viewModel = koinViewModel<WalletsViewModel>()
@@ -57,10 +58,11 @@ internal fun WalletsRoute(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is WalletsEffect.NavigateBack -> navigateBack.invoke()
-                WalletsEffect.DismissBottomSheet -> sheetState.hide()
                 is WalletsEffect.ShowError -> context.showToast(effect.message)
                 is WalletsEffect.NavigateToWallet -> navigateToWallet.invoke(effect.id)
+                WalletsEffect.DismissBottomSheet -> sheetState.hide()
                 WalletsEffect.OpenDrawer -> openDrawer.invoke()
+                WalletsEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(0)
             }
         }
     }
@@ -94,7 +96,7 @@ private fun WalletsScreen(uiState: WalletsState, onEvent: (WalletsEvent) -> Unit
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onEvent.invoke(WalletsEvent.ShowSheet(shown = true)) }) {
+            FloatingActionButton(onClick = { onEvent.invoke(WalletsEvent.NavigateToCreateWallet) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null

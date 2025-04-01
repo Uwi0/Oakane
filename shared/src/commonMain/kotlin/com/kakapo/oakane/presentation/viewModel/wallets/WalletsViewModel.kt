@@ -45,13 +45,14 @@ class WalletsViewModel(
 
     fun handleEvent(event: WalletsEvent) {
         when (event) {
-            WalletsEvent.NavigateBack -> emit(WalletsEffect.NavigateBack)
             is WalletsEvent.OnSearchBy -> _uiState.update { it.copy(searchQuery = event.query) }
             is WalletsEvent.ShowSheet -> showSheet(event.shown)
             is WalletsEvent.SelectPrimaryWalletBy -> selectWalletBy(event.id)
             is WalletsEvent.ClickedWallet -> emit(NavigateToWallet(event.item.id))
             is WalletsEvent.SaveWallet -> add(event.wallet)
+            WalletsEvent.NavigateBack -> emit(WalletsEffect.NavigateBack)
             WalletsEvent.OpenDrawer -> emit(WalletsEffect.OpenDrawer)
+            WalletsEvent.NavigateToCreateWallet -> emit(WalletsEffect.NavigateToCreateWallet)
         }
     }
 

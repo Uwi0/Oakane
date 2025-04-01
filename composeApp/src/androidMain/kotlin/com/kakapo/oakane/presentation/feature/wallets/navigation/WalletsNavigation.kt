@@ -19,7 +19,8 @@ fun NavController.navigateToWallets(showDrawer: Boolean = false, navOptions: Nav
 fun NavGraphBuilder.walletsScreen(
     openDrawer: () -> Unit,
     navigateBack: () -> Unit,
-    navigateToWallet: (Long) -> Unit
+    navigateToWallet: (Long) -> Unit,
+    navigateToCreateWallet: (Long) -> Unit
 ) {
     val route = "$WALLETS_ROUTE/{$SHOW_DRAWER}"
     val args = listOf(navArgument(SHOW_DRAWER) { type = NavType.BoolType })
@@ -29,7 +30,8 @@ fun NavGraphBuilder.walletsScreen(
             showDrawer = showDrawer,
             openDrawer = openDrawer,
             navigateBack = navigateBack,
-            navigateToWallet = navigateToWallet
+            navigateToWallet = navigateToWallet,
+            navigateToCreateWallet = navigateToCreateWallet
         )
     }
 }
