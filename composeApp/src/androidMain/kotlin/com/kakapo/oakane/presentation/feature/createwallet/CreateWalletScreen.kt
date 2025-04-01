@@ -17,14 +17,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakapo.common.showToast
 import com.kakapo.model.Currency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
+import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.OutlinedCurrencyTextFieldView
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
@@ -40,18 +43,26 @@ import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletEvent
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletState
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletViewModel
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale
 
 @Composable
 internal fun CreateWalletRoute(
+    walletId: Long,
     onNavigateBack: () -> Unit
 ) {
     val viewModel = koinViewModel<CreateWalletViewModel>()
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.initData(walletId)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 CreateWalletEffect.NavigateBack -> onNavigateBack.invoke()
+                is CreateWalletEffect.ShowError -> context.showToast(effect.message)
             }
         }
     }
@@ -87,13 +98,19 @@ private fun CreateWalletContent(
     onEvent: (CreateWalletEvent) -> Unit
 ) {
     val uiState = WalletsSheetState(currency = Currency.CAD, wallet = WalletItemModel(), {})
+    val textFieldConfig = rememberCurrencyTextFieldState(
+        config = CurrencyTextFieldConfig(
+            currencySymbol = state.currency.symbol,
+            locale = Locale(state.currency.languageCode, state.currency.countryCode),
+            initialText = state.walletItemModel.startBalance
+        ),
+        onChange = { onEvent.invoke(CreateWalletEvent.BalanceChanged(it)) }
+    )
+
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
         CreateWalletContent(uiState = uiState, state = state, onEvent = onEvent)
-        StartBalanceContent(
-            textFieldConfig = uiState.textFieldConfig,
-            onChangeBalance = { balance -> uiState.balance = balance }
-        )
-        NoteContent(state = uiState)
+        StartBalanceContent(textFieldState = textFieldConfig)
+        NoteContent(state = state, onEvent = onEvent)
         ColorContent(
             state = uiState,
             onClickBrush = { uiState.sheetContent = WalletSheetContent.SelectColor },
@@ -141,27 +158,27 @@ private fun CreateWalletContent(
 
 @Composable
 private fun StartBalanceContent(
-    textFieldConfig: CurrencyTextFieldConfig,
-    onChangeBalance: (String) -> Unit
+    textFieldState: CurrencyTextFieldState
 ) {
-    val state = rememberCurrencyTextFieldState(textFieldConfig) { balance ->
-        onChangeBalance.invoke(balance)
-    }
     ColumnContent(title = "Start Balance") {
         OutlinedCurrencyTextFieldView(
-            state = state,
+            state = textFieldState,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
 @Composable
-private fun NoteContent(state: WalletsSheetState) {
+private fun NoteContent(
+    state: CreateWalletState,
+    onEvent: (CreateWalletEvent) -> Unit
+) {
     ColumnContent("Note") {
         CustomOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.note,
-            onValueChange = { state.note = it }
+            onValueChange = { onEvent.invoke(CreateWalletEvent.NoteChanged(it)) },
+            placeHolder = "Note..."
         )
     }
 }

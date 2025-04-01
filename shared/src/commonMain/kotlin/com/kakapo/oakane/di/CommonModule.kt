@@ -167,7 +167,7 @@ object CommonModule {
         viewModel { WalletViewModel(get(), get(), get(), get()) }
         viewModel { TermAndServiceViewModel(get()) }
         viewModel { ReminderViewModel(get()) }
-        viewModel { CreateWalletViewModel() }
+        viewModel { CreateWalletViewModel(get(), get()) }
     }
 
     val coroutineModule: Module = module {
