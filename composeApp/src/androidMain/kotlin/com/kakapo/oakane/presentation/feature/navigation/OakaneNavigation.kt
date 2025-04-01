@@ -120,6 +120,6 @@ internal fun OakaneNavHost(
             navigateToReminder = navController::navigateToReminder
         )
         reminderScreen(navigateBack = navController::navigateUp)
-        createWalletScreen()
+        createWalletScreen(navigateBack = navController::navigateUp)
     }
 }

@@ -8,16 +8,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.model.Currency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
@@ -33,55 +35,88 @@ import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetState
+import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletEffect
+import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletEvent
+import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletState
+import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun CreateWalletRoute() {
-    CreateWalletScreen()
+internal fun CreateWalletRoute(
+    onNavigateBack: () -> Unit
+) {
+    val viewModel = koinViewModel<CreateWalletViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                CreateWalletEffect.NavigateBack -> onNavigateBack.invoke()
+            }
+        }
+    }
+
+    CreateWalletScreen(state = uiState, onEvent = viewModel::handleEvent)
 }
 
 @Composable
-private fun CreateWalletScreen() {
+private fun CreateWalletScreen(state: CreateWalletState, onEvent: (CreateWalletEvent) -> Unit) {
     Scaffold(
         topBar = {
-            CustomNavigationTopAppBarView(title = "Create Wallet", onNavigateBack = {})
+            CustomNavigationTopAppBarView(
+                title = "Create Wallet",
+                onNavigateBack = { onEvent.invoke(CreateWalletEvent.NavigateBack) }
+            )
         },
         content = { paddingValues ->
-            CreateWalletContent(modifier = Modifier.padding(paddingValues).padding(horizontal = 16.dp, vertical = 24.dp))
+            CreateWalletContent(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp, vertical = 24.dp),
+                state = state,
+                onEvent = onEvent
+            )
         }
     )
 }
 
 @Composable
-private fun CreateWalletContent(modifier: Modifier = Modifier) {
-    val state = WalletsSheetState(currency = Currency.CAD, wallet = WalletItemModel(), {})
+private fun CreateWalletContent(
+    modifier: Modifier = Modifier,
+    state: CreateWalletState,
+    onEvent: (CreateWalletEvent) -> Unit
+) {
+    val uiState = WalletsSheetState(currency = Currency.CAD, wallet = WalletItemModel(), {})
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        CreateWalletContent(state = state)
+        CreateWalletContent(uiState = uiState, state = state, onEvent = onEvent)
         StartBalanceContent(
-            textFieldConfig = state.textFieldConfig,
-            onChangeBalance = { balance -> state.balance = balance }
+            textFieldConfig = uiState.textFieldConfig,
+            onChangeBalance = { balance -> uiState.balance = balance }
         )
-        NoteContent(state = state)
+        NoteContent(state = uiState)
         ColorContent(
-            state = state,
-            onClickBrush = { state.sheetContent = WalletSheetContent.SelectColor },
-            onClickColor = state::onSelectedColor
+            state = uiState,
+            onClickBrush = { uiState.sheetContent = WalletSheetContent.SelectColor },
+            onClickColor = uiState::onSelectedColor
         )
         Spacer(Modifier.weight(1f))
         ConfirmButtonView(
-            isEditMode = state.isEditMode,
-            saveWallet = { state.confirmSaveWallet() }
+            isEditMode = uiState.isEditMode,
+            saveWallet = { uiState.confirmSaveWallet() }
         )
     }
 }
 
 @Composable
 private fun CreateWalletContent(
-    state: WalletsSheetState
+    uiState: WalletsSheetState,
+    state: CreateWalletState,
+    onEvent: (CreateWalletEvent) -> Unit
 ) {
     val selectedIcon = SelectedIconModel(
-        imageFile = state.selectedImageFile,
-        defaultIcon = state.selectedIconName,
-        color = state.defaultColor
+        imageFile = uiState.selectedImageFile,
+        defaultIcon = uiState.selectedIconName,
+        color = uiState.defaultColor
     )
     ColumnContent(title = "Wallet Name") {
         Row(
@@ -90,12 +125,12 @@ private fun CreateWalletContent(
         ) {
             SelectedIconView(
                 selectedIcon = selectedIcon,
-                onClick = { state.sheetContent = WalletSheetContent.SelectIcon }
+                onClick = { uiState.sheetContent = WalletSheetContent.SelectIcon }
             )
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
                 value = state.walletName,
-                onValueChange = { state.walletName = it },
+                onValueChange = { onEvent.invoke(CreateWalletEvent.WalletNameChanged(it)) },
                 shape = MaterialTheme.shapes.medium,
                 placeholder = { Text(text = "Wallet Name") },
                 singleLine = true
@@ -126,7 +161,7 @@ private fun NoteContent(state: WalletsSheetState) {
         CustomOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.note,
-            onValueChange = { state.note = it}
+            onValueChange = { state.note = it }
         )
     }
 }
@@ -174,6 +209,6 @@ private fun ConfirmButtonView(
 @Composable
 private fun CreateWalletScreenPrev() {
     AppTheme {
-        CreateWalletScreen()
+        CreateWalletScreen(state = CreateWalletState(), onEvent = {})
     }
 }

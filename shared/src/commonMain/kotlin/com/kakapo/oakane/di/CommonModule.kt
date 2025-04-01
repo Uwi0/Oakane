@@ -69,6 +69,7 @@ import com.kakapo.domain.usecase.impl.WalletLogItemsUseCaseImpl
 import com.kakapo.oakane.presentation.viewModel.addGoal.AddGoalViewModel
 import com.kakapo.oakane.presentation.viewModel.addTransaction.AddTransactionViewModel
 import com.kakapo.oakane.presentation.viewModel.categories.CategoriesViewModel
+import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletViewModel
 import com.kakapo.oakane.presentation.viewModel.goal.GoalViewModel
 import com.kakapo.oakane.presentation.viewModel.goals.GoalsViewModel
 import com.kakapo.oakane.presentation.viewModel.home.HomeViewModel
@@ -159,13 +160,14 @@ object CommonModule {
         viewModel { GoalViewModel(get(), get(), get(), get(), get()) }
         viewModel { GoalsViewModel(get(), get()) }
         viewModel { MonthlyBudgetViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { WalletsViewModel(get(), get())}
+        viewModel { WalletsViewModel(get(), get()) }
         viewModel { ReportsViewModel(get(), get(), get(), get(), get()) }
-        viewModel { SettingsViewModel(get(), get(), get(), get())}
+        viewModel { SettingsViewModel(get(), get(), get(), get()) }
         viewModel { OnBoardingViewModel(get(), get(), get(), get()) }
         viewModel { WalletViewModel(get(), get(), get(), get()) }
         viewModel { TermAndServiceViewModel(get()) }
         viewModel { ReminderViewModel(get()) }
+        viewModel { CreateWalletViewModel() }
     }
 
     val coroutineModule: Module = module {

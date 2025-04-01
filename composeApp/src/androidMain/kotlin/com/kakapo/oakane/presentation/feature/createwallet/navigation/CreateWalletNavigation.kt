@@ -16,10 +16,10 @@ fun NavController.navigateToCreateWallet(id: Long,navOptions: NavOptions? = null
     navigate(route, navOptions)
 }
 
-fun NavGraphBuilder.createWalletScreen() {
+fun NavGraphBuilder.createWalletScreen(navigateBack: () -> Unit) {
     val route = "$CREATE_WALLET_NAVIGATION/{${NavArgs.WALLET_ID}}"
     val args = listOf(navArgument(NavArgs.WALLET_ID) { type = NavType.LongType })
     composable(route, args) {
-        CreateWalletRoute()
+        CreateWalletRoute(onNavigateBack = navigateBack)
     }
 }
