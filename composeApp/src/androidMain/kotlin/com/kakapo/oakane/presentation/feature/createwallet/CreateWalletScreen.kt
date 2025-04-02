@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,6 +34,7 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.currency.
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.rememberCurrencyTextFieldState
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
+import com.kakapo.oakane.presentation.feature.createwallet.component.CreateWalletSheet
 import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.model.colorsSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
@@ -40,11 +43,13 @@ import com.kakapo.oakane.presentation.ui.component.SelectedIconView
 import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetState
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletEffect
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletEvent
+import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletSheetContent
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletState
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletViewModel
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CreateWalletRoute(
     walletId: Long,
@@ -52,6 +57,7 @@ internal fun CreateWalletRoute(
 ) {
     val viewModel = koinViewModel<CreateWalletViewModel>()
     val context = LocalContext.current
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -67,7 +73,23 @@ internal fun CreateWalletRoute(
         }
     }
 
+    LaunchedEffect(uiState.isSheetShown) {
+        if (!uiState.isSheetShown) {
+            sheetState.hide()
+        } else {
+            sheetState.show()
+        }
+    }
+
     CreateWalletScreen(state = uiState, onEvent = viewModel::handleEvent)
+
+    if (uiState.isSheetShown) {
+        CreateWalletSheet(
+            sheetState = sheetState,
+            state = uiState,
+            onEvent = viewModel::handleEvent
+        )
+    }
 }
 
 @Composable
@@ -97,43 +119,45 @@ private fun CreateWalletContent(
     state: CreateWalletState,
     onEvent: (CreateWalletEvent) -> Unit
 ) {
-    val uiState = WalletsSheetState(currency = Currency.CAD, wallet = WalletItemModel(), {})
     val textFieldConfig = rememberCurrencyTextFieldState(
         config = CurrencyTextFieldConfig(
             currencySymbol = state.currency.symbol,
             locale = Locale(state.currency.languageCode, state.currency.countryCode),
-            initialText = state.walletItemModel.startBalance
+            initialText = state.wallet.startBalance
         ),
         onChange = { onEvent.invoke(CreateWalletEvent.BalanceChanged(it)) }
     )
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        CreateWalletContent(uiState = uiState, state = state, onEvent = onEvent)
+        CreateWalletContent(state = state, onEvent = onEvent)
         StartBalanceContent(textFieldState = textFieldConfig)
         NoteContent(state = state, onEvent = onEvent)
         ColorContent(
-            state = uiState,
-            onClickBrush = { uiState.sheetContent = WalletSheetContent.SelectColor },
-            onClickColor = uiState::onSelectedColor
+            state = state,
+            onClickBrush = {
+                onEvent.invoke(CreateWalletEvent.ShowSheet(content = CreateWalletSheetContent.Color, shown = true))
+            },
+            onClickColor = { hex ->
+                onEvent.invoke(CreateWalletEvent.SelectedColor(hex))
+            }
         )
         Spacer(Modifier.weight(1f))
         ConfirmButtonView(
-            isEditMode = uiState.isEditMode,
-            saveWallet = { uiState.confirmSaveWallet() }
+            isEditMode = state.isEditMode,
+            saveWallet = {  }
         )
     }
 }
 
 @Composable
 private fun CreateWalletContent(
-    uiState: WalletsSheetState,
     state: CreateWalletState,
     onEvent: (CreateWalletEvent) -> Unit
 ) {
     val selectedIcon = SelectedIconModel(
-        imageFile = uiState.selectedImageFile,
-        defaultIcon = uiState.selectedIconName,
-        color = uiState.defaultColor
+        imageFile = state.selectedImageFile,
+        defaultIcon = state.selectedIconName,
+        color = state.defaultColor
     )
     ColumnContent(title = "Wallet Name") {
         Row(
@@ -142,7 +166,14 @@ private fun CreateWalletContent(
         ) {
             SelectedIconView(
                 selectedIcon = selectedIcon,
-                onClick = { uiState.sheetContent = WalletSheetContent.SelectIcon }
+                onClick = {
+                    onEvent.invoke(
+                        CreateWalletEvent.ShowSheet(
+                            content = CreateWalletSheetContent.Icon,
+                            shown = true
+                        )
+                    )
+                }
             )
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
@@ -185,7 +216,7 @@ private fun NoteContent(
 
 @Composable
 private fun ColorContent(
-    state: WalletsSheetState,
+    state: CreateWalletState,
     onClickBrush: () -> Unit,
     onClickColor: (String) -> Unit
 ) {

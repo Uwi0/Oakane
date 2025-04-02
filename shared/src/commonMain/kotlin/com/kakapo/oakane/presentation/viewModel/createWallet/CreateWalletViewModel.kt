@@ -38,11 +38,15 @@ class CreateWalletViewModel(
 
     fun handleEvent(event: CreateWalletEvent) {
         when(event) {
+            CreateWalletEvent.NavigateBack -> emit(CreateWalletEffect.NavigateBack)
+            CreateWalletEvent.CreateWallet -> TODO()
             is CreateWalletEvent.WalletNameChanged -> _uiState.update { it.copy(walletName = event.name) }
             is CreateWalletEvent.NoteChanged -> _uiState.update { it.copy(note = event.note) }
             is CreateWalletEvent.BalanceChanged -> _uiState.update { it.copy(balance = event.balance) }
-            CreateWalletEvent.NavigateBack -> emit(CreateWalletEffect.NavigateBack)
-            CreateWalletEvent.CreateWallet -> TODO()
+            is CreateWalletEvent.ShowSheet -> _uiState.update { it.updateShowSheet(event) }
+            is CreateWalletEvent.SelectedColor -> _uiState.update { it.updateSelectedColor(event) }
+            is CreateWalletEvent.SelectedIcon -> _uiState.update { it.updateSelectedIcon(event) }
+            is CreateWalletEvent.SelectedImage -> _uiState.update { it.updateSelectedImage(event) }
         }
     }
 
@@ -59,7 +63,7 @@ class CreateWalletViewModel(
 
     private fun loadWalletItemBy(id: Long) = viewModelScope.launch {
         val onSuccess: (WalletItemModel) -> Unit = {
-            _uiState.update { it.copy(walletItemModel = it.walletItemModel) }
+            _uiState.update { it.copy(wallet = it.wallet, isEditMode = true) }
         }
 
         walletRepository.loadWalletItemBy(id).fold(
