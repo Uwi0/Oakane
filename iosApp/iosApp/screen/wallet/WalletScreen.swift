@@ -45,20 +45,10 @@ struct WalletScreen: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .dynamicHeightSheet(
-            isPresented: Binding(
-                get: { uiState.isWalletSheetShown },
-                set: { isShown in viewModel.handle(event: .ShowWalletSheet(shown: isShown)) }
-            ),
-            content: {
-                WalletSheetView(state: walletSheetState)
-                    .id(sheetID)
-            }
-        )
         .task {
             viewModel.iniData(walletId: walletId)
             walletSheetState.onSaveWallet = { wallet in
-                viewModel.handle(event: .UpdateWallet(wallet: wallet))
+//                viewModel.handle(event: .UpdateWallet(wallet: wallet))
             }
         }
     }
@@ -72,7 +62,7 @@ struct WalletScreen: View {
                 actionContent: {
                     BarAction(systemName: "pencil").onTapGesture {
                         walletSheetState.initData(wallet: uiState.wallet)
-                        viewModel.handle(event: .ShowWalletSheet(shown: true))
+//                        viewModel.handle(event: .ShowWalletSheet(shown: true))
                     }
                     Spacer().frame(width: 16)
                     BarAction(systemName: "trash").onTapGesture {

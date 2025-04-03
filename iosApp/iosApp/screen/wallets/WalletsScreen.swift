@@ -19,21 +19,14 @@ struct WalletsScreen: View {
                 WalletsTopAppBar()
                 WalletsContentView()
             }
-            .dynamicHeightSheet(
-                isPresented: Binding(
-                    get: { uiState.isSheetShown },
-                    set: { viewModel.handle(event: .ShowSheet(shown: $0)) }
-                ),
-                content: {
-                    WalletSheetView(state: sheetState)
-                }
-            )
             
             FabButtonView(
                 size: FabConstant.size,
                 xPos: proxy.size.width - FabConstant.xOffset,
                 yPos: proxy.size.height - FabConstant.yOffset,
-                onClick: { viewModel.handle(event: .ShowSheet(shown: true)) }
+                onClick: {
+                    //TODO need to fix
+                }
             )
         }
         .navigationBarBackButtonHidden(true)
@@ -41,9 +34,7 @@ struct WalletsScreen: View {
             observe(effect: viewModel.uiEffect)
         }
         .onAppear {
-            sheetState.onSaveWallet = { wallet in
-                viewModel.handle(event: .SaveWallet(wallet: wallet))
-            }
+            
         }
     }
     
@@ -103,18 +94,18 @@ struct WalletsScreen: View {
         guard let effect else { return }
         
         switch onEnum(of: effect){
-        case .dismissBottomSheet: sheetState.resetContent()
         case .navigateBack: nav.navigateBack()
         case .showError(let effect): print("error \(effect.message)")
         case .navigateToWallet(let effect): nav.navigate(to: .wallet(id: effect.id))
         case .openDrawer: openDrawer = !openDrawer
+        case .navigateToCreateWallet: //TODO need to fix soon
         }
         
         viewModel.uiEffect = nil
     }
     
     private func capturedEventSave(wallet: WalletModel) {
-        viewModel.handle(event: .SaveWallet(wallet: wallet))
+
     }
 
 }
