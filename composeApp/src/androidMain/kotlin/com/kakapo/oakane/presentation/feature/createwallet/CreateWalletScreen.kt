@@ -24,8 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
-import com.kakapo.model.Currency
-import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.textField.CustomOutlinedTextField
 import com.kakapo.oakane.presentation.designSystem.component.textField.currency.CurrencyTextFieldConfig
@@ -35,12 +33,10 @@ import com.kakapo.oakane.presentation.designSystem.component.textField.currency.
 import com.kakapo.oakane.presentation.designSystem.component.topAppBar.CustomNavigationTopAppBarView
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
 import com.kakapo.oakane.presentation.feature.createwallet.component.CreateWalletSheet
-import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.model.colorsSelector
 import com.kakapo.oakane.presentation.ui.component.HorizontalColorSelectorView
 import com.kakapo.oakane.presentation.ui.component.SelectedIconModel
 import com.kakapo.oakane.presentation.ui.component.SelectedIconView
-import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetState
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletEffect
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletEvent
 import com.kakapo.oakane.presentation.viewModel.createWallet.CreateWalletSheetContent
@@ -144,7 +140,7 @@ private fun CreateWalletContent(
         Spacer(Modifier.weight(1f))
         ConfirmButtonView(
             isEditMode = state.isEditMode,
-            saveWallet = {  }
+            saveWallet = { onEvent.invoke(CreateWalletEvent.SaveWallet) }
         )
     }
 }
@@ -168,10 +164,7 @@ private fun CreateWalletContent(
                 selectedIcon = selectedIcon,
                 onClick = {
                     onEvent.invoke(
-                        CreateWalletEvent.ShowSheet(
-                            content = CreateWalletSheetContent.Icon,
-                            shown = true
-                        )
+                        CreateWalletEvent.ShowSheet(content = CreateWalletSheetContent.Icon, shown = true)
                     )
                 }
             )

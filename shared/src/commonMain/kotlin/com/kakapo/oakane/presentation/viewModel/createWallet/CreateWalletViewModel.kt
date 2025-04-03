@@ -6,6 +6,7 @@ import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.model.Currency
 import com.kakapo.model.wallet.WalletItemModel
+import com.kakapo.model.wallet.WalletModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,6 +33,7 @@ class CreateWalletViewModel(
     fun initData(walletId: Long) {
         loadCurrency()
         if (walletId != 0L) {
+            _uiState.update { it.copy(id = walletId) }
             loadWalletItemBy(walletId)
         }
     }
@@ -39,7 +41,7 @@ class CreateWalletViewModel(
     fun handleEvent(event: CreateWalletEvent) {
         when(event) {
             CreateWalletEvent.NavigateBack -> emit(CreateWalletEffect.NavigateBack)
-            CreateWalletEvent.CreateWallet -> TODO()
+            CreateWalletEvent.SaveWallet -> saveWallet()
             is CreateWalletEvent.WalletNameChanged -> _uiState.update { it.copy(walletName = event.name) }
             is CreateWalletEvent.NoteChanged -> _uiState.update { it.copy(note = event.note) }
             is CreateWalletEvent.BalanceChanged -> _uiState.update { it.copy(balance = event.balance) }
@@ -67,6 +69,35 @@ class CreateWalletViewModel(
         }
 
         walletRepository.loadWalletItemBy(id).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun saveWallet() = viewModelScope.launch {
+        val walletModel = _uiState.value.asWalletModel()
+        if (walletModel.id == 0L) {
+            add(walletModel)
+        } else {
+            update(walletModel)
+        }
+    }
+
+    private suspend fun add(wallet: WalletModel) {
+        val onSuccess: (Unit) -> Unit = {
+            emit(CreateWalletEffect.NavigateBack)
+        }
+        walletRepository.save(wallet).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private suspend fun update(wallet: WalletModel) {
+        val onSuccess: (Unit) -> Unit = {
+            emit(CreateWalletEffect.NavigateBack)
+        }
+        walletRepository.update(wallet).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
