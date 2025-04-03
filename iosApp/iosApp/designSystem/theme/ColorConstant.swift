@@ -58,7 +58,7 @@ extension Color {
 }
 
 extension Color {
-    func toHexString() -> String? {
+    func toHexString() -> String {
         let uiColor = UIColor(self)
         
         var red: CGFloat = 0
@@ -67,7 +67,7 @@ extension Color {
         var alpha: CGFloat = 0
         
         guard uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
-            return nil
+            return "0xFF4CAF50"
         }
         
         let rgb: Int = (Int)(red * 255) << 16 | (Int)(green * 255) << 8 | (Int)(blue * 255)
