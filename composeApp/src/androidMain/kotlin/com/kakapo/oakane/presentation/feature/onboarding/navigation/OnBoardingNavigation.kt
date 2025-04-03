@@ -12,8 +12,14 @@ fun NavController.navigateToOnBoarding(navOptions: NavOptions? = null) {
     navigate(ON_BOARDING_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.onBoardingScreen(navigateToHome: () -> Unit) {
+fun NavGraphBuilder.onBoardingScreen(
+    navigateToHome: () -> Unit,
+    navigateToCreateWallet: (Long, Boolean) -> Unit
+) {
     composable(ON_BOARDING_ROUTE) {
-        OnBoardingRoute(navigateToHome = navigateToHome)
+        OnBoardingRoute(
+            navigateToHome = navigateToHome,
+            navigateToCreateWallet = navigateToCreateWallet
+        )
     }
 }

@@ -85,6 +85,7 @@ data class CreateWalletState(
 sealed class CreateWalletEffect {
     data object NavigateBack : CreateWalletEffect()
     data class ShowError(val message: String) : CreateWalletEffect()
+    data object SuccessCreateWallet : CreateWalletEffect()
 }
 
 sealed class CreateWalletEvent {

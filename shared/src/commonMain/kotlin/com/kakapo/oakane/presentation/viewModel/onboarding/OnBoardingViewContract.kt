@@ -18,6 +18,7 @@ sealed class OnBoardingEffect {
     data class ShowError(val message: String): OnBoardingEffect()
     data object NavigateToHome : OnBoardingEffect()
     data object RestoreBackup: OnBoardingEffect()
+    data object NavigateToCreateWallet: OnBoardingEffect()
 }
 
 sealed class OnBoardingEvent {
@@ -27,4 +28,5 @@ sealed class OnBoardingEvent {
     data class RestoreBackup(val json: String) : OnBoardingEvent()
     data object OnclickRestoredBackup: OnBoardingEvent()
     data object SkippWallet: OnBoardingEvent()
+    data object NavigateToCreateWallet: OnBoardingEvent()
 }

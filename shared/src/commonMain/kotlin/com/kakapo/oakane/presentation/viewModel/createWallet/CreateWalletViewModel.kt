@@ -86,7 +86,7 @@ class CreateWalletViewModel(
 
     private suspend fun add(wallet: WalletModel) {
         val onSuccess: (Unit) -> Unit = {
-            emit(CreateWalletEffect.NavigateBack)
+            emit(CreateWalletEffect.SuccessCreateWallet)
         }
         walletRepository.save(wallet).fold(
             onSuccess = onSuccess,

@@ -83,11 +83,9 @@ class OakaneAppState(val navController: NavHostController, private val coroutine
 
     fun navOptionsPopBackStack() = navOptions {
         popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
             inclusive = true
         }
         launchSingleTop = true
-        restoreState = true
     }
 
     fun isDrawerRoute(): Boolean = currentRoute?.let { current ->

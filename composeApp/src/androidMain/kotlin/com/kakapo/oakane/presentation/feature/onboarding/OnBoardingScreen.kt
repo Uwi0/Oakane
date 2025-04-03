@@ -25,7 +25,10 @@ import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun OnBoardingRoute(navigateToHome: () -> Unit) {
+internal fun OnBoardingRoute(
+    navigateToHome: () -> Unit,
+    navigateToCreateWallet: (Long, Boolean) -> Unit
+) {
     val context = LocalContext.current
     val viewModel = koinViewModel<OnBoardingViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -45,9 +48,10 @@ internal fun OnBoardingRoute(navigateToHome: () -> Unit) {
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                OnBoardingEffect.NavigateToHome -> navigateToHome.invoke()
                 is OnBoardingEffect.ShowError -> context.showToast(effect.message)
+                OnBoardingEffect.NavigateToHome -> navigateToHome.invoke()
                 OnBoardingEffect.RestoreBackup -> retrieveJsonLauncher.launch(openDocumentIntent())
+                OnBoardingEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(0, true)
             }
         }
     }
@@ -77,7 +81,8 @@ private fun OnBoardingScreen(state: OnBoardingState, onEvent: (OnBoardingEvent) 
                 theme = Theme.System,
                 onConfirm = { onEvent.invoke(OnBoardingEvent.OnConfirmCurrency(it)) }
             )
-            OnBoardingContent.CreateWallet -> CreateWalletView(uiState = state,onEvent = onEvent)
+
+            OnBoardingContent.CreateWallet -> CreateWalletView(onEvent = onEvent)
         }
     }
 }

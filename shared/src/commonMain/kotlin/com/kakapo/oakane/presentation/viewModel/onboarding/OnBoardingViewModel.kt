@@ -39,19 +39,22 @@ class OnBoardingViewModel(
             is OnBoardingEvent.NavigateNext -> _uiState.update { it.copy(onBoardingContent = event.content) }
             is OnBoardingEvent.OnConfirmCurrency -> saveCurrency(event.currency)
             is OnBoardingEvent.ConfirmWallet -> createWallet(event.wallet)
+            is OnBoardingEvent.RestoreBackup -> restoreBackup(event.json)
             OnBoardingEvent.SkippWallet -> createDefaultWallet()
             OnBoardingEvent.OnclickRestoredBackup -> emit(OnBoardingEffect.RestoreBackup)
-            is OnBoardingEvent.RestoreBackup -> restoreBackup(event.json)
+            OnBoardingEvent.NavigateToCreateWallet -> emit(OnBoardingEffect.NavigateToCreateWallet)
         }
     }
 
     private fun saveCurrency(currency: Currency) = viewModelScope.launch {
-        _uiState.update {
-            it.copy(currency = currency, onBoardingContent = OnBoardingContent.CreateWallet)
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update {
+                it.copy(currency = currency, onBoardingContent = OnBoardingContent.CreateWallet)
+            }
         }
         systemRepository.saveCurrency(currency).fold(
-            onSuccess = {},
-            onFailure = {}
+            onSuccess = onSuccess,
+            onFailure = ::handleError
         )
     }
 

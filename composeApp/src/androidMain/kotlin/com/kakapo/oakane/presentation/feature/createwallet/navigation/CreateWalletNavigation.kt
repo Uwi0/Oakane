@@ -11,16 +11,31 @@ import com.kakapo.oakane.presentation.feature.navigation.NavArgs
 
 const val CREATE_WALLET_NAVIGATION = "create_wallet_navigation"
 
-fun NavController.navigateToCreateWallet(id: Long,navOptions: NavOptions? = null) {
-    val route = "$CREATE_WALLET_NAVIGATION/$id"
+fun NavController.navigateToCreateWallet(
+    id: Long,
+    isFromOnBoarding: Boolean,
+    navOptions: NavOptions? = null
+) {
+    val route = "$CREATE_WALLET_NAVIGATION/$id/$isFromOnBoarding"
     navigate(route, navOptions)
 }
 
-fun NavGraphBuilder.createWalletScreen(navigateBack: () -> Unit) {
-    val route = "$CREATE_WALLET_NAVIGATION/{${NavArgs.WALLET_ID}}"
-    val args = listOf(navArgument(NavArgs.WALLET_ID) { type = NavType.LongType })
+fun NavGraphBuilder.createWalletScreen(navigateBack: () -> Unit, navigateToHome: () -> Unit) {
+    val route = "$CREATE_WALLET_NAVIGATION/{${NavArgs.WALLET_ID}}/{${NavArgs.IS_FROM_ON_BOARDING}}"
+    val args = listOf(
+        navArgument(NavArgs.WALLET_ID) { type = NavType.LongType },
+        navArgument(NavArgs.IS_FROM_ON_BOARDING) { type = NavType.BoolType }
+    )
     composable(route, args) { backStackEntry ->
-        val walletId = backStackEntry.arguments?.getLong(NavArgs.WALLET_ID) ?: 0
-        CreateWalletRoute(walletId = walletId,onNavigateBack = navigateBack)
+        val arguments = backStackEntry.arguments
+        val walletId = arguments?.getLong(NavArgs.WALLET_ID) ?: 0
+        val isFromOnBoarding = arguments?.getBoolean(NavArgs.IS_FROM_ON_BOARDING) == true
+
+        CreateWalletRoute(
+            walletId = walletId,
+            isFromOnboarding = isFromOnBoarding,
+            navigateBack = navigateBack,
+            navigateToHome = navigateToHome
+        )
     }
 }

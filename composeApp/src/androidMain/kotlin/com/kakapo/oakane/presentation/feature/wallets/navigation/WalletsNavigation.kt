@@ -20,7 +20,7 @@ fun NavGraphBuilder.walletsScreen(
     openDrawer: () -> Unit,
     navigateBack: () -> Unit,
     navigateToWallet: (Long) -> Unit,
-    navigateToCreateWallet: (Long) -> Unit
+    navigateToCreateWallet: (Long, Boolean) -> Unit
 ) {
     val route = "$WALLETS_ROUTE/{$SHOW_DRAWER}"
     val args = listOf(navArgument(SHOW_DRAWER) { type = NavType.BoolType })

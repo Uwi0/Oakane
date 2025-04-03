@@ -49,7 +49,9 @@ import java.util.Locale
 @Composable
 internal fun CreateWalletRoute(
     walletId: Long,
-    onNavigateBack: () -> Unit
+    isFromOnboarding: Boolean,
+    navigateToHome: () -> Unit,
+    navigateBack: () -> Unit
 ) {
     val viewModel = koinViewModel<CreateWalletViewModel>()
     val context = LocalContext.current
@@ -60,11 +62,20 @@ internal fun CreateWalletRoute(
         viewModel.initData(walletId)
     }
 
+    val onSuccess: () -> Unit = {
+        if (isFromOnboarding) {
+            navigateToHome.invoke()
+        } else {
+            navigateBack.invoke()
+        }
+    }
+
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                CreateWalletEffect.NavigateBack -> onNavigateBack.invoke()
+                CreateWalletEffect.NavigateBack -> navigateBack.invoke()
                 is CreateWalletEffect.ShowError -> context.showToast(effect.message)
+                CreateWalletEffect.SuccessCreateWallet -> onSuccess.invoke()
             }
         }
     }

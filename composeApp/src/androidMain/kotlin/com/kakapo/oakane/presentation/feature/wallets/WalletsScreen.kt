@@ -34,7 +34,7 @@ internal fun WalletsRoute(
     openDrawer: () -> Unit,
     navigateBack: () -> Unit,
     navigateToWallet: (Long) -> Unit,
-    navigateToCreateWallet: (Long) -> Unit
+    navigateToCreateWallet: (Long, Boolean) -> Unit
 ) {
     val context = LocalContext.current
     val viewModel = koinViewModel<WalletsViewModel>()
@@ -51,7 +51,7 @@ internal fun WalletsRoute(
                 is WalletsEffect.ShowError -> context.showToast(effect.message)
                 is WalletsEffect.NavigateToWallet -> navigateToWallet.invoke(effect.id)
                 WalletsEffect.OpenDrawer -> openDrawer.invoke()
-                WalletsEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(0)
+                WalletsEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(0, false)
             }
         }
     }

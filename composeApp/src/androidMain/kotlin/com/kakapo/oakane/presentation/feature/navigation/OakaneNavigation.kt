@@ -59,7 +59,8 @@ internal fun OakaneNavHost(
             navigateToOnBoarding = { navController.navigateToOnBoarding(appState.navOptionsPopBackStack()) }
         )
         onBoardingScreen(
-            navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) }
+            navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) },
+            navigateToCreateWallet = navController::navigateToCreateWallet
         )
         homeScreen(
             openDrawer = openDrawer,
@@ -110,7 +111,7 @@ internal fun OakaneNavHost(
         )
         walletScreen(
             navigateBack = navController::navigateUp,
-            navController::navigateToCreateWallet
+            navigateToCreateWallet = navController::navigateToCreateWallet
         )
         reportsScreen(
             openDrawer = openDrawer,
@@ -123,6 +124,9 @@ internal fun OakaneNavHost(
             navigateToReminder = navController::navigateToReminder
         )
         reminderScreen(navigateBack = navController::navigateUp)
-        createWalletScreen(navigateBack = navController::navigateUp)
+        createWalletScreen(
+            navigateBack = navController::navigateUp,
+            navigateToHome = { navController.navigateToHome(appState.navOptionsPopBackStack()) }
+        )
     }
 }

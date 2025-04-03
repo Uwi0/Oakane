@@ -57,7 +57,7 @@ import org.koin.androidx.compose.koinViewModel
 internal fun WalletRoute(
     walletId: Long,
     navigateBack: () -> Unit,
-    navigateToCreateWallet: (Long) -> Unit
+    navigateToCreateWallet: (Long, Boolean) -> Unit
 ) {
     val viewModel = koinViewModel<WalletViewModel>()
     val context = LocalContext.current
@@ -83,7 +83,7 @@ internal fun WalletRoute(
                 is WalletEffect.ShowError -> context.showToast(effect.message)
                 WalletEffect.NavigateBack -> navigateBack.invoke()
                 WalletEffect.DismissFilterSheet -> filterSheetState.hide()
-                WalletEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(walletId)
+                WalletEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(walletId, false)
             }
         }
     }
