@@ -133,9 +133,7 @@ private fun CreateWalletContent(
             onClickBrush = {
                 onEvent.invoke(CreateWalletEvent.ShowSheet(content = CreateWalletSheetContent.Color, shown = true))
             },
-            onClickColor = { hex ->
-                onEvent.invoke(CreateWalletEvent.SelectedColor(hex))
-            }
+            onClickColor = { hex -> onEvent.invoke(CreateWalletEvent.SelectedColor(hex)) }
         )
         Spacer(Modifier.weight(1f))
         ConfirmButtonView(

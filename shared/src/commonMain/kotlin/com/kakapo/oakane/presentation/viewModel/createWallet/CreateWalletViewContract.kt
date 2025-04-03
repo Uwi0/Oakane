@@ -5,6 +5,7 @@ import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.toColorLong
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
+import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
 
@@ -28,6 +29,19 @@ data class CreateWalletState(
             val color = selectedColor.ifEmpty { "0xFF4CAF50" }
             return color.toColorLong()
         }
+
+    fun update(wallet: WalletItemModel) = copy(
+        id = wallet.id,
+        walletName = wallet.name,
+        note = wallet.note,
+        balance = wallet.startBalance,
+        currency = wallet.currency,
+        selectedColor = wallet.color,
+        selectedIconName = wallet.iconName,
+        selectedImageFile = wallet.icon,
+        isEditMode = true,
+        wallet = wallet
+    )
 
     fun updateShowSheet(event: CreateWalletEvent.ShowSheet) = copy(
         isSheetShown = event.shown,

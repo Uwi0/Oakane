@@ -28,7 +28,6 @@ data class WalletsState(
 sealed class WalletsEffect{
     data object NavigateBack: WalletsEffect()
     data class ShowError(val message: String): WalletsEffect()
-    data object DismissBottomSheet: WalletsEffect()
     data class NavigateToWallet(val id: Long): WalletsEffect()
     data object OpenDrawer: WalletsEffect()
     data object NavigateToCreateWallet: WalletsEffect()
@@ -37,10 +36,8 @@ sealed class WalletsEffect{
 sealed class WalletsEvent{
     data object NavigateBack: WalletsEvent()
     data class OnSearchBy(val query: String): WalletsEvent()
-    data class ShowSheet(val shown: Boolean): WalletsEvent()
     data class SelectPrimaryWalletBy(val id: Long): WalletsEvent()
     data class ClickedWallet(val item: WalletItemModel): WalletsEvent()
-    data class SaveWallet(val wallet: WalletModel): WalletsEvent()
     data object OpenDrawer: WalletsEvent()
     data object NavigateToCreateWallet: WalletsEvent()
 }

@@ -11,16 +11,20 @@ import com.kakapo.oakane.presentation.feature.wallet.WalletRoute
 
 const val WALLET_ROUTE = "wallet_route"
 
-fun NavController.navigateToWallet(walletId: Long,navOptions: NavOptions? = null) {
+fun NavController.navigateToWallet(walletId: Long, navOptions: NavOptions? = null) {
     val route = "$WALLET_ROUTE/$walletId"
     this.navigate(route, navOptions)
 }
 
-fun NavGraphBuilder.walletScreen(navigateBack: () -> Unit) {
+fun NavGraphBuilder.walletScreen(navigateBack: () -> Unit, navigateToCreateWallet: (Long) -> Unit) {
     val route = "$WALLET_ROUTE/{${NavArgs.WALLET_ID}}"
     val arguments = listOf(navArgument(NavArgs.WALLET_ID) { type = NavType.LongType })
     composable(route, arguments) { backStackEntry ->
         val walletId = backStackEntry.arguments?.getLong(NavArgs.WALLET_ID) ?: 0L
-        WalletRoute(walletId = walletId, navigateBack)
+        WalletRoute(
+            walletId = walletId,
+            navigateBack = navigateBack,
+            navigateToCreateWallet = navigateToCreateWallet
+        )
     }
 }

@@ -51,13 +51,12 @@ class WalletViewModel(
             WalletEvent.MoveBalance -> moveBalance()
             WalletEvent.ConfirmDelete -> deleteWallet()
             WalletEvent.ResetFilterLog -> _uiState.update { it.resetFilter() }
+            WalletEvent.NavigateToCreateWallet -> emit(WalletEffect.NavigateToCreateWallet)
             is WalletEvent.ShowDialog -> _uiState.update { it.showDialog(event) }
             is WalletEvent.AddNote -> _uiState.update { it.copy(moveBalanceNote = event.note) }
             is WalletEvent.AddSelectedWalletTo -> _uiState.update { it.copy(selectedWalletTo = event.wallet) }
             is WalletEvent.AddBalance -> _uiState.update { it.copy(movedBalance = event.balance) }
             is WalletEvent.SearchLog -> _uiState.update { it.copy(searchQuery = event.query) }
-            is WalletEvent.ShowWalletSheet -> onWalletSheet(event.shown)
-            is WalletEvent.UpdateWallet -> update(event.wallet)
             is WalletEvent.ShowFilterSheet -> onFilterSheet(event.shown)
             is WalletEvent.FilterLog -> applyFilterLog(event)
         }
@@ -116,20 +115,6 @@ class WalletViewModel(
         )
     }
 
-    private fun update(wallet: WalletModel) = viewModelScope.launch {
-        val logs = _uiState.value.logItems
-        val onSuccess: (Unit) -> Unit = {
-            _uiState.update { it.copy(isWalletSheetShown = false) }
-            emit(WalletEffect.DismissWalletSheet)
-            loadWalletBy(wallet.id, logs)
-        }
-        Logger.d("update wallet $wallet")
-        walletRepository.update(wallet).fold(
-            onSuccess = onSuccess,
-            onFailure = ::handleError
-        )
-    }
-
     private fun deleteWallet() = viewModelScope.launch {
         val walletId = _uiState.value.wallet.id
         val onSuccess: (Unit) -> Unit = {
@@ -141,13 +126,6 @@ class WalletViewModel(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
-    }
-
-    private fun onWalletSheet(shown: Boolean) {
-        _uiState.update { it.copy(isWalletSheetShown = shown) }
-        if (!shown) {
-            emit(WalletEffect.DismissWalletSheet)
-        }
     }
 
     private fun onFilterSheet(shown: Boolean) {

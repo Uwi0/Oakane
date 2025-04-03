@@ -10,7 +10,6 @@ import com.kakapo.domain.usecase.selectedWalletUseCase
 import com.kakapo.model.Currency
 import com.kakapo.model.system.Theme
 import com.kakapo.model.wallet.WalletItemModel
-import com.kakapo.model.wallet.WalletModel
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEffect.NavigateToWallet
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -46,10 +45,8 @@ class WalletsViewModel(
     fun handleEvent(event: WalletsEvent) {
         when (event) {
             is WalletsEvent.OnSearchBy -> _uiState.update { it.copy(searchQuery = event.query) }
-            is WalletsEvent.ShowSheet -> showSheet(event.shown)
             is WalletsEvent.SelectPrimaryWalletBy -> selectWalletBy(event.id)
             is WalletsEvent.ClickedWallet -> emit(NavigateToWallet(event.item.id))
-            is WalletsEvent.SaveWallet -> add(event.wallet)
             WalletsEvent.NavigateBack -> emit(WalletsEffect.NavigateBack)
             WalletsEvent.OpenDrawer -> emit(WalletsEffect.OpenDrawer)
             WalletsEvent.NavigateToCreateWallet -> emit(WalletsEffect.NavigateToCreateWallet)
@@ -59,7 +56,6 @@ class WalletsViewModel(
     private fun loadWallets() = viewModelScope.launch {
         val onSuccess: (List<WalletItemModel>) -> Unit = { wallets ->
             _uiState.update { it.copy(wallets = wallets, isSheetShown = false) }
-            emit(WalletsEffect.DismissBottomSheet)
         }
         walletRepository.loadWalletItems().asCustomResult().subscribe(
             onSuccess = onSuccess,
@@ -87,26 +83,12 @@ class WalletsViewModel(
         )
     }
 
-    private fun add(wallet: WalletModel) = viewModelScope.launch {
-        walletRepository.save(wallet).fold(
-            onSuccess = { loadWallets() },
-            onFailure = ::handleError
-        )
-    }
-
     private fun selectWalletBy(id: Long) = viewModelScope.launch {
         val wallets = uiState.value.wallets.selectedWalletUseCase(id)
         walletRepository.saveWallet(id).fold(
             onSuccess = { _uiState.update { it.copy(wallets = wallets) } },
             onFailure = ::handleError
         )
-    }
-
-    private fun showSheet(shown: Boolean) = viewModelScope.launch {
-        _uiState.update { it.copy(isSheetShown = shown) }
-        if (!shown) {
-            emit(WalletsEffect.DismissBottomSheet)
-        }
     }
 
     private fun handleError(throwable: Throwable?) {

@@ -80,28 +80,23 @@ data class WalletState(
 sealed class WalletEffect {
     data object NavigateBack : WalletEffect()
     data class ShowError(val message: String) : WalletEffect()
-    data object DismissWalletSheet: WalletEffect()
     data object DismissFilterSheet: WalletEffect()
+    data object NavigateToCreateWallet: WalletEffect()
 }
 
 sealed class WalletEvent {
     data object NavigateBack : WalletEvent()
-    data class ShowDialog(
-        val content: WalletDialogContent = WalletDialogContent.DeleteWallet,
-        val shown: Boolean
-    ) : WalletEvent()
-
+    data class ShowDialog(val content: WalletDialogContent = WalletDialogContent.DeleteWallet, val shown: Boolean) : WalletEvent()
     data class AddNote(val note: String) : WalletEvent()
     data class AddBalance(val balance: String) : WalletEvent()
     data class AddSelectedWalletTo(val wallet: WalletModel) : WalletEvent()
     data object MoveBalance : WalletEvent()
     data class SearchLog(val query: String) : WalletEvent()
-    data class ShowWalletSheet(val shown: Boolean) : WalletEvent()
     data class ShowFilterSheet(val shown: Boolean) : WalletEvent()
     data object ConfirmDelete : WalletEvent()
-    data class UpdateWallet(val wallet: WalletModel) : WalletEvent()
     data class FilterLog(val dateFilter: FilterDate, val categoryFilter: FilterCategory) : WalletEvent()
     data object ResetFilterLog : WalletEvent()
+    data object NavigateToCreateWallet: WalletEvent()
 }
 
 enum class WalletDialogContent {

@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,9 +21,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakapo.common.showToast
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletItemView
 import com.kakapo.oakane.presentation.feature.wallets.component.WalletsTopAppbarView
-import com.kakapo.oakane.presentation.model.WalletSheetContent
-import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
-import com.kakapo.oakane.presentation.ui.component.sheet.wallet.rememberWalletSheetState
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEffect
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsEvent
 import com.kakapo.oakane.presentation.viewModel.wallets.WalletsState
@@ -43,12 +39,6 @@ internal fun WalletsRoute(
     val context = LocalContext.current
     val viewModel = koinViewModel<WalletsViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val walletsSheetState = rememberWalletSheetState(currency = uiState.currency) { wallet ->
-        viewModel.handleEvent(WalletsEvent.SaveWallet(wallet))
-    }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) {
-        walletsSheetState.sheetContent == WalletSheetContent.Create
-    }
 
     LaunchedEffect(Unit) {
         viewModel.initializeData(showDrawer)
@@ -60,7 +50,6 @@ internal fun WalletsRoute(
                 is WalletsEffect.NavigateBack -> navigateBack.invoke()
                 is WalletsEffect.ShowError -> context.showToast(effect.message)
                 is WalletsEffect.NavigateToWallet -> navigateToWallet.invoke(effect.id)
-                WalletsEffect.DismissBottomSheet -> sheetState.hide()
                 WalletsEffect.OpenDrawer -> openDrawer.invoke()
                 WalletsEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(0)
             }
@@ -68,14 +57,6 @@ internal fun WalletsRoute(
     }
 
     WalletsScreen(uiState = uiState, onEvent = viewModel::handleEvent)
-
-    if (uiState.isSheetShown) {
-        WalletsSheetView(
-            sheetState = sheetState,
-            state = walletsSheetState,
-            onDismiss = { viewModel.handleEvent(WalletsEvent.ShowSheet(shown = false)) }
-        )
-    }
 }
 
 @Composable

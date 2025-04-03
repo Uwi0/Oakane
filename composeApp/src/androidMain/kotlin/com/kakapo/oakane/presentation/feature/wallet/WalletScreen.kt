@@ -43,11 +43,8 @@ import com.kakapo.oakane.presentation.feature.wallet.component.WalletDetailItemV
 import com.kakapo.oakane.presentation.feature.wallet.component.dialog.WalletDialogView
 import com.kakapo.oakane.presentation.feature.wallet.component.sheet.FilterLogSheetView
 import com.kakapo.oakane.presentation.feature.wallet.component.sheet.rememberFilterLogSheetState
-import com.kakapo.oakane.presentation.model.WalletSheetContent
 import com.kakapo.oakane.presentation.ui.component.item.CardNoteView
 import com.kakapo.oakane.presentation.ui.component.item.TransactionItemView
-import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
-import com.kakapo.oakane.presentation.ui.component.sheet.wallet.rememberWalletSheetState
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletDialogContent
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEffect
 import com.kakapo.oakane.presentation.viewModel.wallet.WalletEvent
@@ -57,20 +54,14 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
+internal fun WalletRoute(
+    walletId: Long,
+    navigateBack: () -> Unit,
+    navigateToCreateWallet: (Long) -> Unit
+) {
     val viewModel = koinViewModel<WalletViewModel>()
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    val updateWalletSheetState = rememberWalletSheetState(
-        currency = uiState.wallet.currency,
-        wallet = uiState.wallet
-    ) {
-        viewModel.handleEvent(WalletEvent.UpdateWallet(it))
-    }
-    val walletSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) {
-        updateWalletSheetState.sheetContent == WalletSheetContent.Create
-    }
 
     val filterLogSheetState = rememberFilterLogSheetState(
         dateFilter = uiState.filterDate,
@@ -89,10 +80,10 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                WalletEffect.NavigateBack -> navigateBack.invoke()
                 is WalletEffect.ShowError -> context.showToast(effect.message)
-                WalletEffect.DismissWalletSheet -> walletSheetState.hide()
+                WalletEffect.NavigateBack -> navigateBack.invoke()
                 WalletEffect.DismissFilterSheet -> filterSheetState.hide()
+                WalletEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(walletId)
             }
         }
     }
@@ -101,14 +92,6 @@ internal fun WalletRoute(walletId: Long, navigateBack: () -> Unit) {
 
     if (uiState.dialogVisible) {
         WalletDialogView(uiState = uiState, onEvent = viewModel::handleEvent)
-    }
-
-    if (uiState.isWalletSheetShown) {
-        WalletsSheetView(
-            sheetState = walletSheetState,
-            state = updateWalletSheetState,
-            onDismiss = { viewModel.handleEvent(WalletEvent.ShowWalletSheet(shown = false)) }
-        )
     }
 
     if (uiState.isFilterSheetShown) {
@@ -144,7 +127,7 @@ private fun WalletScreenTopAppBar(onEvent: (WalletEvent) -> Unit) {
         actions = {
             CustomIconButton(
                 icon = Icons.Outlined.Edit,
-                onClick = { onEvent.invoke(WalletEvent.ShowWalletSheet(true)) })
+                onClick = { onEvent.invoke(WalletEvent.NavigateToCreateWallet) })
             CustomIconButton(
                 icon = Icons.Outlined.Delete,
                 onClick = { onEvent.invoke(WalletEvent.ShowDialog(dialogContent, true)) }

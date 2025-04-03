@@ -108,7 +108,10 @@ internal fun OakaneNavHost(
             navigateToWallet = navController::navigateToWallet,
             navigateToCreateWallet = navController::navigateToCreateWallet
         )
-        walletScreen(navigateBack = navController::navigateUp)
+        walletScreen(
+            navigateBack = navController::navigateUp,
+            navController::navigateToCreateWallet
+        )
         reportsScreen(
             openDrawer = openDrawer,
             navigateBack = appState::safeNavigateUp

@@ -2,6 +2,7 @@ package com.kakapo.oakane.presentation.viewModel.createWallet
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.SystemRepository
 import com.kakapo.data.repository.base.WalletRepository
 import com.kakapo.model.Currency
@@ -64,8 +65,8 @@ class CreateWalletViewModel(
     }
 
     private fun loadWalletItemBy(id: Long) = viewModelScope.launch {
-        val onSuccess: (WalletItemModel) -> Unit = {
-            _uiState.update { it.copy(wallet = it.wallet, isEditMode = true) }
+        val onSuccess: (WalletItemModel) -> Unit = { wallet ->
+            _uiState.update { it.update(wallet) }
         }
 
         walletRepository.loadWalletItemBy(id).fold(

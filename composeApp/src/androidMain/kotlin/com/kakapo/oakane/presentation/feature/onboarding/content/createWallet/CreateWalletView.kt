@@ -19,9 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,41 +35,19 @@ import com.kakapo.oakane.R
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomButton
 import com.kakapo.oakane.presentation.designSystem.component.button.CustomOutlinedButton
 import com.kakapo.oakane.presentation.designSystem.theme.AppTheme
-import com.kakapo.oakane.presentation.model.WalletSheetContent
-import com.kakapo.oakane.presentation.ui.component.sheet.wallet.WalletsSheetView
-import com.kakapo.oakane.presentation.ui.component.sheet.wallet.rememberWalletSheetState
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingEvent
 import com.kakapo.oakane.presentation.viewModel.onboarding.OnBoardingState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CreateWalletView(uiState: OnBoardingState,onEvent: (OnBoardingEvent) -> Unit) {
-    val walletSheetState = rememberWalletSheetState(currency = uiState.currency) { wallet ->
-        onEvent.invoke(OnBoardingEvent.ConfirmWallet(wallet))
-    }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) {
-        walletSheetState.sheetContent == WalletSheetContent.Create
-    }
     var isSheetVisible by remember { mutableStateOf(false) }
-
-    LaunchedEffect(isSheetVisible) {
-        if(!isSheetVisible) {
-            sheetState.hide()
-        }
-    }
 
     CreateWalletContentView(
         onSkip = {onEvent.invoke(OnBoardingEvent.SkippWallet)},
         onShowSheet = {isSheetVisible = true}
     )
 
-    if (isSheetVisible) {
-        WalletsSheetView(
-            sheetState = sheetState,
-            state = walletSheetState,
-            onDismiss = { isSheetVisible = false },
-        )
-    }
 }
 
 @Composable
