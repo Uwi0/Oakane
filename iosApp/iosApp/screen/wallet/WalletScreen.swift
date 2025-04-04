@@ -45,11 +45,20 @@ struct WalletScreen: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .sheet(
+            isPresented: Binding(
+                get: { uiState.isFilterSheetShown },
+                set: { viewModel.handle(event: .ShowFilterSheet(shown: $0))}
+            ),
+            content: {
+                Text("Todo Add Filter Sheet")
+            }
+        )
         .task {
             viewModel.iniData(walletId: walletId)
-            walletSheetState.onSaveWallet = { wallet in
-//                viewModel.handle(event: .UpdateWallet(wallet: wallet))
-            }
+        }
+        .onChange(of: viewModel.uiEffect) {
+            observeEffect(effect: viewModel.uiEffect)
         }
     }
     
@@ -61,15 +70,14 @@ struct WalletScreen: View {
                 title: "Wallet",
                 actionContent: {
                     BarAction(systemName: "pencil").onTapGesture {
-                        walletSheetState.initData(wallet: uiState.wallet)
-//                        viewModel.handle(event: .ShowWalletSheet(shown: true))
+                        viewModel.handle(event: .NavigateToCreateWallet())
                     }
                     Spacer().frame(width: 16)
                     BarAction(systemName: "trash").onTapGesture {
                         viewModel.handle(event: .ShowDialog(content: dialogContent, shown: true))
                     }
                 },
-                onAction: { navigation.navigateBack() }
+                onAction: { viewModel.handle(event: .NavigateBack()) }
             )
             Divider()
         }
@@ -116,6 +124,9 @@ struct WalletScreen: View {
                 .scaledToFit()
                 .foregroundStyle(filterColorIndicator)
                 .frame(width: 24, height: 24)
+                .onTapGesture {
+                    viewModel.handle(event: .ShowFilterSheet(shown: true))
+                }
         }
     }
     
@@ -153,6 +164,18 @@ struct WalletScreen: View {
     @ViewBuilder
     private func TransactionItem(log: WalletLogItemTransactionLogItem) -> some View {
         TransactionItemView(transaction: log.data)
+    }
+    
+    private func observeEffect(effect: WalletEffect?) {
+        guard let effect = effect else { return }
+        
+        switch onEnum(of: effect) {
+        case .navigateBack: navigation.navigateBack()
+        case .navigateToCreateWallet: navigation.navigate(to: .createWallet(walletId: walletId))
+        case .showError(let effect): print("error \(effect.message)")
+        }
+        
+        viewModel.uiEffect = nil
     }
 }
 

@@ -37,7 +37,7 @@ struct OnBoardingScreen: View {
             case .navigateToHome: navigateToHome()
             case .restoreBackup: print("Restore backup")
             case .showError(let error): print("error \(error)")
-            case .navigateToCreateWallet: print("TODO SOON")
+            case .navigateToCreateWallet: navigation.navigate(to: .createWallet(fromOnBoard: true))
             }
         }
         viewModel.uiEffect = nil

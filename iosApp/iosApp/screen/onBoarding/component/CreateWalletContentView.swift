@@ -4,8 +4,6 @@ import Shared
 struct CreateWalletContentView: View {
     
     let onEvent: (OnBoardingEvent) -> Void
-    @State private var isSheetPresented: Bool = false
-    @StateObject private var sheetState: WalletSheetState = WalletSheetState()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -16,7 +14,7 @@ struct CreateWalletContentView: View {
             Text("You can create your own wallet or skip this step, and the system will automatically create a default wallet for you.")
                 .font(Typography.titleMedium)
             Spacer()
-            CreateWalletButton(onClick: { isSheetPresented = true})
+            CreateWalletButton(onClick: { onEvent(.NavigateToCreateWallet()) })
             Spacer().frame(height: 16)
             SkipButton(onClick: { onEvent(.SkippWallet())})
         }
@@ -24,14 +22,6 @@ struct CreateWalletContentView: View {
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .background(ColorTheme.surface.ignoresSafeArea())
-        .dynamicHeightSheet(isPresented: $isSheetPresented) {
-            WalletSheetView(state: sheetState)
-        }
-        .onAppear {
-            sheetState.onSaveWallet = { wallet in
-                onEvent(.ConfirmWallet(wallet: wallet))
-            }
-        }
     }
     
     @ViewBuilder

@@ -49,7 +49,7 @@ class WalletSheetState: ObservableObject {
             name: walletName,
             isDefaultIcon: imageFile.isEmpty ? true : false,
             icon: imageFile.isEmpty ? selectedIcon.displayName : imageFile,
-            color: selectedColor.toHexString() ?? "0xFF4CAF50",
+            color: selectedColor.toHexString(),
             note: "-"
         )
         onSaveWallet(walletModel)

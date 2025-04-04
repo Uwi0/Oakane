@@ -1,11 +1,9 @@
 package com.kakapo.oakane.presentation.viewModel.createWallet
 
-import com.kakapo.common.asDouble
 import com.kakapo.common.asRealCurrencyValue
 import com.kakapo.common.toColorLong
 import com.kakapo.model.Currency
 import com.kakapo.model.category.CategoryIconName
-import com.kakapo.model.toFormatCurrency
 import com.kakapo.model.wallet.WalletItemModel
 import com.kakapo.model.wallet.WalletModel
 
@@ -62,8 +60,7 @@ data class CreateWalletState(
     fun updateSelectedIcon(icon: CreateWalletEvent.SelectedIcon) = copy(
         selectedIconName = icon.name,
         sheetContent = CreateWalletSheetContent.Icon,
-        selectedImageFile = "" +
-                "",
+        selectedImageFile = "",
         isSheetShown = false
     )
 

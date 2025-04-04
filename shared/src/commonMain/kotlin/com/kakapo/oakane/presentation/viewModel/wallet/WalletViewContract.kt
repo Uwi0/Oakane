@@ -80,7 +80,6 @@ data class WalletState(
 sealed class WalletEffect {
     data object NavigateBack : WalletEffect()
     data class ShowError(val message: String) : WalletEffect()
-    data object DismissFilterSheet: WalletEffect()
     data object NavigateToCreateWallet: WalletEffect()
 }
 

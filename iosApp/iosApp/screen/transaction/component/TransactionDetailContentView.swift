@@ -90,6 +90,5 @@ struct TransactionDetailContentView: View {
 
 
 #Preview {
-    let transaction = TransactionModelKt.dummyValue()
     TransactionDetailContentView(state: TransactionState.companion.default())
 }

@@ -57,8 +57,8 @@ class WalletViewModel(
             is WalletEvent.AddSelectedWalletTo -> _uiState.update { it.copy(selectedWalletTo = event.wallet) }
             is WalletEvent.AddBalance -> _uiState.update { it.copy(movedBalance = event.balance) }
             is WalletEvent.SearchLog -> _uiState.update { it.copy(searchQuery = event.query) }
-            is WalletEvent.ShowFilterSheet -> onFilterSheet(event.shown)
-            is WalletEvent.FilterLog -> applyFilterLog(event)
+            is WalletEvent.ShowFilterSheet -> _uiState.update { it.copy(isFilterSheetShown = event.shown) }
+            is WalletEvent.FilterLog -> _uiState.update { it.applyFilter(event) }
         }
     }
 
@@ -126,18 +126,6 @@ class WalletViewModel(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
-    }
-
-    private fun onFilterSheet(shown: Boolean) {
-        _uiState.update { it.copy(isFilterSheetShown = shown) }
-        if (!shown) {
-            emit(WalletEffect.DismissFilterSheet)
-        }
-    }
-
-    private fun applyFilterLog(event: WalletEvent.FilterLog) {
-        _uiState.update { it.applyFilter(event) }
-        emit(WalletEffect.DismissFilterSheet)
     }
 
     private fun handleError(throwable: Throwable?) {

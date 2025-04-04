@@ -32,7 +32,7 @@ struct CreateCategoryContentView: View {
                 colors: colors,
                 selectedColor: Binding(
                     get: { Color(hex: uiState.selectedColor.toColorLong())},
-                    set: { color in onEvent(.SelectedColor(hex: color.toHexString() ?? "")) }
+                    set: { color in onEvent(.SelectedColor(hex: color.toHexString())) }
                 )
             )
             Spacer().frame(height: 48)

@@ -24,7 +24,6 @@ sealed class OnBoardingEffect {
 sealed class OnBoardingEvent {
     data class NavigateNext(val content: OnBoardingContent): OnBoardingEvent()
     data class OnConfirmCurrency(val currency: Currency): OnBoardingEvent()
-    data class ConfirmWallet(val wallet: WalletModel): OnBoardingEvent()
     data class RestoreBackup(val json: String) : OnBoardingEvent()
     data object OnclickRestoredBackup: OnBoardingEvent()
     data object SkippWallet: OnBoardingEvent()

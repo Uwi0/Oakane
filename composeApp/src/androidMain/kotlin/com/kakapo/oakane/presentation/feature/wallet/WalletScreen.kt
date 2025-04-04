@@ -82,9 +82,16 @@ internal fun WalletRoute(
             when (effect) {
                 is WalletEffect.ShowError -> context.showToast(effect.message)
                 WalletEffect.NavigateBack -> navigateBack.invoke()
-                WalletEffect.DismissFilterSheet -> filterSheetState.hide()
                 WalletEffect.NavigateToCreateWallet -> navigateToCreateWallet.invoke(walletId, false)
             }
+        }
+    }
+
+    LaunchedEffect(uiState.isFilterSheetShown) {
+        if (!uiState.isFilterSheetShown) {
+            filterSheetState.hide()
+        } else {
+            filterSheetState.show()
         }
     }
 
