@@ -62,6 +62,8 @@ data class CreateWalletState(
     fun updateSelectedIcon(icon: CreateWalletEvent.SelectedIcon) = copy(
         selectedIconName = icon.name,
         sheetContent = CreateWalletSheetContent.Icon,
+        selectedImageFile = "" +
+                "",
         isSheetShown = false
     )
 

@@ -31,6 +31,23 @@ struct CreateWalletScreen: View {
         }
         .background(ColorTheme.surface)
         .navigationBarBackButtonHidden(true)
+        .sheet(
+            isPresented: Binding(
+                get: { viewModel.uiState.isSheetShown },
+                set: { viewModel.handle(event: .ShowSheet(content: .icon, shown: $0)) }
+            ),
+            content: {
+                SelectIconView(
+                    selectedIcon: Binding(
+                        get: { viewModel.uiState.selectedIconName},
+                        set: { viewModel.handle(event: .SelectedIcon(name: $0))}
+                    ),
+                    selectedColor: viewModel.uiState.toColor(),
+                    onTakeImage: { viewModel.handle(event: .SelectedImage(file: $0)) },
+                    onConfirm: { viewModel.handle(event: .ShowSheet(content: .icon, shown: false)) }
+                )
+            }
+        )
         .task {
             viewModel.initData(walletId: walletId)
         }
@@ -61,7 +78,9 @@ struct CreateWalletScreen: View {
                     imageName: viewModel.uiState.selectedImageFile,
                     icon: viewModel.uiState.selectedIconName,
                     color: viewModel.uiState.toColor()
-                )
+                ).onTapGesture {
+                    viewModel.handle(event: .ShowSheet(content: .icon, shown: true))
+                }
                 
                 OutlinedTextFieldView(
                     value: Binding(
