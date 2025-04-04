@@ -30,6 +30,11 @@ data class CreateWalletState(
             return color.toColorLong()
         }
 
+    val startBalance: Int get() {
+        return if (balance.isEmpty()) 0
+        else balance.asRealCurrencyValue().toInt()
+    }
+
     fun update(wallet: WalletItemModel) = copy(
         id = wallet.id,
         walletName = wallet.name,

@@ -16,6 +16,7 @@ final class CreateWalletViewModel: ObservableObject {
     func initData(walletId: Int64) {
         viewModel.doInitData(walletId: walletId)
         observeState()
+        observeEffect()
     }
     
     func handle(event: Shared.CreateWalletEvent) {

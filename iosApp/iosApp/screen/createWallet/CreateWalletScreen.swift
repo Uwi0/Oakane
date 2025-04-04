@@ -4,8 +4,10 @@ import Shared
 struct CreateWalletScreen: View {
     
     let walletId: Int64
+    let fromOnBoarding: Bool
     
     @StateObject private var viewModel = CreateWalletViewModel()
+    @EnvironmentObject private var navigation: AppNavigation
     
     var body: some View {
         VStack {
@@ -28,16 +30,22 @@ struct CreateWalletScreen: View {
             .padding(.vertical, 24)
         }
         .background(ColorTheme.surface)
+        .navigationBarBackButtonHidden(true)
         .task {
             viewModel.initData(walletId: walletId)
         }
-        
+        .onChange(of: viewModel.uiEffect) {
+            observe(effect: viewModel.uiEffect)
+        }
     }
     
     @ViewBuilder
     private func CreateWalletTopAppBar() -> some View {
         VStack {
-            NavigationTopAppbar(title: "Create Wallet", onAction: { viewModel.handle(event: .NavigateBack())})
+            NavigationTopAppbar(
+                title: "Create Wallet",
+                onAction: { viewModel.handle(event: .NavigateBack())}
+            )
             Divider()
         }
     }
@@ -58,7 +66,7 @@ struct CreateWalletScreen: View {
                 OutlinedTextFieldView(
                     value: Binding(
                         get: { viewModel.uiState.walletName },
-                        set: { viewModel.handle(event: .WalletNameChanged(name: $0))}
+                        set: { viewModel.handle(event: .WalletNameChanged(name: $0)) }
                     ),
                     placeHolder: "Wallet Name",
                     showLabel: false
@@ -105,8 +113,27 @@ struct CreateWalletScreen: View {
             content: { Text("Save Wallet")}
         )
     }
+    
+    private func observe(effect: CreateWalletEffect?) {
+        guard let effect = effect else { return }
+        switch onEnum(of: effect) {
+        case .navigateBack: navigation.navigateBack()
+        case .showError(let effect): print("Error \(effect.message)")
+        case .successCreateWallet: onSuccess()
+        }
+        
+        viewModel.uiEffect = nil
+    }
+    
+    private func onSuccess() {
+        if fromOnBoarding {
+            navigation.navigate(to: .home)
+        } else {
+            navigation.navigateBack()
+        }
+    }
 }
 
 #Preview {
-    CreateWalletScreen(walletId: 0)
+    CreateWalletScreen(walletId: 0, fromOnBoarding: false)
 }

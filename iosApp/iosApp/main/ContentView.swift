@@ -38,6 +38,7 @@ struct ContentView: View {
             case .wallet(let walletId): WalletScreen(walletId: walletId)
             case .termAndService: TermAndServiceScreen()
             case .reminder: ReminderScreen()
+            case .createWallet(let walletId, let fromOnBoard): CreateWalletScreen(walletId: walletId, fromOnBoarding: fromOnBoard)
             }
         }
     }

@@ -12,8 +12,8 @@ extension CreateWalletState {
 
 extension CreateWalletState {
     func toBalance() -> Int {
-        let balance = self.wallet.startBalance
-        return Int(balance) ?? 0
+        let balance = self.startBalance
+        return Int(balance)
     }
 }
 

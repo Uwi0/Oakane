@@ -20,6 +20,7 @@ final class AppNavigation: ObservableObject {
         case reports
         case settings
         case reminder
+        case createWallet(walletId: Int64 = 0, fromOnBoard: Bool = false)
     }
     
     @Published var navPath = NavigationPath()

@@ -25,16 +25,13 @@ struct WalletsScreen: View {
                 xPos: proxy.size.width - FabConstant.xOffset,
                 yPos: proxy.size.height - FabConstant.yOffset,
                 onClick: {
-                    //TODO need to fix
+                    viewModel.handle(event: .NavigateToCreateWallet())
                 }
             )
         }
         .navigationBarBackButtonHidden(true)
         .onChange(of: viewModel.uiEffect) {
             observe(effect: viewModel.uiEffect)
-        }
-        .onAppear {
-            
         }
     }
     
@@ -98,7 +95,7 @@ struct WalletsScreen: View {
         case .showError(let effect): print("error \(effect.message)")
         case .navigateToWallet(let effect): nav.navigate(to: .wallet(id: effect.id))
         case .openDrawer: openDrawer = !openDrawer
-        case .navigateToCreateWallet: print("TODO fix this latter")
+        case .navigateToCreateWallet: nav.navigate(to: .createWallet())
         }
         
         viewModel.uiEffect = nil
