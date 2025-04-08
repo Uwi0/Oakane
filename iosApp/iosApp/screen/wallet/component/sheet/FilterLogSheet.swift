@@ -9,6 +9,11 @@ struct FilterLogSheet: View {
     @State private var endDate: Date = Date()
     let onEVent: (WalletEvent) -> Void
     
+    private var filterDate: FilterWalletLogByDateModel {
+        selectedDateFilter is FilterWalletLogByDateModel.Custom ?
+            .Custom(startDate: startDate.toInt64(), endDate: endDate.toInt64()) : selectedDateFilter
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             TitleSheet()
@@ -97,7 +102,12 @@ struct FilterLogSheet: View {
     
     @ViewBuilder
     private func ApplyFilterButton() -> some View {
-        FilledContentButtonView(onClick: {}) {
+        FilledContentButtonView(
+            onClick: { onEVent(.FilterLog(
+                dateFilter: filterDate,
+                categoryFilter: selectedCategoryFilter))
+            }
+        ) {
             Text("Apply Filter")
         }
     }

@@ -24,7 +24,7 @@ struct FilterButtonDateView: View {
     @ViewBuilder
     private func ButtonContent() -> some View {
         HStack {
-            VStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(title).font(Typography.labelLarge)
                 Text(date.formatted(date: .abbreviated, time: .omitted)).font(Typography.labelLarge)
             }

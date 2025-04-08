@@ -51,7 +51,8 @@ struct WalletScreen: View {
                 set: { viewModel.handle(event: .ShowFilterSheet(shown: $0))}
             ),
             content: {
-                Text("Todo Add Filter Sheet")
+                FilterLogSheet(onEVent: viewModel.handle)
+                    .presentationDetents([.height(480)])
             }
         )
         .task {
