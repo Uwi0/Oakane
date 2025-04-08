@@ -38,12 +38,12 @@ struct FilledContentButtonView<Content: View>: View {
 
 extension FilledContentButtonView {
     init(
-        onclick: @escaping () -> Void,
+        onClick: @escaping () -> Void,
         enabled: Bool = true,
         @ViewBuilder content: () -> Content
     ) {
         self.content = content()
-        self.onclick = onclick
+        self.onclick = onClick
         self.enabled = enabled
     }
 }
@@ -51,11 +51,11 @@ extension FilledContentButtonView {
 #Preview {
     VStack {
         FilledContentButtonView(
-            onclick: {},
+            onClick: {},
             content: { Text("Hello") }
         )
         FilledContentButtonView(
-            onclick: {},
+            onClick: {},
             enabled: false,
             content: { Text("Hello") }
         )

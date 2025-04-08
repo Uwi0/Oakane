@@ -128,7 +128,7 @@ struct CreateWalletScreen: View {
     @ViewBuilder
     private func SaveButton() -> some View {
         FilledContentButtonView(
-            onclick: { viewModel.handle(event: .SaveWallet())},
+            onClick: { viewModel.handle(event: .SaveWallet())},
             content: { Text("Save Wallet")}
         )
     }

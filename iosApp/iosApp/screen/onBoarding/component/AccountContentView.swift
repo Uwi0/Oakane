@@ -34,7 +34,7 @@ struct AccountContentView: View {
     
     @ViewBuilder private func ButtonAccount(onClick: @escaping () -> Void) -> some View {
         FilledContentButtonView(
-            onclick: onClick,
+            onClick: onClick,
             content: {
                 Image(systemName: "person.crop.circle")
                     .resizable()

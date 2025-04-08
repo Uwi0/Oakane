@@ -51,7 +51,7 @@ struct CreateWalletContentView: View {
     
     @ViewBuilder
     private func SkipButton(onClick: @escaping () -> Void) -> some View {
-        FilledContentButtonView(onclick: onClick) {
+        FilledContentButtonView(onClick: onClick) {
             Spacer().frame(width: 24,height: 24)
             Spacer()
             Text("Skip")

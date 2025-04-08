@@ -54,7 +54,7 @@ struct ImportBackupContentView: View {
     
     @ViewBuilder private func ButtonStartFresh(onClick: @escaping () -> Void) -> some View {
         FilledContentButtonView(
-            onclick: onClick,
+            onClick: onClick,
             content: {
                 Spacer().frame(width: 24, height: 24)
                 Spacer()

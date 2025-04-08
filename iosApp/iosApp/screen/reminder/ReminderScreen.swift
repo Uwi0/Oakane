@@ -31,7 +31,7 @@ struct ReminderScreen: View {
                 Divider()
                 Spacer()
                 FilledContentButtonView(
-                    onclick: { viewModel.handle(event: .SaveReminder()) },
+                    onClick: { viewModel.handle(event: .SaveReminder()) },
                     content: { Text("Set Reminder") }
                 )
             }

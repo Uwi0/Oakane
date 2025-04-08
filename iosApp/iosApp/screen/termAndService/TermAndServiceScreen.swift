@@ -102,7 +102,7 @@ struct TermAndServiceScreen: View {
     
     @ViewBuilder
     private func ConfirmTermAndServiceButton() -> some View {
-        FilledContentButtonView(onclick: { viewModel.handle(event: .OnAgreementButtonClicked())}, enabled: uiState.isButtonEnabled) {
+        FilledContentButtonView(onClick: { viewModel.handle(event: .OnAgreementButtonClicked())}, enabled: uiState.isButtonEnabled) {
             Text("I Accept and Agree")
         }
     }

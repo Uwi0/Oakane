@@ -70,7 +70,7 @@ struct MoveBalanceDialogView: View {
         HStack(spacing: 24) {
             TextButtonView(title: "Cancel", onClick: onDismiss)
             FilledContentButtonView(
-                onclick: { onConfirm(selectedWallet) },
+                onClick: { onConfirm(selectedWallet) },
                 content: { Text("Move Balance") }
             )
                 .frame(width: 148)
